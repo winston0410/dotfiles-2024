@@ -15,8 +15,8 @@
           LimitLoadToSessionType = "Aqua";
           # need to either use absolute path, or set the PATH env with config.EnvironmentVariables
           ProgramArguments = [ "/Users/hugosum/.nix-profile/bin/wezterm" ];
-          LaunchOnlyOnce = true;
           ProcessType = "Interactive";
+          KeepAlive = true;
         };
       };
     };

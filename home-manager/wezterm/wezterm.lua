@@ -53,8 +53,8 @@ local config = {
             action = wezterm.action.CloseCurrentTab { confirm = true }
         },
 		{ key = "c", mods = "ALT", action = wezterm.action({ SendString = "\x03" }) },
-		{ key = "c", mods = "CTRL", action = wezterm.action({ CopyTo = "Clipboard" }) },
-		{ key = "v", mods = "CTRL", action = wezterm.action({ PasteFrom = "Clipboard" }) },
+		{ key = "c", mods = "CMD", action = wezterm.action({ CopyTo = "Clipboard" }) },
+		{ key = "v", mods = "CMD", action = wezterm.action({ PasteFrom = "Clipboard" }) },
 		{ key = "=", mods = "CMD", action = "IncreaseFontSize" },
 		{ key = "-", mods = "CMD", action = "DecreaseFontSize" },
 	},
