@@ -16,6 +16,7 @@
     ./wezterm/mod.nix
     ./ripgrep/mod.nix
     ./bottom/mod.nix
+    ./launchd/mod.nix
   ];
 
   nixpkgs = {
