@@ -10,18 +10,13 @@
     # inputs.nix-colors.homeManagerModule
 
     # You can also split up your configuration and import pieces of it here:
-    ./nvim.nix
+    ./nvim/mod.nix
+    ./bat/mod.nix
+    ./lsd/mod.nix
+    ./wezterm/mod.nix
+    ./ripgrep/mod.nix
+    ./bottom/mod.nix
   ];
-
-  # xdg.configFile = {
-  #   "fzf/fzf-color.sh" = { source = ../../dotfiles/fzf/fzf-color.sh; };
-  #   "bottom/bottom.toml" = { source = ../../dotfiles/bottom/bottom.toml; };
-  #   "lsd/config.yaml" = { source = ../../dotfiles/lsd/config.yaml; };
-  #   "procs/config.toml" = { source = ../../dotfiles/procs/config.toml; };
-  #   "bat/config" = { source = ../../dotfiles/bat/config; };
-  #   "ripgrep/config" = { source = ../../dotfiles/ripgrep/config; };
-  #   "git/" = { source = ../../dotfiles/git; };
-  # };
 
   nixpkgs = {
     overlays = [];
@@ -44,11 +39,9 @@
   };
 
   home.packages = with pkgs; [ 
-    ripgrep
     fd
     fzf
     dua
-    bat
     procs
   ];
 
