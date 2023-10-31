@@ -8,10 +8,13 @@
     launchd.enable = true;
 
     launchd.agents = {
-      startWezterm = {
+      wezterm = {
         enable = true;
+
         config = {
-          ProgramArguments = [ "wezterm" ];
+          LimitLoadToSessionType = "Aqua";
+          # need to either use absolute path, or set the PATH env with config.EnvironmentVariables
+          ProgramArguments = [ "/Users/hugosum/.nix-profile/bin/wezterm" ];
           LaunchOnlyOnce = true;
           ProcessType = "Interactive";
         };
