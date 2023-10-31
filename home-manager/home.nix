@@ -47,6 +47,9 @@
     ripgrep
     fd
     fzf
+    dua
+    bat
+    procs
   ];
 
   programs.man.enable = false;
