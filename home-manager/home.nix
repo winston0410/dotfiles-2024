@@ -1,5 +1,3 @@
-# This is your home-manager configuration file
-# Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
   inputs,
   lib,
@@ -7,29 +5,26 @@
   pkgs,
   ...
 }: {
-  # You can import other home-manager modules here
   imports = [
     # If you want to use home-manager modules from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModule
 
     # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    ./nvim.nix
   ];
 
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # If you want to use overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
+  # xdg.configFile = {
+  #   "fzf/fzf-color.sh" = { source = ../../dotfiles/fzf/fzf-color.sh; };
+  #   "bottom/bottom.toml" = { source = ../../dotfiles/bottom/bottom.toml; };
+  #   "lsd/config.yaml" = { source = ../../dotfiles/lsd/config.yaml; };
+  #   "procs/config.toml" = { source = ../../dotfiles/procs/config.toml; };
+  #   "bat/config" = { source = ../../dotfiles/bat/config; };
+  #   "ripgrep/config" = { source = ../../dotfiles/ripgrep/config; };
+  #   "git/" = { source = ../../dotfiles/git; };
+  # };
 
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
+  nixpkgs = {
+    overlays = [];
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
@@ -49,10 +44,12 @@
   };
 
   home.packages = with pkgs; [ 
-    neovim
     ripgrep
-    fd 
+    fd
+    fzf
   ];
+
+  programs.man.enable = false;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
