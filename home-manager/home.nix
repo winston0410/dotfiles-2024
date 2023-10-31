@@ -14,7 +14,6 @@
     ./bat/mod.nix
     ./lsd/mod.nix
     ./wezterm/mod.nix
-    ./tmux/mod.nix
     ./ripgrep/mod.nix
     ./bottom/mod.nix
   ];

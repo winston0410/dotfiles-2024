@@ -2,11 +2,11 @@ local wezterm = require("wezterm")
 
 local hostname = wezterm.hostname()
 
-return {
-	default_prog = { "tmux" },
+local config = {
+	-- default_prog = { "tmux" },
 	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
-	font_size = 30.0,
-	enable_tab_bar = false,
+	font_size = 20.0,
+	enable_tab_bar = true,
 	window_padding = {
 		left = 0,
 		right = 0,
@@ -40,11 +40,32 @@ return {
 	},
 	disable_default_key_bindings = true,
 	adjust_window_size_when_changing_font_size = true,
+    leader = { key=",", mods="CMD" },
 	keys = {
+        {
+            key = 'c',
+            mods = "LEADER",
+            action = wezterm.action.SpawnTab 'DefaultDomain',
+        },
+        {
+            key = "x",
+            mods = "LEADER",
+            action = wezterm.action.CloseCurrentTab { confirm = true }
+        },
 		{ key = "c", mods = "ALT", action = wezterm.action({ SendString = "\x03" }) },
 		{ key = "c", mods = "CTRL", action = wezterm.action({ CopyTo = "Clipboard" }) },
 		{ key = "v", mods = "CTRL", action = wezterm.action({ PasteFrom = "Clipboard" }) },
-		{ key = "=", mods = "CTRL", action = "IncreaseFontSize" },
-		{ key = "-", mods = "CTRL", action = "DecreaseFontSize" },
+		{ key = "=", mods = "CMD", action = "IncreaseFontSize" },
+		{ key = "-", mods = "CMD", action = "DecreaseFontSize" },
 	},
 }
+
+for i = 1, 8 do
+    table.insert(config.keys, {
+      key = tostring(i),
+      mods = "LEADER",
+      action = wezterm.action.ActivateTab(i - 1),
+    })
+end
+
+return config
