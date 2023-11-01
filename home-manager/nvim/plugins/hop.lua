@@ -2,7 +2,6 @@ local function init(use)
 	use({
 		"smoka7/hop.nvim",
 		commit = "275dcbc84e8167c7d64b4584770d837f3ce21562",
-		-- keys = { { "n", "<Leader><Leader>" }, { "v", "<Leader><Leader>" } },
 		keys = { { "n", "<leader>f" }, { "v", "<leader>f" },{ "n", "<leader>F" }, { "v", "<leader>F" } },
 		config = function()
 			require("hop").setup({})

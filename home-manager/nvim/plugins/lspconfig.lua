@@ -10,16 +10,6 @@ local function init(use)
 
 			local on_attach = function(client)
 				-- require("plugins.smart_hover").setup(client)
-
-				-- vim.cmd("command! LspNextDiagonistic lua vim.lsp.diagnostic.goto_next{ wrap = true }")
-				-- vim.cmd("command! LspOpenDiagonisticList lua vim.lsp.diagnostic.set_loclist()")
-				-- vim.cmd("command! LspShowTypeSignature lua vim.lsp.buf.type_definition()")
-				-- vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
-				-- vim.cmd("command! LspToDefinition lua vim.lsp.buf.definition()")
-				-- vim.cmd("command! LspToTypeDefinition lua vim.lsp.buf.type_definition()")
-				-- vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
-				-- vim.cmd("command! LspFormat lua vim.lsp.buf.formatting()")
-				-- vim.cmd("command! LspRenameSymbol lua vim.lsp.buf.rename()")
 			end
 
 			local lspconfig = require("lspconfig")
@@ -124,7 +114,7 @@ local function init(use)
 				cmd = { "pyright-langserver", "--stdio" },
 			}))
 
-			require'lspconfig'.lua_ls.setup {
+			lspconfig.lua_ls.setup {
 				on_init = function(client)
 				  local path = client.workspace_folders[1].name
 				  if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
@@ -171,12 +161,6 @@ local function init(use)
 					gopls = { analyses = { unusedparams = true }, staticcheck = true },
 				},
 			}))
-
-			vim.lsp.handlers["textdocument/publishdiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-				virtual_text = false,
-				signs = true,
-				update_in_insert = true
-			})
 		end,
 	})
 

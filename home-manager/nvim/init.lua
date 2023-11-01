@@ -288,7 +288,7 @@ require("packer").startup(function(use)
 			require("ibl").setup()
 		end,
 	})
-	require("plugins.smart-number").init()
+	use ({ "sitiom/nvim-numbertoggle", commit = "9ab95e60ea5ec138e1b2332e0fc18b8e5de464c6" })
 	use({
 		"numToStr/Comment.nvim",
 		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
