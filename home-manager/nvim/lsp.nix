@@ -1,5 +1,6 @@
 {
   inputs,
+  unstable,
   lib,
   config,
   pkgs,
@@ -20,12 +21,11 @@
     nodePackages.vim-language-server
     nodePackages.typescript-language-server
     nodePackages.pyright
-    nodePackages.svelte-language-server
     haskellPackages.dhall-lsp-server
     terraform-ls
     solargraph
     metals
     nodePackages.vscode-langservers-extracted
     lua-language-server
-  ];
+  ] ++ [ unstable.nodePackages.svelte-language-server ];
 }

@@ -4,6 +4,7 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.05";
@@ -20,6 +21,7 @@
   outputs = {
     self,
     nixpkgs,
+    unstable,
     home-manager,
     ...
   } @ inputs: let
@@ -31,7 +33,10 @@
     homeConfigurations = {
       "hugosum" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        extraSpecialArgs = {inherit inputs outputs;};
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          unstable = unstable.legacyPackages.aarch64-darwin;
+        };
         modules = [./home-manager/home.nix];
       };
     };
