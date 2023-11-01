@@ -1,3 +1,6 @@
+-- Set the search path for Lua, so files in .config/nvim/plugins will be loaded
+package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
+
 --Sensible default mapping
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -170,7 +173,6 @@ require("packer").startup(function(use)
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("gitsigns").setup({
-				keymaps = {},
 				signs = {
 					add = {
 						hl = "GitSignsAdd",
@@ -209,6 +211,7 @@ require("packer").startup(function(use)
 	})
 	use({
         'nvim-lualine/lualine.nvim',
+		commit = "2248ef254d0a1488a72041cfb45ca9caada6d994",
 		after = "tokyonight.nvim",
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 		config = function()
@@ -262,27 +265,41 @@ require("packer").startup(function(use)
 			})
 		end,
 	})
-	-- require("plugins.treesitter").init(use)
+	require("plugins.treesitter").init(use)
+	require("plugins.lspconfig").init(use)
+	require("plugins.fzf-lua").init(use)
+	use({
+		"nacro90/numb.nvim",
+		commit = "3f7d4a74bd456e747a1278ea1672b26116e0824d",
+		config = function()
+			require("numb").setup({})
+		end,
+	})
+	require("plugins.which-key").init(use)
+	require("plugins.hop").init(use)
+	use({
+		"lukas-reineke/indent-blankline.nvim",
+		commit = "29be0919b91fb59eca9e90690d76014233392bef",
+		config = function()
+			-- vim.g.indent_blankline_use_treesitter = true
+			-- vim.g.indent_blankline_char = "│"
+			-- vim.g.indent_blankline_space_char = "."
+
+			require("ibl").setup()
+		end,
+	})
+	require("plugins.smart-number").init()
+	-- require("plugins.commented").init(use)
 	-- require("plugins.quickfix").init(use)
 	-- require("plugins.magit").init(use)
-	-- require("plugins.lspconfig").init(use)
-	-- require("plugins.hop").init(use)
 	-- require("plugins.indent-blankline").init(use)
-	-- require("plugins.fzf-lua").init(use)
-	-- require("plugins.galaxyline").init(use)
 	-- require("plugins.formatter").init(use)
-	-- --require("plugins.colorizer").init(use)
 	-- require("plugins.completion").init(use)
-	-- -- require('plugins.numb').init(use)
 	-- require("plugins.range-highlight").init(use)
 	-- -- require("plugins.lightspeed").init(use)
 	-- require("plugins.better-O").init(use)
 	-- -- require('plugins.reverse-J').init(use)
-	-- require("plugins.commented").init(use)
 	-- require("plugins.bufferline").init(use)
-	-- --  require("plugins.nvim-tree").init(use)
-	-- require("plugins.smart-number").init(use)
 	-- -- require("plugins.suitcase").init(use)
-	-- -- require("plugins.which-key").init(use)
 	-- -- require('plugins.nvim_context_vt').init(use)
 end)

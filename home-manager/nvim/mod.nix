@@ -24,5 +24,6 @@
     "nvim/init.lua" = { source = ./init.lua; };
     "nvim/ftplugin" = { source = ./ftplugin; };
     "nvim/ftdetect" = { source = ./ftdetect; };
+    "nvim/plugins" = { source = ./plugins; };
   };
 }
