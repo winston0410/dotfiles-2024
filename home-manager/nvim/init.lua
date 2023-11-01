@@ -124,32 +124,165 @@ for _, option in ipairs(buffer_options) do
 	vim.bo[option[1]] = option[2]
 end
 
--- require("packer").startup(function(use)
--- 	use("wbthomason/packer.nvim")
--- 	require("plugins.trouble").init(use)
--- 	require("plugins.treesitter").init(use)
--- 	require("plugins.quickfix").init(use)
--- 	require("plugins.magit").init(use)
--- 	require("plugins.lspconfig").init(use)
--- 	require("plugins.edge").init(use)
--- 	require("plugins.hop").init(use)
--- 	require("plugins.gitsigns").init(use)
--- 	-- require("plugins.indent-blankline").init(use)
--- 	-- require("plugins.fzf-lua").init(use)
--- 	-- require("plugins.galaxyline").init(use)
--- 	-- require("plugins.formatter").init(use)
--- 	-- --require("plugins.colorizer").init(use)
--- 	-- require("plugins.completion").init(use)
--- 	-- -- require('plugins.numb').init(use)
--- 	-- require("plugins.range-highlight").init(use)
--- 	-- -- require("plugins.lightspeed").init(use)
--- 	-- require("plugins.better-O").init(use)
--- 	-- -- require('plugins.reverse-J').init(use)
--- 	-- require("plugins.commented").init(use)
--- 	-- require("plugins.bufferline").init(use)
--- 	-- --  require("plugins.nvim-tree").init(use)
--- 	-- require("plugins.smart-number").init(use)
--- 	-- -- require("plugins.suitcase").init(use)
--- 	-- -- require("plugins.which-key").init(use)
--- 	-- -- require('plugins.nvim_context_vt').init(use)
--- end)
+require("packer").startup(function(use)
+	use("wbthomason/packer.nvim")
+	use({
+		"folke/trouble.nvim",
+		cmd = { "Trouble" },
+		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
+		config = function()
+			require("trouble").setup({
+				position = "bottom",
+				-- width = 30,
+				-- height = 10,
+				use_lsp_diagnostic_signs = true,
+				indent_lines = false,
+				-- auto_open = true,
+				-- auto_close = true
+			})
+		end,
+	})
+	use({
+		"folke/tokyonight.nvim",
+		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
+		event = "BufEnter",
+		-- after = "nvim-tree.lua",
+		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		config = function()
+			vim.g.tokyonight_style = "night"
+			vim.cmd("colorscheme tokyonight")
+
+			local highlight_list = {
+				-- { "Search", "Visual" },
+				-- { "IncSearch", "Visual" },
+				{ "CursorLineNr", "cleared" },
+				-- highlight! link CursorLineNr cleared
+			}
+
+			for _, highlight in ipairs(highlight_list) do
+				vim.cmd("highlight! link" .. " " .. highlight[1] .. " " .. highlight[2])
+			end
+		end,
+	})
+	use({
+		"lewis6991/gitsigns.nvim",
+        event = "CursorHold",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("gitsigns").setup({
+				keymaps = {},
+				signs = {
+					add = {
+						hl = "GitSignsAdd",
+						text = "│",
+						numhl = "GitSignsAddNr",
+						linehl = "GitSignsAddLn",
+					},
+					change = {
+						hl = "GitSignsChange",
+						text = "│",
+						numhl = "GitSignsChangeNr",
+						linehl = "GitSignsChangeLn",
+					},
+					delete = {
+						hl = "GitSignsDelete",
+						text = "│",
+						numhl = "GitSignsDeleteNr",
+						linehl = "GitSignsDeleteLn",
+					},
+					topdelete = {
+						hl = "GitSignsDelete",
+						text = "│",
+						numhl = "GitSignsDeleteNr",
+						linehl = "GitSignsDeleteLn",
+					},
+					changedelete = {
+						hl = "GitSignsChange",
+						text = "│",
+						numhl = "GitSignsChangeNr",
+						linehl = "GitSignsChangeLn",
+					},
+				},
+				current_line_blame = true,
+			})
+		end,
+	})
+	use({
+        'nvim-lualine/lualine.nvim',
+		after = "tokyonight.nvim",
+		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		config = function()
+			-- local color
+			local colors = require("tokyonight.colors").setup()
+			-- print('check colors', vim.inspect(colors))
+			require("lualine").setup({
+				options = {
+					theme = "tokyonight",
+					component_separators = "",
+					section_separators = "",
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = { "branch" },
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {
+						{
+							"filename",
+							file_status = true,
+							path = 2,
+							color = { fg = colors.fg, bg = colors.bg_statusline },
+						},
+					},
+					lualine_z = {
+						{
+							"diagnostics",
+							sources = { "nvim_lsp" },
+							symbols = { error = " ", warn = " ", info = " " },
+							-- color_error = colors.red,
+							-- color_warn = colors.yellow,
+							-- color_info = colors.cyan,
+							color = { bg = colors.bg_statusline },
+						},
+						{
+							-- Check if active LSP exist
+							function()
+								local msg = ""
+								local clients = vim.lsp.get_active_clients()
+								if #clients < 1 then
+									msg = "年"
+									return msg
+								end
+								return ""
+							end,
+							color = { fg = colors.fg, bg = colors.bg_statusline },
+						},
+					},
+				},
+			})
+		end,
+	})
+	-- require("plugins.treesitter").init(use)
+	-- require("plugins.quickfix").init(use)
+	-- require("plugins.magit").init(use)
+	-- require("plugins.lspconfig").init(use)
+	-- require("plugins.hop").init(use)
+	-- require("plugins.indent-blankline").init(use)
+	-- require("plugins.fzf-lua").init(use)
+	-- require("plugins.galaxyline").init(use)
+	-- require("plugins.formatter").init(use)
+	-- --require("plugins.colorizer").init(use)
+	-- require("plugins.completion").init(use)
+	-- -- require('plugins.numb').init(use)
+	-- require("plugins.range-highlight").init(use)
+	-- -- require("plugins.lightspeed").init(use)
+	-- require("plugins.better-O").init(use)
+	-- -- require('plugins.reverse-J').init(use)
+	-- require("plugins.commented").init(use)
+	-- require("plugins.bufferline").init(use)
+	-- --  require("plugins.nvim-tree").init(use)
+	-- require("plugins.smart-number").init(use)
+	-- -- require("plugins.suitcase").init(use)
+	-- -- require("plugins.which-key").init(use)
+	-- -- require('plugins.nvim_context_vt').init(use)
+end)
