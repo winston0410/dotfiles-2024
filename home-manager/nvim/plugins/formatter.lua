@@ -106,19 +106,11 @@ local function init(paq)
 				opts = opts or {}
 				return function()
 					return {
-                        exe = "prettierd",
+                        exe = "prettier",
                         args = {vim.api.nvim_buf_get_name(0)},
                         stdin = true
 					}
 				end
-			end
-
-			local function ktlint()
-				return {
-					exe = "ktlint",
-					args = { "--format", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
 			end
 
 			local function purty()
@@ -136,34 +128,10 @@ local function init(paq)
 					stdin = true,
 				}
 			end
-            
-			local function cargofmt()
-				return {
-					exe = "cargo",
-					args = { "fmt" },
-					stdin = false,
-				}
-			end
 
-			local function black()
-				return {
-					exe = "black",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "--fast", "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
 			local function hindent()
 				return {
 					exe = "hindent",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
-			local function sqlfmt()
-				return {
-					exe = "sqlfmt",
 					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
 					args = { "--", vim.api.nvim_buf_get_name(0) },
 					stdin = false,
@@ -182,38 +150,38 @@ local function init(paq)
                 logging = true,
                 log_level = vim.log.levels.WARN,
 				filetype = {
-					html = { prettier() },
-					xml = { prettier() },
-					svg = { prettier() },
-					css = { prettier() },
-					scss = { prettier() },
-					sass = { prettier() },
-					less = { prettier() },
-					javascript = { prettier() },
-					typescript = { prettier() },
-					javascriptreact = { prettier() },
-					typescriptreact = { prettier() },
-					["javascript.jsx"] = { prettier() },
-					["typescript.jsx"] = { prettier() },
+					html = { require("formatter.filetypes.javascript").prettier },
+					xml = { require("formatter.filetypes.javascript").prettier },
+					svg = { require("formatter.filetypes.javascript").prettier },
+					css = { require("formatter.filetypes.javascript").prettier },
+					scss = { require("formatter.filetypes.javascript").prettier },
+					sass = { require("formatter.filetypes.javascript").prettier },
+					less = { require("formatter.filetypes.javascript").prettier },
+					javascript = { require("formatter.filetypes.javascript").prettier },
+					typescript = { require("formatter.filetypes.javascript").prettier },
+					javascriptreact = { require("formatter.filetypes.javascript").prettier },
+					typescriptreact = { require("formatter.filetypes.javascript").prettier },
+					["javascript.jsx"] = { require("formatter.filetypes.javascript").prettier },
+					["typescript.jsx"] = { require("formatter.filetypes.javascript").prettier },
 					sh = { require("formatter.filetypes.sh").shfmt },
 					zsh = { require("formatter.filetypes.sh").shfmt },
-					markdown = { prettier() },
+					markdown = { require("formatter.filetypes.javascript").prettier },
 					-- Use fixjson?
-					json = { prettier() },
-					yaml = { prettier() },
-					toml = { prettier() },
-					vue = { prettier() },
+					json = { require("formatter.filetypes.javascript").prettier },
+					yaml = { require("formatter.filetypes.javascript").prettier },
+					toml = { require("formatter.filetypes.javascript").prettier },
+					vue = { require("formatter.filetypes.javascript").prettier },
 					svelte = {
 						prettier({
 							"--plugin-search-dir=.",
 							"--plugin=prettier-plugin-svelte",
 						}),
 					},
-					python = { black },
+					python = { require("formatter.filetypes.python").black },
 					dockerfile = { dockfmt },
 					-- No formatter for make
 					make = {
-						-- prettier()
+						require("formatter.filetypes.javascript").prettier
 					},
 					ruby = { rufo },
 					lua = { require("formatter.filetypes.lua").stylua },
@@ -224,7 +192,7 @@ local function init(paq)
 					dart = { require("formatter.filetypes.dart").dartformat },
 					haskell = { hindent },
 					purescript = { purty },
-					kotlin = { ktlint },
+					kotlin = { require("formatter.filetypes.kotlin").ktlint },
 					java = { javafmt },
 					fennel = { fnlfmt },
 					cpp = { clang_format },
@@ -234,7 +202,7 @@ local function init(paq)
 					r = { styler },
 					elm = { elm_format },
 					elixir = { require("formatter.filetypes.elixir").mixformat },
-					sql = {},
+					sql = { require("formatter.filetypes.sql").pgformat },
 					tf = { require("formatter.filetypes.terraform").terraformfmt },
 					ini = { inifmt },
 					dosini = { inifmt },
