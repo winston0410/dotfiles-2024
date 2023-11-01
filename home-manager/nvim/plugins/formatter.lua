@@ -1,11 +1,11 @@
 local function init(paq)
-	-- Cannot use variable outside config function in config
-	-- local format_key = "<C-F>"
+    local trigger_key = "<Char-0xBA>"
+
 	paq({
 		"mhartington/formatter.nvim",
         commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
 		opt = true,
-		keys = { { "n", "<a-f>" } },
+		keys = { { "n", trigger_key } },
 		config = function()
 			local function mintfmt()
 				return {
@@ -47,13 +47,6 @@ local function init(paq)
 				return {
 					exe = "",
 					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
-			local function mix_format()
-				return {
-					exe = "mix",
-					args = { "format", "--", vim.api.nvim_buf_get_name(0) },
 					stdin = false,
 				}
 			end
@@ -103,14 +96,6 @@ local function init(paq)
 				}
 			end
 
-			local function goimports()
-				return {
-					exe = "goimports",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end
-
 			local function fnlfmt()
 				return {
 					exe = "fnlfmt",
@@ -153,69 +138,11 @@ local function init(paq)
 					stdin = true,
 				}
 			end
-
-			local function gofmt()
-				return {
-					exe = "gofmt",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end
-
-			local function go_sqlfmt()
-				return {
-					exe = "sqlfmt",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end
-
-			local function dartfmt()
-				return {
-					exe = "dartfmt",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end
-
-			local function rustfmt()
-				return {
-					exe = "rustfmt",
-					args = { "--edition=2018", "--emit=stdout" },
-					stdin = true,
-				}
-			end
-
+            
 			local function cargofmt()
 				return {
 					exe = "cargo",
 					args = { "fmt" },
-					stdin = false,
-				}
-			end
-
-			local function nixfmt()
-				return {
-					exe = "nixfmt",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
-
-			local function shfmt()
-				return {
-					exe = "shfmt",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "-s", "-w", "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
-
-			local function stylua()
-				return {
-					exe = "stylua",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "--", vim.api.nvim_buf_get_name(0) },
 					stdin = false,
 				}
 			end
@@ -244,22 +171,6 @@ local function init(paq)
 					stdin = false,
 				}
 			end
-			local function latexindent()
-				return {
-					exe = "latexindent",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
-			local function tffmt()
-				return {
-					exe = "terraform",
-					-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-					args = { "fmt", "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
 
 			local function rufo()
 				return {
@@ -270,7 +181,8 @@ local function init(paq)
 			end
 
 			require("formatter").setup({
-				logging = false,
+                logging = true,
+                log_level = vim.log.levels.WARN,
 				filetype = {
 					html = { prettier() },
 					xml = { prettier() },
@@ -285,8 +197,8 @@ local function init(paq)
 					typescriptreact = { prettier() },
 					["javascript.jsx"] = { prettier() },
 					["typescript.jsx"] = { prettier() },
-					sh = { shfmt },
-					zsh = { shfmt },
+					sh = { require("formatter.filetypes.sh").shfmt },
+					zsh = { require("formatter.filetypes.sh").shfmt },
 					markdown = { prettier() },
 					-- Use fixjson?
 					json = { prettier() },
@@ -306,13 +218,12 @@ local function init(paq)
 						-- prettier()
 					},
 					ruby = { rufo },
-					lua = { stylua },
-					teal = { stylua },
-					rust = { rustfmt },
-					nix = { nixfmt },
-					-- go = { gofmt, goimports, go_sqlfmt },
-					go = { gofmt, goimports },
-					dart = { dartfmt },
+					lua = { require("formatter.filetypes.lua").stylua },
+					teal = { require("formatter.filetypes.lua").stylua },
+					rust = { require("formatter.filetypes.rust").rustfmt },
+					nix = { require("formatter.filetypes.nix").nixfmt },
+					go = { require("formatter.filetypes.go").gofmt, require("formatter.filetypes.go").goimports },
+					dart = { require("formatter.filetypes.dart").dartformat },
 					haskell = { hindent },
 					purescript = { purty },
 					kotlin = { ktlint },
@@ -324,10 +235,9 @@ local function init(paq)
 					swift = { swift_format },
 					r = { styler },
 					elm = { elm_format },
-					elixir = { mix_format },
+					elixir = { require("formatter.filetypes.elixir").mixformat },
 					sql = {},
-					tf = { tffmt },
-					plaintex = { latexindent },
+					tf = { require("formatter.filetypes.terraform").terraformfmt },
 					ini = { inifmt },
 					dosini = { inifmt },
 					dhall = { dhall_lint, dhall_format },
@@ -351,7 +261,7 @@ local function init(paq)
 					mint = { mintfmt },
 				},
 			})
-			vim.api.nvim_set_keymap("n", "<a-f>", "<cmd>write<bar>Format<cr>", { silent = true, noremap = true })
+			vim.api.nvim_set_keymap("n", trigger_key, "<cmd>FormatWrite<cr>", { silent = true, noremap = true })
 		end,
 	})
 end

@@ -15,11 +15,13 @@ local mappings = {
 	{ "Y", "y$" },
 	{ "S", "<NOP>" },
 	{ "s", "<NOP>" },
-	{ "<A-v>", "<C-v>" },
-	{ "<A-r>", "<C-r>" },
+	-- for visual block
+	{ "<Char-0xAD>", "<C-v>" },
+	-- for redo
+	{ "<Char-0xAE>", "<C-r>" }
 }
 
-vim.api.nvim_set_keymap("i", "<A-r>", "<C-r>", { silent = true, noremap = true })
+vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
 --  Prevent the cursor move back when returning to normal mode
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.api.nvim_set_keymap("i", "<Esc>", "<Esc>`^", { silent = true, noremap = true })
@@ -41,11 +43,12 @@ end
 local all_modes = { "i", "n", "v", "c", "t", "s" }
 
 for _, mode in pairs(all_modes) do
-	-- remap escape
-	vim.api.nvim_set_keymap(mode, "<A-[>", "<esc>", { silent = true, noremap = true })
-	-- remap up and down for easy use of fzf
-	vim.api.nvim_set_keymap(mode, "<A-p>", "<Up>", { silent = true, noremap = true })
-	vim.api.nvim_set_keymap(mode, "<A-n>", "<Down>", { silent = true, noremap = true })
+	-- remap escape to CMD + [
+	vim.api.nvim_set_keymap(mode, "<Char-0xAA>", "<esc>", { silent = true, noremap = true })
+	-- remap up and down for easy use of fzf to CMD + n and CMD + p
+	vim.api.nvim_set_keymap(mode, "<Char-0xAB>", "<Up>", { silent = true, noremap = true })
+	vim.api.nvim_set_keymap(mode, "<Char-0xAC>", "<Down>", { silent = true, noremap = true })
+	vim.api.nvim_set_keymap(mode, "<Char-0xAF>", "<cmd>write<cr>", { silent = true, noremap = true, desc = 'Saved current file by <command-s>' })
 end
 
 vim.cmd("syntax enable")
@@ -295,7 +298,16 @@ require("packer").startup(function(use)
 		'numToStr/Comment.nvim',
 		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
 		config = function()
-			require('Comment').setup()
+			require('Comment').setup({
+				toggler = {
+					line = '<leader>cc',
+					block = '<leader>bc',
+				},
+				opleader = {
+					line = '<leader>c',
+					block = '<leader>b',
+				},
+			})
 		end
 	}
 	-- require("plugins.quickfix").init(use)
