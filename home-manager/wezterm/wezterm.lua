@@ -15,6 +15,7 @@ local super_vim_keys_map = {
 	['['] = utf8.char(0xAA),
 	p = utf8.char(0xAB),
 	n = utf8.char(0xAC),
+	w = utf8.char(0xAD),
 	r = utf8.char(0xAE),
 	s = utf8.char(0xAF),
 }
@@ -115,6 +116,7 @@ local config = {
 		bind_super_key_to_vim('['),
 		bind_super_key_to_vim('n'),
 		bind_super_key_to_vim('p'),
+		bind_super_key_to_vim('w'),
 		bind_super_key_to_vim('r'),
 		bind_super_key_to_vim('s'),
 	}

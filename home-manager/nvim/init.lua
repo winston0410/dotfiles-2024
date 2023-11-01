@@ -22,6 +22,9 @@ local mappings = {
 	-- { "<Char-0xAD>", "<C-v>" },
 	-- for redo
 	{ "<Char-0xAE>", "<C-r>" },
+
+	-- focus to next window, with Cmd + n + p
+	{ "<Char-0xAD>p", "<C-w>p" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -151,12 +154,12 @@ require("packer").startup(function(use)
 			require("trouble").setup({
 				icons = true,
 				position = "bottom",
-				-- width = 30,
-				-- height = 10,
+				height = 10,
 				use_diagnostic_signs = true,
 				indent_lines = false,
-				auto_open = true,
-				auto_close = true,
+				-- seems to be not working
+				-- auto_open = true,
+				-- auto_close = true,
 			})
 		end,
 	})
@@ -183,6 +186,7 @@ require("packer").startup(function(use)
 	})
 	use({
 		"lewis6991/gitsigns.nvim",
+		commit = "af0f583cd35286dd6f0e3ed52622728703237e50",
 		event = "CursorHold",
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
@@ -190,31 +194,31 @@ require("packer").startup(function(use)
 				signs = {
 					add = {
 						hl = "GitSignsAdd",
-						text = "│",
+						text = "+",
 						numhl = "GitSignsAddNr",
 						linehl = "GitSignsAddLn",
 					},
 					change = {
 						hl = "GitSignsChange",
-						text = "│",
+						text = "|",
 						numhl = "GitSignsChangeNr",
 						linehl = "GitSignsChangeLn",
 					},
 					delete = {
 						hl = "GitSignsDelete",
-						text = "│",
+						text = "-",
 						numhl = "GitSignsDeleteNr",
 						linehl = "GitSignsDeleteLn",
 					},
 					topdelete = {
 						hl = "GitSignsDelete",
-						text = "│",
+						text = "-",
 						numhl = "GitSignsDeleteNr",
 						linehl = "GitSignsDeleteLn",
 					},
 					changedelete = {
 						hl = "GitSignsChange",
-						text = "│",
+						text = "|",
 						numhl = "GitSignsChangeNr",
 						linehl = "GitSignsChangeLn",
 					},

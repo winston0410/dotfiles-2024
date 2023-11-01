@@ -5,12 +5,12 @@ local function init(use)
 		requires = { "nvim-treesitter/nvim-treesitter" },
         commit = "e69a504baf2951d52e1f1fbb05145d43f236cbf1"
 	})
-	-- --Only use this when developing something related treesitter, slow to start
-	-- --{ "nvim-treesitter/playground" },
-	-- use({
-	-- 	"JoosepAlviste/nvim-ts-context-commentstring",
-	-- 	requires = { "nvim-treesitter/nvim-treesitter" },
-	-- })
+	use({
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		after = "nvim-treesitter",
+		requires = { "nvim-treesitter/nvim-treesitter" },
+		commit = "92e688f013c69f90c9bbd596019ec10235bc51de"
+	})
 	use({
 		"nvim-treesitter/nvim-treesitter",
         commit = "efec7115d8175bdb6720eeb4e26196032cb52593",
