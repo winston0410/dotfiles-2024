@@ -299,7 +299,7 @@ require("lazy").setup({
 	{
 		"numToStr/Comment.nvim",
 		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
-		keys = { { "n", "<leader>c" }, { "n", "<leader>b" }, { "v", "<leader>c" }, { "v", "<leader>b" } },
+		keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
 		config = function()
 			require("Comment").setup({
 				toggler = {
@@ -316,7 +316,7 @@ require("lazy").setup({
 	{
 		"smoka7/hop.nvim",
 		commit = "275dcbc84e8167c7d64b4584770d837f3ce21562",
-		keys = { { "n", "<leader>f" }, { "v", "<leader>f" }, { "n", "<leader>F" }, { "v", "<leader>F" } },
+		keys = { { "<leader>f" }, { "<leader>F" }, { "<leader>f", mode = "v" }, { "<leader>F", mode = "v" } },
 		config = function()
 			require("hop").setup({})
 
@@ -340,6 +340,9 @@ require("lazy").setup({
 	{
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
+		keys = {
+			{ ",m" }, { ",g" }
+		},
 		dependencies = {
 			"kyazdani42/nvim-web-devicons",
 		},
@@ -389,25 +392,26 @@ require("lazy").setup({
 					noremap = true,
 				})
 
-				vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+				-- NOTE not in use at the moment
+				-- vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- })
 
-				vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+				-- vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- })
 
-				vim.api.nvim_set_keymap(mode, ",s", "<cmd>lua require('fzf-lua').lsp_workspace_symbols()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+				-- vim.api.nvim_set_keymap(mode, ",s", "<cmd>lua require('fzf-lua').lsp_workspace_symbols()<cr>", {
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- })
 
-				vim.api.nvim_set_keymap(mode, ",d", "<cmd>lua require('fzf-lua').lsp_workspace_diagnostics()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+				-- vim.api.nvim_set_keymap(mode, ",d", "<cmd>lua require('fzf-lua').lsp_workspace_diagnostics()<cr>", {
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- })
 			end
 		end,
 	},
@@ -892,11 +896,8 @@ require("lazy").setup({
 						client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
 							Lua = {
 								runtime = {
-									-- Tell the language server which version of Lua you're using
-									-- (most likely LuaJIT in the case of Neovim)
 									version = "LuaJIT",
 								},
-								-- Make the server aware of Neovim runtime files
 								workspace = {
 									checkThirdParty = false,
 									library = {
@@ -936,6 +937,7 @@ require("lazy").setup({
 	},
 	{
 		"folke/trouble.nvim",
+		event = "CursorHold",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		config = function()
