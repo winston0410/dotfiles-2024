@@ -16,3 +16,30 @@ Then replace the `TODO` and `FIXME` in code, and replace system from `x86_64-lin
 # REF https://github.com/nix-community/home-manager/issues/4533
 nix run home-manager/release-23.05 -- --flake .#hugosum switch
 ```
+
+## Set up neovim
+
+Set up packages
+
+```
+:PackerUpdate
+:PackerCompile
+```
+
+Set up Treesitter
+
+```
+:TSUpdate all
+```
+
+Use checkhealth to confirm all parsers are working:
+
+```
+:checkhealth nvim-treesitter
+```
+
+If there are any parser has issue, reinstall them with:
+
+```
+:TSUpdate <parser-name>
+```

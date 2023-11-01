@@ -41,7 +41,9 @@ end
 local all_modes = { "i", "n", "v", "c", "t", "s" }
 
 for _, mode in pairs(all_modes) do
+	-- remap escape
 	vim.api.nvim_set_keymap(mode, "<A-[>", "<esc>", { silent = true, noremap = true })
+	-- remap up and down for easy use of fzf
 	vim.api.nvim_set_keymap(mode, "<A-p>", "<Up>", { silent = true, noremap = true })
 	vim.api.nvim_set_keymap(mode, "<A-n>", "<Down>", { silent = true, noremap = true })
 end
