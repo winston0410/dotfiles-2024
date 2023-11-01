@@ -228,15 +228,10 @@ local function init(paq)
 				},
 			})
 
-            vim.api.nvim_exec(
-                [[
-                    augroup FormatAutogroup
-                    autocmd!
-                    autocmd BufWritePost * FormatWrite
-                    augroup END
-                ]],
-                true
-            )
+			vim.api.nvim_create_autocmd('BufWritePost', {
+				pattern  = { "*" },
+				command = "FormatWrite"
+			})
 		end,
 	})
 end
