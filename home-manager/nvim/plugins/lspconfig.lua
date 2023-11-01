@@ -180,14 +180,19 @@ local function init(use)
 				auto_open = true,
 				auto_close = true,
 			})
-
-			vim.api.nvim_create_autocmd('LspAttach', {
-				callback = function(args)
-					require("trouble").open()
-				end,
-			})
 		end,
 	})
+
+	-- vim.api.nvim_create_autocmd('LspAttach', {
+	-- 	pattern = { "*" },
+	-- 	callback = function(args)
+	-- 		local trouble = pcall(require("trouble"))
+
+	-- 		if trouble then
+	-- 			trouble.open()
+	-- 		end
+	-- 	end,
+	-- });
 end
 
 return { init = init }

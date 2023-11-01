@@ -1,8 +1,6 @@
 -- Set the search path for Lua, so files in .config/nvim/plugins will be loaded
 package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
 
---Sensible default mapping
-
 -- Use space as leader key
 vim.g.mapleader = " "
 
@@ -116,7 +114,8 @@ local window_options = {
 	{ "linebreak", true },
 	{ "number", true },
 	{ "relativenumber", true },
-	{ "signcolumn", "yes" },
+	-- at most 2 columns for left hand signcolumn
+	{ "signcolumn", "auto:2" },
 	{ "scrolloff", 8 },
 	-- Ensure tilde signs are not show at the end of buffer
 	{ "fillchars", "eob: " },
@@ -143,8 +142,28 @@ for _, option in ipairs(buffer_options) do
 	vim.bo[option[1]] = option[2]
 end
 
+-- local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+-- if not vim.loop.fs_stat(lazypath) then
+--   vim.fn.system({
+--     "git",
+--     "clone",
+--     "--filter=blob:none",
+--     "https://github.com/folke/lazy.nvim.git",
+--     "--branch=stable", -- latest stable release
+--     lazypath,
+--   })
+-- end
+-- vim.opt.rtp:prepend(lazypath)
+
+-- require("lazy").setup({
+
+-- })
+
 require("packer").startup(function(use)
-	use("wbthomason/packer.nvim")
+	use({
+		"wbthomason/packer.nvim",
+		commit = "ea0cc3c59f67c440c5ff0bbe4fb9420f4350b9a3"
+	})
 	use({
 		"folke/tokyonight.nvim",
 		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
@@ -176,31 +195,31 @@ require("packer").startup(function(use)
 				signs = {
 					add = {
 						hl = "GitSignsAdd",
-						text = "+",
+						text = "▋",
 						numhl = "GitSignsAddNr",
 						linehl = "GitSignsAddLn",
 					},
 					change = {
 						hl = "GitSignsChange",
-						text = "|",
+						text = "▋",
 						numhl = "GitSignsChangeNr",
 						linehl = "GitSignsChangeLn",
 					},
 					delete = {
 						hl = "GitSignsDelete",
-						text = "-",
+						text = "▋",
 						numhl = "GitSignsDeleteNr",
 						linehl = "GitSignsDeleteLn",
 					},
 					topdelete = {
 						hl = "GitSignsDelete",
-						text = "-",
+						text = "▋",
 						numhl = "GitSignsDeleteNr",
 						linehl = "GitSignsDeleteLn",
 					},
 					changedelete = {
 						hl = "GitSignsChange",
-						text = "|",
+						text = "▋",
 						numhl = "GitSignsChangeNr",
 						linehl = "GitSignsChangeLn",
 					},
@@ -242,9 +261,6 @@ require("packer").startup(function(use)
 							"diagnostics",
 							sources = { "nvim_lsp" },
 							symbols = { error = " ", warn = " ", info = " " },
-							-- color_error = colors.red,
-							-- color_warn = colors.yellow,
-							-- color_info = colors.cyan,
 							color = { bg = colors.bg_statusline },
 						},
 						{
@@ -281,11 +297,12 @@ require("packer").startup(function(use)
 		"lukas-reineke/indent-blankline.nvim",
 		commit = "29be0919b91fb59eca9e90690d76014233392bef",
 		config = function()
-			-- vim.g.indent_blankline_use_treesitter = true
-			-- vim.g.indent_blankline_char = "│"
-			-- vim.g.indent_blankline_space_char = "."
-
-			require("ibl").setup()
+			require("ibl").setup({
+				indent = {
+					char = "▏",
+					highlight = { "IblIndent" }
+				}
+			})
 		end,
 	})
 	use ({ "sitiom/nvim-numbertoggle", commit = "9ab95e60ea5ec138e1b2332e0fc18b8e5de464c6" })
@@ -305,15 +322,6 @@ require("packer").startup(function(use)
 			})
 		end,
 	})
-	-- require("plugins.quickfix").init(use)
-	-- require("plugins.magit").init(use)
 	require("plugins.formatter").init(use)
 	-- require("plugins.completion").init(use)
-	-- require("plugins.range-highlight").init(use)
-	-- -- require("plugins.lightspeed").init(use)
-	-- require("plugins.better-O").init(use)
-	-- -- require('plugins.reverse-J').init(use)
-	-- require("plugins.bufferline").init(use)
-	-- -- require("plugins.suitcase").init(use)
-	-- -- require('plugins.nvim_context_vt').init(use)
 end)
