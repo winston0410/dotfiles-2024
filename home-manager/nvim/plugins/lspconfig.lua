@@ -1,5 +1,5 @@
-local function init(paq)
-	paq({
+local function init(use)
+	use({
 		"neovim/nvim-lspconfig",
         commit = "d0467b9574b48429debf83f8248d8cee79562586",
 		-- event = "CursorHold",
@@ -176,6 +176,31 @@ local function init(paq)
 				virtual_text = false,
 				signs = true,
 				update_in_insert = true
+			})
+		end,
+	})
+
+	use({
+		"folke/trouble.nvim",
+		requires = { "kyazdani42/nvim-web-devicons" },
+		after = "nvim-lspconfig",
+		cmd = { "Trouble" },
+		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
+		config = function()
+			require("trouble").setup({
+				icons = true,
+				position = "bottom",
+				height = 10,
+				use_diagnostic_signs = true,
+				indent_lines = false,
+				auto_open = true,
+				auto_close = true,
+			})
+
+			vim.api.nvim_create_autocmd('LspAttach', {
+				callback = function(args)
+					require("trouble").open()
+				end,
 			})
 		end,
 	})

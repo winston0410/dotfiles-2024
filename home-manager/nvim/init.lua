@@ -146,24 +146,6 @@ end
 require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use({
-		"folke/trouble.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
-		cmd = { "Trouble" },
-		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
-		config = function()
-			require("trouble").setup({
-				icons = true,
-				position = "bottom",
-				height = 10,
-				use_diagnostic_signs = true,
-				indent_lines = false,
-				-- seems to be not working
-				-- auto_open = true,
-				-- auto_close = true,
-			})
-		end,
-	})
-	use({
 		"folke/tokyonight.nvim",
 		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
 		event = "BufEnter",
