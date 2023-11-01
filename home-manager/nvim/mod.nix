@@ -1,18 +1,13 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
-  imports = [
-    ./lsp.nix
-    ./formatter.nix
-  ];
+{ inputs, lib, config, pkgs, ... }: {
+  imports = [ ./lsp.nix ./formatter.nix ];
 
-  home.packages = with pkgs; [ 
+  home.packages = with pkgs; [
     neovim
+    # needed for treesitter
     nodejs_20
+    # needed for fzf-lua
+    fzf
+    fd
   ];
 
   home.sessionVariables = {
