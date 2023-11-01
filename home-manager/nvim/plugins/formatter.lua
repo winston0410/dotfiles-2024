@@ -1,11 +1,9 @@
 local function init(paq)
-    local trigger_key = "<Char-0xBA>"
-
 	paq({
 		"mhartington/formatter.nvim",
         commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
-		opt = true,
-		keys = { { "n", trigger_key } },
+		-- opt = true,
+		-- keys = { { "n", trigger_key } },
 		config = function()
 			local function mintfmt()
 				return {
@@ -261,7 +259,16 @@ local function init(paq)
 					mint = { mintfmt },
 				},
 			})
-			vim.api.nvim_set_keymap("n", trigger_key, "<cmd>FormatWrite<cr>", { silent = true, noremap = true })
+
+            vim.api.nvim_exec(
+                [[
+                    augroup FormatAutogroup
+                    autocmd!
+                    autocmd BufWritePost * FormatWrite
+                    augroup END
+                ]],
+                true
+            )
 		end,
 	})
 end

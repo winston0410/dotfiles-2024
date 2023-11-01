@@ -2,12 +2,15 @@
 package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
 
 --Sensible default mapping
+
 -- Use space as leader key
 vim.g.mapleader = " "
+
 local modes = { "n", "v" }
+
 local mappings = {
-    --  Disable popup for commandline
-	{ "q:", '<NOP>' },
+	--  Disable popup for commandline
+	{ "q:", "<NOP>" },
 	{ "<leader>y", '"+y' },
 	{ "<leader>p", '"+p' },
 	{ "<leader>P", '"+P' },
@@ -15,10 +18,10 @@ local mappings = {
 	{ "Y", "y$" },
 	{ "S", "<NOP>" },
 	{ "s", "<NOP>" },
-	-- for visual block
-	{ "<Char-0xAD>", "<C-v>" },
+	-- FIXME for visual block, not sure do we need this
+	-- { "<Char-0xAD>", "<C-v>" },
 	-- for redo
-	{ "<Char-0xAE>", "<C-r>" }
+	{ "<Char-0xAE>", "<C-r>" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -48,7 +51,12 @@ for _, mode in pairs(all_modes) do
 	-- remap up and down for easy use of fzf to CMD + n and CMD + p
 	vim.api.nvim_set_keymap(mode, "<Char-0xAB>", "<Up>", { silent = true, noremap = true })
 	vim.api.nvim_set_keymap(mode, "<Char-0xAC>", "<Down>", { silent = true, noremap = true })
-	vim.api.nvim_set_keymap(mode, "<Char-0xAF>", "<cmd>write<cr>", { silent = true, noremap = true, desc = 'Saved current file by <command-s>' })
+	vim.api.nvim_set_keymap(
+		mode,
+		"<Char-0xAF>",
+		"<cmd>write<cr>",
+		{ silent = true, noremap = true, desc = "Saved current file by <command-s>" }
+	)
 end
 
 vim.cmd("syntax enable")
@@ -136,17 +144,19 @@ require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use({
 		"folke/trouble.nvim",
+		requires = { "kyazdani42/nvim-web-devicons" },
 		cmd = { "Trouble" },
 		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		config = function()
 			require("trouble").setup({
+				icons = true,
 				position = "bottom",
 				-- width = 30,
 				-- height = 10,
-				use_lsp_diagnostic_signs = true,
+				use_diagnostic_signs = true,
 				indent_lines = false,
-				-- auto_open = true,
-				-- auto_close = true
+				auto_open = true,
+				auto_close = true,
 			})
 		end,
 	})
@@ -154,8 +164,7 @@ require("packer").startup(function(use)
 		"folke/tokyonight.nvim",
 		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
 		event = "BufEnter",
-		-- after = "nvim-tree.lua",
-		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		requires = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			vim.g.tokyonight_style = "night"
 			vim.cmd("colorscheme tokyonight")
@@ -174,7 +183,7 @@ require("packer").startup(function(use)
 	})
 	use({
 		"lewis6991/gitsigns.nvim",
-        event = "CursorHold",
+		event = "CursorHold",
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("gitsigns").setup({
@@ -215,10 +224,10 @@ require("packer").startup(function(use)
 		end,
 	})
 	use({
-        'nvim-lualine/lualine.nvim',
+		"nvim-lualine/lualine.nvim",
 		commit = "2248ef254d0a1488a72041cfb45ca9caada6d994",
 		after = "tokyonight.nvim",
-		requires = { "kyazdani42/nvim-web-devicons", opt = true },
+		requires = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			-- local color
 			local colors = require("tokyonight.colors").setup()
@@ -280,7 +289,7 @@ require("packer").startup(function(use)
 			require("numb").setup({})
 		end,
 	})
-	require("plugins.which-key").init(use)
+	-- require("plugins.which-key").init(use)
 	require("plugins.hop").init(use)
 	use({
 		"lukas-reineke/indent-blankline.nvim",
@@ -294,22 +303,22 @@ require("packer").startup(function(use)
 		end,
 	})
 	require("plugins.smart-number").init()
-	use {
-		'numToStr/Comment.nvim',
+	use({
+		"numToStr/Comment.nvim",
 		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
 		config = function()
-			require('Comment').setup({
+			require("Comment").setup({
 				toggler = {
-					line = '<leader>cc',
-					block = '<leader>bc',
+					line = "<leader>cc",
+					block = "<leader>bc",
 				},
 				opleader = {
-					line = '<leader>c',
-					block = '<leader>b',
+					line = "<leader>c",
+					block = "<leader>b",
 				},
 			})
-		end
-	}
+		end,
+	})
 	-- require("plugins.quickfix").init(use)
 	-- require("plugins.magit").init(use)
 	require("plugins.formatter").init(use)

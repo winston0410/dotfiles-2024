@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [ 
     neovim
+    nodejs_20
   ];
 
   home.sessionVariables = {
