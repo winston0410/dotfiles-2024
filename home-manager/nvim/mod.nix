@@ -5,6 +5,11 @@
   pkgs,
   ...
 }: {
+  imports = [
+    ./lsp.nix
+    ./formatter.nix
+  ];
+
   home.packages = with pkgs; [ 
     neovim
   ];

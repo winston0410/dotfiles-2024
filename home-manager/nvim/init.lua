@@ -289,11 +289,16 @@ require("packer").startup(function(use)
 		end,
 	})
 	require("plugins.smart-number").init()
-	-- require("plugins.commented").init(use)
+	use {
+		'numToStr/Comment.nvim',
+		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
+		config = function()
+			require('Comment').setup()
+		end
+	}
 	-- require("plugins.quickfix").init(use)
 	-- require("plugins.magit").init(use)
-	-- require("plugins.indent-blankline").init(use)
-	-- require("plugins.formatter").init(use)
+	require("plugins.formatter").init(use)
 	-- require("plugins.completion").init(use)
 	-- require("plugins.range-highlight").init(use)
 	-- -- require("plugins.lightspeed").init(use)
