@@ -9,7 +9,9 @@ local modes = { "n", "v" }
 local mappings = {
 	--  Disable popup for commandline
 	{ "q:", "<NOP>" },
+	-- yank text from neovim to system clipboard
 	{ "<leader>y", '"+y' },
+	-- paste text from neovim to system clipboard
 	{ "<leader>p", '"+p' },
 	{ "<leader>P", '"+P' },
 	{ "<leader>d", '"+d' },
@@ -21,8 +23,8 @@ local mappings = {
 	-- for redo
 	{ "<Char-0xAE>", "<C-r>" },
 
-	-- focus to next window, with Cmd + n + p
-	{ "<Char-0xAD>p", "<C-w>p" },
+	-- cycle focus to next window, with Cmd + w + w
+	{ "<Char-0xAD>w", "<C-w>w" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -794,7 +796,6 @@ require("lazy").setup({
 				"mint",
 				"bicep",
 				"ansiblels",
-				"fennel-language-server",
 				"vala_ls",
 				"jdtls",
 				"groovyls",
