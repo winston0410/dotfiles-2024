@@ -144,6 +144,18 @@ for _, option in ipairs(buffer_options) do
 	vim.bo[option[1]] = option[2]
 end
 
+-- REF https://github.com/LazyVim/LazyVim/blob/e5babf289c5ccd91bcd068bfc623335eb76cbc1f/lua/lazyvim/config/autocmds.lua#L85
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	group = vim.api.nvim_create_augroup("lazyvim_auto_create_dir", { clear = true }),
+	callback = function(event)
+	  if event.match:match("^%w%w+://") then
+		return
+	  end
+	  local file = vim.loop.fs_realpath(event.match) or event.match
+	  vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+	end,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
