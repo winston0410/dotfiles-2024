@@ -16,6 +16,7 @@
     ./launchd/mod.nix
     ./zsh/mod.nix
     ./fzf/mod.nix
+    ./du/mod.nix
   ];
 
   nixpkgs = {
@@ -39,8 +40,6 @@
   };
 
   home.packages = with pkgs; [ 
-    fd
-    dua
     procs
   ];
 
