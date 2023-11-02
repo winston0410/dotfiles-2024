@@ -251,13 +251,34 @@ require("lazy").setup({
 		config = true,
 	},
 	{
+		"L3MON4D3/LuaSnip",
+		build = (not jit.os:find("Windows"))
+				and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+			or nil,
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			config = function()
+				require("luasnip.loaders.from_vscode").lazy_load()
+			end,
+		},
+		opts = {
+			history = true,
+			delete_check_events = "TextChanged",
+		},
+		-- stylua: ignore
+		keys = {
+
+		},
+	},
+	{
 		"hrsh7th/nvim-cmp",
-        commit = "51260c02a8ffded8e16162dcf41a23ec90cfba62",
+		commit = "51260c02a8ffded8e16162dcf41a23ec90cfba62",
 		event = "InsertEnter",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		opts = function()
 			local cmp = require("cmp")
@@ -269,11 +290,11 @@ require("lazy").setup({
 				mapping = cmp.mapping.preset.insert({
 					["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
 					["<Char-0xAB>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-					["<CR>"] = cmp.mapping.confirm({ select = true })
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					-- { name = "luasnip" },
+					{ name = "luasnip" },
 					{ name = "path" },
 				}, {
 					{ name = "buffer" },
