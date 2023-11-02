@@ -248,7 +248,17 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
-		config = true,
+		config = function()			
+            require('neogit').setup({});
+			for _, mode in ipairs({ "n", "v" }) do
+				vim.api.nvim_set_keymap(
+					mode,
+					"<leader>g",
+					"<cmd>lua require('neogit').open()<cr>",
+					{ silent = true, noremap = true }
+				)
+			end
+		end,
 	},
 	{
 		"L3MON4D3/LuaSnip",
