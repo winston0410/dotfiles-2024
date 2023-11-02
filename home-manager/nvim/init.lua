@@ -246,9 +246,47 @@ require("lazy").setup({
 	{
 		"NeogitOrg/neogit",
 		dependencies = {
-		  "nvim-lua/plenary.nvim"
+			"nvim-lua/plenary.nvim",
 		},
-		config = true
+		config = true,
+	},
+	{
+		"hrsh7th/nvim-cmp",
+        commit = "51260c02a8ffded8e16162dcf41a23ec90cfba62",
+		event = "InsertEnter",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+		},
+		opts = function()
+			local cmp = require("cmp")
+			local defaults = require("cmp.config.default")()
+			return {
+				completion = {
+					completeopt = "menu,menuone,noinsert",
+				},
+				mapping = cmp.mapping.preset.insert({
+					["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+					["<Char-0xAB>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+					["<CR>"] = cmp.mapping.confirm({ select = true })
+				}),
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					-- { name = "luasnip" },
+					{ name = "path" },
+				}, {
+					{ name = "buffer" },
+				}),
+				sorting = defaults.sorting,
+			}
+		end,
+		config = function(_, opts)
+			for _, source in ipairs(opts.sources) do
+				source.group_index = source.group_index or 1
+			end
+			require("cmp").setup(opts)
+		end,
 	},
 	{
 		"lewis6991/gitsigns.nvim",
