@@ -248,6 +248,7 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
+		keys = { { "<leader>g" }, { "<leader>g", mode = "v" } },
 		config = function()
 			require("neogit").setup({
 				disable_hint = true,
@@ -270,23 +271,25 @@ require("lazy").setup({
 	},
 	{
 		"L3MON4D3/LuaSnip",
+		event = "InsertEnter",
 		build = (not jit.os:find("Windows"))
 				and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
 			or nil,
 		dependencies = {
 			"rafamadriz/friendly-snippets",
 			config = function()
+				local luasnip = require("luasnip")
+				
 				require("luasnip.loaders.from_vscode").lazy_load()
+
+				vim.keymap.set({"i", "s"}, "<Char-0xAC>", function() luasnip.jump( 1) end, {silent = true})
+				vim.keymap.set({"i", "s"}, "<Char-0xAB>", function() luasnip.jump(-1) end, {silent = true})
 			end,
 		},
 		opts = {
 			history = true,
 			delete_check_events = "TextChanged",
-		},
-		-- stylua: ignore
-		keys = {
-
-		},
+		}
 	},
 	{
 		"hrsh7th/nvim-cmp",
