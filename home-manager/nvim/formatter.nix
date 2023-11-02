@@ -11,8 +11,10 @@
     python39Packages.black
     rustfmt
     nodePackages.purty
-    # nodePackages.prettier
-    nodePackages.prettier_d_slim
+    nodePackages.prettier
+    yamlfmt
+    taplo
+    # nodePackages.prettier_d_slim
     rufo
     elmPackages.elm-format
     haskellPackages.hindent

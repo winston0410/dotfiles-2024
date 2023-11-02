@@ -806,8 +806,8 @@ require("lazy").setup({
 					markdown = { require("formatter.filetypes.javascript").prettier },
 					-- Use fixjson?
 					json = { require("formatter.filetypes.javascript").prettier },
-					yaml = { require("formatter.filetypes.javascript").prettier },
-					toml = { require("formatter.filetypes.javascript").prettier },
+					yaml = { require("formatter.filetypes.yaml").yamlfmt },
+					toml = { require("formatter.filetypes.toml").taplo },
 					vue = { require("formatter.filetypes.javascript").prettier },
 					svelte = {
 						prettier({
@@ -942,6 +942,7 @@ require("lazy").setup({
 				"kotlin_language_server",
 				"cmake",
 				"pyright",
+				"taplo"
 			}
 
 			for _, server in ipairs(servers) do
