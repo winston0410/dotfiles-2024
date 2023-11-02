@@ -144,18 +144,6 @@ for _, option in ipairs(buffer_options) do
 	vim.bo[option[1]] = option[2]
 end
 
--- REF https://github.com/LazyVim/LazyVim/blob/e5babf289c5ccd91bcd068bfc623335eb76cbc1f/lua/lazyvim/config/autocmds.lua#L85
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	group = vim.api.nvim_create_augroup("lazyvim_auto_create_dir", { clear = true }),
-	callback = function(event)
-	  if event.match:match("^%w%w+://") then
-		return
-	  end
-	  local file = vim.loop.fs_realpath(event.match) or event.match
-	  vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-	end,
-})
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -170,6 +158,16 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+	{
+		"LazyVim/LazyVim",
+		commit = "e5babf289c5ccd91bcd068bfc623335eb76cbc1f",
+		lazy = false,
+		config = function()
+			-- only load the autocmds modules. Reference the options module only but don't load it, it seems to be too much
+			-- require("lazyvim.config.options")
+			require("lazyvim.config.autocmds")
+		end,
+	},
 	{
 		"folke/tokyonight.nvim",
 		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
