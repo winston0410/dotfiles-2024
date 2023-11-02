@@ -1,16 +1,13 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, lib, config, pkgs, ... }: {
+  # bindkey '\xAA[' vi-cmd-mode;
   programs.zsh.enable = true;
   programs.zsh.initExtra = ''
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
 
-    bindkey '^[' vi-cmd-mode
+    # this has to match the keybinding of Wezterm, this corresponding to <Char-0xAA>. Cannot use 0x here
+    bindkey '\u00AA' vi-cmd-mode;
+
     KEYTIMEOUT=1
     unsetopt share_history
 

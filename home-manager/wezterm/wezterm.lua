@@ -5,14 +5,16 @@ local hostname = wezterm.hostname()
 -- dont edit
 -- https://github.com/wez/wezterm/issues/3731#issuecomment-1592198263
 local function is_vim(pane)
-	local is_vim_env = pane:get_user_vars().IS_NVIM == 'true'
-	if is_vim_env == true then return true end
-	local process_name = string.gsub(pane:get_foreground_process_name(), '(.*[/\\])(.*)', '%2')
-	return process_name == 'nvim' or process_name == 'vim'
+	local is_vim_env = pane:get_user_vars().IS_NVIM == "true"
+	if is_vim_env == true then
+		return true
+	end
+	local process_name = string.gsub(pane:get_foreground_process_name(), "(.*[/\\])(.*)", "%2")
+	return process_name == "nvim" or process_name == "vim"
 end
 
 local super_vim_keys_map = {
-	['['] = utf8.char(0xAA),
+	["["] = utf8.char(0xAA),
 	p = utf8.char(0xAB),
 	n = utf8.char(0xAC),
 	w = utf8.char(0xAD),
@@ -23,23 +25,28 @@ local super_vim_keys_map = {
 local function bind_super_key_to_vim(key)
 	return {
 		key = key,
-		mods = 'CMD',
+		mods = "CMD",
 		action = wezterm.action_callback(function(win, pane)
 			local char = super_vim_keys_map[key]
-			if char and is_vim(pane) then
-				-- pass the keys through to vim/nvim
-				win:perform_action({
-					SendKey = { key = char, mods = nil },
-				}, pane)
-			else
-				win:perform_action({
-					SendKey = {
-						key = key,
-						mods = 'CMD'
-					}
-				}, pane)
-			end
-		end)
+			-- if char and is_vim(pane) then
+			-- 	-- pass the keys through to vim/nvim
+			-- 	win:perform_action({
+			-- 		SendKey = { key = char, mods = nil },
+			-- 	}, pane)
+			-- else
+			-- 	win:perform_action({
+			-- 		SendKey = {
+			-- 			key = key,
+			-- 			mods = "CMD",
+			-- 		},
+			-- 	}, pane)
+			-- end
+
+			-- send unicode for all programs, so we can bind key in zsh and nvim
+			win:perform_action({
+				SendKey = { key = char, mods = nil },
+			}, pane)
+		end),
 	}
 end
 -- dont edit end
@@ -84,27 +91,29 @@ local config = {
 	},
 	disable_default_key_bindings = true,
 	adjust_window_size_when_changing_font_size = true,
-    leader = { key=",", mods="CMD" },
+	leader = { key = ",", mods = "CMD" },
+	enable_kitty_keyboard = true,
+	enable_csi_u_key_encoding = false,
 	keys = {
-        {
-            key = 'c',
-            mods = "LEADER",
-            action = wezterm.action.SpawnTab 'DefaultDomain',
-        },
-        {
-            key = "q",
-            mods = "LEADER",
-            action = wezterm.action.CloseCurrentTab { confirm = false }
-        },
+		{
+			key = "c",
+			mods = "LEADER",
+			action = wezterm.action.SpawnTab("DefaultDomain"),
+		},
+		{
+			key = "q",
+			mods = "LEADER",
+			action = wezterm.action.CloseCurrentTab({ confirm = false }),
+		},
 		-- macos like shortcut for closing wezterm
 		{
-            key = "q",
-            mods = "CMD",
-            action = wezterm.action.CloseCurrentTab { confirm = true }
-        },
+			key = "q",
+			mods = "CMD",
+			action = wezterm.action.CloseCurrentTab({ confirm = true }),
+		},
 		{
-			key = 'f',
-			mods = 'CMD|CTRL',
+			key = "f",
+			mods = "CMD|CTRL",
 			action = wezterm.action.ToggleFullScreen,
 		},
 		-- not sure why I did this
@@ -113,21 +122,21 @@ local config = {
 		{ key = "v", mods = "CMD", action = wezterm.action({ PasteFrom = "Clipboard" }) },
 		{ key = "=", mods = "CMD", action = "IncreaseFontSize" },
 		{ key = "-", mods = "CMD", action = "DecreaseFontSize" },
-		bind_super_key_to_vim('['),
-		bind_super_key_to_vim('n'),
-		bind_super_key_to_vim('p'),
-		bind_super_key_to_vim('w'),
-		bind_super_key_to_vim('r'),
-		bind_super_key_to_vim('s'),
-	}
+		bind_super_key_to_vim("["),
+		bind_super_key_to_vim("n"),
+		bind_super_key_to_vim("p"),
+		bind_super_key_to_vim("w"),
+		bind_super_key_to_vim("r"),
+		bind_super_key_to_vim("s"),
+	},
 }
 
 for i = 1, 8 do
-    table.insert(config.keys, {
-      key = tostring(i),
-      mods = "LEADER",
-      action = wezterm.action.ActivateTab(i - 1),
-    })
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "LEADER",
+		action = wezterm.action.ActivateTab(i - 1),
+	})
 end
 
 return config
