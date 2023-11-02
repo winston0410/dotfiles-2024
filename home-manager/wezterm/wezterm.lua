@@ -92,7 +92,7 @@ local config = {
             action = wezterm.action.SpawnTab 'DefaultDomain',
         },
         {
-            key = "x",
+            key = "q",
             mods = "LEADER",
             action = wezterm.action.CloseCurrentTab { confirm = false }
         },

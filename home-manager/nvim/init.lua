@@ -341,7 +341,8 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
-			{ ",m" }, { ",g" }
+			{ ",m" },
+			{ ",g" },
 		},
 		dependencies = {
 			"kyazdani42/nvim-web-devicons",
@@ -777,28 +778,12 @@ require("lazy").setup({
 		commit = "d0467b9574b48429debf83f8248d8cee79562586",
 		event = "CursorHold",
 		config = function()
-			local root_dir = function()
-				return vim.fn.getcwd()
-			end
-
-			local on_attach = function(client)
-				-- require("plugins.smart_hover").setup(client)
-			end
-
 			local lspconfig = require("lspconfig")
 
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
-
-			local Config = { root_dir = root_dir, capabilities = capabilities, on_attach = on_attach }
-			Config.__index = Config
-
-			function Config:new(opts)
-				return setmetatable((opts or {}), Config)
-			end
+			-- REF https://github.com/neovim/nvim-lspconfig/blob/d0467b9574b48429debf83f8248d8cee79562586/doc/server_configurations.md#denols
+			vim.g.markdown_fenced_languages = {
+				"ts=typescript",
+			}
 
 			local servers = {
 				"als",
@@ -809,10 +794,10 @@ require("lazy").setup({
 				"mint",
 				"bicep",
 				"ansiblels",
+				"fennel-language-server",
 				"vala_ls",
 				"jdtls",
 				"groovyls",
-				--  for xml
 				"lemminx",
 				"html",
 				"cssls",
@@ -826,7 +811,6 @@ require("lazy").setup({
 				"ccls",
 				"svelte",
 				"vuels",
-				"sqlls",
 				"graphql",
 				"elmls",
 				"ocamlls",
@@ -834,13 +818,14 @@ require("lazy").setup({
 				"serve_d",
 				"gdscript",
 				"scry",
-				--  Comment this out as they are not used at all
-				--  "ember",
-				--  "angularls",
+				"ember",
+				"eslint",
+				"angularls",
 				"bashls",
 				"prismals",
 				"tsserver",
-				-- "denols"
+				"denols",
+				"gopls",
 				"dockerls",
 				"nimls",
 				"metals",
@@ -850,42 +835,24 @@ require("lazy").setup({
 				"racket_langserver",
 				"pasls",
 				"yamlls",
+				"postgres_lsp",
+				-- use postgres_lsp for now
+				-- "sqlls",
 				"vimls",
 				"rnix",
 				"r_language_server",
 				"kotlin_language_server",
+				"cmake",
+				"pyright",
 			}
 
 			for _, server in ipairs(servers) do
-				-- TOFIX: passing on_attach function here again, as somehow the on_attach function passed in metatable doesn't work
-				lspconfig[server].setup(Config:new({ on_attach = on_attach }))
+				lspconfig[server].setup({})
 			end
 
-			lspconfig.elixirls.setup(Config:new({
+			lspconfig.elixirls.setup({
 				cmd = { "elixir-ls" },
-			}))
-			lspconfig.rust_analyzer.setup(Config:new({
-				checkOnSave = {
-					allFeatures = true,
-					-- overrideCommand = {
-					-- "cargo",
-					-- "clippy",
-					-- "--workspace",
-					-- "--message-format=json",
-					-- "--all-targets",
-					-- "--all-features",
-					-- },
-				},
-			}))
-			-- lspconfig.zeta_note.setup({ on_attach = on_attach, root_dir = root_dir })
-			lspconfig.cmake.setup(Config:new({
-				cmd = { "cmake-language-server" },
-				filetypes = { "cmake" },
-			}))
-
-			lspconfig.pyright.setup(Config:new({
-				cmd = { "pyright-langserver", "--stdio" },
-			}))
+			})
 
 			lspconfig.lua_ls.setup({
 				on_init = function(client)
@@ -926,13 +893,6 @@ require("lazy").setup({
 			-- efm_config.filetypes = vim.tbl_keys(efm_config.settings.languages)
 
 			-- lspconfig.efm.setup(efm_config)
-
-			lspconfig.gopls.setup(Config:new({
-				cmd = { "gopls", "serve" },
-				settings = {
-					gopls = { analyses = { unusedparams = true }, staticcheck = true },
-				},
-			}))
 		end,
 	},
 	{
