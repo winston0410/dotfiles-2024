@@ -804,9 +804,12 @@ require("lazy").setup({
 					sh = { require("formatter.filetypes.sh").shfmt },
 					zsh = { require("formatter.filetypes.sh").shfmt },
 					markdown = { require("formatter.filetypes.javascript").prettier },
-					-- Use fixjson?
 					json = { require("formatter.filetypes.javascript").prettier },
-					yaml = { require("formatter.filetypes.yaml").yamlfmt },
+					yaml = { 
+						require("formatter.filetypes.yaml").prettier, 
+						-- does not work correctly
+						-- require("formatter.filetypes.yaml").yamlfmt 
+					},
 					toml = { require("formatter.filetypes.toml").taplo },
 					vue = { require("formatter.filetypes.javascript").prettier },
 					svelte = {
