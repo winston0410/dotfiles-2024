@@ -248,8 +248,16 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
-		config = function()			
-            require('neogit').setup({});
+		config = function()
+			require("neogit").setup({
+				disable_hint = true,
+				disable_commit_confirmation = true,
+				mappings = {
+					status = {
+						["<enter>"] = "Toggle"
+					},
+				},
+			})
 			for _, mode in ipairs({ "n", "v" }) do
 				vim.api.nvim_set_keymap(
 					mode,
