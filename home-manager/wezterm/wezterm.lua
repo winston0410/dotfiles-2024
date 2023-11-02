@@ -56,6 +56,9 @@ local config = {
 	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
 	font_size = 16.0,
 	enable_tab_bar = true,
+	window_frame = {
+		font_size = 18.0,
+	},
 	window_padding = {
 		left = 0,
 		right = 0,

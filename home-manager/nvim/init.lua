@@ -191,49 +191,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"lewis6991/gitsigns.nvim",
-		commit = "af0f583cd35286dd6f0e3ed52622728703237e50",
-		event = "CursorHold",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("gitsigns").setup({
-				signs = {
-					add = {
-						hl = "GitSignsAdd",
-						text = "▋",
-						numhl = "GitSignsAddNr",
-						linehl = "GitSignsAddLn",
-					},
-					change = {
-						hl = "GitSignsChange",
-						text = "▋",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
-					delete = {
-						hl = "GitSignsDelete",
-						text = "▋",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					topdelete = {
-						hl = "GitSignsDelete",
-						text = "▋",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					changedelete = {
-						hl = "GitSignsChange",
-						text = "▋",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
-				},
-				current_line_blame = true,
-			})
-		end,
-	},
-	{
 		"nvim-lualine/lualine.nvim",
 		commit = "2248ef254d0a1488a72041cfb45ca9caada6d994",
 		lazy = false,
@@ -283,6 +240,56 @@ require("lazy").setup({
 						},
 					},
 				},
+			})
+		end,
+	},
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+		  "nvim-lua/plenary.nvim"
+		},
+		config = true
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		commit = "af0f583cd35286dd6f0e3ed52622728703237e50",
+		event = "CursorHold",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("gitsigns").setup({
+				signs = {
+					add = {
+						hl = "GitSignsAdd",
+						text = "▋",
+						numhl = "GitSignsAddNr",
+						linehl = "GitSignsAddLn",
+					},
+					change = {
+						hl = "GitSignsChange",
+						text = "▋",
+						numhl = "GitSignsChangeNr",
+						linehl = "GitSignsChangeLn",
+					},
+					delete = {
+						hl = "GitSignsDelete",
+						text = "▋",
+						numhl = "GitSignsDeleteNr",
+						linehl = "GitSignsDeleteLn",
+					},
+					topdelete = {
+						hl = "GitSignsDelete",
+						text = "▋",
+						numhl = "GitSignsDeleteNr",
+						linehl = "GitSignsDeleteLn",
+					},
+					changedelete = {
+						hl = "GitSignsChange",
+						text = "▋",
+						numhl = "GitSignsChangeNr",
+						linehl = "GitSignsChangeLn",
+					},
+				},
+				current_line_blame = true,
 			})
 		end,
 	},
