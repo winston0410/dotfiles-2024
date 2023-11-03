@@ -1,17 +1,12 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, lib, config, pkgs, ... }: {
   programs.git.enable = true;
   programs.git.delta.enable = true;
 
   programs.git.extraConfig = {
-    init = {
-      defaultBranch = "main";
-    };
+    # REF https://stackoverflow.com/a/61920529
+    http = { postBuffer = 524288000; };
+
+    init = { defaultBranch = "main"; };
 
     user = {
       email = "hugosum.dev@protonmail.com";
@@ -23,12 +18,8 @@
       light = false;
     };
 
-    merge = {
-      conflictstyle = "diff3";
-    };
+    merge = { conflictstyle = "diff3"; };
 
-    diff = {
-      colorMoved = "default";
-    };
+    diff = { colorMoved = "default"; };
   };
 }
