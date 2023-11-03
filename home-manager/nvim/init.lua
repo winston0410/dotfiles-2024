@@ -643,6 +643,13 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"stevearc/oil.nvim",
+		config = function()
+			require("oil").setup({})
+		end,
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	{
 		"mhartington/formatter.nvim",
 		commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
 		event = "BufWritePre",
@@ -823,8 +830,8 @@ require("lazy").setup({
 						}), ]]
 						prettier({
 							"--config=$XDG_CONFIG_HOME/prettier/.prettierrc",
-                            -- FIXME bug of prettier, wait for 3.1 and then we can remove this
-                            -- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
+							-- FIXME bug of prettier, wait for 3.1 and then we can remove this
+							-- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
 							"--plugin=prettier-plugin-svelte",
 						}),
 					},
@@ -891,6 +898,10 @@ require("lazy").setup({
 		event = "CursorHold",
 		config = function()
 			local lspconfig = require("lspconfig")
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			-- https://github.com/hrsh7th/nvim-cmp/issues/373
+			capabilities.textDocument.completion.completionItem.snippetSupport = false
 
 			-- REF https://github.com/neovim/nvim-lspconfig/blob/d0467b9574b48429debf83f8248d8cee79562586/doc/server_configurations.md#denols
 			vim.g.markdown_fenced_languages = {
@@ -959,14 +970,18 @@ require("lazy").setup({
 			}
 
 			for _, server in ipairs(servers) do
-				lspconfig[server].setup({})
+				lspconfig[server].setup({
+					capabilities = capabilities,
+				})
 			end
 
 			lspconfig.elixirls.setup({
 				cmd = { "elixir-ls" },
+				capabilities = capabilities,
 			})
 
 			lspconfig.lua_ls.setup({
+				capabilities = capabilities,
 				on_init = function(client)
 					local path = client.workspace_folders[1].name
 					if
