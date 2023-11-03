@@ -7,6 +7,9 @@
 
     # this has to match the keybinding of Wezterm, this corresponding to <Char-0xAA>. Cannot use 0x here
     bindkey '\u00AA' vi-cmd-mode;
+    # for navigating prev and next command in history
+    bindkey '\u00AB' up-line-or-history;
+    bindkey '\u00AC' down-line-or-history;
 
     KEYTIMEOUT=1
     unsetopt share_history

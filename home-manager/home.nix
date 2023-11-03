@@ -1,10 +1,4 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, lib, config, pkgs, ... }: {
   imports = [
     ./git/mod.nix
     ./nvim/mod.nix
@@ -20,7 +14,7 @@
   ];
 
   nixpkgs = {
-    overlays = [];
+    overlays = [ ];
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
@@ -29,19 +23,16 @@
     };
   };
 
-  # TODO: Set your username
   home = {
     username = "hugosum";
     homeDirectory = "/Users/hugosum";
   };
 
-  news = {
-    display = "show";
-  };
+  news = { display = "show"; };
 
-  home.packages = with pkgs; [ 
-    procs
-  ];
+  home.packages = with pkgs; [ procs ];
+
+  xdg.enable = true;
 
   programs.man.enable = false;
 

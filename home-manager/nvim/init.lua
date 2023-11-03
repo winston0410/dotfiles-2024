@@ -749,7 +749,7 @@ require("lazy").setup({
 				return function()
 					return {
 						exe = "prettier",
-						args = { vim.api.nvim_buf_get_name(0) },
+						args = { vim.api.nvim_buf_get_name(0), unpack(opts) },
 						stdin = true,
 					}
 				end
@@ -816,13 +816,18 @@ require("lazy").setup({
 					},
 					toml = { require("formatter.filetypes.toml").taplo },
 					vue = { require("formatter.filetypes.javascript").prettier },
-					svelte = { require("formatter.filetypes.svelte").prettier },
-					-- svelte = {
-					-- 	prettier({
-					-- 		"--plugin-search-dir=.",
-					-- 		"--plugin=prettier-plugin-svelte",
-					-- 	}),
-					-- },
+					svelte = {
+						--[[ prettier({
+							"--plugin-search-dir=.",
+							"--plugin=prettier-plugin-svelte",
+						}), ]]
+						prettier({
+							"--config=$XDG_CONFIG_HOME/prettier/.prettierrc",
+                            -- FIXME bug of prettier, wait for 3.1 and then we can remove this
+                            -- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
+							"--plugin=prettier-plugin-svelte",
+						}),
+					},
 					python = { require("formatter.filetypes.python").black },
 					dockerfile = { dockfmt },
 					-- No formatter for make

@@ -1,0 +1,11 @@
+{
+  "overrides": [
+    {
+      "files": "**/*.svelte",
+      "options": {
+        "plugins": ["prettier-plugin-svelte"],
+        "pluginSearchDirs": ["$XDG_CONFIG_HOME/prettier/.prettierrc"]
+      }
+    }
+  ]
+}
