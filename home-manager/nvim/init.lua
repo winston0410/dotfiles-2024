@@ -23,8 +23,26 @@ local mappings = {
 	-- for redo
 	{ "<Char-0xAE>", "<C-r>" },
 
+	-- tab is a collection of windows. A split is a window, and buffer is global. Therefore, we need to use tabs, windows and buffer to do things together
 	-- cycle focus to next window, with Cmd + w + w
 	{ "<Char-0xAD>w", "<C-w>w" },
+	-- create a vertical split, with Cmd + w + v
+	{ "<Char-0xAD>v", "<cmd>vsplit<cr>" },
+	-- create a horizontal split, with Cmd + w + h
+	{ "<Char-0xAD>f", "<cmd>split<cr>" },
+	-- navigate to left split
+	{ "<Char-0xAD>l", "<C-w>l" },
+	-- navigate to right split
+	{ "<Char-0xAD>h", "<C-w>h" },
+	-- navigate to top split
+	{ "<Char-0xAD>k", "<C-w>k" },
+	-- navigate to down split
+	{ "<Char-0xAD>j", "<C-w>j" },
+
+	-- -- create new tab
+	{ "<Char-0xBA>c", "<cmd>tabnew .<cr>" },
+	-- cycle or navigate to specific tab
+	{ "<Char-0xBA>t", "gt" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -241,6 +259,14 @@ require("lazy").setup({
 					},
 				},
 			})
+		end,
+	},
+	{
+		"akinsho/bufferline.nvim",
+		commit = "9e8d2f695dd50ab6821a6a53a840c32d2067a78a",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("bufferline").setup({})
 		end,
 	},
 	{

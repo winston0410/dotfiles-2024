@@ -20,6 +20,7 @@ local super_vim_keys_map = {
 	w = utf8.char(0xAD),
 	r = utf8.char(0xAE),
 	s = utf8.char(0xAF),
+	t = utf8.char(0xBA),
 }
 
 local function bind_super_key_to_vim(key)
@@ -131,6 +132,7 @@ local config = {
 		bind_super_key_to_vim("w"),
 		bind_super_key_to_vim("r"),
 		bind_super_key_to_vim("s"),
+		bind_super_key_to_vim("t"),
 	},
 }
 
