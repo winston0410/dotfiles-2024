@@ -255,7 +255,7 @@ require("lazy").setup({
 				disable_commit_confirmation = true,
 				mappings = {
 					status = {
-						["<enter>"] = "Toggle"
+						["<enter>"] = "Toggle",
 					},
 				},
 			})
@@ -279,17 +279,21 @@ require("lazy").setup({
 			"rafamadriz/friendly-snippets",
 			config = function()
 				local luasnip = require("luasnip")
-				
+
 				require("luasnip.loaders.from_vscode").lazy_load()
 
-				vim.keymap.set({"i", "s"}, "<Char-0xAC>", function() luasnip.jump( 1) end, {silent = true})
-				vim.keymap.set({"i", "s"}, "<Char-0xAB>", function() luasnip.jump(-1) end, {silent = true})
+				vim.keymap.set({ "i", "s" }, "<Char-0xAC>", function()
+					luasnip.jump(1)
+				end, { silent = true })
+				vim.keymap.set({ "i", "s" }, "<Char-0xAB>", function()
+					luasnip.jump(-1)
+				end, { silent = true })
 			end,
 		},
 		opts = {
 			history = true,
 			delete_check_events = "TextChanged",
-		}
+		},
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -805,19 +809,20 @@ require("lazy").setup({
 					zsh = { require("formatter.filetypes.sh").shfmt },
 					markdown = { require("formatter.filetypes.javascript").prettier },
 					json = { require("formatter.filetypes.javascript").prettier },
-					yaml = { 
-						require("formatter.filetypes.yaml").prettier, 
+					yaml = {
+						require("formatter.filetypes.yaml").prettier,
 						-- does not work correctly
-						-- require("formatter.filetypes.yaml").yamlfmt 
+						-- require("formatter.filetypes.yaml").yamlfmt
 					},
 					toml = { require("formatter.filetypes.toml").taplo },
 					vue = { require("formatter.filetypes.javascript").prettier },
-					svelte = {
-						prettier({
-							"--plugin-search-dir=.",
-							"--plugin=prettier-plugin-svelte",
-						}),
-					},
+					svelte = { require("formatter.filetypes.svelte").prettier },
+					-- svelte = {
+					-- 	prettier({
+					-- 		"--plugin-search-dir=.",
+					-- 		"--plugin=prettier-plugin-svelte",
+					-- 	}),
+					-- },
 					python = { require("formatter.filetypes.python").black },
 					dockerfile = { dockfmt },
 					-- No formatter for make
@@ -945,7 +950,7 @@ require("lazy").setup({
 				"kotlin_language_server",
 				"cmake",
 				"pyright",
-				"taplo"
+				"taplo",
 			}
 
 			for _, server in ipairs(servers) do
