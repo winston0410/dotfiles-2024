@@ -8,6 +8,7 @@
     nodePackages.prettier
     yamlfmt
     taplo
+    shfmt
     # nodePackages.prettier_d_slim
     rufo
     elmPackages.elm-format
