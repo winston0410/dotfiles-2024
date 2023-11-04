@@ -50,12 +50,17 @@ local mappings = {
 	{ "<Char-0xBA>q", "<cmd>tabclose<cr>" },
 	-- cycle or navigate to specific tab
 	{ "<Char-0xBA>t", "gt" },
+	{ "<Char-0xBA>n", "<cmd>tabnext<cr>" },
+	{ "<Char-0xBA>p", "<cmd>tabprev<cr>" },
 
-	-- create new buffer
-	{ "<Char-0xBB>c", "<cmd>badd .<cr>" },
+	-- create new buffer, with Cmd + e + c
+	{ "<Char-0xBB>c", "<cmd>badd .<bar>bnext<cr>" },
 	-- delete current buffer and switch to prev buffer
 	-- REF https://www.reddit.com/r/neovim/comments/s4jt9n/how_to_close_the_current_buffer_without_closing/
 	{ "<Char-0xBB>q", "<cmd>bprevious<bar>bdelete #<cr>" },
+	-- cycle between buffer
+	{ "<Char-0xBB>n", "<cmd>bnext<cr>" },
+	{ "<Char-0xBB>p", "<cmd>bprev<cr>" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -355,6 +360,11 @@ require("lazy").setup({
 			return {
 				completion = {
 					completeopt = "menu,menuone,noinsert",
+				},
+				snippet = {
+					expand = function(args)
+						require("luasnip").lsp_expand(args.body)
+					end,
 				},
 				mapping = cmp.mapping.preset.insert({
 					["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
