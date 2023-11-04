@@ -379,6 +379,11 @@ require("lazy").setup({
 					{ name = "buffer" },
 				}),
 				sorting = defaults.sorting,
+				experimental = {
+					ghost_text = {
+						hl_group = "CmpGhostText",
+					},
+				},
 			}
 		end,
 		config = function(_, opts)
