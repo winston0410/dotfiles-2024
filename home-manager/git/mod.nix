@@ -3,6 +3,7 @@
   programs.git.delta.enable = true;
 
   programs.git.extraConfig = {
+    pull = { ff = "only"; };
     # REF https://stackoverflow.com/a/61920529
     http = { postBuffer = 524288000; };
 
