@@ -394,6 +394,19 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"mrjones2014/smart-splits.nvim",
+		commit = "c8a9173d70cbbd1f6e4a414e49e31df2b32a1362",
+		config = function()
+			require("smart-splits").setup({
+				default_amount = 10,
+			})
+			vim.keymap.set("n", "<Char-0xAD>L", require("smart-splits").resize_right)
+			vim.keymap.set("n", "<Char-0xAD>H", require("smart-splits").resize_left)
+			vim.keymap.set("n", "<Char-0xAD>K", require("smart-splits").resize_up)
+			vim.keymap.set("n", "<Char-0xAD>J,", require("smart-splits").resize_down)
+		end,
+	},
+	{
 		"lewis6991/gitsigns.nvim",
 		commit = "af0f583cd35286dd6f0e3ed52622728703237e50",
 		event = "CursorHold",
