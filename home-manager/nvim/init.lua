@@ -23,13 +23,18 @@ local mappings = {
 	-- for redo
 	{ "<Char-0xAE>", "<C-r>" },
 
+	-- guide on how to use tabs, buffers and window correctly in Vim
+	-- https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166
+
 	-- tab is a collection of windows. A split is a window, and buffer is global. Therefore, we need to use tabs, windows and buffer to do things together
 	-- cycle focus to next window, with Cmd + w + w
 	{ "<Char-0xAD>w", "<C-w>w" },
 	-- create a vertical split, with Cmd + w + v
 	{ "<Char-0xAD>v", "<cmd>vsplit<cr>" },
 	-- create a horizontal split, with Cmd + w + h
-	{ "<Char-0xAD>f", "<cmd>split<cr>" },
+	{ "<Char-0xAD>c", "<cmd>split<cr>" },
+	-- close a split, with Cmd + w + q
+	{ "<Char-0xAD>q", "<cmd>quit<cr>" },
 	-- navigate to left split
 	{ "<Char-0xAD>l", "<C-w>l" },
 	-- navigate to right split
@@ -39,10 +44,18 @@ local mappings = {
 	-- navigate to down split
 	{ "<Char-0xAD>j", "<C-w>j" },
 
-	-- -- create new tab
+	-- -- create new tab in Oil.nvim, with Cmd + t + c
 	{ "<Char-0xBA>c", "<cmd>tabnew .<cr>" },
+	-- close the current tab, with Cmd + t + q
+	{ "<Char-0xBA>q", "<cmd>tabclose<cr>" },
 	-- cycle or navigate to specific tab
 	{ "<Char-0xBA>t", "gt" },
+
+	-- create new buffer
+	{ "<Char-0xBB>c", "<cmd>badd .<cr>" },
+	-- delete current buffer and switch to prev buffer
+	-- REF https://www.reddit.com/r/neovim/comments/s4jt9n/how_to_close_the_current_buffer_without_closing/
+	{ "<Char-0xBB>q", "<cmd>bprevious<bar>bdelete #<cr>" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
@@ -266,7 +279,12 @@ require("lazy").setup({
 		commit = "9e8d2f695dd50ab6821a6a53a840c32d2067a78a",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
-			require("bufferline").setup({})
+			require("bufferline").setup({
+				options = {
+					modified_icon = "󰧞",
+					close_icon = "",
+				},
+			})
 		end,
 	},
 	{
