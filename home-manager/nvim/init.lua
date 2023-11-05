@@ -1040,6 +1040,7 @@ require("lazy").setup({
 				"cmake",
 				"pyright",
 				"taplo",
+				"cucumber_language_server",
 			}
 
 			for _, server in ipairs(servers) do
