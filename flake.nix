@@ -10,19 +10,16 @@
       # unstable
       "github:nixos/nixpkgs?rev=9d5d25bbfe8c0297ebe85324addcb5020ed1a454";
 
+    nixd.url =
+      # unstable
+      "github:nix-community/nixd?rev=29904e121cc775e7caaf4fffa6bc7da09376a43b";
+
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
-
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, unstable, home-manager, nixd, ... }@inputs:
     let inherit (self) outputs;
     in {
 

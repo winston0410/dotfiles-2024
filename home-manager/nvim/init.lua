@@ -1034,13 +1034,15 @@ require("lazy").setup({
 				-- use postgres_lsp for now
 				-- "sqlls",
 				"vimls",
-				"rnix",
+				-- "rnix",
+				"nixd",
 				"r_language_server",
 				"kotlin_language_server",
 				"cmake",
 				"pyright",
 				"taplo",
 				"cucumber_language_server",
+				"regols",
 			}
 
 			for _, server in ipairs(servers) do

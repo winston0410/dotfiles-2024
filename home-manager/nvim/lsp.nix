@@ -40,6 +40,7 @@
     pkgs.nodePackages.vscode-langservers-extracted
     pkgs.lua-language-server
     pkgs.deno
+    inputs.nixd.packages.aarch64-darwin.default
     # cucumber
   ] ++ [ unstable.nodePackages.svelte-language-server ];
 }
