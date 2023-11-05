@@ -10,6 +10,8 @@
     # for navigating prev and next command in history
     bindkey '\u00AB' up-line-or-history;
     bindkey '\u00AC' down-line-or-history;
+    # REF https://unix.stackexchange.com/a/290403
+    bindkey -v '^?' backward-delete-char
 
     KEYTIMEOUT=1
     unsetopt share_history
