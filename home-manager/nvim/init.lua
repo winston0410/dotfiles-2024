@@ -1012,7 +1012,8 @@ require("lazy").setup({
 				"serve_d",
 				"gdscript",
 				"scry",
-				"ember",
+				-- enable later when we work on ember project
+				-- "ember",
 				"eslint",
 				"angularls",
 				"bashls",
