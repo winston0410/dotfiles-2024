@@ -996,6 +996,7 @@ require("lazy").setup({
 				"html",
 				"cssls",
 				"jsonls",
+				"jsonnet_ls",
 				"leanls",
 				"dhall_lsp_server",
 				"hls",
@@ -1043,6 +1044,7 @@ require("lazy").setup({
 				"taplo",
 				"cucumber_language_server",
 				"regols",
+				"bufls",
 			}
 
 			for _, server in ipairs(servers) do
