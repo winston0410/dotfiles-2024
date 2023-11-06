@@ -29,6 +29,7 @@
     pkgs.ansible-language-server
     pkgs.beancount-language-server
     pkgs.texlab
+    pkgs.tilt
     # TODO install @astrojs/language-server, https://github.com/withastro/language-tools/tree/main/packages/language-server
     # # Not sure how to handle pnpm package yet, https://github.com/NixOS/nixpkgs/issues/231513
     # (pkgs.buildNpmPackage rec {

@@ -1002,6 +1002,7 @@ require("lazy").setup({
 				"dartls",
 				"terraformls",
 				"texlab",
+				"tilt_ls",
 				"ccls",
 				"svelte",
 				"vuels",
