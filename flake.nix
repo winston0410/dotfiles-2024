@@ -30,6 +30,7 @@
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           extraSpecialArgs = {
             inherit inputs outputs;
+            system = "aarch64-darwin";
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
           modules = [ ./home-manager/home.nix ];

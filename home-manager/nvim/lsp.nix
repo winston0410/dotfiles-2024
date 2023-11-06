@@ -1,41 +1,5 @@
 { inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
-    # # REF https://github.com/NixOS/nixpkgs/issues/245849
-    # cucumber = pkgs.buildNpmPackage rec {
-    #   pname = "@cucumber/language-server";
-    #   version = "1.4.0";
-    #
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "cucumber";
-    #     repo = "language-server";
-    #     rev = "v${version}";
-    #     hash = "sha256-cB+psMTjcRmOJIhpF1duWreo2IxCQJX6uId5P3yaghg=";
-    #   };
-    #
-    #   # REF https://github.com/nodejs/node/issues/2341
-    #   # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
-    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
-    #
-    #   npmDepsHash = "sha256-26U2qlyz0VolgKLSeFvKWYC9yae86vNHlTwJPy8HZxQ=";
-    # };
-    # Not sure how to handle pnpm package yet
-    # angularLsp = pkgs.buildNpmPackage rec {
-    #   pname = "@angular/language-server";
-    #   version = "16.2.0";
-    #
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "angular";
-    #     repo = "vscode-ng-language-service";
-    #     rev = "v${version}";
-    #     hash = "sha256-NLemLEYfvRFVSIK8deCVUUU2/27sjflNBnMAyyrAGzc=";
-    #   };
-    #
-    #   # # REF https://github.com/nodejs/node/issues/2341
-    #   # # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
-    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
-    #
-    #   npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-    # };
   in [
     pkgs.rust-analyzer
     pkgs.gopls
@@ -60,8 +24,56 @@
     pkgs.deno
     pkgs.jsonnet-language-server
     pkgs.buf-language-server
-    inputs.nixd.packages.aarch64-darwin.default
-    # angularLsp
-    # cucumber
-  ] ++ [ unstable.nodePackages.svelte-language-server ];
+    pkgs.nodePackages.graphql-language-service-cli
+    inputs.nixd.packages.${system}.default
+    # # Not sure how to handle pnpm package yet, https://github.com/NixOS/nixpkgs/issues/231513
+    # (pkgs.buildNpmPackage rec {
+    #   pname = "@angular/language-server";
+    #   version = "16.2.0";
+    #
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "angular";
+    #     repo = "vscode-ng-language-service";
+    #     rev = "v${version}";
+    #     hash = "sha256-NLemLEYfvRFVSIK8deCVUUU2/27sjflNBnMAyyrAGzc=";
+    #   };
+    #
+    #   # # REF https://github.com/nodejs/node/issues/2341
+    #   # # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
+    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
+    #
+    #   npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    # })
+    # # # REF https://github.com/NixOS/nixpkgs/issues/245849
+    # (pkgs.buildNpmPackage rec {
+    #   pname = "@cucumber/language-server";
+    #   version = "1.4.0";
+    #
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "cucumber";
+    #     repo = "language-server";
+    #     rev = "v${version}";
+    #     hash = "sha256-cB+psMTjcRmOJIhpF1duWreo2IxCQJX6uId5P3yaghg=";
+    #   };
+    #
+    #   # REF https://github.com/nodejs/node/issues/2341
+    #   # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
+    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
+    #
+    #   npmDepsHash = "sha256-26U2qlyz0VolgKLSeFvKWYC9yae86vNHlTwJPy8HZxQ=";
+    # })
+    (pkgs.buildNpmPackage rec {
+      pname = "@microsoft/compose-language-service";
+      version = "0.2.0";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "microsoft";
+        repo = "compose-language-service";
+        rev = "v${version}";
+        hash = "sha256-UBnABi7DMKrAFkRA8H6us/Oq4yM0mJ+kwOm0Rt8XnGw=";
+      };
+
+      npmDepsHash = "sha256-G1X9WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
+    })
+  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
 }
