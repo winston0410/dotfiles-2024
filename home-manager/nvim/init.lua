@@ -963,7 +963,9 @@ require("lazy").setup({
 	{
 		"neovim/nvim-lspconfig",
 		commit = "d0467b9574b48429debf83f8248d8cee79562586",
-		event = "CursorHold",
+		-- Reference the lazyload event from LazyVim
+		-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			local lspconfig = require("lspconfig")
 			local util = require("lspconfig.util")
@@ -1125,4 +1127,19 @@ require("lazy").setup({
 			})
 		end,
 	},
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		-- Buffer local mappings.
+		-- See `:help vim.lsp.*` for documentation on any of the below functions
+		local opts = { buffer = ev.buf }
+		vim.keymap.set("n", "<leader>li", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "<leader>ldt", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+		vim.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts)
+	end,
 })
