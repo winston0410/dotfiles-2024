@@ -964,6 +964,7 @@ require("lazy").setup({
 		event = "CursorHold",
 		config = function()
 			local lspconfig = require("lspconfig")
+			local util = require("lspconfig.util")
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			-- https://github.com/hrsh7th/nvim-cmp/issues/373
@@ -1014,7 +1015,6 @@ require("lazy").setup({
 				"bashls",
 				"prismals",
 				"tsserver",
-				"denols",
 				"gopls",
 				"dockerls",
 				"nimls",
@@ -1050,6 +1050,11 @@ require("lazy").setup({
 			lspconfig.elixirls.setup({
 				cmd = { "elixir-ls" },
 				capabilities = capabilities,
+			})
+
+			lspconfig.denols.setup({
+				capabilities = capabilities,
+				root_dir = util.root_pattern("deno.json", "deno.jsonc"),
 			})
 
 			lspconfig.lua_ls.setup({
