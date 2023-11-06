@@ -491,24 +491,18 @@ require("lazy").setup({
 	{
 		"smoka7/hop.nvim",
 		commit = "275dcbc84e8167c7d64b4584770d837f3ce21562",
-		keys = { { "<leader>f" }, { "<leader>F" }, { "<leader>f", mode = "v" }, { "<leader>F", mode = "v" } },
+		-- keys = { { "<leader>f" }, { "<leader>F" }, { "<leader>f", mode = "v" }, { "<leader>F", mode = "v" } },
+		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
 		config = function()
 			require("hop").setup({})
 
 			local supported_modes = { "n", "v", "o" }
 
 			for _, mode in ipairs(supported_modes) do
-				-- vim.api.nvim_set_keymap(
-				-- mode,
-				-- "<Leader><Leader>",
-				-- "<cmd>HopChar1<cr>",
-				-- { noremap = true, silent = true }
-				-- )
-				vim.api.nvim_set_keymap(mode, "<leader>f", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-				vim.api.nvim_set_keymap(mode, "<leader>F", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-				-- vim.api.nvim_set_keymap(mode, "<Leader>w", "<cmd>HopWord<cr>", { noremap = true, silent = true })
-				-- vim.api.nvim_set_keymap(mode, "t", "<cmd>HopChar1AC<cr>", { noremap = true, silent = true })
-				-- vim.api.nvim_set_keymap(mode, "T", "<cmd>HopChar1BC<cr>", { noremap = true, silent = true })
+				vim.api.nvim_set_keymap(mode, "f", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
+				vim.api.nvim_set_keymap(mode, "F", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
+				-- vim.api.nvim_set_keymap(mode, "<leader>f", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
+				-- vim.api.nvim_set_keymap(mode, "<leader>F", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
 			end
 		end,
 	},
