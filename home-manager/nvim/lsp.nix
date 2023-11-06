@@ -18,6 +18,24 @@
     #
     #   npmDepsHash = "sha256-26U2qlyz0VolgKLSeFvKWYC9yae86vNHlTwJPy8HZxQ=";
     # };
+    # Not sure how to handle pnpm package yet
+    # angularLsp = pkgs.buildNpmPackage rec {
+    #   pname = "@angular/language-server";
+    #   version = "16.2.0";
+    #
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "angular";
+    #     repo = "vscode-ng-language-service";
+    #     rev = "v${version}";
+    #     hash = "sha256-NLemLEYfvRFVSIK8deCVUUU2/27sjflNBnMAyyrAGzc=";
+    #   };
+    #
+    #   # # REF https://github.com/nodejs/node/issues/2341
+    #   # # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
+    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
+    #
+    #   npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    # };
   in [
     pkgs.rust-analyzer
     pkgs.gopls
@@ -43,6 +61,7 @@
     pkgs.jsonnet-language-server
     pkgs.buf-language-server
     inputs.nixd.packages.aarch64-darwin.default
+    # angularLsp
     # cucumber
   ] ++ [ unstable.nodePackages.svelte-language-server ];
 }
