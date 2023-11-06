@@ -978,7 +978,9 @@ require("lazy").setup({
 			}
 
 			local servers = {
+				"astro",
 				"als",
+				"beancount",
 				"solang",
 				"solargraph",
 				"theme_check",
