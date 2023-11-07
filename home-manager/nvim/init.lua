@@ -777,13 +777,6 @@ require("lazy").setup({
 					stdin = false,
 				}
 			end
-			local function elm_format()
-				return {
-					exe = "elm-format",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = false,
-				}
-			end
 
 			local function styler()
 				return {
@@ -809,14 +802,6 @@ require("lazy").setup({
 				}
 			end
 
-			local function fnlfmt()
-				return {
-					exe = "fnlfmt",
-					args = { vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
-			end
-
 			local function prettier(opts)
 				opts = opts or {}
 				return function()
@@ -826,14 +811,6 @@ require("lazy").setup({
 						stdin = true,
 					}
 				end
-			end
-
-			local function purty()
-				return {
-					exe = "purty",
-					args = { "--", vim.api.nvim_buf_get_name(0) },
-					stdin = true,
-				}
 			end
 
 			local function dockfmt()
@@ -917,16 +894,34 @@ require("lazy").setup({
 					go = { require("formatter.filetypes.go").gofmt, require("formatter.filetypes.go").goimports },
 					dart = { require("formatter.filetypes.dart").dartformat },
 					haskell = { hindent },
-					purescript = { purty },
+					purescript = {
+						{
+							exe = "purty",
+							args = { "--", vim.api.nvim_buf_get_name(0) },
+							stdin = true,
+						},
+					},
 					kotlin = { require("formatter.filetypes.kotlin").ktlint },
 					java = { javafmt },
-					fennel = { fnlfmt },
+					fennel = {
+						{
+							exe = "fnlfmt",
+							args = { vim.api.nvim_buf_get_name(0) },
+							stdin = true,
+						},
+					},
 					cpp = { clang_format },
 					c = { clang_format },
 					cs = { clang_format },
 					swift = { swift_format },
 					r = { styler },
-					elm = { elm_format },
+					elm = {
+						{
+							exe = "elm-format",
+							args = { "--", vim.api.nvim_buf_get_name(0) },
+							stdin = false,
+						},
+					},
 					elixir = { require("formatter.filetypes.elixir").mixformat },
 					sql = { require("formatter.filetypes.sql").pgformat },
 					tf = { require("formatter.filetypes.terraform").terraformfmt },
@@ -1112,7 +1107,7 @@ require("lazy").setup({
 	},
 	{
 		"folke/trouble.nvim",
-		event = "CursorHold",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		config = function()
@@ -1135,6 +1130,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Buffer local mappings.
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
 		local opts = { buffer = ev.buf }
+		vim.keymap.set({ "n" }, "<leader>lt", require("trouble").toggle, { silent = true, noremap = true })
 		vim.keymap.set("n", "<leader>li", vim.lsp.buf.implementation, opts)
 		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, opts)
 		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, opts)
