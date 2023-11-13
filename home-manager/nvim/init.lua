@@ -816,7 +816,7 @@ require("lazy").setup({
 			local function dockfmt()
 				return {
 					exe = "dockfmt",
-					args = { "--write", "--", vim.api.nvim_buf_get_name(0) },
+					args = { "fmt", "--", vim.api.nvim_buf_get_name(0) },
 					stdin = true,
 				}
 			end
@@ -881,7 +881,7 @@ require("lazy").setup({
 						}),
 					},
 					python = { require("formatter.filetypes.python").black },
-					dockerfile = { dockfmt },
+					-- dockerfile = { dockfmt },
 					-- No formatter for make
 					make = {
 						require("formatter.filetypes.javascript").prettier,

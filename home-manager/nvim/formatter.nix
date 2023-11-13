@@ -1,5 +1,7 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
   home.packages = with pkgs; [
+    dockfmt
+    gotools
     stylua
     nixfmt
     python39Packages.black
