@@ -15,6 +15,7 @@
     rufo
     elmPackages.elm-format
     haskellPackages.hindent
+    pgformatter
   ];
 
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };
