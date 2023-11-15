@@ -11,6 +11,7 @@
     ./zsh/mod.nix
     ./fzf/mod.nix
     ./du/mod.nix
+    ./tree/mod.nix
     ./android/mod.nix
   ];
 
