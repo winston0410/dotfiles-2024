@@ -1045,6 +1045,7 @@ require("lazy").setup({
 				"cucumber_language_server",
 				"regols",
 				"bufls",
+				"slint_lsp",
 			}
 
 			for _, server in ipairs(servers) do
