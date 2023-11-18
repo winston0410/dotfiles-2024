@@ -17,6 +17,12 @@ Then replace the `TODO` and `FIXME` in code, and replace system from `x86_64-lin
 nix run home-manager/release-23.05 -- --flake .#hugosum switch
 ```
 
+## Init and switch nix-darwin
+
+```sh
+nix run nix-darwin -- --flake .#hugosum switch
+```
+
 ## Set up neovim
 
 Set up packages

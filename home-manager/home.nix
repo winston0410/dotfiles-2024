@@ -13,7 +13,14 @@
     ./du/mod.nix
     ./tree/mod.nix
     ./android/mod.nix
+    ./ssh/mod.nix
   ];
+
+  nix.package = pkgs.nix;
+  nix.settings = {
+    extra-trusted-users = "hugosum";
+    builders-use-substitutes = true;
+  };
 
   nixpkgs = {
     overlays = [ ];
