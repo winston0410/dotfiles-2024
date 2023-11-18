@@ -111,11 +111,7 @@ local config = {
 			action = wezterm.action.CloseCurrentTab({ confirm = false }),
 		},
 		-- macos like shortcut for closing wezterm
-		{
-			key = "q",
-			mods = "CMD",
-			action = wezterm.action.CloseCurrentTab({ confirm = true }),
-		},
+		{ key = "q", mods = "CMD", action = wezterm.action.QuitApplication },
 		{
 			key = "f",
 			mods = "CMD|CTRL",
