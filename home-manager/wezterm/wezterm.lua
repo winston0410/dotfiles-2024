@@ -119,6 +119,7 @@ local config = {
 		},
 		-- not sure why I did this
 		-- { key = "c", mods = "ALT", action = wezterm.action({ SendString = "\x03" }) },
+		{ key = "f", mods = "CMD", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
 		{ key = "c", mods = "CMD", action = wezterm.action({ CopyTo = "Clipboard" }) },
 		{ key = "v", mods = "CMD", action = wezterm.action({ PasteFrom = "Clipboard" }) },
 		{ key = "=", mods = "CMD", action = "IncreaseFontSize" },
