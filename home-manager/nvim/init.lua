@@ -975,6 +975,7 @@ require("lazy").setup({
 			}
 
 			local servers = {
+				"rust_analyzer",
 				"astro",
 				"als",
 				"beancount",
