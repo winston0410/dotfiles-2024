@@ -6,7 +6,7 @@
     nixfmt
     python39Packages.black
     # Install rustfmt in the rust module. Not sure if there is a better way
-    # rustfmt
+    rustfmt
     nodePackages.purty
     nodePackages.prettier
     yamlfmt

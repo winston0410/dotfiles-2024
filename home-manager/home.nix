@@ -14,7 +14,7 @@
     ./tree/mod.nix
     ./android/mod.nix
     ./ssh/mod.nix
-    ./rust/mod.nix
+    # ./rust/mod.nix
   ];
 
   nix.package = pkgs.nix;
