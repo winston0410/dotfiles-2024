@@ -5,7 +5,8 @@
     stylua
     nixfmt
     python39Packages.black
-    rustfmt
+    # Install rustfmt in the rust module. Not sure if there is a better way
+    # rustfmt
     nodePackages.purty
     nodePackages.prettier
     yamlfmt

@@ -19,12 +19,17 @@
     darwin.url =
       "github:lnl7/nix-darwin?rev=e67f2bf515343da378c3f82f098df8ca01bccc5f";
 
+    rust-overlay.url =
+      "github:oxalica/rust-overlay?rev=16ab5af8f23b63f34dd7a48a68ab3b50dc3dd2b6";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    rust-overlay.inputs.flake-utils.follows = "flake-utils";
+
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
+  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils, rust-overlay
     , ... }@inputs:
     # FIXME use system based config with flake-utils https://github.com/nix-community/home-manager/issues/3075
     # let
@@ -63,7 +68,13 @@
       darwinSystem = "aarch64-darwin";
       linuxSystem =
         builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinSystem;
-      pkgs = nixpkgs.legacyPackages."${darwinSystem}";
+      # pkgs = nixpkgs.legacyPackages."${darwinSystem}";
+
+        pkgs = import nixpkgs {
+          system = darwinSystem;
+          overlays = [ rust-overlay.overlays.default ];
+        };
+
       darwin-builder = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
         modules = [

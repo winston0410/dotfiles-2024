@@ -14,6 +14,7 @@
     ./tree/mod.nix
     ./android/mod.nix
     ./ssh/mod.nix
+    ./rust/mod.nix
   ];
 
   nix.package = pkgs.nix;
@@ -39,7 +40,7 @@
 
   news = { display = "show"; };
 
-  home.packages = with pkgs; [ procs ];
+  home.packages = with pkgs; [ procs  ];
 
   xdg.enable = true;
 

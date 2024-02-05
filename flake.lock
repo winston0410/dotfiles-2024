@@ -167,7 +167,32 @@
         "home-manager": "home-manager",
         "nixd": "nixd",
         "nixpkgs": "nixpkgs_3",
+        "rust-overlay": "rust-overlay",
         "unstable": "unstable"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1703037971,
+        "narHash": "sha256-HzfW5MLt+I0DlfPM9sL+Vd1XrywoWiW0LSAez3wp23E=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "16ab5af8f23b63f34dd7a48a68ab3b50dc3dd2b6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "16ab5af8f23b63f34dd7a48a68ab3b50dc3dd2b6",
+        "type": "github"
       }
     },
     "systems": {
