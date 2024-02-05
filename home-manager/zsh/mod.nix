@@ -63,6 +63,9 @@
             # OMZP::rustup/_rustup \
 
             source "$HOME/.config/fzf/fzf-color.sh";
+
+            # For loading rustup and cargo installed with homebrew
+            source "$HOME/.cargo/env"
   '';
 
   programs.direnv.enable = true;
