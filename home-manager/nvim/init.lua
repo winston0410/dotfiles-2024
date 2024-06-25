@@ -1018,7 +1018,6 @@ require("lazy").setup({
 				"bashls",
 				"hhvm",
 				"prismals",
-				"tsserver",
 				"gopls",
 				"dockerls",
 				"docker_compose_language_service",
@@ -1060,6 +1059,12 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
+			lspconfig.tsserver.setup({
+				root_dir = util.root_pattern("package.json"),
+				single_file_support = false,
+			})
+
+			-- it only works if deno.json is at the root level
 			lspconfig.denols.setup({
 				capabilities = capabilities,
 				root_dir = util.root_pattern("deno.json", "deno.jsonc"),

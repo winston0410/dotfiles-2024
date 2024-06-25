@@ -12,6 +12,8 @@ Then replace the `TODO` and `FIXME` in code, and replace system from `x86_64-lin
 
 ## Init and switch home manager
 
+Once we made changes to our setup, we need to run the `switch` command to apply the changes, as the configuration file is controlled by nix.
+
 ```sh
 # REF https://github.com/nix-community/home-manager/issues/4533
 nix run home-manager/release-23.05 -- --flake .#hugosum switch
