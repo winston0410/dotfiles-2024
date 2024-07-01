@@ -10,6 +10,6 @@
   ];
 
   home.shellAliases = {
-    grep = "ripgrep";
+    grep = "rg";
   };
 }
