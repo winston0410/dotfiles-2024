@@ -3,7 +3,6 @@
   in [
     pkgs.rust-analyzer
     pkgs.gopls
-    pkgs.rnix-lsp
     pkgs.ccls
     pkgs.haskell-language-server
     pkgs.elixir_ls
@@ -21,7 +20,7 @@
     pkgs.metals
     pkgs.nodePackages.vscode-langservers-extracted
     pkgs.lua-language-server
-    pkgs.deno
+    unstable.deno
     pkgs.jsonnet-language-server
     pkgs.buf-language-server
     pkgs.nodePackages.graphql-language-service-cli

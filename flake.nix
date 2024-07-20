@@ -10,7 +10,7 @@
       "github:nixos/nixpkgs?rev=621f51253edffa1d6f08d5fce4f08614c852d17e";
     unstable.url =
       # unstable
-      "github:nixos/nixpkgs?rev=9d5d25bbfe8c0297ebe85324addcb5020ed1a454";
+      "github:nixos/nixpkgs/nixpkgs-unstable";
 
     nixd.url =
       # unstable

@@ -54,7 +54,6 @@
             OMZP::npm \
             OMZP::yarn \
             OMZP::brew \
-            OMZP::deno \
             OMZP::docker-compose \
             OMZP::gitfast \
             OMZP::pip \
