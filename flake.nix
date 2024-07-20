@@ -7,7 +7,7 @@
     # Nixpkgs
     nixpkgs.url =
       # 23-05
-      "github:nixos/nixpkgs?rev=621f51253edffa1d6f08d5fce4f08614c852d17e";
+      "github:nixos/nixpkgs/release-23.05";
     unstable.url =
       # unstable
       "github:nixos/nixpkgs/nixpkgs-unstable";
