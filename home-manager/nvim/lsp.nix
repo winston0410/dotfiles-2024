@@ -2,7 +2,7 @@
   home.packages = let
   in [
     pkgs.rust-analyzer
-    pkgs.gopls
+    unstable.gopls
     pkgs.ccls
     pkgs.haskell-language-server
     pkgs.elixir_ls

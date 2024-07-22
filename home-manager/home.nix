@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, unstable, ... }: {
   imports = [
     ./git/mod.nix
     ./nvim/mod.nix
@@ -40,7 +40,7 @@
 
   news = { display = "show"; };
 
-  home.packages = with pkgs; [ procs  ];
+  home.packages = with pkgs; [ procs unstable.go ];
 
   xdg.enable = true;
 

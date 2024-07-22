@@ -4,10 +4,12 @@
     gotools
     stylua
     nixfmt
-    python39Packages.black
+    # Not using Purescript anymore
+    # nodePackages.purty
+    # Not working with Python at the moment
+    # python39Packages.black
     # Install rustfmt in the rust module. Not sure if there is a better way
     rustfmt
-    nodePackages.purty
     nodePackages.prettier
     yamlfmt
     taplo
