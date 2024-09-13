@@ -19,6 +19,8 @@
       light = false;
     };
 
+    credential = { helper = "store"; };
+
     merge = { conflictstyle = "diff3"; };
 
     diff = { colorMoved = "default"; };
