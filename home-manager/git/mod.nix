@@ -19,6 +19,8 @@
       light = false;
     };
 
+    lfs = { enable = true; };
+
     credential = { helper = "store"; };
 
     merge = { conflictstyle = "diff3"; };
