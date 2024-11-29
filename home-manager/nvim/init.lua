@@ -281,7 +281,7 @@ require("lazy").setup({
 	},
 	{
 		"akinsho/bufferline.nvim",
-		commit = "9e8d2f695dd50ab6821a6a53a840c32d2067a78a",
+		commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		config = function()
 			require("bufferline").setup({
@@ -653,7 +653,6 @@ require("lazy").setup({
 			treesitter.setup({
 				highlight = { enable = true },
 				indent = { enable = true },
-				context_commentstring = { enable = true, enable_autocmd = false },
 				query_linter = {
 					enable = true,
 					use_virtual_text = true,
@@ -977,7 +976,6 @@ require("lazy").setup({
 			local servers = {
 				"rust_analyzer",
 				"astro",
-				"als",
 				"beancount",
 				"solang",
 				"solargraph",
@@ -1044,8 +1042,8 @@ require("lazy").setup({
 				"taplo",
 				"cucumber_language_server",
 				"regols",
-				"bufls",
 				"slint_lsp",
+				"ts_ls"
 			}
 
 			for _, server in ipairs(servers) do
@@ -1059,10 +1057,22 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
-			lspconfig.tsserver.setup({
-				root_dir = util.root_pattern("package.json"),
-				single_file_support = false,
-			})
+			require'lspconfig'.ts_ls.setup{
+				init_options = {
+				--   plugins = {
+				-- 	{
+				-- 	  name = "@vue/typescript-plugin",
+				-- 	  location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+				-- 	  languages = {"javascript", "typescript", "vue"},
+				-- 	},
+				--   },
+				},
+				filetypes = {
+				  "javascript",
+				  "typescript",
+				--   "vue",
+				},
+			  }
 
 			-- it only works if deno.json is at the root level
 			lspconfig.denols.setup({
@@ -1116,7 +1126,7 @@ require("lazy").setup({
 		"folke/trouble.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-		commit = "46cf952fc115f4c2b98d4e208ed1e2dce08c9bf6",
+		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		config = function()
 			require("trouble").setup({
 				icons = true,

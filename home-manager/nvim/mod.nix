@@ -1,8 +1,8 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, unstable, lib, config, pkgs, ... }: {
   imports = [ ./lsp.nix ./formatter.nix ];
 
   home.packages = with pkgs; [
-    neovim
+    unstable.neovim
     # needed for treesitter
     nodejs_20
     # needed for fzf-lua
