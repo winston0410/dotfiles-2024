@@ -209,7 +209,7 @@ require("lazy").setup({
 		commit = "c2725eb6d086c8c9624456d734bd365194660017",
 		lazy = false,
 		priority = 1000,
-		requires = { "kyazdani42/nvim-web-devicons" },
+		requires = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			vim.g.tokyonight_style = "night"
 			vim.cmd("colorscheme tokyonight")
@@ -230,7 +230,7 @@ require("lazy").setup({
 		"nvim-lualine/lualine.nvim",
 		commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
 		lazy = false,
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			-- local color
 			local colors = require("tokyonight.colors").setup()
@@ -515,7 +515,7 @@ require("lazy").setup({
 			{ ",g" },
 		},
 		dependencies = {
-			"kyazdani42/nvim-web-devicons",
+			"nvim-tree/nvim-web-devicons",
 		},
 		config = function()
 			local actions = require("fzf-lua.actions")
@@ -1126,7 +1126,7 @@ require("lazy").setup({
 	{
 		"folke/trouble.nvim",
 		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		config = function()
 			require("trouble").setup({
