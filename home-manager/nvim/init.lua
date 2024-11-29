@@ -228,7 +228,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		commit = "2248ef254d0a1488a72041cfb45ca9caada6d994",
+		commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
 		lazy = false,
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = function()
@@ -294,6 +294,7 @@ require("lazy").setup({
 	},
 	{
 		"NeogitOrg/neogit",
+		commit = "d7772bca4ac00c02282b0d02623f2f8316c21f32",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
@@ -459,7 +460,7 @@ require("lazy").setup({
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		commit = "29be0919b91fb59eca9e90690d76014233392bef",
+		commit = "7871a88056f7144defca9c931e311a3134c5d509",
 		event = "CursorHold",
 		config = function()
 			require("ibl").setup({
@@ -470,7 +471,7 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{ "sitiom/nvim-numbertoggle", commit = "9ab95e60ea5ec138e1b2332e0fc18b8e5de464c6", event = "CursorHold" },
+	{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = "CursorHold" },
 	{
 		"numToStr/Comment.nvim",
 		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
@@ -1043,7 +1044,7 @@ require("lazy").setup({
 				"cucumber_language_server",
 				"regols",
 				"slint_lsp",
-				"ts_ls"
+				"ts_ls",
 			}
 
 			for _, server in ipairs(servers) do
@@ -1057,22 +1058,22 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
-			require'lspconfig'.ts_ls.setup{
+			require("lspconfig").ts_ls.setup({
 				init_options = {
-				--   plugins = {
-				-- 	{
-				-- 	  name = "@vue/typescript-plugin",
-				-- 	  location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-				-- 	  languages = {"javascript", "typescript", "vue"},
-				-- 	},
-				--   },
+					--   plugins = {
+					-- 	{
+					-- 	  name = "@vue/typescript-plugin",
+					-- 	  location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+					-- 	  languages = {"javascript", "typescript", "vue"},
+					-- 	},
+					--   },
 				},
 				filetypes = {
-				  "javascript",
-				  "typescript",
-				--   "vue",
+					"javascript",
+					"typescript",
+					--   "vue",
 				},
-			  }
+			})
 
 			-- it only works if deno.json is at the root level
 			lspconfig.denols.setup({
