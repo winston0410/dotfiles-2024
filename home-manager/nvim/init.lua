@@ -196,7 +196,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{
 		"LazyVim/LazyVim",
-		commit = "e5babf289c5ccd91bcd068bfc623335eb76cbc1f",
+		commit = "2fc7697786e72e02db91dd2242d1407f5b80856b",
 		lazy = false,
 		config = function()
 			-- only load the autocmds modules. Reference the options module only but don't load it, it seems to be too much
@@ -206,7 +206,7 @@ require("lazy").setup({
 	},
 	{
 		"folke/tokyonight.nvim",
-		commit = "d1025023b00c6563823dbb5b77951d7b5e9a1a31",
+		commit = "c2725eb6d086c8c9624456d734bd365194660017",
 		lazy = false,
 		priority = 1000,
 		requires = { "kyazdani42/nvim-web-devicons" },
@@ -346,7 +346,7 @@ require("lazy").setup({
 	},
 	{
 		"hrsh7th/nvim-cmp",
-		commit = "51260c02a8ffded8e16162dcf41a23ec90cfba62",
+		commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01",
 		event = "InsertEnter",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
@@ -473,7 +473,7 @@ require("lazy").setup({
 	{ "sitiom/nvim-numbertoggle", commit = "9ab95e60ea5ec138e1b2332e0fc18b8e5de464c6", event = "CursorHold" },
 	{
 		"numToStr/Comment.nvim",
-		commit = "0236521ea582747b58869cb72f70ccfa967d2e89",
+		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
 		keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
 		config = function()
 			require("Comment").setup({
@@ -589,18 +589,18 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		event = "CursorHold",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		commit = "e69a504baf2951d52e1f1fbb05145d43f236cbf1",
+		commit = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595",
 	},
 	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
 		event = "CursorHold",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		commit = "92e688f013c69f90c9bbd596019ec10235bc51de",
+		commit = "9c74db656c3d0b1c4392fc89a016b1910539e7c0",
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = "CursorHold",
-		commit = "efec7115d8175bdb6720eeb4e26196032cb52593",
+		commit = "427a90ae70f66c2fdf2d9ad16a0f08e9697d90d9",
 		build = function()
 			vim.cmd("TSUpdate")
 		end,
@@ -957,7 +957,7 @@ require("lazy").setup({
 	},
 	{
 		"neovim/nvim-lspconfig",
-		commit = "d0467b9574b48429debf83f8248d8cee79562586",
+		commit = "e869c7e6af0a3c40a2b344a9765779d74dd12720",
 		-- Reference the lazyload event from LazyVim
 		-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 		event = { "BufReadPre", "BufNewFile" },
@@ -1116,7 +1116,7 @@ require("lazy").setup({
 		"folke/trouble.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
+		commit = "46cf952fc115f4c2b98d4e208ed1e2dce08c9bf6",
 		config = function()
 			require("trouble").setup({
 				icons = true,
