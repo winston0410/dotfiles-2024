@@ -775,6 +775,13 @@ require("lazy").setup({
 					stdin = true,
 				}
 			end
+			local function kulala_fmt()
+				return {
+					exe = "kulala-fmt",
+					args = { "--", vim.api.nvim_buf_get_name(0) },
+					stdin = true,
+				}
+			end
 
 			local function hindent()
 				return {
@@ -821,6 +828,8 @@ require("lazy").setup({
 						-- does not work correctly
 						-- require("formatter.filetypes.yaml").yamlfmt
 					},
+					http = { kulala_fmt },
+					rest = { kulala_fmt },
 					toml = { require("formatter.filetypes.toml").taplo },
 					vue = { require("formatter.filetypes.javascript").prettier },
 					svelte = {
@@ -1011,6 +1020,11 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
+			lspconfig.kulala_ls.setup({
+				capabilities = capabilities,
+				filetypes = { "http", "rest" },
+			})
+
 			lspconfig.dockerls.setup({
 				settings = {
 					docker = {
@@ -1091,7 +1105,6 @@ require("lazy").setup({
 		version = "3.6.0",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		-- commit = "40c5317a6e90fe3393f07b0fee580d9e93a216b4",
 		config = function()
 			require("trouble").setup({
 				position = "bottom",

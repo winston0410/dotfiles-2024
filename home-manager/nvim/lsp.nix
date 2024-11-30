@@ -80,5 +80,21 @@
 
       npmDepsHash = "sha256-G1X9WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     })
+    # FIXME this build does not work yet
+    # (pkgs.buildNpmPackage rec {
+    #   pname = "@mistweaverco/kulala-ls";
+    #   version = "1.0.12";
+    #
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "mistweaverco";
+    #     repo = "kulala-ls";
+    #     rev = "v${version}";
+    #     hash = "sha256-ifOmj/n8Fp9oi4BQ7yyfRHSIB1Bd/mxOXAcbkUGtoF8=";
+    #   };
+    #
+    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
+    #
+    #   npmDepsHash = "sha256-CJQLK3PpdWb4SXqk15xrPQU4CrYFPh2kO2wLb+VaIPY=";
+    # })
   ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
 }
