@@ -1005,8 +1005,9 @@ require("lazy").setup({
 				"pyright",
 				"taplo",
 				"cucumber_language_server",
-				"regols",
 				"slint_lsp",
+				"regal",
+				"snyk-ls",
 			}
 
 			for _, server in ipairs(servers) do
