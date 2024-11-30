@@ -1008,6 +1008,8 @@ require("lazy").setup({
 				"slint_lsp",
 				"regal",
 				"snyk-ls",
+				"ballerina",
+				"bitbake_ls",
 			}
 
 			for _, server in ipairs(servers) do
