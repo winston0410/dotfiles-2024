@@ -144,7 +144,7 @@ local global_options = {
 }
 
 for _, option in ipairs(global_options) do
-	vim.api.nvim_set_option(option[1], option[2])
+	vim.opt[option[1]] = option[2]
 end
 
 local window_options = {
@@ -181,15 +181,18 @@ for _, option in ipairs(buffer_options) do
 end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -265,7 +268,7 @@ require("lazy").setup({
 							-- Check if active LSP exist
 							function()
 								local msg = ""
-								local clients = vim.lsp.get_active_clients()
+								local clients = vim.lsp.get_clients()
 								if #clients < 1 then
 									msg = "年"
 									return msg
@@ -322,24 +325,8 @@ require("lazy").setup({
 	{
 		"L3MON4D3/LuaSnip",
 		event = "InsertEnter",
-		build = (not jit.os:find("Windows"))
-				and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-			or nil,
-		dependencies = {
-			"rafamadriz/friendly-snippets",
-			config = function()
-				local luasnip = require("luasnip")
-
-				require("luasnip.loaders.from_vscode").lazy_load()
-
-				vim.keymap.set({ "i", "s" }, "<Char-0xAC>", function()
-					luasnip.jump(1)
-				end, { silent = true })
-				vim.keymap.set({ "i", "s" }, "<Char-0xAB>", function()
-					luasnip.jump(-1)
-				end, { silent = true })
-			end,
-		},
+		version = "v2.*",
+		build = "make install_jsregexp",
 		opts = {
 			history = true,
 			delete_check_events = "TextChanged",
@@ -409,45 +396,11 @@ require("lazy").setup({
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		commit = "af0f583cd35286dd6f0e3ed52622728703237e50",
+		commit = "5f808b5e4fef30bd8aca1b803b4e555da07fc412",
 		event = "CursorHold",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
-			require("gitsigns").setup({
-				signs = {
-					add = {
-						hl = "GitSignsAdd",
-						text = "▋",
-						numhl = "GitSignsAddNr",
-						linehl = "GitSignsAddLn",
-					},
-					change = {
-						hl = "GitSignsChange",
-						text = "▋",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
-					delete = {
-						hl = "GitSignsDelete",
-						text = "▋",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					topdelete = {
-						hl = "GitSignsDelete",
-						text = "▋",
-						numhl = "GitSignsDeleteNr",
-						linehl = "GitSignsDeleteLn",
-					},
-					changedelete = {
-						hl = "GitSignsChange",
-						text = "▋",
-						numhl = "GitSignsChangeNr",
-						linehl = "GitSignsChangeLn",
-					},
-				},
-				current_line_blame = true,
-			})
+			require("gitsigns").setup()
 		end,
 	},
 	{
@@ -807,7 +760,7 @@ require("lazy").setup({
 				return function()
 					return {
 						exe = "prettier",
-						args = { vim.api.nvim_buf_get_name(0), unpack(opts) },
+						args = { vim.api.nvim_buf_get_name(0), table.unpack(opts) },
 						stdin = true,
 					}
 				end
@@ -1044,7 +997,6 @@ require("lazy").setup({
 				"cucumber_language_server",
 				"regols",
 				"slint_lsp",
-				"ts_ls",
 			}
 
 			for _, server in ipairs(servers) do
@@ -1081,35 +1033,43 @@ require("lazy").setup({
 				root_dir = util.root_pattern("deno.json", "deno.jsonc"),
 			})
 
-			lspconfig.lua_ls.setup({
+			require("lspconfig").lua_ls.setup({
 				capabilities = capabilities,
 				on_init = function(client)
-					local path = client.workspace_folders[1].name
-					if
-						not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
-					then
-						client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-							Lua = {
-								runtime = {
-									version = "LuaJIT",
-								},
-								workspace = {
-									checkThirdParty = false,
-									library = {
-										vim.env.VIMRUNTIME,
-										-- "${3rd}/luv/library"
-										-- "${3rd}/busted/library",
-									},
-									-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-									-- library = vim.api.nvim_get_runtime_file("", true)
-								},
-							},
-						})
-
-						client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+					if client.workspace_folders then
+						local path = client.workspace_folders[1].name
+						if vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc") then
+							return
+						end
 					end
-					return true
+
+					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+						runtime = {
+							-- Tell the language server which version of Lua you're using
+							-- (most likely LuaJIT in the case of Neovim)
+							version = "Lua 5.4",
+						},
+						-- Make the server aware of Neovim runtime files
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								vim.env.VIMRUNTIME,
+								"${3rd}/luv/library",
+								"${3rd}/busted/library",
+							},
+						},
+					})
 				end,
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+						telemetry = {
+							enable = false,
+						},
+					},
+				},
 			})
 
 			-- local efm_config = Config:new({
