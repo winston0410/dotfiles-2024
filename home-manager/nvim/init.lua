@@ -561,6 +561,8 @@ require("lazy").setup({
 		config = function()
 			local treesitter = require("nvim-treesitter.configs")
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			local installer = require("nvim-treesitter.install")
+			installer.prefer_git = true
 
 			parser_config.wast = {
 				install_info = {
@@ -834,7 +836,7 @@ require("lazy").setup({
 						}),
 					},
 					python = { require("formatter.filetypes.python").black },
-					-- dockerfile = { dockfmt },
+					dockerfile = { dockfmt },
 					-- No formatter for make
 					make = {
 						require("formatter.filetypes.javascript").prettier,
@@ -971,7 +973,6 @@ require("lazy").setup({
 				"hhvm",
 				"prismals",
 				"gopls",
-				"dockerls",
 				"docker_compose_language_service",
 				"glsl_analyzer",
 				"gradle_ls",
@@ -1010,7 +1011,19 @@ require("lazy").setup({
 				capabilities = capabilities,
 			})
 
-			require("lspconfig").ts_ls.setup({
+			lspconfig.dockerls.setup({
+				settings = {
+					docker = {
+						languageserver = {
+							formatter = {
+								ignoreMultilineInstructions = true,
+							},
+						},
+					},
+				},
+			})
+
+			lspconfig.ts_ls.setup({
 				init_options = {
 					--   plugins = {
 					-- 	{
@@ -1033,7 +1046,7 @@ require("lazy").setup({
 				root_dir = util.root_pattern("deno.json", "deno.jsonc"),
 			})
 
-			require("lspconfig").lua_ls.setup({
+			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 				on_init = function(client)
 					if client.workspace_folders then
@@ -1071,32 +1084,24 @@ require("lazy").setup({
 					},
 				},
 			})
-
-			-- local efm_config = Config:new({
-			-- 	settings = {
-			-- 		languages = require("plugins.efm"),
-			-- 	},
-			-- })
-
-			-- efm_config.filetypes = vim.tbl_keys(efm_config.settings.languages)
-
-			-- lspconfig.efm.setup(efm_config)
 		end,
 	},
 	{
 		"folke/trouble.nvim",
+		version = "3.6.0",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
+		-- commit = "40c5317a6e90fe3393f07b0fee580d9e93a216b4",
 		config = function()
 			require("trouble").setup({
-				icons = true,
 				position = "bottom",
 				height = 10,
 				use_diagnostic_signs = true,
 				indent_lines = false,
-				auto_open = true,
 				auto_close = true,
+				modes = {
+					diagnostics = { auto_open = true },
+				},
 			})
 		end,
 	},
