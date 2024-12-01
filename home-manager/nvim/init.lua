@@ -1010,6 +1010,7 @@ require("lazy").setup({
 				"snyk-ls",
 				"ballerina",
 				"bitbake_ls",
+				"ltex",
 			}
 
 			for _, server in ipairs(servers) do
