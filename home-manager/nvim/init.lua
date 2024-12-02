@@ -245,15 +245,15 @@ require("lazy").setup({
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = { "branch" },
-					lualine_c = {},
+					lualine_c = { "location" },
 					lualine_x = {},
 					lualine_y = {
-						{
-							"filename",
-							file_status = true,
-							path = 2,
-							color = { fg = colors.fg, bg = colors.bg_statusline },
-						},
+						-- {
+						-- 	"filename",
+						-- 	file_status = true,
+						-- 	path = 2,
+						-- 	color = { fg = colors.fg, bg = colors.bg_statusline },
+						-- },
 					},
 					lualine_z = {
 						{
@@ -263,15 +263,19 @@ require("lazy").setup({
 							color = { bg = colors.bg_statusline },
 						},
 						{
-							-- Check if active LSP exist
 							function()
 								local msg = ""
 								local clients = vim.lsp.get_clients()
 								if #clients < 1 then
-									msg = "年"
+									msg = "No active LSP"
 									return msg
 								end
-								return ""
+								local client_names = {}
+								for _, client in pairs(clients) do
+									table.insert(client_names, client.name)
+								end
+								msg = "LSP: " .. table.concat(client_names, ", ")
+								return msg
 							end,
 							color = { fg = colors.fg, bg = colors.bg_statusline },
 						},
