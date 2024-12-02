@@ -23,7 +23,7 @@ local mappings = {
 	-- for redo
 	{ "<Char-0xAE>", "<C-r>" },
 
-	-- guide on how to use tabs, buffers and window correctly in Vim
+	-- REF guide on how to use tabs, buffers and window correctly in Vim
 	-- https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166
 
 	-- tab is a collection of windows. A split is a window, and buffer is global. Therefore, we need to use tabs, windows and buffer to do things together
@@ -85,11 +85,24 @@ end
 local all_modes = { "i", "n", "v", "c", "t", "s" }
 
 for _, mode in pairs(all_modes) do
-	-- remap escape to CMD + [
-	vim.api.nvim_set_keymap(mode, "<Char-0xAA>", "<esc>", { silent = true, noremap = true })
-	-- remap up and down for easy use of fzf to CMD + n and CMD + p
-	vim.api.nvim_set_keymap(mode, "<Char-0xAB>", "<Up>", { silent = true, noremap = true })
-	vim.api.nvim_set_keymap(mode, "<Char-0xAC>", "<Down>", { silent = true, noremap = true })
+	vim.api.nvim_set_keymap(
+		mode,
+		"<Char-0xAA>",
+		"<esc>",
+		{ silent = true, noremap = true, desc = "remap escape to CMD + [" }
+	)
+	vim.api.nvim_set_keymap(
+		mode,
+		"<Char-0xAB>",
+		"<Up>",
+		{ silent = true, noremap = true, desc = "remap up to CMD + p" }
+	)
+	vim.api.nvim_set_keymap(
+		mode,
+		"<Char-0xAC>",
+		"<Down>",
+		{ silent = true, noremap = true, desc = "remap down to CMD + n" }
+	)
 	vim.api.nvim_set_keymap(
 		mode,
 		"<Char-0xAF>",
@@ -98,8 +111,6 @@ for _, mode in pairs(all_modes) do
 	)
 end
 
-vim.cmd("syntax enable")
-vim.cmd("filetype plugin indent on")
 vim.cmd("set shortmess+=c")
 
 --Quit default plugin early
@@ -141,6 +152,7 @@ local global_options = {
 	{ "wildmenu", true },
 	{ "wildmode", "longest:full,full" },
 	{ "hidden", true },
+	{ "cursorline", true },
 }
 
 for _, option in ipairs(global_options) do
@@ -164,7 +176,6 @@ for _, option in ipairs(window_options) do
 	vim.wo[option[1]] = option[2]
 end
 
--- Doesn't apply to newly included buffer?
 local buffer_options = {
 	{ "expandtab", true },
 	{ "autoindent", true },
@@ -202,8 +213,7 @@ require("lazy").setup({
 		commit = "2fc7697786e72e02db91dd2242d1407f5b80856b",
 		lazy = false,
 		config = function()
-			-- only load the autocmds modules. Reference the options module only but don't load it, it seems to be too much
-			-- require("lazyvim.config.options")
+			-- only load the autocmds modules. The options module seems to be too much
 			require("lazyvim.config.autocmds")
 		end,
 	},
@@ -215,18 +225,7 @@ require("lazy").setup({
 		requires = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			vim.g.tokyonight_style = "night"
-			vim.cmd("colorscheme tokyonight")
-
-			local highlight_list = {
-				-- { "Search", "Visual" },
-				-- { "IncSearch", "Visual" },
-				{ "CursorLineNr", "cleared" },
-				-- highlight! link CursorLineNr cleared
-			}
-
-			for _, highlight in ipairs(highlight_list) do
-				vim.cmd("highlight! link" .. " " .. highlight[1] .. " " .. highlight[2])
-			end
+			vim.cmd.colorscheme("tokyonight")
 		end,
 	},
 	{
@@ -235,7 +234,6 @@ require("lazy").setup({
 		lazy = false,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			-- local color
 			local colors = require("tokyonight.colors").setup()
 			-- print('check colors', vim.inspect(colors))
 			require("lualine").setup({
@@ -481,11 +479,9 @@ require("lazy").setup({
 				fzf_layout = "reverse-list",
 				files = {
 					prompt = "Fd❯ ",
-					--  Cannot set the cmd explicitly, as fzf-lua would not customize it further for you. Default to fd anyway
-					--  cmd = "fd",
-					git_icons = true, -- show git icons?
-					file_icons = true, -- show file icons?
-					color_icons = true, -- colorize file|git icons
+					git_icons = true,
+					file_icons = true,
+					color_icons = true,
 				},
 				grep = {
 					prompt = "Rg❯ ",
@@ -665,8 +661,20 @@ require("lazy").setup({
 	},
 	{
 		"stevearc/oil.nvim",
+		version = "2.13.0",
 		config = function()
-			require("oil").setup({})
+			require("oil").setup({
+				columns = {
+					"icon",
+					"permissions",
+					"size",
+					"mtime",
+				},
+				use_default_keymaps = false,
+				view_options = {
+					show_hidden = true,
+				},
+			})
 		end,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
@@ -825,8 +833,6 @@ require("lazy").setup({
 					json5 = { require("formatter.filetypes.javascript").prettier },
 					yaml = {
 						require("formatter.filetypes.yaml").prettier,
-						-- does not work correctly
-						-- require("formatter.filetypes.yaml").yamlfmt
 					},
 					http = { kulala_fmt },
 					rest = { kulala_fmt },
@@ -846,7 +852,6 @@ require("lazy").setup({
 					},
 					python = { require("formatter.filetypes.python").black },
 					dockerfile = { dockfmt },
-					-- No formatter for make
 					make = {
 						require("formatter.filetypes.javascript").prettier,
 					},
@@ -1076,11 +1081,8 @@ require("lazy").setup({
 
 					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
 						runtime = {
-							-- Tell the language server which version of Lua you're using
-							-- (most likely LuaJIT in the case of Neovim)
 							version = "Lua 5.4",
 						},
-						-- Make the server aware of Neovim runtime files
 						workspace = {
 							checkThirdParty = false,
 							library = {
