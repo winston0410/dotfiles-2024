@@ -242,6 +242,15 @@ require("lazy").setup({
 		end,
 	},
 	{
+		{
+			"linrongbin16/lsp-progress.nvim",
+			version = "1.0.13",
+			config = function()
+				require("lsp-progress").setup()
+			end,
+		},
+	},
+	{
 		"nvim-lualine/lualine.nvim",
 		commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
 		lazy = false,
@@ -254,6 +263,22 @@ require("lazy").setup({
 					theme = "tokyonight",
 					component_separators = "",
 					section_separators = "",
+				},
+				winbar = {
+					lualine_a = { { "filetype", icon_only = true }, "filename" },
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = {},
+				},
+				inactive_winbar = {
+					lualine_a = { { "filetype", icon_only = true }, "filename" },
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = {},
 				},
 				sections = {
 					lualine_a = { "mode" },
@@ -277,39 +302,48 @@ require("lazy").setup({
 						},
 						{
 							function()
-								local msg = ""
-								local clients = vim.lsp.get_clients()
-								if #clients < 1 then
-									msg = "No active LSP"
-									return msg
-								end
-								local client_names = {}
-								for _, client in pairs(clients) do
-									table.insert(client_names, client.name)
-								end
-								msg = "LSP: " .. table.concat(client_names, ", ")
-								return msg
+								return require("lsp-progress").progress({
+									format = function(messages)
+										local active_clients = vim.lsp.get_clients()
+										local client_count = #active_clients
+										if #messages > 0 then
+											return " LSP:" .. client_count .. " " .. table.concat(messages, " ")
+										end
+										if #active_clients <= 0 then
+											return " LSP:" .. client_count
+										else
+											local client_names = {}
+											for i, client in ipairs(active_clients) do
+												if client and client.name ~= "" then
+													table.insert(client_names, "[" .. client.name .. "]")
+													print("client[" .. i .. "]:" .. vim.inspect(client.name))
+												end
+											end
+											return " LSP:" .. client_count .. " " .. table.concat(client_names, " ")
+										end
+									end,
+								})
 							end,
-							color = { fg = colors.fg, bg = colors.bg_statusline },
 						},
 					},
 				},
 			})
 		end,
 	},
-	{
-		"akinsho/bufferline.nvim",
-		commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		config = function()
-			require("bufferline").setup({
-				options = {
-					modified_icon = "󰧞",
-					close_icon = "",
-				},
-			})
-		end,
-	},
+	-- Doesn't seems to be useful now, as it does not support winbar. bufferline will only work in the first split, when split or vsplit is being used.
+	-- {
+	-- 	"akinsho/bufferline.nvim",
+	-- 	commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
+	-- 	dependencies = "nvim-tree/nvim-web-devicons",
+	-- 	config = function()
+	-- 		require("bufferline").setup({
+	-- 			options = {
+	-- 				modified_icon = "󰧞",
+	-- 				close_icon = "",
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"NeogitOrg/neogit",
 		commit = "d7772bca4ac00c02282b0d02623f2f8316c21f32",
