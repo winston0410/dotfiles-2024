@@ -7,15 +7,17 @@ vim.g.mapleader = " "
 local modes = { "n", "v" }
 
 local mappings = {
-	--  Disable popup for commandline
-	{ "q:", "<NOP>" },
-	-- yank text from neovim to system clipboard
-	{ "<leader>y", '"+y' },
-	-- paste text from neovim to system clipboard
-	{ "<leader>p", '"+p' },
-	{ "<leader>P", '"+P' },
-	{ "<leader>d", '"+d' },
-	{ "Y", "y$" },
+	{ "q:", "<NOP>", "Disable popup for commandline" },
+	{ "<leader>y", '"+y', "yank text from nvim to system clipboard" },
+	{ "<leader>p", '"+p', "paste text from system clipboard to nvim" },
+	{ "<leader>P", '"+P', "paste text from system clipboard to nvim" },
+	-- FIXME not sure why we need this in first place
+	-- { "<leader>d", '"+d' },
+	{
+		"Y",
+		"y$",
+		"Make Y yanks from the cursor position to the end of the line, make it consistents with how C and D behave for changing or deleting to the end of the line.",
+	},
 	{ "S", "<NOP>" },
 	{ "s", "<NOP>" },
 	-- FIXME for visual block, not sure do we need this
@@ -27,54 +29,65 @@ local mappings = {
 	-- https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166
 
 	-- tab is a collection of windows. A split is a window, and buffer is global. Therefore, we need to use tabs, windows and buffer to do things together
-	-- cycle focus to next window, with Cmd + w + w
-	{ "<Char-0xAD>w", "<C-w>w" },
-	-- create a vertical split, with Cmd + w + v
-	{ "<Char-0xAD>v", "<cmd>vsplit<cr>" },
-	-- create a horizontal split, with Cmd + w + h
-	{ "<Char-0xAD>c", "<cmd>split<cr>" },
-	-- close a split, with Cmd + w + q
-	{ "<Char-0xAD>q", "<cmd>quit<cr>" },
-	-- navigate to left split
-	{ "<Char-0xAD>l", "<C-w>l" },
-	-- navigate to right split
-	{ "<Char-0xAD>h", "<C-w>h" },
-	-- navigate to top split
-	{ "<Char-0xAD>k", "<C-w>k" },
-	-- navigate to down split
-	{ "<Char-0xAD>j", "<C-w>j" },
+	-- Binding for split
+	-- NOTE <Char-0xAD> is Cmd + w
+	{ "<Char-0xAD>w", "<C-w>w", "cycle focus to next split" },
+	{ "<Char-0xAD>v", "<cmd>vsplit<cr>", "create a vertical split" },
+	{ "<Char-0xAD>c", "<cmd>split<cr>", "create a horizontal split" },
+	{ "<Char-0xAD>q", "<cmd>quit<cr>", "close a split" },
+	{ "<Char-0xAD>l", "<C-w>l", "navigate to left split" },
+	{ "<Char-0xAD>h", "<C-w>h", "navigate to right split" },
+	{ "<Char-0xAD>k", "<C-w>k", "navigate to top split" },
+	{ "<Char-0xAD>j", "<C-w>j", "navigate to down split" },
 
-	-- -- create new tab in Oil.nvim, with Cmd + t + c
-	{ "<Char-0xBA>c", "<cmd>tabnew .<cr>" },
-	-- close the current tab, with Cmd + t + q
-	{ "<Char-0xBA>q", "<cmd>tabclose<cr>" },
-	-- cycle or navigate to specific tab
-	{ "<Char-0xBA>t", "gt" },
-	{ "<Char-0xBA>n", "<cmd>tabnext<cr>" },
-	{ "<Char-0xBA>p", "<cmd>tabprev<cr>" },
+	-- NOTE enable this in the future, if we really need to use tab in nvim
+	-- -- -- create new tab in Oil.nvim, with Cmd + t + c
+	-- { "<Char-0xBA>c", "<cmd>tabnew .<cr>" },
+	-- -- close the current tab, with Cmd + t + q
+	-- { "<Char-0xBA>q", "<cmd>tabclose<cr>" },
+	-- -- cycle or navigate to specific tab
+	-- { "<Char-0xBA>t", "gt" },
+	-- { "<Char-0xBA>n", "<cmd>tabnext<cr>" },
+	-- { "<Char-0xBA>p", "<cmd>tabprev<cr>" },
 
-	-- create new buffer, with Cmd + e + c
-	{ "<Char-0xBB>c", "<cmd>badd .<bar>bnext<cr>" },
-	-- delete current buffer and switch to prev buffer
+	-- NOTE <Char-0xBB> is Cmd + e
 	-- REF https://www.reddit.com/r/neovim/comments/s4jt9n/how_to_close_the_current_buffer_without_closing/
-	{ "<Char-0xBB>q", "<cmd>bprevious<bar>bdelete #<cr>" },
-	-- cycle between buffer
-	{ "<Char-0xBB>n", "<cmd>bnext<cr>" },
-	{ "<Char-0xBB>p", "<cmd>bprev<cr>" },
+	{ "<Char-0xBB>q", "<cmd>bprevious<bar>bdelete #<cr>", "delete current buffer and switch to prev buffer" },
+	{ "<Char-0xBB>n", "<cmd>bprev<cr>", "goto previous buffer" },
+	{ "<Char-0xBB>p", "<cmd>bnext<cr>", "goto next buffer" },
 }
 
 vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
---  Prevent the cursor move back when returning to normal mode
---  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
-vim.api.nvim_set_keymap("i", "<Esc>", "<Esc>`^", { silent = true, noremap = true })
 
-vim.api.nvim_set_keymap("n", "gs", ":%s/", { silent = true, noremap = true })
-vim.api.nvim_set_keymap("v", "gs", ":s/", { silent = true, noremap = true })
--- Important: Paste in visual mode without copying
-vim.api.nvim_set_keymap("v", "p", "pgvy", { silent = true, noremap = true })
-vim.api.nvim_set_keymap("v", "P", "Pgvy", { silent = true, noremap = true })
--- Important: Revert back to previous cursor position
-vim.api.nvim_set_keymap("i", "<esc>", "<esc>`^", { silent = true, noremap = true })
+--  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
+vim.api.nvim_set_keymap(
+	"i",
+	"<Esc>",
+	"<Esc>`^",
+	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
+)
+
+-- FIXME create a new keymapping that start subtitue for the highlighted word globally, and then replace these two mappings
+-- vim.api.nvim_set_keymap("n", "gs", ":%s/", { silent = true, noremap = true })
+-- vim.api.nvim_set_keymap("v", "gs", ":s/", { silent = true, noremap = true })
+vim.api.nvim_set_keymap(
+	"v",
+	"p",
+	"pgvy",
+	{ silent = true, noremap = true, desc = "Paste in visual mode without copying" }
+)
+vim.api.nvim_set_keymap(
+	"v",
+	"P",
+	"Pgvy",
+	{ silent = true, noremap = true, desc = "Paste in visual mode without copying" }
+)
+vim.api.nvim_set_keymap(
+	"i",
+	"<esc>",
+	"<esc>`^",
+	{ silent = true, noremap = true, desc = "Revert back to previous cursor position" }
+)
 
 for _, mapping in ipairs(mappings) do
 	for _, mode in ipairs(modes) do
@@ -673,6 +686,9 @@ require("lazy").setup({
 					"permissions",
 					"size",
 					"mtime",
+				},
+				keymaps = {
+					-- TODO
 				},
 				use_default_keymaps = false,
 				view_options = {
