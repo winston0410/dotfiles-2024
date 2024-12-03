@@ -265,7 +265,7 @@ require("lazy").setup({
 					section_separators = "",
 				},
 				winbar = {
-					lualine_a = { { "filetype", icon_only = true }, "filename" },
+					lualine_a = {},
 					lualine_b = {},
 					lualine_c = {},
 					lualine_x = {},
@@ -273,7 +273,7 @@ require("lazy").setup({
 					lualine_z = {},
 				},
 				inactive_winbar = {
-					lualine_a = { { "filetype", icon_only = true }, "filename" },
+					lualine_a = {},
 					lualine_b = {},
 					lualine_c = {},
 					lualine_x = {},
@@ -513,8 +513,13 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
+			-- for fd
 			{ ",m" },
-			{ ",g" },
+			-- for rg
+			{ ",f" },
+			-- for git related search
+			{ ",gc" },
+			{ ",gs" },
 		},
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
@@ -530,35 +535,28 @@ require("lazy").setup({
 				fzf_layout = "reverse-list",
 				files = {
 					prompt = "Fd❯ ",
-					git_icons = true,
-					file_icons = true,
-					color_icons = true,
 				},
 				grep = {
 					prompt = "Rg❯ ",
-					actions = {
-						["Enter"] = actions.file_edit,
-					},
 				},
 			})
 
 			for _, mode in ipairs({ "n", "v" }) do
-				vim.api.nvim_set_keymap(mode, ",m", "<cmd>lua require('plugins.fzf-lua').searchFiles()<cr>", {
+				vim.api.nvim_set_keymap(mode, ",m", "<cmd>lua require('fzf-lua').files_resume()<cr>", {
 					silent = true,
 					noremap = true,
 				})
 
-				vim.api.nvim_set_keymap(mode, ",pm", "<cmd>lua require('fzf-lua').files_resume()<cr>", {
+				vim.api.nvim_set_keymap(mode, ",f", "<cmd>lua require('fzf-lua').live_grep_resume()<cr>", {
 					silent = true,
 					noremap = true,
 				})
 
-				vim.api.nvim_set_keymap(mode, ",g", "<cmd>lua require('plugins.fzf-lua').liveGrep()<cr>", {
+				vim.api.nvim_set_keymap(mode, ",gc", "<cmd>lua require('fzf-lua').git_commits()<cr>", {
 					silent = true,
 					noremap = true,
 				})
-
-				vim.api.nvim_set_keymap(mode, ",pg", "<cmd>lua require('fzf-lua').live_grep_resume()<cr>", {
+				vim.api.nvim_set_keymap(mode, ",gs", "<cmd>lua require('fzf-lua').git_stash()<cr>", {
 					silent = true,
 					noremap = true,
 				})

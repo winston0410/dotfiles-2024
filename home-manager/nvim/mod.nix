@@ -8,6 +8,9 @@
     # needed for fzf-lua
     fzf
     fd
+    bat
+    delta
+    chafa
   ];
 
   home.sessionVariables = {
