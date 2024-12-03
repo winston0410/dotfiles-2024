@@ -25,29 +25,10 @@ nix run home-manager/release-23.05 -- --flake .#hugosum switch
 nix run nix-darwin -- --flake .#hugosum switch
 ```
 
-## Set up neovim
+## Set up Neovim
 
-Set up packages
+Install all plugins in Neovim, using Vim command panel:
 
-```
-:PackerUpdate
-:PackerCompile
-```
-
-Set up Treesitter
-
-```
-:TSUpdate all
-```
-
-Use checkhealth to confirm all parsers are working:
-
-```
-:checkhealth nvim-treesitter
-```
-
-If there are any parser has issue, reinstall them with:
-
-```
-:TSUpdate <parser-name>
+```sh
+:Lazy update
 ```
