@@ -359,7 +359,9 @@ require("lazy").setup({
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		version = "3.14.1",
-		opts = {},
+		opts = {
+			preset = "helix",
+		},
 		keys = {
 			{
 				"<leader>?",
