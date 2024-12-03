@@ -313,7 +313,7 @@ require("lazy").setup({
 											return " LSP:" .. client_count
 										else
 											local client_names = {}
-											for i, client in ipairs(active_clients) do
+											for _, client in ipairs(active_clients) do
 												if client and client.name ~= "" then
 													table.insert(client_names, "[" .. client.name .. "]")
 												end
@@ -492,7 +492,7 @@ require("lazy").setup({
 	},
 	{
 		"smoka7/hop.nvim",
-		commit = "275dcbc84e8167c7d64b4584770d837f3ce21562",
+		version = "2.7.2",
 		-- keys = { { "<leader>f" }, { "<leader>F" }, { "<leader>f", mode = "v" }, { "<leader>F", mode = "v" } },
 		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
 		config = function()
@@ -519,6 +519,8 @@ require("lazy").setup({
 			-- for git related search
 			{ ",gc" },
 			{ ",gs" },
+			-- for lsp search
+			{ ",la" },
 		},
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
@@ -541,7 +543,7 @@ require("lazy").setup({
 			})
 
 			for _, mode in ipairs({ "n", "v" }) do
-				vim.api.nvim_set_keymap(mode, ",m", "<cmd>lua require('fzf-lua').files_resume()<cr>", {
+				vim.api.nvim_set_keymap(mode, ",m", "<cmd>lua require('fzf-lua').files()<cr>", {
 					silent = true,
 					noremap = true,
 				})
@@ -560,26 +562,10 @@ require("lazy").setup({
 					noremap = true,
 				})
 
-				-- NOTE not in use at the moment
-				-- vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- })
-
-				-- vim.api.nvim_set_keymap(mode, ",a", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- })
-
-				-- vim.api.nvim_set_keymap(mode, ",s", "<cmd>lua require('fzf-lua').lsp_workspace_symbols()<cr>", {
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- })
-
-				-- vim.api.nvim_set_keymap(mode, ",d", "<cmd>lua require('fzf-lua').lsp_workspace_diagnostics()<cr>", {
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- })
+				vim.api.nvim_set_keymap(mode, ",la", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
+					silent = true,
+					noremap = true,
+				})
 			end
 		end,
 	},
