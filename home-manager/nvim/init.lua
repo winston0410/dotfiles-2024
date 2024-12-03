@@ -5,124 +5,107 @@ package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.
 vim.g.mapleader = " "
 
 local modes = { "n", "v" }
+vim.keymap.set(modes, "q:", "<NOP>", { silent = true, noremap = true, desc = "Disable popup for commandline" })
+vim.keymap.set(
+	modes,
+	"<leader>y",
+	'"+y',
+	{ silent = true, noremap = true, desc = "yank text from nvim to system clipboard" }
+)
+vim.keymap.set(
+	modes,
+	"<leader>p",
+	'"+p',
+	{ silent = true, noremap = true, desc = "paste text from system clipboard to nvim" }
+)
+vim.keymap.set(
+	modes,
+	"<leader>P",
+	'"+P',
+	{ silent = true, noremap = true, desc = "paste text from system clipboard to nvim" }
+)
+-- FIXME not sure why we need this in first place
+-- vim.keymap.set(modes, "<leader>d", '"+d' )
+vim.keymap.set(modes, "Y", "y$", {
+	silent = true,
+	noremap = true,
+	desc = "Make Y yanks from the cursor position to the end of the line, make it consistent with how C and D behave for changing or deleting to the end of the line.",
+})
+vim.keymap.set(modes, "S", "<NOP>", { silent = true, noremap = true, desc = "Unmap S" })
+vim.keymap.set(modes, "s", "<NOP>", { silent = true, noremap = true, desc = "Unmap s" })
+-- FIXME for visual block, not sure do we need this
+-- vim.keymap.set(modes, "<Char-0xAD>", "<C-v>" )
+vim.keymap.set({ "i", "n", "v" }, "<Char-0xAE>", "<C-r>", { silent = true, noremap = true, desc = "Redo" })
 
-local mappings = {
-	{ "q:", "<NOP>", "Disable popup for commandline" },
-	{ "<leader>y", '"+y', "yank text from nvim to system clipboard" },
-	{ "<leader>p", '"+p', "paste text from system clipboard to nvim" },
-	{ "<leader>P", '"+P', "paste text from system clipboard to nvim" },
-	-- FIXME not sure why we need this in first place
-	-- { "<leader>d", '"+d' },
-	{
-		"Y",
-		"y$",
-		"Make Y yanks from the cursor position to the end of the line, make it consistents with how C and D behave for changing or deleting to the end of the line.",
-	},
-	{ "S", "<NOP>" },
-	{ "s", "<NOP>" },
-	-- FIXME for visual block, not sure do we need this
-	-- { "<Char-0xAD>", "<C-v>" },
-	-- for redo
-	{ "<Char-0xAE>", "<C-r>" },
+-- Binding for split
+vim.keymap.set(modes, "<Char-0xAD>w", "<C-w>w", { silent = true, noremap = true, desc = "cycle focus to next split" })
+vim.keymap.set(
+	modes,
+	"<Char-0xAD>v",
+	"<cmd>vsplit<cr>",
+	{ silent = true, noremap = true, desc = "create a vertical split" }
+)
+vim.keymap.set(
+	modes,
+	"<Char-0xAD>c",
+	"<cmd>split<cr>",
+	{ silent = true, noremap = true, desc = "create a horizontal split" }
+)
+vim.keymap.set(modes, "<Char-0xAD>q", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "close a split" })
+vim.keymap.set(modes, "<Char-0xAD>l", "<C-w>l", { silent = true, noremap = true, desc = "navigate to left split" })
+vim.keymap.set(modes, "<Char-0xAD>h", "<C-w>h", { silent = true, noremap = true, desc = "navigate to right split" })
+vim.keymap.set(modes, "<Char-0xAD>k", "<C-w>k", { silent = true, noremap = true, desc = "navigate to top split" })
+vim.keymap.set(modes, "<Char-0xAD>j", "<C-w>j", { silent = true, noremap = true, desc = "navigate to bottom split" })
 
-	-- REF guide on how to use tabs, buffers and window correctly in Vim
-	-- https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166
+-- NOTE enable this in the future, if we really need to use tab in nvim
+-- vim.keymap.set(modes, "<Char-0xBA>c", "<cmd>tabnew .<cr>" )
+-- vim.keymap.set(modes, "<Char-0xBA>q", "<cmd>tabclose<cr>" )
+-- vim.keymap.set(modes, "<Char-0xBA>t", "gt" )
+-- vim.keymap.set(modes, "<Char-0xBA>n", "<cmd>tabnext<cr>" )
+-- vim.keymap.set(modes, "<Char-0xBA>p", "<cmd>tabprev<cr>" )
 
-	-- tab is a collection of windows. A split is a window, and buffer is global. Therefore, we need to use tabs, windows and buffer to do things together
-	-- Binding for split
-	-- NOTE <Char-0xAD> is Cmd + w
-	{ "<Char-0xAD>w", "<C-w>w", "cycle focus to next split" },
-	{ "<Char-0xAD>v", "<cmd>vsplit<cr>", "create a vertical split" },
-	{ "<Char-0xAD>c", "<cmd>split<cr>", "create a horizontal split" },
-	{ "<Char-0xAD>q", "<cmd>quit<cr>", "close a split" },
-	{ "<Char-0xAD>l", "<C-w>l", "navigate to left split" },
-	{ "<Char-0xAD>h", "<C-w>h", "navigate to right split" },
-	{ "<Char-0xAD>k", "<C-w>k", "navigate to top split" },
-	{ "<Char-0xAD>j", "<C-w>j", "navigate to down split" },
-
-	-- NOTE enable this in the future, if we really need to use tab in nvim
-	-- -- -- create new tab in Oil.nvim, with Cmd + t + c
-	-- { "<Char-0xBA>c", "<cmd>tabnew .<cr>" },
-	-- -- close the current tab, with Cmd + t + q
-	-- { "<Char-0xBA>q", "<cmd>tabclose<cr>" },
-	-- -- cycle or navigate to specific tab
-	-- { "<Char-0xBA>t", "gt" },
-	-- { "<Char-0xBA>n", "<cmd>tabnext<cr>" },
-	-- { "<Char-0xBA>p", "<cmd>tabprev<cr>" },
-
-	-- NOTE <Char-0xBB> is Cmd + e
-	-- REF https://www.reddit.com/r/neovim/comments/s4jt9n/how_to_close_the_current_buffer_without_closing/
-	{ "<Char-0xBB>q", "<cmd>bprevious<bar>bdelete #<cr>", "delete current buffer and switch to prev buffer" },
-	{ "<Char-0xBB>n", "<cmd>bprev<cr>", "goto previous buffer" },
-	{ "<Char-0xBB>p", "<cmd>bnext<cr>", "goto next buffer" },
-}
-
-vim.api.nvim_set_keymap("i", "<Char-0xAE>", "<C-r>", { silent = true, noremap = true })
+-- NOTE <Char-0xBB> is Cmd + e
+vim.keymap.set(
+	modes,
+	"<Char-0xBB>q",
+	"<cmd>bprevious<bar>bdelete #<cr>",
+	{ silent = true, noremap = true, desc = "delete current buffer and switch to prev buffer" }
+)
+vim.keymap.set(
+	modes,
+	"<Char-0xBB>n",
+	"<cmd>bprev<cr>",
+	{ silent = true, noremap = true, desc = "goto previous buffer" }
+)
+vim.keymap.set(modes, "<Char-0xBB>p", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "goto next buffer" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
-vim.api.nvim_set_keymap(
-	"i",
+vim.keymap.set(
+	{ "i" },
 	"<Esc>",
 	"<Esc>`^",
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
 -- FIXME create a new keymapping that start subtitue for the highlighted word globally, and then replace these two mappings
--- vim.api.nvim_set_keymap("n", "gs", ":%s/", { silent = true, noremap = true })
--- vim.api.nvim_set_keymap("v", "gs", ":s/", { silent = true, noremap = true })
-vim.api.nvim_set_keymap(
-	"v",
-	"p",
-	"pgvy",
-	{ silent = true, noremap = true, desc = "Paste in visual mode without copying" }
-)
-vim.api.nvim_set_keymap(
-	"v",
-	"P",
-	"Pgvy",
-	{ silent = true, noremap = true, desc = "Paste in visual mode without copying" }
-)
-vim.api.nvim_set_keymap(
+-- vim.keymap.set("n", "gs", ":%s/", { silent = true, noremap = true })
+-- vim.keymap.set("v", "gs", ":s/", { silent = true, noremap = true })
+
+vim.keymap.set("v", "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
+vim.keymap.set("v", "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
+vim.keymap.set(
 	"i",
 	"<esc>",
 	"<esc>`^",
 	{ silent = true, noremap = true, desc = "Revert back to previous cursor position" }
 )
 
-for _, mapping in ipairs(mappings) do
-	for _, mode in ipairs(modes) do
-		vim.api.nvim_set_keymap(mode, mapping[1], mapping[2], { silent = true, noremap = true })
-	end
-end
-
 local all_modes = { "i", "n", "v", "c", "t", "s" }
 
-for _, mode in pairs(all_modes) do
-	vim.api.nvim_set_keymap(
-		mode,
-		"<Char-0xAA>",
-		"<esc>",
-		{ silent = true, noremap = true, desc = "remap escape to CMD + [" }
-	)
-	vim.api.nvim_set_keymap(
-		mode,
-		"<Char-0xAB>",
-		"<Up>",
-		{ silent = true, noremap = true, desc = "remap up to CMD + p" }
-	)
-	vim.api.nvim_set_keymap(
-		mode,
-		"<Char-0xAC>",
-		"<Down>",
-		{ silent = true, noremap = true, desc = "remap down to CMD + n" }
-	)
-	vim.api.nvim_set_keymap(
-		mode,
-		"<Char-0xAF>",
-		"<cmd>write<cr>",
-		{ silent = true, noremap = true, desc = "Saved current file by <command-s>" }
-	)
-end
+vim.keymap.set(all_modes, "<Char-0xAA>", "<esc>", { silent = true, noremap = true, desc = "remap escape to CMD + [" })
+vim.keymap.set(all_modes, "<Char-0xAB>", "<Up>", { silent = true, noremap = true, desc = "remap up to CMD + p" })
+vim.keymap.set(all_modes, "<Char-0xAC>", "<Down>", { silent = true, noremap = true, desc = "remap down to CMD + n" })
+-- vim.keymap.set(all_modes, "<Char-0xAF>", "<cmd>write<cr>", { silent = true, noremap = true, desc = "Saved current file by <command-s>" })
 
 vim.cmd("set shortmess+=c")
 
@@ -354,21 +337,38 @@ require("lazy").setup({
 			require("neogit").setup({
 				disable_hint = true,
 				disable_commit_confirmation = true,
+				kind = "floating",
+				integrations = {
+					fzf_lua = true,
+				},
 				mappings = {
 					status = {
 						["<enter>"] = "Toggle",
 					},
 				},
 			})
-			for _, mode in ipairs({ "n", "v" }) do
-				vim.api.nvim_set_keymap(
-					mode,
-					"<leader>g",
-					"<cmd>lua require('neogit').open()<cr>",
-					{ silent = true, noremap = true }
-				)
-			end
+			vim.keymap.set(
+				{ "n" },
+				"<leader>g",
+				"<cmd>lua require('neogit').open()<cr>",
+				{ silent = true, noremap = true, desc = "open Neogit panel" }
+			)
 		end,
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		version = "3.14.1",
+		opts = {},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
 	},
 	{
 		"L3MON4D3/LuaSnip",
@@ -431,15 +431,35 @@ require("lazy").setup({
 	},
 	{
 		"mrjones2014/smart-splits.nvim",
-		commit = "c8a9173d70cbbd1f6e4a414e49e31df2b32a1362",
+		version = "1.7.0",
 		config = function()
 			require("smart-splits").setup({
 				default_amount = 10,
 			})
-			vim.keymap.set("n", "<Char-0xAD>L", require("smart-splits").resize_right)
-			vim.keymap.set("n", "<Char-0xAD>H", require("smart-splits").resize_left)
-			vim.keymap.set("n", "<Char-0xAD>K", require("smart-splits").resize_up)
-			vim.keymap.set("n", "<Char-0xAD>J,", require("smart-splits").resize_down)
+			vim.keymap.set(
+				"n",
+				"<Char-0xAD>L",
+				require("smart-splits").resize_right,
+				{ silent = true, desc = "resize split to right" }
+			)
+			vim.keymap.set(
+				"n",
+				"<Char-0xAD>H",
+				require("smart-splits").resize_left,
+				{ silent = true, desc = "resize split to left" }
+			)
+			vim.keymap.set(
+				"n",
+				"<Char-0xAD>K",
+				require("smart-splits").resize_up,
+				{ silent = true, desc = "resize split to top" }
+			)
+			vim.keymap.set(
+				"n",
+				"<Char-0xAD>J,",
+				require("smart-splits").resize_down,
+				{ silent = true, desc = "resize split to bottom" }
+			)
 		end,
 	},
 	{
@@ -493,19 +513,24 @@ require("lazy").setup({
 	{
 		"smoka7/hop.nvim",
 		version = "2.7.2",
-		-- keys = { { "<leader>f" }, { "<leader>F" }, { "<leader>f", mode = "v" }, { "<leader>F", mode = "v" } },
 		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
 		config = function()
 			require("hop").setup({})
 
 			local supported_modes = { "n", "v", "o" }
 
-			for _, mode in ipairs(supported_modes) do
-				vim.api.nvim_set_keymap(mode, "f", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-				vim.api.nvim_set_keymap(mode, "F", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-				-- vim.api.nvim_set_keymap(mode, "<leader>f", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-				-- vim.api.nvim_set_keymap(mode, "<leader>F", "<cmd>HopChar1<cr>", { noremap = true, silent = true })
-			end
+			vim.keymap.set(
+				supported_modes,
+				"f",
+				"<cmd>HopChar1<cr>",
+				{ noremap = true, silent = true, desc = "find 1 character forward" }
+			)
+			vim.keymap.set(
+				supported_modes,
+				"F",
+				"<cmd>HopChar1<cr>",
+				{ noremap = true, silent = true, desc = "find 1 character backward" }
+			)
 		end,
 	},
 	{
@@ -542,31 +567,37 @@ require("lazy").setup({
 				},
 			})
 
-			for _, mode in ipairs({ "n", "v" }) do
-				vim.api.nvim_set_keymap(mode, ",m", "<cmd>lua require('fzf-lua').files()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+			local supported_modes = { "n", "v" }
 
-				vim.api.nvim_set_keymap(mode, ",f", "<cmd>lua require('fzf-lua').live_grep_resume()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+			vim.keymap.set(supported_modes, ",m", "<cmd>lua require('fzf-lua').files()<cr>", {
+				silent = true,
+				noremap = true,
+				desc = "search files",
+			})
 
-				vim.api.nvim_set_keymap(mode, ",gc", "<cmd>lua require('fzf-lua').git_commits()<cr>", {
-					silent = true,
-					noremap = true,
-				})
-				vim.api.nvim_set_keymap(mode, ",gs", "<cmd>lua require('fzf-lua').git_stash()<cr>", {
-					silent = true,
-					noremap = true,
-				})
+			vim.keymap.set(supported_modes, ",f", "<cmd>lua require('fzf-lua').live_grep_resume()<cr>", {
+				silent = true,
+				noremap = true,
+				desc = "search text in files",
+			})
 
-				vim.api.nvim_set_keymap(mode, ",la", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-					silent = true,
-					noremap = true,
-				})
-			end
+			vim.keymap.set(supported_modes, ",gc", "<cmd>lua require('fzf-lua').git_commits()<cr>", {
+				silent = true,
+				noremap = true,
+				desc = "search text in git commits",
+			})
+
+			vim.keymap.set(supported_modes, ",gs", "<cmd>lua require('fzf-lua').git_stash()<cr>", {
+				silent = true,
+				noremap = true,
+				desc = "search text in git stash",
+			})
+
+			vim.keymap.set(supported_modes, ",la", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
+				silent = true,
+				noremap = true,
+				desc = "search lsp code actions",
+			})
 		end,
 	},
 	{
@@ -631,10 +662,7 @@ require("lazy").setup({
 				used_by = { "make" },
 			}
 
-			for _, mode in ipairs({ "n", "v" }) do
-				-- Unmap x
-				vim.api.nvim_set_keymap(mode, "x", "<nop>", { silent = true, noremap = true })
-			end
+			vim.keymap.set({ "n", "v" }, "x", "<nop>", { silent = true, noremap = true, desc = "Unmap x" })
 
 			treesitter.setup({
 				highlight = { enable = true },
@@ -1166,15 +1194,28 @@ require("lazy").setup({
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		-- Buffer local mappings.
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		local opts = { buffer = ev.buf }
 		vim.keymap.set({ "n" }, "<leader>lt", require("trouble").toggle, { silent = true, noremap = true })
-		vim.keymap.set("n", "<leader>li", vim.lsp.buf.implementation, opts)
-		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, opts)
-		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, opts)
-		vim.keymap.set("n", "<leader>ldt", vim.lsp.buf.type_definition, opts)
-		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
-		vim.keymap.set({ "n", "v" }, "<leader>la", vim.lsp.buf.code_action, opts)
+		vim.keymap.set(
+			"n",
+			"<leader>li",
+			vim.lsp.buf.implementation,
+			{ silent = true, noremap = true, buffer = ev.buf }
+		)
+		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { silent = true, noremap = true, buffer = ev.buf })
+		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { silent = true, noremap = true, buffer = ev.buf })
+		vim.keymap.set(
+			"n",
+			"<leader>ldt",
+			vim.lsp.buf.type_definition,
+			{ silent = true, noremap = true, buffer = ev.buf }
+		)
+		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { silent = true, noremap = true, buffer = ev.buf })
+		vim.keymap.set(
+			{ "n", "v" },
+			"<leader>la",
+			vim.lsp.buf.code_action,
+			{ silent = true, noremap = true, buffer = ev.buf }
+		)
 	end,
 })
