@@ -214,6 +214,33 @@ require("lazy").setup({
 			vim.cmd.colorscheme("tokyonight")
 		end,
 	},
+	-- {
+	-- 	"folke/persistence.nvim",
+	-- 	version = "3.1.0",
+	-- 	event = "BufReadPre",
+	-- 	opts = {},
+	-- 	config = function()
+	-- 		-- load the session for the current directory
+	-- 		vim.keymap.set("n", "<leader>qs", function()
+	-- 			require("persistence").load()
+	-- 		end)
+	--
+	-- 		-- select a session to load
+	-- 		vim.keymap.set("n", "<leader>qS", function()
+	-- 			require("persistence").select()
+	-- 		end)
+	--
+	-- 		-- load the last session
+	-- 		vim.keymap.set("n", "<leader>ql", function()
+	-- 			require("persistence").load({ last = true })
+	-- 		end)
+	--
+	-- 		-- stop Persistence => session won't be saved on exit
+	-- 		vim.keymap.set("n", "<leader>qd", function()
+	-- 			require("persistence").stop()
+	-- 		end)
+	-- 	end,
+	-- },
 	{
 		{
 			"linrongbin16/lsp-progress.nvim",
@@ -224,11 +251,10 @@ require("lazy").setup({
 	{
 		"nvim-lualine/lualine.nvim",
 		commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
-		lazy = false,
+		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			local colors = require("tokyonight.colors").setup()
-			-- print('check colors', vim.inspect(colors))
 			require("lualine").setup({
 				options = {
 					theme = "tokyonight",
@@ -574,12 +600,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		event = "CursorHold",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		commit = "ad8f0a472148c3e0ae9851e26a722ee4e29b1595",
-	},
-	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
 		event = "CursorHold",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -587,11 +607,11 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		event = "CursorHold",
 		commit = "427a90ae70f66c2fdf2d9ad16a0f08e9697d90d9",
 		build = function()
 			vim.cmd("TSUpdate")
 		end,
+		event = "CursorHold",
 		config = function()
 			local treesitter = require("nvim-treesitter.configs")
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
