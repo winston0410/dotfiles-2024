@@ -6,30 +6,17 @@ vim.g.mapleader = " "
 
 local modes = { "n", "v" }
 vim.keymap.set(modes, "q:", "<NOP>", { silent = true, noremap = true, desc = "Disable popup for commandline" })
-vim.keymap.set(
-	modes,
-	"<leader>y",
-	'"+y',
-	{ silent = true, noremap = true, desc = "yank text from nvim to system clipboard" }
-)
-vim.keymap.set(
-	modes,
-	"<leader>p",
-	'"+p',
-	{ silent = true, noremap = true, desc = "paste text from system clipboard to nvim" }
-)
-vim.keymap.set(
-	modes,
-	"<leader>P",
-	'"+P',
-	{ silent = true, noremap = true, desc = "paste text from system clipboard to nvim" }
-)
+vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
+vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
+vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
 -- FIXME not sure why we need this in first place
 -- vim.keymap.set(modes, "<leader>d", '"+d' )
+--
+-- make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set(modes, "Y", "y$", {
 	silent = true,
 	noremap = true,
-	desc = "Make Y yanks from the cursor position to the end of the line, make it consistent with how C and D behave for changing or deleting to the end of the line.",
+	desc = "Yanks from the cursor position to the end of the line.",
 })
 vim.keymap.set(modes, "S", "<NOP>", { silent = true, noremap = true, desc = "Unmap S" })
 vim.keymap.set(modes, "s", "<NOP>", { silent = true, noremap = true, desc = "Unmap s" })
@@ -43,19 +30,19 @@ vim.keymap.set(
 	modes,
 	"<Char-0xAD>v",
 	"<cmd>vsplit<cr>",
-	{ silent = true, noremap = true, desc = "create a vertical split" }
+	{ silent = true, noremap = true, desc = "Create a vertical split" }
 )
 vim.keymap.set(
 	modes,
 	"<Char-0xAD>c",
 	"<cmd>split<cr>",
-	{ silent = true, noremap = true, desc = "create a horizontal split" }
+	{ silent = true, noremap = true, desc = "Create a horizontal split" }
 )
-vim.keymap.set(modes, "<Char-0xAD>q", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "close a split" })
-vim.keymap.set(modes, "<Char-0xAD>l", "<C-w>l", { silent = true, noremap = true, desc = "navigate to left split" })
-vim.keymap.set(modes, "<Char-0xAD>h", "<C-w>h", { silent = true, noremap = true, desc = "navigate to right split" })
-vim.keymap.set(modes, "<Char-0xAD>k", "<C-w>k", { silent = true, noremap = true, desc = "navigate to top split" })
-vim.keymap.set(modes, "<Char-0xAD>j", "<C-w>j", { silent = true, noremap = true, desc = "navigate to bottom split" })
+vim.keymap.set(modes, "<Char-0xAD>q", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
+vim.keymap.set(modes, "<Char-0xAD>l", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
+vim.keymap.set(modes, "<Char-0xAD>h", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
+vim.keymap.set(modes, "<Char-0xAD>k", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
+vim.keymap.set(modes, "<Char-0xAD>j", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
 -- NOTE enable this in the future, if we really need to use tab in nvim
 -- vim.keymap.set(modes, "<Char-0xBA>c", "<cmd>tabnew .<cr>" )
@@ -106,8 +93,6 @@ vim.keymap.set(all_modes, "<Char-0xAA>", "<esc>", { silent = true, noremap = tru
 vim.keymap.set(all_modes, "<Char-0xAB>", "<Up>", { silent = true, noremap = true, desc = "remap up to CMD + p" })
 vim.keymap.set(all_modes, "<Char-0xAC>", "<Down>", { silent = true, noremap = true, desc = "remap down to CMD + n" })
 -- vim.keymap.set(all_modes, "<Char-0xAF>", "<cmd>write<cr>", { silent = true, noremap = true, desc = "Saved current file by <command-s>" })
-
-vim.cmd("set shortmess+=c")
 
 --Quit default plugin early
 vim.g.loaded_zipPlugin = 1
@@ -206,12 +191,17 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{
 		"LazyVim/LazyVim",
-		commit = "2fc7697786e72e02db91dd2242d1407f5b80856b",
-		lazy = false,
-		config = function()
-			-- only load the autocmds modules. The options module seems to be too much
-			require("lazyvim.config.autocmds")
-		end,
+		version = "13.6.0",
+		opts = {
+			defaults = {
+				autocmds = true,
+				keymaps = false,
+			},
+			news = {
+				lazyvim = false,
+				neovim = false,
+			},
+		},
 	},
 	{
 		"folke/tokyonight.nvim",
@@ -228,9 +218,7 @@ require("lazy").setup({
 		{
 			"linrongbin16/lsp-progress.nvim",
 			version = "1.0.13",
-			config = function()
-				require("lsp-progress").setup()
-			end,
+			event = { "BufReadPre", "BufNewFile" },
 		},
 	},
 	{
@@ -333,20 +321,20 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 		},
 		keys = { { "<leader>g" }, { "<leader>g", mode = "v" } },
+		opts = {
+			disable_hint = true,
+			disable_commit_confirmation = true,
+			kind = "floating",
+			integrations = {
+				fzf_lua = true,
+			},
+			mappings = {
+				status = {
+					["<enter>"] = "Toggle",
+				},
+			},
+		},
 		config = function()
-			require("neogit").setup({
-				disable_hint = true,
-				disable_commit_confirmation = true,
-				kind = "floating",
-				integrations = {
-					fzf_lua = true,
-				},
-				mappings = {
-					status = {
-						["<enter>"] = "Toggle",
-					},
-				},
-			})
 			vim.keymap.set(
 				{ "n" },
 				"<leader>g",
@@ -361,15 +349,6 @@ require("lazy").setup({
 		version = "3.14.1",
 		opts = {
 			preset = "helix",
-		},
-		keys = {
-			{
-				"<leader>?",
-				function()
-					require("which-key").show({ global = false })
-				end,
-				desc = "Buffer Local Keymaps (which-key)",
-			},
 		},
 	},
 	{
@@ -434,10 +413,11 @@ require("lazy").setup({
 	{
 		"mrjones2014/smart-splits.nvim",
 		version = "1.7.0",
+		-- keys = {},
+		opts = {
+			default_amount = 10,
+		},
 		config = function()
-			require("smart-splits").setup({
-				default_amount = 10,
-			})
 			vim.keymap.set(
 				"n",
 				"<Char-0xAD>L",
@@ -466,51 +446,42 @@ require("lazy").setup({
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		commit = "5f808b5e4fef30bd8aca1b803b4e555da07fc412",
+		version = "0.9.0",
 		event = "CursorHold",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("gitsigns").setup()
-		end,
 	},
 	{
 		"nacro90/numb.nvim",
 		commit = "3f7d4a74bd456e747a1278ea1672b26116e0824d",
 		event = "CmdlineEnter",
-		config = function()
-			require("numb").setup({})
-		end,
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		commit = "7871a88056f7144defca9c931e311a3134c5d509",
+		main = "ibl",
+		version = "3.8.6",
 		event = "CursorHold",
-		config = function()
-			require("ibl").setup({
-				indent = {
-					char = "▏",
-					highlight = { "IblIndent" },
-				},
-			})
-		end,
+		opts = {
+			indent = {
+				char = "▏",
+				highlight = { "IblIndent" },
+			},
+		},
 	},
 	{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = "CursorHold" },
 	{
 		"numToStr/Comment.nvim",
 		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
 		keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
-		config = function()
-			require("Comment").setup({
-				toggler = {
-					line = "<leader>cc",
-					block = "<leader>bc",
-				},
-				opleader = {
-					line = "<leader>c",
-					block = "<leader>b",
-				},
-			})
-		end,
+		opts = {
+			toggler = {
+				line = "<leader>cc",
+				block = "<leader>bc",
+			},
+			opleader = {
+				line = "<leader>c",
+				block = "<leader>b",
+			},
+		},
 	},
 	{
 		"smoka7/hop.nvim",
@@ -1196,28 +1167,47 @@ require("lazy").setup({
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
+		local supported_modes = { "n", "v" }
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		vim.keymap.set({ "n" }, "<leader>lt", require("trouble").toggle, { silent = true, noremap = true })
+		vim.keymap.set(supported_modes, "<leader>lt", require("trouble").toggle, { silent = true, noremap = true })
 		vim.keymap.set(
-			"n",
+			supported_modes,
 			"<leader>li",
 			vim.lsp.buf.implementation,
-			{ silent = true, noremap = true, buffer = ev.buf }
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
 		)
-		vim.keymap.set("n", "<leader>lh", vim.lsp.buf.hover, { silent = true, noremap = true, buffer = ev.buf })
-		vim.keymap.set("n", "<leader>ld", vim.lsp.buf.definition, { silent = true, noremap = true, buffer = ev.buf })
 		vim.keymap.set(
-			"n",
+			supported_modes,
+			"<leader>lh",
+			vim.lsp.buf.hover,
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" }
+		)
+		vim.keymap.set(
+			supported_modes,
+			"<leader>ld",
+			vim.lsp.buf.definition,
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" }
+		)
+		vim.keymap.set(
+			supported_modes,
 			"<leader>ldt",
 			vim.lsp.buf.type_definition,
-			{ silent = true, noremap = true, buffer = ev.buf }
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" }
 		)
-		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { silent = true, noremap = true, buffer = ev.buf })
 		vim.keymap.set(
-			{ "n", "v" },
+			supported_modes,
+			"<leader>lr",
+			vim.lsp.buf.rename,
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
+		)
+		vim.keymap.set(
+			supported_modes,
 			"<leader>la",
 			vim.lsp.buf.code_action,
-			{ silent = true, noremap = true, buffer = ev.buf }
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
 		)
+		-- Remove default keybinding added by lspconfig
+		-- REF https://neovim.io/doc/user/lsp.html#lsp-config
+		vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
 	end,
 })
