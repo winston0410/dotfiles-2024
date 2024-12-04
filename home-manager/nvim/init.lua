@@ -439,36 +439,47 @@ require("lazy").setup({
 	{
 		"mrjones2014/smart-splits.nvim",
 		version = "1.7.0",
-		-- keys = {},
+		keys = {
+			{
+				"<Char-0xAD>L",
+				function()
+					require("smart-splits").resize_right()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "resize split to right",
+			},
+			{
+				"<Char-0xAD>H",
+				function()
+					require("smart-splits").resize_left()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "resize split to left",
+			},
+			{
+				"<Char-0xAD>K",
+				function()
+					require("smart-splits").resize_up()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "resize split to top",
+			},
+			{
+				"<Char-0xAD>J",
+				function()
+					require("smart-splits").resize_down()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "resize split to bottom",
+			},
+		},
 		opts = {
 			default_amount = 10,
 		},
-		config = function()
-			vim.keymap.set(
-				"n",
-				"<Char-0xAD>L",
-				require("smart-splits").resize_right,
-				{ silent = true, desc = "resize split to right" }
-			)
-			vim.keymap.set(
-				"n",
-				"<Char-0xAD>H",
-				require("smart-splits").resize_left,
-				{ silent = true, desc = "resize split to left" }
-			)
-			vim.keymap.set(
-				"n",
-				"<Char-0xAD>K",
-				require("smart-splits").resize_up,
-				{ silent = true, desc = "resize split to top" }
-			)
-			vim.keymap.set(
-				"n",
-				"<Char-0xAD>J,",
-				require("smart-splits").resize_down,
-				{ silent = true, desc = "resize split to bottom" }
-			)
-		end,
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -600,6 +611,12 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"nvim-treesitter/nvim-treesitter-context",
+		event = "CursorHold",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		commit = "8ebcf62cf48dd97b3d121884ecb6bc4c00f1b069",
+	},
+	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
 		event = "CursorHold",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -611,9 +628,69 @@ require("lazy").setup({
 		build = function()
 			vim.cmd("TSUpdate")
 		end,
+		opts = {
+			ensure_installed = "all",
+			auto_install = false,
+			incremental_selection = { enable = true },
+			highlight = { enable = true },
+			indent = { enable = true },
+			query_linter = {
+				enable = true,
+				use_virtual_text = true,
+				lint_events = { "BufWrite", "CursorHold" },
+			},
+			textobjects = {
+				select = {
+					enable = true,
+					lookahead = true,
+					keymaps = {
+						-- ["af"] = "@function.outer",
+						-- ["if"] = "@function.inner",
+						-- ["ai"] = "@conditional.outer",
+						-- ["ii"] = "@conditional.inner",
+						-- ["ac"] = "@call.inner",
+						-- ["ic"] = "@call.outer",
+					},
+				},
+				move = {
+					enable = true,
+					set_jumps = true,
+					-- goto_next_start = {
+					-- 	["xf"] = "@function.outer",
+					-- 	["xc"] = "@call.outer",
+					-- 	["xs"] = "@parameter.inner",
+					-- 	["xz"] = "@conditional.outer",
+					-- 	["xv"] = "@class.outer",
+					-- },
+					-- goto_next_end = {
+					-- 	["xF"] = "@function.outer",
+					-- 	["xC"] = "@call.outer",
+					-- 	["xS"] = "@parameter.inner",
+					-- 	["xZ"] = "@conditional.outer",
+					-- 	["xV"] = "@class.outer",
+					-- },
+					-- goto_previous_start = {
+					-- 	["Xf"] = "@function.outer",
+					-- 	["Xc"] = "@call.outer",
+					-- 	["Xs"] = "@parameter.inner",
+					-- 	["Xz"] = "@conditional.outer",
+					-- 	["Xv"] = "@class.outer",
+					-- },
+					-- goto_previous_end = {
+					-- 	["XF"] = "@function.outer",
+					-- 	["XC"] = "@call.outer",
+					-- 	["XS"] = "@parameter.inner",
+					-- 	["XZ"] = "@conditional.outer",
+					-- 	["XV"] = "@class.outer",
+					-- },
+				},
+			},
+		},
+		opts_extend = { "ensure_installed" },
 		event = "CursorHold",
+		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		config = function()
-			local treesitter = require("nvim-treesitter.configs")
+			-- local treesitter = require("nvim-treesitter.configs")
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 			local installer = require("nvim-treesitter.install")
 			installer.prefer_git = true
@@ -656,63 +733,54 @@ require("lazy").setup({
 			}
 
 			vim.keymap.set({ "n", "v" }, "x", "<nop>", { silent = true, noremap = true, desc = "Unmap x" })
-
-			treesitter.setup({
-				highlight = { enable = true },
-				indent = { enable = true },
-				query_linter = {
-					enable = true,
-					use_virtual_text = true,
-					lint_events = { "BufWrite", "CursorHold" },
-				},
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true,
-						keymaps = {
-							["af"] = "@function.outer",
-							["if"] = "@function.inner",
-							["ai"] = "@conditional.outer",
-							["ii"] = "@conditional.inner",
-							["ac"] = "@call.inner",
-							["ic"] = "@call.outer",
-						},
-					},
-					move = {
-						enable = true,
-						set_jumps = true,
-						goto_next_start = {
-							["xf"] = "@function.outer",
-							["xc"] = "@call.outer",
-							["xs"] = "@parameter.inner",
-							["xz"] = "@conditional.outer",
-							["xv"] = "@class.outer",
-						},
-						goto_next_end = {
-							["xF"] = "@function.outer",
-							["xC"] = "@call.outer",
-							["xS"] = "@parameter.inner",
-							["xZ"] = "@conditional.outer",
-							["xV"] = "@class.outer",
-						},
-						goto_previous_start = {
-							["Xf"] = "@function.outer",
-							["Xc"] = "@call.outer",
-							["Xs"] = "@parameter.inner",
-							["Xz"] = "@conditional.outer",
-							["Xv"] = "@class.outer",
-						},
-						goto_previous_end = {
-							["XF"] = "@function.outer",
-							["XC"] = "@call.outer",
-							["XS"] = "@parameter.inner",
-							["XZ"] = "@conditional.outer",
-							["XV"] = "@class.outer",
-						},
-					},
-				},
-			})
 		end,
+	},
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {},
+		keys = {
+			-- {
+			-- 	"s",
+			-- 	mode = { "n", "x", "o" },
+			-- 	function()
+			-- 		require("flash").jump()
+			-- 	end,
+			-- 	desc = "Flash",
+			-- },
+			-- {
+			-- 	"S",
+			-- 	mode = { "n", "x", "o" },
+			-- 	function()
+			-- 		require("flash").treesitter()
+			-- 	end,
+			-- 	desc = "Flash Treesitter",
+			-- },
+			-- {
+			-- 	"r",
+			-- 	mode = "o",
+			-- 	function()
+			-- 		require("flash").remote()
+			-- 	end,
+			-- 	desc = "Remote Flash",
+			-- },
+			-- {
+			-- 	"R",
+			-- 	mode = { "o", "x" },
+			-- 	function()
+			-- 		require("flash").treesitter_search()
+			-- 	end,
+			-- 	desc = "Treesitter Search",
+			-- },
+			-- {
+			-- 	"<c-s>",
+			-- 	mode = { "c" },
+			-- 	function()
+			-- 		require("flash").toggle()
+			-- 	end,
+			-- 	desc = "Toggle Flash Search",
+			-- },
+		},
 	},
 	{
 		"stevearc/oil.nvim",
@@ -1128,6 +1196,11 @@ require("lazy").setup({
 			})
 
 			lspconfig.lua_ls.setup({
+				diagnostics = {
+					underline = true,
+					update_in_insert = false,
+					severity_sort = true,
+				},
 				capabilities = capabilities,
 				on_init = function(client)
 					if client.workspace_folders then
@@ -1160,6 +1233,16 @@ require("lazy").setup({
 							enable = false,
 						},
 					},
+				},
+				inlay_hints = {
+					enabled = true,
+					exclude = {},
+				},
+				codelens = {
+					enabled = true,
+				},
+				document_highlight = {
+					enabled = true,
 				},
 			})
 		end,
