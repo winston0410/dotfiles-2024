@@ -513,13 +513,17 @@ require("lazy").setup({
 		"lewis6991/gitsigns.nvim",
 		version = "0.9.0",
 		event = "CursorHold",
+		opts = {
+			current_line_blame = true,
+		},
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{
-		"nacro90/numb.nvim",
-		commit = "3f7d4a74bd456e747a1278ea1672b26116e0824d",
-		event = "CmdlineEnter",
-	},
+	-- FIXME this plugin is not working somehow
+	-- {
+	-- 	"nacro90/numb.nvim",
+	-- 	commit = "3f7d4a74bd456e747a1278ea1672b26116e0824d",
+	-- 	event = "CmdlineEnter",
+	-- },
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
@@ -813,8 +817,9 @@ require("lazy").setup({
 				filetype = "make",
 				used_by = { "make" },
 			}
-
-			vim.keymap.set({ "n", "v" }, "x", "<nop>", { silent = true, noremap = true, desc = "Unmap x" })
+			pcall(function()
+				vim.keymap.del({ "n", "v" }, "x")
+			end)
 		end,
 	},
 	{
@@ -1361,6 +1366,7 @@ require("lazy").setup({
 						telemetry = {
 							enable = false,
 						},
+						hint = { enable = true },
 					},
 				},
 				inlay_hints = {
@@ -1394,6 +1400,12 @@ require("lazy").setup({
 			})
 		end,
 	},
+})
+
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = false,
+	update_in_insert = false,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
