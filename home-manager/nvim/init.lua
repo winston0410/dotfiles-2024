@@ -264,7 +264,22 @@ require("lazy").setup({
 				winbar = {
 					lualine_a = {},
 					lualine_b = {},
-					lualine_c = {},
+					lualine_c = {
+						{
+							"filetype",
+							colored = true,
+							icon_only = true,
+							icon = { align = "left" },
+							padding = { left = 1, right = 0 },
+						},
+						{
+							"filename",
+							file_status = true,
+							path = 3,
+							color = { fg = colors.fg, bg = colors.bg_statusline },
+							padding = 0,
+						},
+					},
 					lualine_x = {},
 					lualine_y = {},
 					lualine_z = {},
@@ -272,7 +287,22 @@ require("lazy").setup({
 				inactive_winbar = {
 					lualine_a = {},
 					lualine_b = {},
-					lualine_c = {},
+					lualine_c = {
+						{
+							"filetype",
+							colored = false,
+							icon_only = true,
+							icon = { align = "left" },
+							padding = { left = 1, right = 0 },
+						},
+						{
+							"filename",
+							file_status = true,
+							path = 3,
+							color = { fg = colors.fg, bg = colors.bg_statusline },
+							padding = 0,
+						},
+					},
 					lualine_x = {},
 					lualine_y = {},
 					lualine_z = {},
@@ -282,14 +312,7 @@ require("lazy").setup({
 					lualine_b = { "branch" },
 					lualine_c = { "location" },
 					lualine_x = {},
-					lualine_y = {
-						-- {
-						-- 	"filename",
-						-- 	file_status = true,
-						-- 	path = 2,
-						-- 	color = { fg = colors.fg, bg = colors.bg_statusline },
-						-- },
-					},
+					lualine_y = {},
 					lualine_z = {
 						{
 							"diagnostics",
@@ -521,35 +544,14 @@ require("lazy").setup({
 		},
 	},
 	{
-		"smoka7/hop.nvim",
-		version = "2.7.2",
-		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
-		config = function()
-			require("hop").setup({})
-
-			local supported_modes = { "n", "v", "o" }
-
-			vim.keymap.set(
-				supported_modes,
-				"f",
-				"<cmd>HopChar1<cr>",
-				{ noremap = true, silent = true, desc = "find 1 character forward" }
-			)
-			vim.keymap.set(
-				supported_modes,
-				"F",
-				"<cmd>HopChar1<cr>",
-				{ noremap = true, silent = true, desc = "find 1 character backward" }
-			)
-		end,
-	},
-	{
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
 			{
 				",m",
-				"<cmd>lua require('fzf-lua').files()<cr>",
+				function()
+					require("fzf-lua").files()
+				end,
 				mode = { "n", "v" },
 				silent = true,
 				noremap = true,
@@ -557,7 +559,9 @@ require("lazy").setup({
 			},
 			{
 				",f",
-				"<cmd>lua require('fzf-lua').live_grep_resume()<cr>",
+				function()
+					require("fzf-lua").live_grep_resume()
+				end,
 				mode = { "n", "v" },
 				silent = true,
 				noremap = true,
@@ -565,7 +569,9 @@ require("lazy").setup({
 			},
 			{
 				",gc",
-				"<cmd>lua require('fzf-lua').git_commits()<cr>",
+				function()
+					require("fzf-lua").git_commits()
+				end,
 				mode = { "n", "v" },
 				silent = true,
 				noremap = true,
@@ -573,7 +579,9 @@ require("lazy").setup({
 			},
 			{
 				",gs",
-				"<cmd>lua require('fzf-lua').git_stash()<cr>",
+				function()
+					require("fzf-lua").git_stash()
+				end,
 				mode = { "n", "v" },
 				silent = true,
 				noremap = true,
@@ -581,7 +589,9 @@ require("lazy").setup({
 			},
 			{
 				",la",
-				"<cmd>lua require('fzf-lua').lsp_code_actions()<cr>",
+				function()
+					require("fzf-lua").lsp_code_actions()
+				end,
 				mode = { "n", "v" },
 				silent = true,
 				noremap = true,
@@ -735,17 +745,61 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"smoka7/hop.nvim",
+		version = "2.7.2",
+		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
+		config = function()
+			require("hop").setup({})
+
+			local supported_modes = { "n", "v", "o" }
+
+			vim.keymap.set(
+				supported_modes,
+				"f",
+				"<cmd>HopChar1<cr>",
+				{ noremap = true, silent = true, desc = "find 1 character forward" }
+			)
+			vim.keymap.set(
+				supported_modes,
+				"F",
+				"<cmd>HopChar1<cr>",
+				{ noremap = true, silent = true, desc = "find 1 character backward" }
+			)
+		end,
+	},
+	{
 		"folke/flash.nvim",
+		version = "2.1.0",
 		event = "VeryLazy",
 		opts = {},
 		keys = {
 			-- {
-			-- 	"s",
-			-- 	mode = { "n", "x", "o" },
+			-- 	"f",
+			-- 	mode = { "n", "v", "o" },
 			-- 	function()
-			-- 		require("flash").jump()
+			-- 		require("flash").jump({
+			-- 			modes = {
+			-- 				char = {
+			-- 					jump_labels = true,
+			-- 				},
+			-- 			},
+			-- 		})
 			-- 	end,
-			-- 	desc = "Flash",
+			-- 	desc = "Find character forward",
+			-- },
+			-- {
+			-- 	"F",
+			-- 	mode = { "n", "v", "o" },
+			-- 	function()
+			-- 		require("flash").jump({
+			-- 			modes = {
+			-- 				char = {
+			-- 					jump_labels = true,
+			-- 				},
+			-- 			},
+			-- 		})
+			-- 	end,
+			-- 	desc = "Find character backward",
 			-- },
 			-- {
 			-- 	"S",
@@ -1308,8 +1362,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.buf.code_action,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
 		)
-		-- Remove default keybinding added by lspconfig
-		-- REF https://neovim.io/doc/user/lsp.html#lsp-config
-		vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
+		pcall(function()
+			-- Remove default keybinding added by lspconfig
+			-- REF https://neovim.io/doc/user/lsp.html#lsp-config
+			vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
+		end)
 	end,
 })
