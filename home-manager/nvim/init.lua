@@ -5,7 +5,11 @@ package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.
 vim.g.mapleader = " "
 
 local modes = { "n", "v" }
-vim.keymap.set(modes, "q:", "<NOP>", { silent = true, noremap = true, desc = "Disable popup for commandline" })
+pcall(function()
+	vim.keymap.del(modes, "q:")
+	vim.keymap.del(modes, "s")
+	vim.keymap.del(modes, "S")
+end)
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
 vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -18,8 +22,6 @@ vim.keymap.set(modes, "Y", "y$", {
 	noremap = true,
 	desc = "Yanks from the cursor position to the end of the line.",
 })
-vim.keymap.set(modes, "S", "<NOP>", { silent = true, noremap = true, desc = "Unmap S" })
-vim.keymap.set(modes, "s", "<NOP>", { silent = true, noremap = true, desc = "Unmap s" })
 -- FIXME for visual block, not sure do we need this
 -- vim.keymap.set(modes, "<Char-0xAD>", "<C-v>" )
 vim.keymap.set({ "i", "n", "v" }, "<Char-0xAE>", "<C-r>", { silent = true, noremap = true, desc = "Redo" })
@@ -534,15 +536,66 @@ require("lazy").setup({
 	{
 		"numToStr/Comment.nvim",
 		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
-		keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
-		opts = {
-			toggler = {
-				line = "<leader>cc",
-				block = "<leader>bc",
+		keys = {
+			{
+				"<leader>c",
+				"<Plug>(comment_toggle_linewise)",
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle linewise",
 			},
-			opleader = {
-				line = "<leader>c",
-				block = "<leader>b",
+			{
+				"<leader>b",
+				"<Plug>(comment_toggle_blockwise)",
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle blockwise",
+			},
+			{
+				"<leader>cc",
+				function()
+					return vim.api.nvim_get_vvar("count") == 0 and "<Plug>(comment_toggle_linewise_current)"
+						or "<Plug>(comment_toggle_linewise_count)"
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle current line",
+			},
+			{
+				"<leader>bc",
+				function()
+					return vim.api.nvim_get_vvar("count") == 0 and "<Plug>(comment_toggle_blockwise_current)"
+						or "<Plug>(comment_toggle_blockwise_count)"
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle current block",
+			},
+			{
+				"<leader>c",
+				"<Plug>(comment_toggle_linewise_visual)",
+				mode = { "x" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle linewise (visual)",
+			},
+			{
+				"<leader>b",
+				"<Plug>(comment_toggle_blockwise_visual)",
+				mode = { "x" },
+				silent = true,
+				noremap = true,
+				desc = "Comment toggle blockwise (visual)",
+			},
+		},
+		opts = {
+			mappings = {
+				basic = false,
+				extra = false,
 			},
 		},
 	},
@@ -621,26 +674,23 @@ require("lazy").setup({
 				desc = "search lsp code actions",
 			},
 		},
-		opts = {},
+		opts = {
+			winopts = {
+				preview = {
+					wrap = "wrap",
+				},
+			},
+			fzf_layout = "reverse-list",
+			files = {
+				prompt = "Fd❯ ",
+			},
+			grep = {
+				prompt = "Rg❯ ",
+			},
+		},
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
-		config = function()
-			-- local actions = require("fzf-lua.actions")
-			require("fzf-lua").setup({
-				winopts = {
-					win_height = 1,
-					win_width = 1,
-				},
-				fzf_layout = "reverse-list",
-				files = {
-					prompt = "Fd❯ ",
-				},
-				grep = {
-					prompt = "Rg❯ ",
-				},
-			})
-		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
