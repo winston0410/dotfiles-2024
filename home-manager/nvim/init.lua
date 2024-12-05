@@ -369,7 +369,18 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
-		keys = { { "<leader>g" }, { "<leader>g", mode = "v" } },
+		keys = {
+			{
+				"<leader>g",
+				function()
+					require("neogit").open()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "open Neogit panel",
+			},
+		},
 		opts = {
 			disable_hint = true,
 			disable_commit_confirmation = true,
@@ -383,14 +394,6 @@ require("lazy").setup({
 				},
 			},
 		},
-		config = function()
-			vim.keymap.set(
-				{ "n" },
-				"<leader>g",
-				"<cmd>lua require('neogit').open()<cr>",
-				{ silent = true, noremap = true, desc = "open Neogit panel" }
-			)
-		end,
 	},
 	{
 		"folke/which-key.nvim",
@@ -547,6 +550,26 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
+			{
+				"?",
+				function()
+					require("fzf-lua").lgrep_curbuf()
+				end,
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "Search text in current buffer",
+			},
+			{
+				"/",
+				function()
+					require("fzf-lua").lgrep_curbuf()
+				end,
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "Search text in current buffer",
+			},
 			{
 				",m",
 				function()
@@ -745,96 +768,99 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"smoka7/hop.nvim",
-		version = "2.7.2",
-		keys = { { "f" }, { "F" }, { "f", mode = "v" }, { "F", mode = "v" } },
-		config = function()
-			require("hop").setup({})
-
-			local supported_modes = { "n", "v", "o" }
-
-			vim.keymap.set(
-				supported_modes,
-				"f",
-				"<cmd>HopChar1<cr>",
-				{ noremap = true, silent = true, desc = "find 1 character forward" }
-			)
-			vim.keymap.set(
-				supported_modes,
-				"F",
-				"<cmd>HopChar1<cr>",
-				{ noremap = true, silent = true, desc = "find 1 character backward" }
-			)
-		end,
-	},
-	{
-		"folke/flash.nvim",
-		version = "2.1.0",
-		event = "VeryLazy",
-		opts = {},
+		"rlane/pounce.nvim",
+		commit = "2e36399ac09b517770c459f1a123e6b4b4c1c171",
 		keys = {
-			-- {
-			-- 	"f",
-			-- 	mode = { "n", "v", "o" },
-			-- 	function()
-			-- 		require("flash").jump({
-			-- 			modes = {
-			-- 				char = {
-			-- 					jump_labels = true,
-			-- 				},
-			-- 			},
-			-- 		})
-			-- 	end,
-			-- 	desc = "Find character forward",
-			-- },
-			-- {
-			-- 	"F",
-			-- 	mode = { "n", "v", "o" },
-			-- 	function()
-			-- 		require("flash").jump({
-			-- 			modes = {
-			-- 				char = {
-			-- 					jump_labels = true,
-			-- 				},
-			-- 			},
-			-- 		})
-			-- 	end,
-			-- 	desc = "Find character backward",
-			-- },
-			-- {
-			-- 	"S",
-			-- 	mode = { "n", "x", "o" },
-			-- 	function()
-			-- 		require("flash").treesitter()
-			-- 	end,
-			-- 	desc = "Flash Treesitter",
-			-- },
-			-- {
-			-- 	"r",
-			-- 	mode = "o",
-			-- 	function()
-			-- 		require("flash").remote()
-			-- 	end,
-			-- 	desc = "Remote Flash",
-			-- },
-			-- {
-			-- 	"R",
-			-- 	mode = { "o", "x" },
-			-- 	function()
-			-- 		require("flash").treesitter_search()
-			-- 	end,
-			-- 	desc = "Treesitter Search",
-			-- },
-			-- {
-			-- 	"<c-s>",
-			-- 	mode = { "c" },
-			-- 	function()
-			-- 		require("flash").toggle()
-			-- 	end,
-			-- 	desc = "Toggle Flash Search",
-			-- },
+			{
+				"f",
+				function()
+					require("pounce").pounce()
+				end,
+				mode = { "n", "v", "o" },
+				noremap = true,
+				silent = true,
+				desc = "find 1 character forward",
+			},
+			{
+				"F",
+				function()
+					require("pounce").pounce()
+				end,
+				mode = { "n", "v", "o" },
+				noremap = true,
+				silent = true,
+				desc = "find 1 character backward",
+			},
 		},
 	},
+	-- {
+	-- 	"folke/flash.nvim",
+	-- 	version = "2.1.0",
+	-- 	event = "VeryLazy",
+	-- 	opts = {},
+	-- 	keys = {
+	-- 		-- {
+	-- 		-- 	"f",
+	-- 		-- 	mode = { "n", "v", "o" },
+	-- 		-- 	function()
+	-- 		-- 		require("flash").jump({
+	-- 		-- 			modes = {
+	-- 		-- 				char = {
+	-- 		-- 					jump_labels = true,
+	-- 		-- 				},
+	-- 		-- 			},
+	-- 		-- 		})
+	-- 		-- 	end,
+	-- 		-- 	desc = "Find character forward",
+	-- 		-- },
+	-- 		-- {
+	-- 		-- 	"F",
+	-- 		-- 	mode = { "n", "v", "o" },
+	-- 		-- 	function()
+	-- 		-- 		require("flash").jump({
+	-- 		-- 			modes = {
+	-- 		-- 				char = {
+	-- 		-- 					jump_labels = true,
+	-- 		-- 				},
+	-- 		-- 			},
+	-- 		-- 		})
+	-- 		-- 	end,
+	-- 		-- 	desc = "Find character backward",
+	-- 		-- },
+	-- 		-- {
+	-- 		-- 	"S",
+	-- 		-- 	mode = { "n", "x", "o" },
+	-- 		-- 	function()
+	-- 		-- 		require("flash").treesitter()
+	-- 		-- 	end,
+	-- 		-- 	desc = "Flash Treesitter",
+	-- 		-- },
+	-- 		-- {
+	-- 		-- 	"r",
+	-- 		-- 	mode = "o",
+	-- 		-- 	function()
+	-- 		-- 		require("flash").remote()
+	-- 		-- 	end,
+	-- 		-- 	desc = "Remote Flash",
+	-- 		-- },
+	-- 		-- {
+	-- 		-- 	"R",
+	-- 		-- 	mode = { "o", "x" },
+	-- 		-- 	function()
+	-- 		-- 		require("flash").treesitter_search()
+	-- 		-- 	end,
+	-- 		-- 	desc = "Treesitter Search",
+	-- 		-- },
+	-- 		-- {
+	-- 		-- 	"<c-s>",
+	-- 		-- 	mode = { "c" },
+	-- 		-- 	function()
+	-- 		-- 		require("flash").toggle()
+	-- 		-- 	end,
+	-- 		-- 	desc = "Toggle Flash Search",
+	-- 		-- },
+	-- 	},
+	-- },
 	{
 		"stevearc/oil.nvim",
 		version = "2.13.0",
