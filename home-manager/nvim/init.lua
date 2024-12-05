@@ -547,22 +547,53 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
-			-- for fd
-			{ ",m" },
-			-- for rg
-			{ ",f" },
-			-- for git related search
-			{ ",gc" },
-			{ ",gs" },
-			-- for lsp search
-			{ ",la" },
+			{
+				",m",
+				"<cmd>lua require('fzf-lua').files()<cr>",
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "search files",
+			},
+			{
+				",f",
+				"<cmd>lua require('fzf-lua').live_grep_resume()<cr>",
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "search text in files",
+			},
+			{
+				",gc",
+				"<cmd>lua require('fzf-lua').git_commits()<cr>",
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "search text in git commits",
+			},
+			{
+				",gs",
+				"<cmd>lua require('fzf-lua').git_stash()<cr>",
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "search text in git stash",
+			},
+			{
+				",la",
+				"<cmd>lua require('fzf-lua').lsp_code_actions()<cr>",
+				mode = { "n", "v" },
+				silent = true,
+				noremap = true,
+				desc = "search lsp code actions",
+			},
 		},
+		opts = {},
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
 		config = function()
-			local actions = require("fzf-lua.actions")
-
+			-- local actions = require("fzf-lua.actions")
 			require("fzf-lua").setup({
 				winopts = {
 					win_height = 1,
@@ -575,38 +606,6 @@ require("lazy").setup({
 				grep = {
 					prompt = "Rg❯ ",
 				},
-			})
-
-			local supported_modes = { "n", "v" }
-
-			vim.keymap.set(supported_modes, ",m", "<cmd>lua require('fzf-lua').files()<cr>", {
-				silent = true,
-				noremap = true,
-				desc = "search files",
-			})
-
-			vim.keymap.set(supported_modes, ",f", "<cmd>lua require('fzf-lua').live_grep_resume()<cr>", {
-				silent = true,
-				noremap = true,
-				desc = "search text in files",
-			})
-
-			vim.keymap.set(supported_modes, ",gc", "<cmd>lua require('fzf-lua').git_commits()<cr>", {
-				silent = true,
-				noremap = true,
-				desc = "search text in git commits",
-			})
-
-			vim.keymap.set(supported_modes, ",gs", "<cmd>lua require('fzf-lua').git_stash()<cr>", {
-				silent = true,
-				noremap = true,
-				desc = "search text in git stash",
-			})
-
-			vim.keymap.set(supported_modes, ",la", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>", {
-				silent = true,
-				noremap = true,
-				desc = "search lsp code actions",
 			})
 		end,
 	},
