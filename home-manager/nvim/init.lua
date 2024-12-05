@@ -1402,12 +1402,6 @@ require("lazy").setup({
 	},
 })
 
-vim.diagnostic.config({
-	virtual_text = true,
-	signs = false,
-	update_in_insert = false,
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -1455,5 +1449,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- REF https://neovim.io/doc/user/lsp.html#lsp-config
 			vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
 		end)
+		vim.diagnostic.config({
+			virtual_text = true,
+			signs = false,
+			update_in_insert = false,
+		})
 	end,
 })
