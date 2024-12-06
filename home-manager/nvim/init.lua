@@ -522,6 +522,7 @@ require("lazy").setup({
 				local ft = vim.bo[bufnr].filetype
 				local bufname = vim.api.nvim_buf_get_name(bufnr)
 				if startsWith(ft, "Neogit") or ft == "trouble" or bufname == "COMMIT_EDITMSG" then
+                    asdf
 					return false
 				end
 			end,
