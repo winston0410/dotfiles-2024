@@ -520,7 +520,8 @@ require("lazy").setup({
 		opts = {
 			on_attach = function(bufnr)
 				local ft = vim.bo[bufnr].filetype
-				if startsWith(ft, "Neogit") or ft == "trouble" or ft == "COMMIT_EDITMSG" then
+				local bufname = vim.api.nvim_buf_get_name(bufnr)
+				if startsWith(ft, "Neogit") or ft == "trouble" or bufname == "COMMIT_EDITMSG" then
 					return false
 				end
 			end,
