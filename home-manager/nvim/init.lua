@@ -520,7 +520,7 @@ require("lazy").setup({
 		opts = {
 			on_attach = function(bufnr)
 				local ft = vim.bo[bufnr].filetype
-				if startsWith(ft, "Neogit") or ft == "trouble" then
+				if startsWith(ft, "Neogit") or ft == "trouble" or ft == "COMMIT_EDITMSG" then
 					return false
 				end
 			end,
