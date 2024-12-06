@@ -190,6 +190,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local function startsWith(str, prefix)
+	return string.sub(str, 1, #prefix) == prefix
+end
+
 require("lazy").setup({
 	{
 		"LazyVim/LazyVim",
@@ -516,10 +520,7 @@ require("lazy").setup({
 		opts = {
 			on_attach = function(bufnr)
 				local ft = vim.bo[bufnr].filetype
-				local bufname = vim.api.nvim_buf_get_name(bufnr)
-                print(ft)
-                print(bufname)
-				if ft == "NeogitStatus" or bufname:match("COMMIT_EDITMSG") then
+				if startsWith(ft, "Neogit") then
 					return false
 				end
 			end,
