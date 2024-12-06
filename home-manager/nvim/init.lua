@@ -266,6 +266,10 @@ require("lazy").setup({
 					theme = "tokyonight",
 					component_separators = "",
 					section_separators = "",
+					disabled_filetypes = {
+						winbar = { "trouble" },
+						inactive_winbar = { "trouble" },
+					},
 				},
 				winbar = {
 					lualine_a = {},
@@ -518,14 +522,13 @@ require("lazy").setup({
 		version = "0.9.0",
 		event = "CursorHold",
 		opts = {
-			on_attach = function(bufnr)
-				local ft = vim.bo[bufnr].filetype
-				if startsWith(ft, "Neogit") or ft == "trouble" or ft == "gitcommit" then
-                    sdfds
-					return false
-				end
-			end,
-			current_line_blame = true,
+			-- on_attach = function(bufnr)
+			-- 	local ft = vim.bo[bufnr].filetype
+			-- 	if startsWith(ft, "Neogit") or ft == "trouble" or ft == "gitcommit" then
+			-- 		return false
+			-- 	end
+			-- end,
+			-- current_line_blame = true,
 		},
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
@@ -551,68 +554,24 @@ require("lazy").setup({
 	{
 		"numToStr/Comment.nvim",
 		commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
-		keys = {
-			{
-				"<leader>c",
-				"<Plug>(comment_toggle_linewise)",
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle linewise",
-			},
-			{
-				"<leader>b",
-				"<Plug>(comment_toggle_blockwise)",
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle blockwise",
-			},
-			{
-				"<leader>cc",
-				function()
-					return vim.api.nvim_get_vvar("count") == 0 and "<Plug>(comment_toggle_linewise_current)"
-						or "<Plug>(comment_toggle_linewise_count)"
+		dependencies = { "nvim-treesitter/nvim-treesitter", "JoosepAlviste/nvim-ts-context-commentstring" },
+		-- FIXME cant really make custom key binding works, 06-12-2024
+		keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
+		config = function()
+			require("Comment").setup({
+				pre_hook = function()
+					require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
 				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle current line",
-			},
-			{
-				"<leader>bc",
-				function()
-					return vim.api.nvim_get_vvar("count") == 0 and "<Plug>(comment_toggle_blockwise_current)"
-						or "<Plug>(comment_toggle_blockwise_count)"
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle current block",
-			},
-			{
-				"<leader>c",
-				"<Plug>(comment_toggle_linewise_visual)",
-				mode = { "x" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle linewise (visual)",
-			},
-			{
-				"<leader>b",
-				"<Plug>(comment_toggle_blockwise_visual)",
-				mode = { "x" },
-				silent = true,
-				noremap = true,
-				desc = "Comment toggle blockwise (visual)",
-			},
-		},
-		opts = {
-			mappings = {
-				basic = false,
-				extra = false,
-			},
-		},
+				toggler = {
+					line = "<leader>cc",
+					block = "<leader>bc",
+				},
+				opleader = {
+					line = "<leader>c",
+					block = "<leader>b",
+				},
+			})
+		end,
 	},
 	{
 		"ibhagwan/fzf-lua",
@@ -1408,6 +1367,9 @@ require("lazy").setup({
 				modes = {
 					diagnostics = { auto_open = true },
 				},
+				-- win = {
+				-- 	type = "float",
+				-- },
 			})
 		end,
 	},
