@@ -514,6 +514,15 @@ require("lazy").setup({
 		version = "0.9.0",
 		event = "CursorHold",
 		opts = {
+			on_attach = function(bufnr)
+				local ft = vim.bo[bufnr].filetype
+				local bufname = vim.api.nvim_buf_get_name(bufnr)
+                print(ft)
+                print(bufname)
+				if ft == "NeogitStatus" or bufname:match("COMMIT_EDITMSG") then
+					return false
+				end
+			end,
 			current_line_blame = true,
 		},
 		dependencies = { "nvim-lua/plenary.nvim" },
