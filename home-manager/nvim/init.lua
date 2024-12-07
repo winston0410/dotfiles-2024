@@ -4,6 +4,11 @@ package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.
 -- Use space as leader key
 vim.g.mapleader = " "
 
+local ERROR_ICON = " "
+local WARNING_ICON = " "
+local INFO_ICON = " "
+local HINT_ICON = "󰌶 "
+
 local modes = { "n", "v" }
 pcall(function()
 	vim.keymap.del(modes, "q:")
@@ -270,6 +275,7 @@ require("lazy").setup({
 						winbar = { "trouble" },
 						inactive_winbar = { "trouble" },
 					},
+					globalstatus = true,
 				},
 				winbar = {
 					lualine_a = {},
@@ -317,6 +323,14 @@ require("lazy").setup({
 					lualine_y = {},
 					lualine_z = {},
 				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = {},
+				},
 				sections = {
 					lualine_a = { "mode" },
 					lualine_b = { "branch" },
@@ -327,7 +341,7 @@ require("lazy").setup({
 						{
 							"diagnostics",
 							sources = { "nvim_lsp" },
-							symbols = { error = " ", warn = " ", info = " " },
+							symbols = { error = ERROR_ICON, warn = WARNING_ICON, info = INFO_ICON, hint = HINT_ICON },
 							color = { bg = colors.bg_statusline },
 						},
 						{
@@ -409,6 +423,15 @@ require("lazy").setup({
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		version = "3.14.1",
+		keys = {
+			{
+				"?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Show local keymaps",
+			},
+		},
 		opts = {
 			preset = "helix",
 		},
@@ -577,16 +600,6 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 		keys = {
-			{
-				"?",
-				function()
-					require("fzf-lua").lgrep_curbuf()
-				end,
-				mode = { "n", "v" },
-				silent = true,
-				noremap = true,
-				desc = "Search text in current buffer",
-			},
 			{
 				"/",
 				function()
@@ -818,96 +831,56 @@ require("lazy").setup({
 			},
 		},
 	},
-	-- {
-	-- 	"folke/flash.nvim",
-	-- 	version = "2.1.0",
-	-- 	event = "VeryLazy",
-	-- 	opts = {},
-	-- 	keys = {
-	-- 		-- {
-	-- 		-- 	"f",
-	-- 		-- 	mode = { "n", "v", "o" },
-	-- 		-- 	function()
-	-- 		-- 		require("flash").jump({
-	-- 		-- 			modes = {
-	-- 		-- 				char = {
-	-- 		-- 					jump_labels = true,
-	-- 		-- 				},
-	-- 		-- 			},
-	-- 		-- 		})
-	-- 		-- 	end,
-	-- 		-- 	desc = "Find character forward",
-	-- 		-- },
-	-- 		-- {
-	-- 		-- 	"F",
-	-- 		-- 	mode = { "n", "v", "o" },
-	-- 		-- 	function()
-	-- 		-- 		require("flash").jump({
-	-- 		-- 			modes = {
-	-- 		-- 				char = {
-	-- 		-- 					jump_labels = true,
-	-- 		-- 				},
-	-- 		-- 			},
-	-- 		-- 		})
-	-- 		-- 	end,
-	-- 		-- 	desc = "Find character backward",
-	-- 		-- },
-	-- 		-- {
-	-- 		-- 	"S",
-	-- 		-- 	mode = { "n", "x", "o" },
-	-- 		-- 	function()
-	-- 		-- 		require("flash").treesitter()
-	-- 		-- 	end,
-	-- 		-- 	desc = "Flash Treesitter",
-	-- 		-- },
-	-- 		-- {
-	-- 		-- 	"r",
-	-- 		-- 	mode = "o",
-	-- 		-- 	function()
-	-- 		-- 		require("flash").remote()
-	-- 		-- 	end,
-	-- 		-- 	desc = "Remote Flash",
-	-- 		-- },
-	-- 		-- {
-	-- 		-- 	"R",
-	-- 		-- 	mode = { "o", "x" },
-	-- 		-- 	function()
-	-- 		-- 		require("flash").treesitter_search()
-	-- 		-- 	end,
-	-- 		-- 	desc = "Treesitter Search",
-	-- 		-- },
-	-- 		-- {
-	-- 		-- 	"<c-s>",
-	-- 		-- 	mode = { "c" },
-	-- 		-- 	function()
-	-- 		-- 		require("flash").toggle()
-	-- 		-- 	end,
-	-- 		-- 	desc = "Toggle Flash Search",
-	-- 		-- },
-	-- 	},
-	-- },
 	{
 		"stevearc/oil.nvim",
 		version = "2.13.0",
-		config = function()
-			require("oil").setup({
-				columns = {
-					"icon",
-					"permissions",
-					"size",
-					"mtime",
-				},
-				keymaps = {
-					-- TODO
-				},
-				use_default_keymaps = false,
-				view_options = {
-					show_hidden = true,
-				},
-			})
-		end,
+		keys = {
+			{
+				"<leader>o",
+				"<cmd>Oil --float<cr>",
+				mode = { "n" },
+				noremap = true,
+				silent = true,
+				desc = "toggle Oil.nvim panel",
+			},
+		},
+		opts = {
+			columns = {
+				"icon",
+				"permissions",
+				-- NOTE wait until these fields to be excluded by constrain_cursor, then enable these fields again
+				-- "size",
+				-- "mtime",
+			},
+			constrain_cursor = "editable",
+			watch_for_changes = true,
+			keymaps = {
+				["<CR>"] = { "actions.select", mode = "n", desc = "Select a file" },
+				["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
+			},
+			use_default_keymaps = false,
+			view_options = {
+				show_hidden = true,
+			},
+		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
+	-- {
+	-- 	"folke/edgy.nvim",
+	-- 	event = "VeryLazy",
+	-- 	opts = {
+	-- 		bottom = {
+	-- 			{
+	-- 				ft = "trouble",
+	-- 				pinned = true,
+	-- 				size = { height = 0.1 },
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	init = function()
+	-- 		vim.opt.splitkeep = "screen"
+	-- 	end,
+	-- },
 	{
 		"mhartington/formatter.nvim",
 		commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
@@ -1361,6 +1334,7 @@ require("lazy").setup({
 			require("trouble").setup({
 				position = "bottom",
 				height = 10,
+				-- size = 5,
 				use_diagnostic_signs = true,
 				indent_lines = false,
 				auto_close = true,
@@ -1425,6 +1399,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.diagnostic.config({
 			virtual_text = true,
 			signs = false,
+			-- FIXME cannot customize the icon, without not showing it in signcolumn
+			-- signs = {
+			-- 	text = {
+			-- 		[vim.diagnostic.severity.ERROR] = ERROR_ICON,
+			-- 		[vim.diagnostic.severity.WARN] = WARNING_ICON,
+			-- 		[vim.diagnostic.severity.INFO] = INFO_ICON,
+			-- 		[vim.diagnostic.severity.HINT] = HINT_ICON,
+			-- 	},
+			-- },
 			update_in_insert = false,
 		})
 	end,
