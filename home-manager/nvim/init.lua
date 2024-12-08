@@ -139,7 +139,8 @@ local global_options = {
 	{ "grepformat", "%f:%l:%c:%m" },
 	{ "wildmenu", true },
 	{ "wildmode", "longest:full,full" },
-	{ "hidden", true },
+	-- NOTE Make it false, so once a buffer is closed with :q, the LSP message will be removed as well
+	{ "hidden", false },
 	{ "cursorline", true },
 }
 
@@ -215,12 +216,20 @@ require("lazy").setup({
 		},
 	},
 	{
+		"rcarriga/nvim-notify",
+		version = "3.14.0",
+		opts = {},
+		config = function()
+			vim.notify = require("notify")
+		end,
+	},
+	{
 		"folke/tokyonight.nvim",
 		commit = "c2725eb6d086c8c9624456d734bd365194660017",
 		lazy = false,
 		priority = 1000,
 		requires = { "nvim-tree/nvim-web-devicons" },
-		config = function()
+		init = function()
 			vim.g.tokyonight_style = "night"
 			vim.cmd.colorscheme("tokyonight")
 		end,
@@ -257,6 +266,7 @@ require("lazy").setup({
 			"linrongbin16/lsp-progress.nvim",
 			version = "1.0.13",
 			event = { "BufReadPre", "BufNewFile" },
+			opts = {},
 		},
 	},
 	{
@@ -346,6 +356,12 @@ require("lazy").setup({
 						},
 						{
 							function()
+								-- vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+								-- vim.api.nvim_create_autocmd("User", {
+								-- 	group = "lualine_augroup",
+								-- 	pattern = "LspProgressStatusUpdated",
+								-- 	callback = require("lualine").refresh,
+								-- })
 								return require("lsp-progress").progress({
 									format = function(messages)
 										local active_clients = vim.lsp.get_clients()
@@ -367,6 +383,7 @@ require("lazy").setup({
 									end,
 								})
 							end,
+							color = { fg = colors.fg, bg = colors.bg_statusline },
 						},
 					},
 				},
@@ -830,6 +847,30 @@ require("lazy").setup({
 				desc = "find 1 character backward",
 			},
 		},
+		config = function()
+			-- wait for tokyonight to support these highlight group
+			-- using https://github.com/folke/tokyonight.nvim/blob/355e2842291dbf51b2c5878e9e37281bbef09783/lua/tokyonight/groups/hop.lua#L5
+			local c = require("tokyonight.colors").setup()
+			vim.api.nvim_set_hl(0, "PounceMatch", {
+				link = "Search",
+			})
+			vim.api.nvim_set_hl(0, "PounceAcceptBest", {
+				fg = c.magenta2,
+				bg = nil,
+				bold = true,
+			})
+			vim.api.nvim_set_hl(0, "PounceAccept", {
+				fg = c.blue2,
+				bg = nil,
+				bold = true,
+			})
+			vim.api.nvim_set_hl(0, "PounceUnmatched", {
+				fg = c.dark3,
+			})
+			vim.api.nvim_set_hl(0, "PounceGap", {
+				fg = c.dark3,
+			})
+		end,
 	},
 	{
 		"stevearc/oil.nvim",
@@ -865,22 +906,23 @@ require("lazy").setup({
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
-	-- {
-	-- 	"folke/edgy.nvim",
-	-- 	event = "VeryLazy",
-	-- 	opts = {
-	-- 		bottom = {
-	-- 			{
-	-- 				ft = "trouble",
-	-- 				pinned = true,
-	-- 				size = { height = 0.1 },
-	-- 			},
-	-- 		},
-	-- 	},
-	-- 	init = function()
-	-- 		vim.opt.splitkeep = "screen"
-	-- 	end,
-	-- },
+	{
+		"folke/edgy.nvim",
+		event = "VeryLazy",
+		opts = {
+			bottom = {
+				{
+					ft = "trouble",
+					pinned = true,
+					size = { height = 0.1 },
+				},
+			},
+			exit_when_last = true,
+		},
+		init = function()
+			vim.opt.splitkeep = "screen"
+		end,
+	},
 	{
 		"mhartington/formatter.nvim",
 		commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
@@ -1215,7 +1257,8 @@ require("lazy").setup({
 				"cucumber_language_server",
 				"slint_lsp",
 				"regal",
-				"snyk-ls",
+				-- nix does not provide this package yet
+				-- "snyk-ls",
 				"ballerina",
 				"bitbake_ls",
 				"ltex",
@@ -1325,6 +1368,23 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- {
+	-- 	"tadaa/vimade",
+	-- 	opts = {
+	-- 		recipe = { "default", { animate = false } },
+	-- 		ncmode = "buffers",
+	-- 		fadelevel = 0.4,
+	-- 		-- FIXME blocklist is now buggy, wait for author to fix
+	-- 		-- blocklist = {
+	-- 		-- 	default = {
+	-- 		-- 		buf_opts = function(win, current)
+	-- 		-- 			vim.print(win)
+	-- 		-- 			return false
+	-- 		-- 		end,
+	-- 		-- 	},
+	-- 		-- },
+	-- 	},
+	-- },
 	{
 		"folke/trouble.nvim",
 		version = "3.6.0",
@@ -1333,17 +1393,14 @@ require("lazy").setup({
 		config = function()
 			require("trouble").setup({
 				position = "bottom",
-				height = 10,
-				-- size = 5,
 				use_diagnostic_signs = true,
 				indent_lines = false,
+				auto_preview = false,
 				auto_close = true,
+				auto_refresh = true,
 				modes = {
 					diagnostics = { auto_open = true },
 				},
-				-- win = {
-				-- 	type = "float",
-				-- },
 			})
 		end,
 	},
