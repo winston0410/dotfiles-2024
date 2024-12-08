@@ -81,6 +81,20 @@
 
       npmDepsHash = "sha256-G1X9WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     })
+    # NOTE this package does not use package-lock.json, need to fix that
+    # (pkgs.buildNpmPackage rec {
+    #   pname = "@vue/typescript-plugin";
+    #   version = "2.1.10";
+    #
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "vuejs";
+    #     repo = "language-tools";
+    #     rev = "v${version}";
+    #     hash = "sha256-tmFl1Fi8jnxwr/2LQsZ5yCg/HDIC6NoDGAwww3Yh99Y=";
+    #   };
+    #
+    #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
+    # })
     # FIXME this build does not work yet
     # (pkgs.buildNpmPackage rec {
     #   pname = "@mistweaverco/kulala-ls";

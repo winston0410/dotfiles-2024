@@ -1216,7 +1216,6 @@ require("lazy").setup({
 				"tilt_ls",
 				"ccls",
 				"svelte",
-				"vuels",
 				"graphql",
 				"elmls",
 				"ocamlls",
