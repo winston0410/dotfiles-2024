@@ -2,7 +2,11 @@
   imports = [ ./lsp.nix ./formatter.nix ];
 
   home.packages = with pkgs; [
-    unstable.neovim
+    # neovim-unwrapped does not work
+    # (unstable.neovim-unwrapped.override { lua = (unstable.lua5_2.withPackages (ps: with ps; [ luafilesystem ])); })
+    (unstable.neovim.override {
+      extraLuaPackages = (ps: with ps; [ luafilesystem ]);
+    })
     # needed for treesitter
     nodejs_20
     # needed for fzf-lua

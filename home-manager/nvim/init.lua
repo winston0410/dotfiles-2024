@@ -1,5 +1,5 @@
--- Set the search path for Lua, so files in .config/nvim/plugins will be loaded
-package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
+-- -- Set the search path for Lua, so files in .config/nvim/plugins will be loaded
+-- package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -218,8 +218,11 @@ require("lazy").setup({
 	{
 		"rcarriga/nvim-notify",
 		version = "3.14.0",
-		opts = {},
 		config = function()
+			require("notify").setup({
+				max_width = 50,
+				render = "wrapped-compact",
+			})
 			vim.notify = require("notify")
 		end,
 	},
@@ -234,32 +237,94 @@ require("lazy").setup({
 			vim.cmd.colorscheme("tokyonight")
 		end,
 	},
+	{
+		"gennaro-tedesco/nvim-possession",
+		version = "0.0.15",
+		dependencies = {
+			"ibhagwan/fzf-lua",
+		},
+		opts = {
+			sessions = {
+				sessions_path = vim.fn.stdpath("data") .. "/sessions/",
+				sessions_variable = "session",
+				sessions_icon = "📌",
+				sessions_prompt = "sessions:",
+			},
+			autoload = true,
+			autosave = true,
+		},
+		init = function()
+			local lfs = require("lfs")
+			local _, err = lfs.mkdir(vim.fn.stdpath("data") .. "/sessions/")
+			if err then
+				vim.notify("failed to create sessions directory", vim.log.levels.ERROR)
+			end
+
+			local possession = require("nvim-possession")
+			vim.keymap.set("n", "<leader>sl", function()
+				possession.list()
+			end)
+			vim.keymap.set("n", "<leader>sn", function()
+				possession.new()
+			end)
+			vim.keymap.set("n", "<leader>su", function()
+				possession.update()
+			end)
+			vim.keymap.set("n", "<leader>sd", function()
+				possession.delete()
+			end)
+		end,
+	},
 	-- {
 	-- 	"folke/persistence.nvim",
 	-- 	version = "3.1.0",
 	-- 	event = "BufReadPre",
-	-- 	opts = {},
-	-- 	config = function()
-	-- 		-- load the session for the current directory
-	-- 		vim.keymap.set("n", "<leader>qs", function()
-	-- 			require("persistence").load()
-	-- 		end)
+	-- 	keys = {
+	-- 		-- Load the session for the current directory
+	-- 		{
+	-- 			"<leader>qs",
+	-- 			function()
+	-- 				require("persistence").load()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Load session for current directory",
+	-- 		},
 	--
-	-- 		-- select a session to load
-	-- 		vim.keymap.set("n", "<leader>qS", function()
-	-- 			require("persistence").select()
-	-- 		end)
+	-- 		-- Select a session to load
+	-- 		{
+	-- 			"<leader>qS",
+	-- 			function()
+	-- 				require("persistence").select()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Select a session to load",
+	-- 		},
 	--
-	-- 		-- load the last session
-	-- 		vim.keymap.set("n", "<leader>ql", function()
-	-- 			require("persistence").load({ last = true })
-	-- 		end)
+	-- 		-- Load the last session
+	-- 		{
+	-- 			"<leader>ql",
+	-- 			function()
+	-- 				require("persistence").load({ last = true })
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Load the last session",
+	-- 		},
 	--
-	-- 		-- stop Persistence => session won't be saved on exit
-	-- 		vim.keymap.set("n", "<leader>qd", function()
-	-- 			require("persistence").stop()
-	-- 		end)
-	-- 	end,
+	-- 		-- Stop Persistence => session won't be saved on exit
+	-- 		{
+	-- 			"<leader>qd",
+	-- 			function()
+	-- 				require("persistence").stop()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Stop Persistence (no save on exit)",
+	-- 		},
+	-- 	},
+	-- 	opts = {
+	-- 		dir = vim.fn.stdpath("state") .. "/sessions/",
+	-- 		need = 1,
+	-- 		branch = true,
+	-- 	},
 	-- },
 	{
 		{
@@ -698,6 +763,9 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
+		opts = {
+			max_lines = 5,
+		},
 		event = "CursorHold",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		commit = "8ebcf62cf48dd97b3d121884ecb6bc4c00f1b069",

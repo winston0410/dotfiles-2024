@@ -10,7 +10,7 @@
       "github:nixos/nixpkgs/release-23.05";
     unstable.url =
       # unstable
-      "github:nixos/nixpkgs/nixpkgs-unstable";
+      "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
 
     nixd.url =
       # unstable
@@ -29,8 +29,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils, rust-overlay
-    , ... }@inputs:
+  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
+    , rust-overlay, ... }@inputs:
     # FIXME use system based config with flake-utils https://github.com/nix-community/home-manager/issues/3075
     # let
     #   inherit (self) outputs;
@@ -70,10 +70,10 @@
         builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinSystem;
       # pkgs = nixpkgs.legacyPackages."${darwinSystem}";
 
-        pkgs = import nixpkgs {
-          system = darwinSystem;
-          overlays = [ rust-overlay.overlays.default ];
-        };
+      pkgs = import nixpkgs {
+        system = darwinSystem;
+        overlays = [ rust-overlay.overlays.default ];
+      };
 
       darwin-builder = nixpkgs.lib.nixosSystem {
         system = linuxSystem;
