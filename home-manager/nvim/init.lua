@@ -9,7 +9,7 @@ local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
-local modes = { "n", "v" }
+local modes = { "n", "v", "c" }
 pcall(function()
 	vim.keymap.del(modes, "q:")
 	vim.keymap.del(modes, "s")
@@ -218,6 +218,7 @@ require("lazy").setup({
 	{
 		"rcarriga/nvim-notify",
 		version = "3.14.0",
+		priority = 999,
 		config = function()
 			require("notify").setup({
 				max_width = 50,
@@ -237,44 +238,76 @@ require("lazy").setup({
 			vim.cmd.colorscheme("tokyonight")
 		end,
 	},
-	{
-		"gennaro-tedesco/nvim-possession",
-		version = "0.0.15",
-		dependencies = {
-			"ibhagwan/fzf-lua",
-		},
-		opts = {
-			sessions = {
-				sessions_path = vim.fn.stdpath("data") .. "/sessions/",
-				sessions_variable = "session",
-				sessions_icon = "📌",
-				sessions_prompt = "sessions:",
-			},
-			autoload = true,
-			autosave = true,
-		},
-		init = function()
-			local lfs = require("lfs")
-			local _, err = lfs.mkdir(vim.fn.stdpath("data") .. "/sessions/")
-			if err then
-				vim.notify("failed to create sessions directory", vim.log.levels.ERROR)
-			end
-
-			local possession = require("nvim-possession")
-			vim.keymap.set("n", "<leader>sl", function()
-				possession.list()
-			end)
-			vim.keymap.set("n", "<leader>sn", function()
-				possession.new()
-			end)
-			vim.keymap.set("n", "<leader>su", function()
-				possession.update()
-			end)
-			vim.keymap.set("n", "<leader>sd", function()
-				possession.delete()
-			end)
-		end,
-	},
+	-- {
+	-- 	"gennaro-tedesco/nvim-possession",
+	-- 	version = "0.0.15",
+	-- 	dependencies = {
+	-- 		"ibhagwan/fzf-lua",
+	-- 	},
+	-- 	opts = {
+	-- 		sessions = {
+	-- 			sessions_path = vim.fn.stdpath("data") .. "/sessions/",
+	-- 			sessions_variable = "session",
+	-- 			sessions_icon = "📌",
+	-- 			sessions_prompt = "sessions:",
+	-- 		},
+	-- 		autoload = true,
+	-- 		autosave = true,
+	-- 	},
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>sl",
+	-- 			function()
+	-- 				require("nvim-possession").list()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "List sessions",
+	--                silent = true,
+	-- 		},
+	-- 		{
+	-- 			"<leader>sn",
+	-- 			function()
+	-- 				require("nvim-possession").new()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Create new session",
+	--                silent = true,
+	-- 		},
+	-- 		{
+	-- 			"<leader>su",
+	-- 			function()
+	-- 				require("nvim-possession").update()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Update session",
+	--                silent = true,
+	-- 		},
+	-- 		{
+	-- 			"<leader>sd",
+	-- 			function()
+	-- 				require("nvim-possession").delete()
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			desc = "Delete session",
+	--                silent = true,
+	-- 		},
+	-- 	},
+	-- 	init = function()
+	-- 		local lfs = require("lfs")
+	-- 		local sessionsPath = vim.fn.stdpath("data") .. "/sessions/"
+	-- 		local attr = lfs.attributes(sessionsPath)
+	--
+	-- 		if attr and attr.mode == "directory" then
+	-- 			return
+	-- 		end
+	--
+	-- 		local _, err = lfs.mkdir(sessionsPath)
+	-- 		if err then
+	-- 			vim.notify("failed to create dir for sessions", vim.log.levels.ERROR)
+	-- 			vim.notify(err, vim.log.levels.ERROR)
+	-- 		end
+	-- 	end,
+	-- },
 	-- {
 	-- 	"folke/persistence.nvim",
 	-- 	version = "3.1.0",
@@ -778,69 +811,10 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		commit = "427a90ae70f66c2fdf2d9ad16a0f08e9697d90d9",
+		commit = "5874cac1b76c97ebb3fc03225bd7215d4e671cd2",
 		build = function()
 			vim.cmd("TSUpdate")
 		end,
-		opts = {
-			ensure_installed = "all",
-			auto_install = false,
-			incremental_selection = { enable = true },
-			highlight = { enable = true },
-			indent = { enable = true },
-			query_linter = {
-				enable = true,
-				use_virtual_text = true,
-				lint_events = { "BufWrite", "CursorHold" },
-			},
-			textobjects = {
-				select = {
-					enable = true,
-					lookahead = true,
-					keymaps = {
-						-- ["af"] = "@function.outer",
-						-- ["if"] = "@function.inner",
-						-- ["ai"] = "@conditional.outer",
-						-- ["ii"] = "@conditional.inner",
-						-- ["ac"] = "@call.inner",
-						-- ["ic"] = "@call.outer",
-					},
-				},
-				move = {
-					enable = true,
-					set_jumps = true,
-					-- goto_next_start = {
-					-- 	["xf"] = "@function.outer",
-					-- 	["xc"] = "@call.outer",
-					-- 	["xs"] = "@parameter.inner",
-					-- 	["xz"] = "@conditional.outer",
-					-- 	["xv"] = "@class.outer",
-					-- },
-					-- goto_next_end = {
-					-- 	["xF"] = "@function.outer",
-					-- 	["xC"] = "@call.outer",
-					-- 	["xS"] = "@parameter.inner",
-					-- 	["xZ"] = "@conditional.outer",
-					-- 	["xV"] = "@class.outer",
-					-- },
-					-- goto_previous_start = {
-					-- 	["Xf"] = "@function.outer",
-					-- 	["Xc"] = "@call.outer",
-					-- 	["Xs"] = "@parameter.inner",
-					-- 	["Xz"] = "@conditional.outer",
-					-- 	["Xv"] = "@class.outer",
-					-- },
-					-- goto_previous_end = {
-					-- 	["XF"] = "@function.outer",
-					-- 	["XC"] = "@call.outer",
-					-- 	["XS"] = "@parameter.inner",
-					-- 	["XZ"] = "@conditional.outer",
-					-- 	["XV"] = "@class.outer",
-					-- },
-				},
-			},
-		},
-		opts_extend = { "ensure_installed" },
 		event = "CursorHold",
 		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		config = function()
@@ -888,6 +862,73 @@ require("lazy").setup({
 			pcall(function()
 				vim.keymap.del({ "n", "v" }, "x")
 			end)
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = "all",
+				auto_install = false,
+				incremental_selection = { enable = true },
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+					priority = {
+						["@comment.error"] = 999,
+						["@comment.warning"] = 999,
+						["@comment.note"] = 999,
+						["@comment.todo"] = 999,
+					},
+				},
+				indent = { enable = true },
+				query_linter = {
+					enable = true,
+					use_virtual_text = true,
+					lint_events = { "BufWrite", "CursorHold" },
+				},
+				textobjects = {
+					select = {
+						enable = true,
+						lookahead = true,
+						keymaps = {
+							-- ["af"] = "@function.outer",
+							-- ["if"] = "@function.inner",
+							-- ["ai"] = "@conditional.outer",
+							-- ["ii"] = "@conditional.inner",
+							-- ["ac"] = "@call.inner",
+							-- ["ic"] = "@call.outer",
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true,
+						-- goto_next_start = {
+						-- 	["xf"] = "@function.outer",
+						-- 	["xc"] = "@call.outer",
+						-- 	["xs"] = "@parameter.inner",
+						-- 	["xz"] = "@conditional.outer",
+						-- 	["xv"] = "@class.outer",
+						-- },
+						-- goto_next_end = {
+						-- 	["xF"] = "@function.outer",
+						-- 	["xC"] = "@call.outer",
+						-- 	["xS"] = "@parameter.inner",
+						-- 	["xZ"] = "@conditional.outer",
+						-- 	["xV"] = "@class.outer",
+						-- },
+						-- goto_previous_start = {
+						-- 	["Xf"] = "@function.outer",
+						-- 	["Xc"] = "@call.outer",
+						-- 	["Xs"] = "@parameter.inner",
+						-- 	["Xz"] = "@conditional.outer",
+						-- 	["Xv"] = "@class.outer",
+						-- },
+						-- goto_previous_end = {
+						-- 	["XF"] = "@function.outer",
+						-- 	["XC"] = "@call.outer",
+						-- 	["XS"] = "@parameter.inner",
+						-- 	["XZ"] = "@conditional.outer",
+						-- 	["XV"] = "@class.outer",
+						-- },
+					},
+				},
+			})
 		end,
 	},
 	{
@@ -1248,6 +1289,7 @@ require("lazy").setup({
 			local util = require("lspconfig.util")
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 			-- https://github.com/hrsh7th/nvim-cmp/issues/373
 			capabilities.textDocument.completion.completionItem.snippetSupport = false
 
@@ -1472,7 +1514,6 @@ require("lazy").setup({
 		end,
 	},
 })
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -1523,7 +1564,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.diagnostic.config({
 			virtual_text = true,
 			signs = false,
-			-- FIXME cannot customize the icon, without not showing it in signcolumn
+			-- FIXME: cannot customize the icon, without not showing it in signcolumn
 			-- signs = {
 			-- 	text = {
 			-- 		[vim.diagnostic.severity.ERROR] = ERROR_ICON,
@@ -1534,5 +1575,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- },
 			update_in_insert = false,
 		})
+
+		-- NOTE we need to disable semnatic token from LSP for now, so it wont affect treesitter highlight
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if client then
+			client.server_capabilities.semanticTokensProvider = nil
+		end
 	end,
 })
