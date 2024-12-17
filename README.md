@@ -16,7 +16,12 @@ Once we made changes to our setup, we need to run the `switch` command to apply 
 
 ```sh
 # REF https://github.com/nix-community/home-manager/issues/4533
-nix run home-manager/release-23.05 -- --flake .#hugosum switch
+# The version of home-manager in run here, has to match the version of home-manager being used in flake.nix
+# For example, if we are building the configuration, with home-manager/release-23.05
+# nix run home-manager/release-23.05 -- --flake .#linux switch
+nix run home-manager/release-24.11 -- --flake .#linux switch
+# if we wnat to build for darwin platform
+nix run home-manager/release-24.11 -- --flake .#darwin switch
 ```
 
 ## Init and switch nix-darwin
