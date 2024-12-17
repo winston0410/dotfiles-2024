@@ -8,6 +8,7 @@
       extraLuaPackages = (ps: with ps; [ luafilesystem ]);
     })
     # needed for treesitter
+    gcc14
     nodejs_20
     # needed for fzf-lua
     fzf
