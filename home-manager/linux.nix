@@ -32,7 +32,7 @@
 
   home = {
     username = "kghugo";
-    homeDirectory = "/Users/hugosum";
+    homeDirectory = "/home/kghugo";
   };
 
   news = { display = "show"; };
