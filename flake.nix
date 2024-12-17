@@ -5,11 +5,8 @@
     flake-utils.url =
       "github:numtide/flake-utils?rev=ff7b65b44d01cf9ba6a71320833626af21126384";
     # Nixpkgs
-    nixpkgs.url =
-      # 23-05
-      "github:nixos/nixpkgs/release-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
     unstable.url =
-      # unstable
       "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
 
     nixd.url =
