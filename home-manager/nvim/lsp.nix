@@ -13,7 +13,7 @@
     pkgs.nodePackages.vls
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
-    pkgs.nodePackages.pyright
+    # pkgs.nodePackages.pyright
     pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph
@@ -22,7 +22,7 @@
     pkgs.lua-language-server
     unstable.deno
     pkgs.jsonnet-language-server
-    pkgs.buf-language-server
+    # pkgs.buf-language-server
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${system}.default
     pkgs.ansible-language-server

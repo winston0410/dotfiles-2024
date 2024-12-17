@@ -7,7 +7,7 @@
     # Nixpkgs
     nixpkgs.url =
       # 23-05
-      "github:nixos/nixpkgs/release-23.05";
+      "github:nixos/nixpkgs/release-24.11";
     unstable.url =
       # unstable
       "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
@@ -25,7 +25,7 @@
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -58,7 +58,7 @@
       };
     in {
       homeConfigurations = {
-        "hugosum" = home-manager.lib.homeManagerConfiguration {
+        "darwin" = home-manager.lib.homeManagerConfiguration {
           pkgs = darwinArmPkgs;
           extraSpecialArgs = {
             inherit inputs outputs;
@@ -79,7 +79,7 @@
       };
 
       darwinConfigurations = {
-        "hugosum" = darwin.lib.darwinSystem {
+        "darwin" = darwin.lib.darwinSystem {
           system = darwinArmSystem;
           modules = [{
             nix.distributedBuilds = true;
