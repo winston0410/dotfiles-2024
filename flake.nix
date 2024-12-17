@@ -31,56 +31,26 @@
 
   outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
     , rust-overlay, ... }@inputs:
-    # FIXME use system based config with flake-utils https://github.com/nix-community/home-manager/issues/3075
-    # let
-    #   inherit (self) outputs;
-    #   darwinSystem = "aarch64-darwin";
-    # in flake-utils.lib.eachSystem flake-utils.lib.allSystems (system: {
-    #   homeConfigurations = {
-    #     "hugosum" = home-manager.lib.homeManagerConfiguration {
-    #       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-    #       extraSpecialArgs = {
-    #         inherit inputs outputs;
-    #         system = system;
-    #         unstable = unstable.legacyPackages.aarch64-darwin;
-    #       };
-    #       modules = [ ./home-manager/home.nix ];
-    #     };
-    #   };
-    #
-    #   darwinConfigurations = {
-    #     machine1 = darwin.lib.darwinSystem {
-    #       system = system;
-    #       modules = [{
-    #         nix.distributedBuilds = true;
-    #         nix.buildMachines = [{
-    #           hostName = "ssh://builder@localhost";
-    #           system = builtins.replaceStrings [ "darwin" "linux" ] system;
-    #           maxJobs = 4;
-    #           supportedFeatures = [ "kvm" "benchmark" "big-parallel" ];
-    #         }];
-    #       }];
-    #     };
-    #   };
-    # });
+
     let
       inherit (self) outputs;
-      darwinSystem = "aarch64-darwin";
-      linuxSystem =
-        builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinSystem;
-      # pkgs = nixpkgs.legacyPackages."${darwinSystem}";
+      darwinArmSystem = "aarch64-darwin";
+      linuxArmSystem =
+        builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinArmSystem;
+      linuxAmdSystem = "x86_64-linux";
 
-      pkgs = import nixpkgs {
-        system = darwinSystem;
+      darwinArmPkgs = import nixpkgs {
+        system = darwinArmSystem;
         overlays = [ rust-overlay.overlays.default ];
       };
+      linuxAmdPkgs = import nixpkgs { system = linuxAmdSystem; };
 
       darwin-builder = nixpkgs.lib.nixosSystem {
-        system = linuxSystem;
+        system = linuxArmSystem;
         modules = [
           "${nixpkgs}/nixos/modules/profiles/macos-builder.nix"
           {
-            virtualisation.host.pkgs = pkgs;
+            virtualisation.host.pkgs = darwinArmPkgs;
             # REF https://github.com/NixOS/nixpkgs/issues/229542
             system.nixos.revision = nixpkgs.lib.mkForce null;
           }
@@ -89,25 +59,34 @@
     in {
       homeConfigurations = {
         "hugosum" = home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgs;
+          pkgs = darwinArmPkgs;
           extraSpecialArgs = {
             inherit inputs outputs;
-            system = darwinSystem;
+            system = darwinArmSystem;
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
-          modules = [ ./home-manager/home.nix ];
+          modules = [ ./home-manager/darwin.nix ];
+        };
+        "linux" = home-manager.lib.homeManagerConfiguration {
+          pkgs = linuxAmdPkgs;
+          extraSpecialArgs = {
+            inherit inputs outputs;
+            system = linuxAmdSystem;
+            unstable = unstable.legacyPackages.x86_64-linux;
+          };
+          modules = [ ./home-manager/linux.nix ];
         };
       };
 
       darwinConfigurations = {
         "hugosum" = darwin.lib.darwinSystem {
-          system = darwinSystem;
+          system = darwinArmSystem;
           modules = [{
             nix.distributedBuilds = true;
             nix.buildMachines = [{
               hostName = "localhost";
               sshUser = "builder";
-              system = linuxSystem;
+              system = linuxArmSystem;
               maxJobs = 4;
               supportedFeatures = [ "kvm" "benchmark" "big-parallel" ];
               protocol = "ssh-ng";
