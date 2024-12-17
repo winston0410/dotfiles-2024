@@ -10,6 +10,7 @@ local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
 local modes = { "n", "v", "c" }
+
 pcall(function()
 	vim.keymap.del(modes, "q:")
 	vim.keymap.del(modes, "s")
@@ -237,6 +238,51 @@ require("lazy").setup({
 			vim.g.tokyonight_style = "night"
 			vim.cmd.colorscheme("tokyonight")
 		end,
+	},
+	{
+		"saghen/blink.cmp",
+		lazy = false, -- lazy loading handled internally
+		dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+		version = "v0.*",
+		opts = {
+			keymap = {
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+				["<Char-0xAC>"] = { "select_next", "fallback" },
+				["<Char-0xAB>"] = { "select_prev", "fallback" },
+				["<CR>"] = { "accept", "fallback" },
+			},
+
+			appearance = {
+				use_nvim_cmp_as_default = true,
+				nerd_font_variant = "mono",
+			},
+
+			snippets = {
+				expand = function(snippet)
+					require("luasnip").lsp_expand(snippet)
+				end,
+				active = function(filter)
+					if filter and filter.direction then
+						return require("luasnip").jumpable(filter.direction)
+					end
+					return require("luasnip").in_snippet()
+				end,
+				jump = function(direction)
+					require("luasnip").jump(direction)
+				end,
+			},
+
+			sources = {
+				default = { "lsp", "path", "luasnip", "buffer" },
+			},
+			completion = {
+				documentation = {
+					auto_show = true,
+				},
+			},
+			signature = { enabled = true },
+		},
 	},
 	-- {
 	-- 	"gennaro-tedesco/nvim-possession",
@@ -561,55 +607,56 @@ require("lazy").setup({
 			delete_check_events = "TextChanged",
 		},
 	},
-	{
-		"hrsh7th/nvim-cmp",
-		commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01",
-		event = "InsertEnter",
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"saadparwaiz1/cmp_luasnip",
-		},
-		opts = function()
-			local cmp = require("cmp")
-			local defaults = require("cmp.config.default")()
-			return {
-				completion = {
-					completeopt = "menu,menuone,noinsert",
-				},
-				snippet = {
-					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
-					end,
-				},
-				mapping = cmp.mapping.preset.insert({
-					["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-					["<Char-0xAB>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
-				}),
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-					{ name = "path" },
-				}, {
-					{ name = "buffer" },
-				}),
-				sorting = defaults.sorting,
-				experimental = {
-					ghost_text = {
-						hl_group = "CmpGhostText",
-					},
-				},
-			}
-		end,
-		config = function(_, opts)
-			for _, source in ipairs(opts.sources) do
-				source.group_index = source.group_index or 1
-			end
-			require("cmp").setup(opts)
-		end,
-	},
+	-- NOTE keep this just in case, as blink.cmp is unstable
+	-- {
+	-- 	"hrsh7th/nvim-cmp",
+	-- 	commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01",
+	-- 	event = "InsertEnter",
+	-- 	dependencies = {
+	-- 		"hrsh7th/cmp-nvim-lsp",
+	-- 		"hrsh7th/cmp-buffer",
+	-- 		"hrsh7th/cmp-path",
+	-- 		"saadparwaiz1/cmp_luasnip",
+	-- 	},
+	-- 	opts = function()
+	-- 		local cmp = require("cmp")
+	-- 		local defaults = require("cmp.config.default")()
+	-- 		return {
+	-- 			completion = {
+	-- 				completeopt = "menu,menuone,noinsert",
+	-- 			},
+	-- 			snippet = {
+	-- 				expand = function(args)
+	-- 					require("luasnip").lsp_expand(args.body)
+	-- 				end,
+	-- 			},
+	-- 			mapping = cmp.mapping.preset.insert({
+	-- 				["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+	-- 				["<Char-0xAB>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+	-- 				["<CR>"] = cmp.mapping.confirm({ select = true }),
+	-- 			}),
+	-- 			sources = cmp.config.sources({
+	-- 				{ name = "nvim_lsp" },
+	-- 				{ name = "luasnip" },
+	-- 				{ name = "path" },
+	-- 			}, {
+	-- 				{ name = "buffer" },
+	-- 			}),
+	-- 			sorting = defaults.sorting,
+	-- 			experimental = {
+	-- 				ghost_text = {
+	-- 					hl_group = "CmpGhostText",
+	-- 				},
+	-- 			},
+	-- 		}
+	-- 	end,
+	-- 	config = function(_, opts)
+	-- 		for _, source in ipairs(opts.sources) do
+	-- 			source.group_index = source.group_index or 1
+	-- 		end
+	-- 		require("cmp").setup(opts)
+	-- 	end,
+	-- },
 	{
 		"mrjones2014/smart-splits.nvim",
 		version = "1.7.0",
@@ -1289,9 +1336,9 @@ require("lazy").setup({
 			local util = require("lspconfig.util")
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-			-- https://github.com/hrsh7th/nvim-cmp/issues/373
-			capabilities.textDocument.completion.completionItem.snippetSupport = false
+			-- REF https://github.com/hrsh7th/nvim-cmp/issues/373
+			-- capabilities.textDocument.completion.completionItem.snippetSupport = false
+			capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 			-- REF https://github.com/neovim/nvim-lspconfig/blob/d0467b9574b48429debf83f8248d8cee79562586/doc/server_configurations.md#denols
 			vim.g.markdown_fenced_languages = {
@@ -1375,6 +1422,10 @@ require("lazy").setup({
 
 			for _, server in ipairs(servers) do
 				lspconfig[server].setup({
+					on_init = function(client)
+						-- FIXME seems to be able to prevent LSP from highlighting
+						client.server_capabilities.semanticTokensProvider = nil
+					end,
 					capabilities = capabilities,
 				})
 			end
@@ -1390,6 +1441,7 @@ require("lazy").setup({
 			})
 
 			lspconfig.dockerls.setup({
+				capabilities = capabilities,
 				settings = {
 					docker = {
 						languageserver = {
@@ -1432,6 +1484,9 @@ require("lazy").setup({
 				},
 				capabilities = capabilities,
 				on_init = function(client)
+					-- FIXME seems to be able to prevent LSP from highlighting
+					client.server_capabilities.semanticTokensProvider = nil
+
 					if client.workspace_folders then
 						local path = client.workspace_folders[1].name
 						if vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc") then
@@ -1576,10 +1631,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			update_in_insert = false,
 		})
 
-		-- NOTE we need to disable semnatic token from LSP for now, so it wont affect treesitter highlight
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if client then
-			client.server_capabilities.semanticTokensProvider = nil
-		end
+		-- -- NOTE we need to disable semnatic token from LSP for now, so it wont affect treesitter highlight
+		-- local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		-- if client then
+		-- 	client.server_capabilities.semanticTokensProvider = nil
+		-- end
 	end,
 })
