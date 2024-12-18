@@ -40,8 +40,8 @@ end
 -- dont edit end
 
 local config = {
-    initial_rows = 48,
-    initial_cols = 160,
+	initial_rows = 48,
+	initial_cols = 160,
 	default_prog = { "zsh" },
 	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
 	font_size = 16.0,
@@ -49,7 +49,7 @@ local config = {
 	window_frame = {
 		font_size = 18.0,
 	},
-	window_decorations = "RESIZE",
+	window_decorations = "INTEGRATED_BUTTONS|RESIZE",
 	window_padding = {
 		left = 0,
 		right = 0,
