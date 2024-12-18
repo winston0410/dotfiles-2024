@@ -882,24 +882,25 @@ require("lazy").setup({
 				local installer = require("nvim-treesitter.install")
 				installer.prefer_git = true
 
-				parser_config.wast = {
-					install_info = {
-						branch = "main",
-						url = "https://github.com/wasm-lsp/tree-sitter-wasm",
-						files = { "wast/src/parser.c" },
-					},
-					filetype = "wast",
-					used_by = { "wast" },
-				}
-				parser_config.wat = {
-					install_info = {
-						branch = "main",
-						url = "https://github.com/wasm-lsp/tree-sitter-wasm",
-						files = { "wat/src/parser.c" },
-					},
-					filetype = "wat",
-					used_by = { "wat" },
-				}
+                -- FIXME cannot install these two in Linux
+				-- parser_config.wast = {
+				-- 	install_info = {
+				-- 		branch = "main",
+				-- 		url = "https://github.com/wasm-lsp/tree-sitter-wasm",
+				-- 		files = { "wast/src/parser.c" },
+				-- 	},
+				-- 	filetype = "wast",
+				-- 	used_by = { "wast" },
+				-- }
+				-- parser_config.wat = {
+				-- 	install_info = {
+				-- 		branch = "main",
+				-- 		url = "https://github.com/wasm-lsp/tree-sitter-wasm",
+				-- 		files = { "wat/src/parser.c" },
+				-- 	},
+				-- 	filetype = "wat",
+				-- 	used_by = { "wat" },
+				-- }
 				parser_config.ejs = {
 					install_info = {
 						branch = "master",
