@@ -5,9 +5,10 @@
     # neovim-unwrapped does not work
     # (unstable.neovim-unwrapped.override { lua = (unstable.lua5_2.withPackages (ps: with ps; [ luafilesystem ])); })
     (unstable.neovim.override {
-      extraLuaPackages = (ps: with ps; [ luafilesystem ]);
+      extraLuaPackages = (ps: with ps; [ luafilesystem jsregexp luarocks ]);
     })
     # needed for treesitter
+    tree-sitter
     gcc14
     nodejs_20
     # needed for fzf-lua
@@ -16,7 +17,10 @@
     bat
     delta
     chafa
+    # needed for font
+    nerdfonts
   ];
+  fonts.fontconfig.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";
