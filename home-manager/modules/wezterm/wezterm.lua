@@ -30,20 +30,6 @@ local function bind_super_key_to_vim(key)
 		mods = "CMD",
 		action = wezterm.action_callback(function(win, pane)
 			local char = super_vim_keys_map[key]
-			-- if char and is_vim(pane) then
-			-- 	-- pass the keys through to vim/nvim
-			-- 	win:perform_action({
-			-- 		SendKey = { key = char, mods = nil },
-			-- 	}, pane)
-			-- else
-			-- 	win:perform_action({
-			-- 		SendKey = {
-			-- 			key = key,
-			-- 			mods = "CMD",
-			-- 		},
-			-- 	}, pane)
-			-- end
-
 			-- send unicode for all programs, so we can bind key in zsh and nvim
 			win:perform_action({
 				SendKey = { key = char, mods = nil },
@@ -67,6 +53,8 @@ local config = {
 		top = 0,
 		bottom = 0,
 	},
+    front_end = "WebGpu",
+    webgpu_power_preference = 'HighPerformance',
 	initial_cols = 160,
 	initial_rows = 48,
 	color_scheme = "tokyonight_night",
