@@ -17,10 +17,7 @@
     bat
     delta
     chafa
-    # needed for font
-    nerdfonts
   ];
-  fonts.fontconfig.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";
