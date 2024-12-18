@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 
 local M = {}
 
-local config = {
+M.config = {
 	initial_rows = 48,
 	initial_cols = 160,
 	default_prog = { "zsh" },
@@ -45,20 +45,35 @@ local config = {
 	},
 	disable_default_key_bindings = true,
 	adjust_window_size_when_changing_font_size = true,
-	-- leader = { key = ",", mods = "CMD" },
 	enable_kitty_keyboard = true,
 	enable_csi_u_key_encoding = false,
-	keys = {},
+	leader = { key = ",", mods = "CTRL" },
+	keys = {
+		{
+			key = "c",
+			mods = "LEADER",
+			action = wezterm.action.SpawnTab("DefaultDomain"),
+		},
+		{
+			key = "q",
+			mods = "LEADER",
+			action = wezterm.action.CloseCurrentTab({ confirm = false }),
+		},
+		{ key = "q", mods = "CTRL", action = wezterm.action.QuitApplication },
+		{ key = "f", mods = "CTRL", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
+		{ key = "c", mods = "CTRL", action = wezterm.action({ CopyTo = "Clipboard" }) },
+		{ key = "v", mods = "CTRL", action = wezterm.action({ PasteFrom = "Clipboard" }) },
+		{ key = "=", mods = "CTRL", action = "IncreaseFontSize" },
+		{ key = "-", mods = "CTRL", action = "DecreaseFontSize" },
+	},
 }
 
 for i = 1, 8 do
-	table.insert(config.keys, {
+	table.insert(M.config.keys, {
 		key = tostring(i),
 		mods = "LEADER",
 		action = wezterm.action.ActivateTab(i - 1),
 	})
 end
-
-M.config = config
 
 return M
