@@ -1,11 +1,7 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  imports = [
-    ./common.nix
-  ];
+  imports = [ ./common.nix ./modules/docker/mod.nix ];
 
-  nix.settings = {
-    extra-trusted-users = "kghugo";
-  };
+  nix.settings = { extra-trusted-users = "kghugo"; };
 
   home = {
     username = "kghugo";

@@ -40,23 +40,23 @@ end
 -- dont edit end
 
 local config = {
-	-- default_prog = { "tmux" },
+	-- default_prog = { "zsh" },
+	-- default_gui_startup_args = { "--fullscreen" },
 	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
 	font_size = 16.0,
 	enable_tab_bar = true,
 	window_frame = {
 		font_size = 18.0,
 	},
+    window_decorations = "RESIZE",
 	window_padding = {
 		left = 0,
 		right = 0,
 		top = 0,
 		bottom = 0,
 	},
-    front_end = "WebGpu",
-    webgpu_power_preference = 'HighPerformance',
-	initial_cols = 160,
-	initial_rows = 48,
+	front_end = "WebGpu",
+	webgpu_power_preference = "HighPerformance",
 	color_scheme = "tokyonight_night",
 	color_schemes = {
 		tokyonight_storm = {
