@@ -54,11 +54,15 @@
     gnomeExtensions.status-icons
     gnomeExtensions.user-themes
     gnomeExtensions.paperwm
-    gnomeExtensions.gsconnect
     gnomeExtensions.app-hider
     gnomeExtensions.wifi-qrcode
     # weather-oclock requires gnome-weather
     gnomeExtensions.weather-oclock
     gnome-weather
   ];
+
+  services.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
 }
