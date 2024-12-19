@@ -32,7 +32,10 @@
         "user-theme@gnome-shell-extensions.gcampax.github.com"
         "app-hider@lynith.dev"
         "wifiqrcode@glerro.pm.me"
+        "weatheroclock@CleoMenezesJr.github.io"
         "gsconnect@andyholmes.github.io"
+        "quick-settings-audio-panel@rayzeq.github.io"
+        "clipboard-indicator@tudmotu.com"
       ];
 
       favorite-apps = [
@@ -41,8 +44,11 @@
         "org.wezfurlong.wezterm.desktop"
       ];
     };
+    "org/gnome/shell/extensions/quick-settings-audio-panel" = {
+      always-show-input-slider = true;
+    };
     "org/gnome/shell/extensions/app-hider" = {
-      hidden-apps = [ "vim.desktop" ];
+      hidden-apps = [ "vim.desktop" "org.gnome.Weather.desktop" ];
     };
     "org/gnome/mutter" = { dynamic-workspaces = true; };
   };
@@ -54,11 +60,14 @@
     gnomeExtensions.status-icons
     gnomeExtensions.user-themes
     gnomeExtensions.paperwm
-    gnomeExtensions.gsconnect
     gnomeExtensions.app-hider
     gnomeExtensions.wifi-qrcode
     # weather-oclock requires gnome-weather
     gnomeExtensions.weather-oclock
     gnome-weather
+    # gnome-clocks provide clock for multiple timezone
+    gnome-clocks
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.quick-settings-audio-panel
   ];
 }
