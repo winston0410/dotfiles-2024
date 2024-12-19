@@ -3,8 +3,8 @@ local wezterm = require("wezterm")
 local M = {}
 
 M.config = {
-	initial_rows = 48,
-	initial_cols = 160,
+	initial_rows = 36,
+	initial_cols = 120,
 	default_prog = { "zsh" },
 	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
 	font_size = 16.0,
