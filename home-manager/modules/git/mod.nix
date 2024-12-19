@@ -21,10 +21,9 @@
 
     lfs = { enable = true; };
 
-    credential = { helper = "store"; };
-
     merge = { conflictstyle = "diff3"; };
 
     diff = { colorMoved = "default"; };
   };
+  programs.git-credential-oauth.enable = true;
 }
