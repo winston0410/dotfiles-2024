@@ -73,7 +73,5 @@
     eog
     # video viewer
     totem
-    ibus-engines.hangul
-    ibus-engines.rime
   ];
 }
