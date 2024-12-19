@@ -8,7 +8,7 @@
     enable = true;
     defaultFonts = {
       serif = [ ];
-      sanSerif = [ ];
+      sansSerif = [ ];
     };
   };
 }

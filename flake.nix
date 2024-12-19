@@ -26,7 +26,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    inputs.nixpkgs.follows = "nixpkgs";
+    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
+    firefox-addons.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
@@ -73,7 +74,7 @@
             inherit inputs outputs;
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
-            firefox-addons = firefox-addons.legacyPackages.x86_64-linux;
+            firefox-addons = firefox-addons.packages.x86_64-linux;
           };
           modules = [ ./home-manager/linux.nix ];
         };
