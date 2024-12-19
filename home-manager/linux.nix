@@ -20,5 +20,7 @@
     element-desktop
     telegram-desktop
     spotube
+    discord
+    thunderbird
   ];
 }
