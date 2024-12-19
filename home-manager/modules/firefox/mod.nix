@@ -11,7 +11,8 @@
         id = 0;
         name = "kghugo";
         isDefault = true;
-        extensions = [ ];
+        search = { force = true; };
+        extensions = [ firefox-addons.bitwarden firefox-addons.ublock-origin ];
       };
     };
   };
