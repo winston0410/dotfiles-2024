@@ -1,4 +1,5 @@
-{ inputs, lib, config, pkgs, unstable, ... }: {
+{ inputs, lib, config, pkgs, unstable, system, ... }: 
+{
   imports = [
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
