@@ -12,6 +12,7 @@
         name = "kghugo";
         isDefault = true;
         search = { force = true; };
+        # WARN extension will be installed, but not automatically enabled. You have to visit the extension page to enable them individually
         extensions = [ firefox-addons.bitwarden firefox-addons.ublock-origin ];
       };
     };
