@@ -7,6 +7,7 @@ M.config = {
 	initial_cols = 120,
 	default_prog = { "zsh" },
 	font = wezterm.font_with_fallback({
+        "0xProto Nerd Font",
 		"Noto Sans Mono CJK HK",
 	}),
 	font_size = 16.0,
