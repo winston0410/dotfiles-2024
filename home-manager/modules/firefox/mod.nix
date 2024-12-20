@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, firefox-addons, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox.override {
@@ -12,7 +12,11 @@
         name = "kghugo";
         isDefault = true;
         search = { force = true; };
-        extensions = [ firefox-addons.bitwarden firefox-addons.ublock-origin ];
+        # WARN extension will be installed, but not automatically enabled. You have to visit the extension page to enable them individually
+        extensions = with pkgs; [
+          nur.repos.rycee.firefox-addons.bitwarden
+          nur.repos.rycee.firefox-addons.ublock-origin
+        ];
       };
     };
   };

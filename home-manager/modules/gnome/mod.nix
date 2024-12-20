@@ -69,5 +69,9 @@
     gnome-clocks
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.quick-settings-audio-panel
+    # image viewer
+    eog
+    # video viewer
+    totem
   ];
 }

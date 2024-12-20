@@ -25,12 +25,13 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    inputs.nixpkgs.follows = "nixpkgs";
+    # nur
+    nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
-    , rust-overlay, firefox-addons, ... }@inputs:
+    , rust-overlay, nur, ... }@inputs:
 
     let
       inherit (self) outputs;
@@ -43,7 +44,10 @@
         system = darwinArmSystem;
         overlays = [ rust-overlay.overlays.default ];
       };
-      linuxAmdPkgs = import nixpkgs { system = linuxAmdSystem; };
+      linuxAmdPkgs = import nixpkgs {
+        system = linuxAmdSystem;
+        overlays = [ nur.overlays.default ];
+      };
 
       darwin-builder = nixpkgs.lib.nixosSystem {
         system = linuxArmSystem;
@@ -73,7 +77,6 @@
             inherit inputs outputs;
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
-            firefox-addons = firefox-addons.legacyPackages.x86_64-linux;
           };
           modules = [ ./home-manager/linux.nix ];
         };

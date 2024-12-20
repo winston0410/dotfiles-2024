@@ -3,7 +3,7 @@
     dockfmt
     gotools
     stylua
-    nixfmt
+    nixfmt-classic
     # Not using Purescript anymore
     # nodePackages.purty
     # Not working with Python at the moment
