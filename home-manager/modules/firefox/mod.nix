@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, firefox-addons, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox.override {
@@ -13,7 +13,10 @@
         isDefault = true;
         search = { force = true; };
         # WARN extension will be installed, but not automatically enabled. You have to visit the extension page to enable them individually
-        extensions = [ firefox-addons.bitwarden firefox-addons.ublock-origin ];
+        extensions = with pkgs; [
+          nur.repos.rycee.firefox-addons.bitwarden
+          nur.repos.rycee.firefox-addons.ublock-origin
+        ];
       };
     };
   };
