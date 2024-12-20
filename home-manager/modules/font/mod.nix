@@ -7,9 +7,9 @@
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      monospace = [ "Noto Sans Mono CJK HK" ];
-      serif = [ "Noto Serif CJK HK" ];
-      sansSerif = [ "Noto Sans CJK HK" ];
+      monospace = [ "0xProto Nerd Font" "Noto Sans Mono CJK HK" ];
+      serif = [ "0xProto Nerd Font" "Noto Serif CJK HK" ];
+      sansSerif = [ "0xProto Nerd Font" "Noto Sans CJK HK" ];
     };
   };
 }
