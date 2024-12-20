@@ -1,0 +1,5 @@
+---
+schema_list:
+  - schema: jyut6ping3
+patch:
+  "menu/page_size": 9

@@ -73,5 +73,12 @@
     eog
     # video viewer
     totem
+    gnome-font-viewer
+    # rime schema
+    rime-data
   ];
+
+  xdg.configFile = {
+    "ibus/rime/default.custom.yaml" = { source = ./default.custom.yaml; };
+  };
 }
