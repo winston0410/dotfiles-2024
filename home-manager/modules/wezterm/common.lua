@@ -6,7 +6,9 @@ M.config = {
 	initial_rows = 36,
 	initial_cols = 120,
 	default_prog = { "zsh" },
-	font = wezterm.font("Hack Nerd Font", { weight = "Regular", italic = false }),
+	font = wezterm.font_with_fallback({
+		"Noto Sans Mono CJK HK",
+	}),
 	font_size = 16.0,
 	enable_tab_bar = true,
 	window_frame = {
