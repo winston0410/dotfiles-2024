@@ -1,5 +1,4 @@
-{ inputs, lib, config, pkgs, unstable, system, ... }: 
-{
+{ inputs, lib, config, pkgs, unstable, system, ... }: {
   imports = [
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
@@ -19,7 +18,6 @@
 
   nix.package = pkgs.nix;
   nixpkgs = {
-    overlays = [ ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
@@ -28,6 +26,7 @@
 
   news = { display = "show"; };
   home.packages = with pkgs; [ procs unstable.go ];
+  home.preferXdgDirectories = true;
   xdg.enable = true;
   programs.man.enable = false;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

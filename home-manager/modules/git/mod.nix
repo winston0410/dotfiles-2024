@@ -13,6 +13,7 @@
       email = "hugosum.dev@protonmail.com";
       name = "John Doe";
     };
+    core = { editor = "nvim"; };
 
     delta = {
       navigate = true;
