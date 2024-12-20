@@ -8,10 +8,8 @@
     "bat/themes" = { source = ./themes; };
   };
 
-  programs.zsh.initExtra = ''
+  home.activation.refresh-cache = lib.hm.dag.entryAfter [ "installPackages" ] ''
     # Rebuild cache to ensure theme can be found.
-    # Use a subshell to prevent any output
-    # REF https://stackoverflow.com/a/51061398
-    (bat cache --build > /dev/null 2>&1 &)
+    run --quiet ${pkgs.bat}/bin/bat cache --build
   '';
 }

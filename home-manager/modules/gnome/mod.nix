@@ -50,6 +50,7 @@
     "org/gnome/shell/extensions/app-hider" = {
       hidden-apps = [ "vim.desktop" "org.gnome.Weather.desktop" ];
     };
+    "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
     "org/gnome/mutter" = { dynamic-workspaces = true; };
   };
 
@@ -74,8 +75,6 @@
     # video viewer
     totem
     gnome-font-viewer
-    # rime schema
-    rime-data
   ];
 
   xdg.configFile = {
