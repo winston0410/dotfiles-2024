@@ -17,9 +17,10 @@
         ];
       };
       ExtensionSettings = {
-        "uBlock0@raymondhill.net" = { toolbar = true; };
-        "446900e4-71c2-419f-a6a7-df9c091e268b" = { toolbar = true; };
+        "uBlock0@raymondhill.net" = { default_area = "navbar"; };
+        "446900e4-71c2-419f-a6a7-df9c091e268b" = { default_area = "navbar"; };
       };
+      SSLVersionMin = "tls1.2";
     };
     profiles = {
       kghugo = {
