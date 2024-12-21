@@ -15,6 +15,10 @@
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
     };
+    "org/gnome/settings-daemon/plugins/color" = {
+      night-light-enabled = true;
+      night-light-schedule-automatic = false;
+    };
     "org/gnome/settings-daemon/plugins/power" = {
       power-button-action = "interactive";
       sleep-inactive-ac-timeout = 0;
@@ -51,6 +55,7 @@
       hidden-apps = [ "vim.desktop" "org.gnome.Weather.desktop" ];
     };
     "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
+    "org/gnome/shell/extensions/clipboard-indicator" = { history-size = 25; };
     "org/gnome/mutter" = { dynamic-workspaces = true; };
   };
 

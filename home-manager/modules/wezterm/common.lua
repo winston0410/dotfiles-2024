@@ -7,11 +7,17 @@ M.config = {
 	initial_cols = 120,
 	default_prog = { "zsh" },
 	font = wezterm.font_with_fallback({
-        "0xProto Nerd Font",
+		-- very legible, but a bit boring
+		-- "Hack Nerd Font Mono",
+		"0xProto Nerd Font Mono",
+		-- not a bad font, but seems to be not actively maintained
+		-- "Mononoki Nerd Font Mono",
 		"Noto Sans Mono CJK HK",
 	}),
 	font_size = 16.0,
 	enable_tab_bar = true,
+	front_end = "WebGpu",
+	webgpu_power_preference = "HighPerformance",
 	window_frame = {
 		font_size = 18.0,
 	},
