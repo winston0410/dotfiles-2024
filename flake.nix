@@ -29,13 +29,18 @@
     nur.url =
       "github:nix-community/NUR?rev=142f0732df8dce2521240d9e1e983160a6a0c669";
     nur.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixpkgs-firefox-darwin.url =
+      "github:bandithedoge/nixpkgs-firefox-darwin?rev=7ae689d7b8a17209854d7966641d4201926f12c7";
+    nixpkgs-firefox-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, flake-utils
-    , rust-overlay, nur, ... }@inputs:
+    , rust-overlay, nur, nixpkgs-firefox-darwin, ... }@inputs:
 
     let
       inherit (self) outputs;
+      lib = nixpkgs.lib;
       darwinArmSystem = "aarch64-darwin";
       linuxArmSystem =
         builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinArmSystem;
@@ -43,7 +48,11 @@
 
       darwinArmPkgs = import nixpkgs {
         system = darwinArmSystem;
-        overlays = [ rust-overlay.overlays.default ];
+        overlays = [
+          rust-overlay.overlays.default
+          nur.overlays.default
+          nixpkgs-firefox-darwin.overlay
+        ];
       };
       linuxAmdPkgs = import nixpkgs {
         system = linuxAmdSystem;
@@ -67,6 +76,7 @@
           pkgs = darwinArmPkgs;
           extraSpecialArgs = {
             inherit inputs outputs;
+            isDarwin = lib.strings.hasInfix "darwin" darwinArmSystem;
             system = darwinArmSystem;
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
@@ -76,6 +86,7 @@
           pkgs = linuxAmdPkgs;
           extraSpecialArgs = {
             inherit inputs outputs;
+            isDarwin = lib.strings.hasInfix "darwin" linuxAmdSystem;
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
           };

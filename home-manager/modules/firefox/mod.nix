@@ -1,10 +1,14 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, system, isDarwin, ... }: {
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox.override {
-      nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
-    };
-    nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
+    package = if !isDarwin then
+      (pkgs.firefox.override {
+        nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
+      })
+    else
+      pkgs.firefox-bin;
+    nativeMessagingHosts =
+      if !isDarwin then [ pkgs.gnome-browser-connector ] else [ ];
     languagePacks = [ "en-GB" ];
     policies = {
       AppAutoUpdate = false;
@@ -48,5 +52,12 @@
         ];
       };
     };
+  };
+
+  # FIX for this bug https://github.com/nix-community/home-manager/issues/5717
+  # REF https://github.com/booxter/home-manager/commit/c200ff63c0f99c57fac96aac667fd50b5057aec7
+  home.sessionVariables = lib.mkIf isDarwin {
+    MOZ_LEGACY_PROFILES = 1;
+    MOZ_ALLOW_DOWNGRADE = 1;
   };
 }

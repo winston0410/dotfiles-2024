@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, ... }: {
+{ inputs, lib, config, pkgs, system, isDarwin, ... }: {
   home.packages = with pkgs; [ neofetch ];
   programs.zsh = {
     enable = true;
@@ -21,7 +21,7 @@
         }
       ];
     };
-    initExtra = if lib.strings.hasInfix "linux" system then ''
+    initExtra = if !isDarwin then ''
       source "$HOME/.config/fzf/fzf-color.sh"
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;

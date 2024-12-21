@@ -1,6 +1,7 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
   imports = [
     ./common.nix
+    ./modules/firefox/mod.nix
   ];
 
   nix.settings = {
