@@ -37,3 +37,12 @@ Install all plugins in Neovim, using Vim command panel:
 ```sh
 :Lazy update
 ```
+
+## Clean up home-manager
+
+Somehow home-manager's generations are not automatically cleaned by NixOS GC at the moment. To clean up, you have to run the following command:
+
+```sh
+# it will retain only the latest generation
+nix run home-manager/release-24.11 -- --flake .#linux expire-generations "-1 days"
+```

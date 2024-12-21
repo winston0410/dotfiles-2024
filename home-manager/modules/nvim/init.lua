@@ -882,7 +882,7 @@ require("lazy").setup({
 				local installer = require("nvim-treesitter.install")
 				installer.prefer_git = true
 
-                -- FIXME cannot install these two in Linux
+				-- FIXME cannot install these two in Linux
 				-- parser_config.wast = {
 				-- 	install_info = {
 				-- 		branch = "main",
@@ -1025,12 +1025,12 @@ require("lazy").setup({
 				})
 				vim.api.nvim_set_hl(0, "PounceAcceptBest", {
 					fg = c.magenta2,
-					bg = nil,
+					bg = "none",
 					bold = true,
 				})
 				vim.api.nvim_set_hl(0, "PounceAccept", {
 					fg = c.blue2,
-					bg = nil,
+					bg = "none",
 					bold = true,
 				})
 				vim.api.nvim_set_hl(0, "PounceUnmatched", {

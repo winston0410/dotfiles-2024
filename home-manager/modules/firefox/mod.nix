@@ -11,6 +11,13 @@
       if !isDarwin then [ pkgs.gnome-browser-connector ] else [ ];
     languagePacks = [ "en-GB" ];
     policies = {
+      AppAutoUpdate = false;
+      FirefoxSuggest = { "SponsoredSuggestions" = false; };
+      DisableTelemetry = true;
+      HardwareAcceleration = true;
+      PasswordManagerEnabled = false;
+      OfferToSaveLogins = false;
+      OfferToSaveLoginsDefault = false;
       # REF https://mozilla.github.io/policy-templates/#extensions
       # NOTE find UUID for each extension in about:debugging#/runtime/this-firefox
       Extensions = {
