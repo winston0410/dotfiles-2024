@@ -148,6 +148,7 @@
       "original": {
         "owner": "bandithedoge",
         "repo": "nixpkgs-firefox-darwin",
+        "rev": "7ae689d7b8a17209854d7966641d4201926f12c7",
         "type": "github"
       }
     },

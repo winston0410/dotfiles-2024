@@ -249,6 +249,7 @@ require("lazy").setup({
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
 			version = "v0.*",
 			opts = {
+				-- FIXME define keymap using lazy.nvim synatx https://cmp.saghen.dev/configuration/keymap.html
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
 					["<Down>"] = { "select_next", "fallback" },

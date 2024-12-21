@@ -1,9 +1,19 @@
 { inputs, lib, config, pkgs, ... }: {
   gtk = {
     enable = true;
-    theme = {
-      name = "Tokyonight-Dark-B-MB";
-      package = pkgs.tokyonight-gtk-theme;
+    # these are somehow not good enough
+    # theme = {
+    # name = "Tokyonight-Dark-B-MB";
+    # package = pkgs.tokyonight-gtk-theme;
+    # name = "WhiteSur";
+    # package = pkgs.whitesur-gtk-theme;
+    # };
+    iconTheme = {
+      name = "WhiteSur-nord";
+      package = (pkgs.whitesur-icon-theme.override {
+        boldPanelIcons = true;
+        themeVariants = [ "nord" "default" "pink"];
+      });
     };
   };
   dconf.settings = {
