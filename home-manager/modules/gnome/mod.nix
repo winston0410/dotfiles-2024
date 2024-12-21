@@ -40,6 +40,8 @@
         "gsconnect@andyholmes.github.io"
         "quick-settings-audio-panel@rayzeq.github.io"
         "clipboard-indicator@tudmotu.com"
+        "blur-my-shell@aunetx"
+        "AlphabeticalAppGrid@stuarthayhurst"
       ];
 
       favorite-apps = [
@@ -75,6 +77,8 @@
     gnome-clocks
     gnomeExtensions.clipboard-indicator
     gnomeExtensions.quick-settings-audio-panel
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.alphabetical-app-grid
     # image viewer
     eog
     # video viewer
