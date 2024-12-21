@@ -8,7 +8,7 @@ M.config = {
 	default_prog = { "zsh" },
 	font = wezterm.font_with_fallback({
 		-- very legible, but a bit boring
-		-- "Hack Nerd Font",
+		-- "Hack Nerd Font Mono",
 		"0xProto Nerd Font Mono",
 		-- not a bad font, but seems to be not actively maintained
 		-- "Mononoki Nerd Font Mono",
