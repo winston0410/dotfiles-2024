@@ -5,6 +5,7 @@
     ./modules/vscode/mod.nix
     ./modules/gnome/mod.nix
     ./modules/firefox/mod.nix
+    ./modules/email/mod.nix
   ];
 
   nix.settings = { extra-trusted-users = "kghugo"; };

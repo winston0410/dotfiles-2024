@@ -13,7 +13,6 @@
     ./modules/tree/mod.nix
     ./modules/font/mod.nix
     ./modules/android/mod.nix
-    ./modules/email/mod.nix
     # # ./rust/mod.nix
   ];
 

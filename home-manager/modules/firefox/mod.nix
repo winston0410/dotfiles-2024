@@ -49,9 +49,10 @@
           "browser.startup.homepage" = "https://sso.28281428.xyz";
           "extensions.pocket.enabled" = false;
           "browser.toolbarbuttons.introduced.pocket-button" = false;
+          # TODO examine whether we should add the following config for privacy
+          # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
         };
         search = { force = true; };
-        # WARN extension will be installed, but not automatically enabled. You have to visit the extension page to enable them individually
         extensions = with pkgs; [
           nur.repos.rycee.firefox-addons.bitwarden
           nur.repos.rycee.firefox-addons.ublock-origin
@@ -60,7 +61,7 @@
     };
   };
 
-  # FIX for this bug https://github.com/nix-community/home-manager/issues/5717
+  # FIX for this bug that prevents installing firefox on darwin https://github.com/nix-community/home-manager/issues/5717
   # REF https://github.com/booxter/home-manager/commit/c200ff63c0f99c57fac96aac667fd50b5057aec7
   home.sessionVariables = lib.mkIf isDarwin {
     MOZ_LEGACY_PROFILES = 1;

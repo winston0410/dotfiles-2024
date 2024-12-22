@@ -1,6 +1,9 @@
 {
   description = "My system flake";
 
+  # REF https://github.com/Mic92/sops-nix
+  # investigate later
+
   inputs = {
     flake-utils.url =
       "github:numtide/flake-utils?rev=ff7b65b44d01cf9ba6a71320833626af21126384";

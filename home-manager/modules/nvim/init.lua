@@ -245,12 +245,9 @@ require("lazy").setup({
 		},
 		{
 			"saghen/blink.cmp",
-			lazy = false, -- lazy loading handled internally
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "v0.*",
-			keys = {},
+			version = "0.8.1",
 			opts = {
-				-- FIXME define keymap using lazy.nvim synatx https://cmp.saghen.dev/configuration/keymap.html
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
 					["<Down>"] = { "select_next", "fallback" },
@@ -290,6 +287,11 @@ require("lazy").setup({
 					},
 				},
 				signature = { enabled = true },
+				fuzzy = {
+					prebuilt_binaries = {
+						force_version = "v0.8.1",
+					},
+				},
 			},
 		},
 		-- {
