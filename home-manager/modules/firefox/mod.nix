@@ -5,8 +5,12 @@
       (pkgs.firefox.override {
         nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
       })
+      # (pkgs.floorp.override {
+      #   nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
+      # })
     else
       pkgs.firefox-bin;
+    # pkgs.floorp-bin;
     nativeMessagingHosts =
       if !isDarwin then [ pkgs.gnome-browser-connector ] else [ ];
     languagePacks = [ "en-GB" ];
