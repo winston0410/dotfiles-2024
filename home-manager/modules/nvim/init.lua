@@ -248,6 +248,7 @@ require("lazy").setup({
 			lazy = false, -- lazy loading handled internally
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
 			version = "v0.*",
+			keys = {},
 			opts = {
 				-- FIXME define keymap using lazy.nvim synatx https://cmp.saghen.dev/configuration/keymap.html
 				keymap = {
@@ -280,6 +281,8 @@ require("lazy").setup({
 
 				sources = {
 					default = { "lsp", "path", "luasnip", "buffer" },
+					-- FIXME enable again once it become stable
+					cmdline = {},
 				},
 				completion = {
 					documentation = {
@@ -778,7 +781,13 @@ require("lazy").setup({
 				{
 					"/",
 					function()
-						require("fzf-lua").lgrep_curbuf()
+						local bufname = vim.api.nvim_buf_get_name(0)
+						local info = vim.uv.fs_stat(bufname)
+						if info ~= nil then
+							require("fzf-lua").lgrep_curbuf()
+						else
+							vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("/", true, false, true), "n", true)
+						end
 					end,
 					mode = { "n", "v" },
 					silent = true,
