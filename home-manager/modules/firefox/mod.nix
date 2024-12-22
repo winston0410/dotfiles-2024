@@ -29,11 +29,13 @@
           "uBlock0@raymondhill.net"
           # Extension ID for bitwarden
           "446900e4-71c2-419f-a6a7-df9c091e268b"
+          "addon@darkreader.org"
         ];
       };
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = { default_area = "navbar"; };
         "446900e4-71c2-419f-a6a7-df9c091e268b" = { default_area = "navbar"; };
+        "addon@darkreader.org" = { default_area = "navbar"; };
       };
       SSLVersionMin = "tls1.2";
     };

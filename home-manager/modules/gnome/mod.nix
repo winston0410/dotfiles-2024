@@ -12,11 +12,18 @@
       name = "WhiteSur-nord";
       package = (pkgs.whitesur-icon-theme.override {
         boldPanelIcons = true;
-        themeVariants = [ "nord" "default" "pink"];
+        themeVariants = [ "nord" "default" "pink" ];
       });
     };
   };
   dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      font-hinting = "full";
+      font-antialiasing = "rgba";
+      monospace-font-name = "0xProto Nerd Font Mono";
+      # document-font-name = "";
+      # font-name = "";
+    };
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
       speed = 0.5;
@@ -58,13 +65,15 @@
         "org.gnome.Nautilus.desktop"
         "firefox.desktop"
         "org.wezfurlong.wezterm.desktop"
+        "thunderbird.desktop"
       ];
     };
     "org/gnome/shell/extensions/quick-settings-audio-panel" = {
       always-show-input-slider = true;
     };
     "org/gnome/shell/extensions/app-hider" = {
-      hidden-apps = [ "vim.desktop" "org.gnome.Weather.desktop" ];
+      hidden-apps =
+        [ "vim.desktop" "org.gnome.Weather.desktop" "nvim.desktop" ];
     };
     "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
     "org/gnome/shell/extensions/clipboard-indicator" = { history-size = 25; };
