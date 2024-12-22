@@ -21,8 +21,5 @@
     telegram-desktop
     spotube
     discord
-    thunderbird
-    # for using protonmail with email client
-    protonmail-bridge
   ];
 }
