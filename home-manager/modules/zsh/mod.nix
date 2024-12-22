@@ -32,6 +32,7 @@
       '';
     in if isDarwin then
       ''
+        export PATH="$PATH:/opt/homebrew/bin";
         source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
         source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
       '' + linuxInit
