@@ -47,6 +47,8 @@
           "browser.startup.homepage" = "https://sso.28281428.xyz";
           "extensions.pocket.enabled" = false;
           "browser.toolbarbuttons.introduced.pocket-button" = false;
+          # never send referrer
+          "network.http.referer.XOriginPolicy" = 2;
         };
         search = { force = true; };
         # WARN extension will be installed, but not automatically enabled. You have to visit the extension page to enable them individually
