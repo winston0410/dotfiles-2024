@@ -1,12 +1,18 @@
 { inputs, lib, config, pkgs, ... }: {
   gtk = {
     enable = true;
+    font = {
+      name = "Inter";
+      package = pkgs.inter;
+    };
     # these are somehow not good enough
     # theme = {
     # name = "Tokyonight-Dark-B-MB";
     # package = pkgs.tokyonight-gtk-theme;
     # name = "WhiteSur";
-    # package = pkgs.whitesur-gtk-theme;
+    # package = (pkgs.whitesur-gtk-theme.override {
+    #
+    # });
     # };
     iconTheme = {
       name = "WhiteSur-nord";
@@ -15,14 +21,19 @@
         themeVariants = [ "nord" "default" "pink" ];
       });
     };
+    cursorTheme = {
+      # name = "MacOS-cursor";
+      # package = pkgs.apple-cursor;
+      name = "phinger-cursors-light";
+      package = pkgs.phinger-cursors;
+    };
   };
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       font-hinting = "full";
       font-antialiasing = "rgba";
       monospace-font-name = "0xProto Nerd Font Mono";
-      # document-font-name = "";
-      # font-name = "";
+      document-font-name = "Inter";
     };
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
