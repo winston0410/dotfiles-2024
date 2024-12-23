@@ -108,7 +108,11 @@
     };
     "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
     "org/gnome/shell/extensions/clipboard-indicator" = { history-size = 25; };
-    "org/gnome/mutter" = { dynamic-workspaces = true; };
+    "org/gnome/mutter" = {
+      dynamic-workspaces = true;
+      experimental-features =
+        [ "variable-refresh-rate" "scale-monitor-framebuffer" ];
+    };
   };
 
   home.packages = with pkgs; [
