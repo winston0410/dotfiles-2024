@@ -26,6 +26,9 @@
       # package = pkgs.apple-cursor;
       name = "phinger-cursors-light";
       package = pkgs.phinger-cursors;
+      # only a set of size can be used
+      # REF https://linux-tips.com/t/setting-cursor-size-in-gnome/835
+      size = 48;
     };
   };
   dconf.settings = {
@@ -83,8 +86,16 @@
       always-show-input-slider = true;
     };
     "org/gnome/shell/extensions/app-hider" = {
-      hidden-apps =
-        [ "vim.desktop" "org.gnome.Weather.desktop" "nvim.desktop" ];
+      hidden-apps = [
+        "vim.desktop"
+        "org.gnome.Weather.desktop"
+        "nvim.desktop"
+        "protontricks.desktop"
+        "Proton Hotfix.desktop"
+        "Steam Linux Runtime 1.0 (scout).desktop"
+        "Steam Linux Runtime 2.0 (soldier).desktop"
+        "Steam Linux Runtime 3.0 (sniper).desktop"
+      ];
     };
     "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
     "org/gnome/shell/extensions/clipboard-indicator" = { history-size = 25; };

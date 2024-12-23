@@ -27,6 +27,10 @@
         bindkey '^P' up-line-or-history;
         bindkey '^N' down-line-or-history;
 
+        # Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
+        # REF https://unix.stackexchange.com/a/290403
+        bindkey -v '^?' backward-delete-char
+
         KEYTIMEOUT=1;
         unsetopt share_history;
       '';
