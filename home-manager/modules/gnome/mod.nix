@@ -123,6 +123,8 @@
     # weather-oclock requires gnome-weather
     gnomeExtensions.weather-oclock
     gnome-weather
+    # calendar
+    gnome-calendar
     # gnome-clocks provide clock for multiple timezone
     gnome-clocks
     gnomeExtensions.clipboard-indicator
@@ -135,6 +137,14 @@
     totem
     gnome-font-viewer
     gnome-tecla
+    gnome-maps
+    gnome-calculator
+    gnome-characters
+    gnome-disk-utility
+    # document viewer
+    papers
+    # disk usage viewer
+    baobab
   ];
 
   xdg.configFile = {
