@@ -6,6 +6,7 @@ M.config = {
 	initial_rows = 36,
 	initial_cols = 120,
 	default_prog = { "zsh" },
+	default_cursor_style = "SteadyBlock",
 	font = wezterm.font_with_fallback({
 		-- very legible, but a bit boring
 		-- "Hack Nerd Font Mono",
