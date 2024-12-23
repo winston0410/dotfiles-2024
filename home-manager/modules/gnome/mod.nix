@@ -15,10 +15,10 @@
     # });
     # };
     iconTheme = {
-      name = "WhiteSur-nord";
+      name = "WhiteSur";
       package = (pkgs.whitesur-icon-theme.override {
         boldPanelIcons = true;
-        themeVariants = [ "nord" "default" "pink" ];
+        themeVariants = [ "default" ];
       });
     };
     cursorTheme = {
@@ -82,6 +82,9 @@
         "thunderbird.desktop"
       ];
     };
+    "org/gnome/shell/keybindings" = {
+      show-screenshot-ui = [ "<Ctrl><Super>s" ];
+    };
     "org/gnome/shell/extensions/quick-settings-audio-panel" = {
       always-show-input-slider = true;
     };
@@ -125,6 +128,7 @@
     # video viewer
     totem
     gnome-font-viewer
+    gnome-tecla
   ];
 
   xdg.configFile = {
