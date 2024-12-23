@@ -26,6 +26,7 @@
       # package = pkgs.apple-cursor;
       name = "phinger-cursors-light";
       package = pkgs.phinger-cursors;
+      size = 20;
     };
   };
   dconf.settings = {
