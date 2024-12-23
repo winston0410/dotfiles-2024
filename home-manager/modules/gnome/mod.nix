@@ -32,6 +32,12 @@
     };
   };
   dconf.settings = {
+    "org/gnome/desktop/background" = {
+      picture-uri =
+        "file:///home/kghugo/.config/gtk-4.0/wallpapers/stardust-dragon.jpg";
+      picture-uri-dark =
+        "file:///home/kghugo/.config/gtk-4.0/wallpapers/shooting-quasar-dragon.jpg";
+    };
     "org/gnome/desktop/interface" = {
       font-hinting = "full";
       font-antialiasing = "rgba";
@@ -133,5 +139,6 @@
 
   xdg.configFile = {
     "ibus/rime/default.custom.yaml" = { source = ./default.custom.yaml; };
+    "gtk-4.0/wallpapers" = { source = ./wallpapers; };
   };
 }
