@@ -129,6 +129,10 @@
     totem
     gnome-font-viewer
     gnome-tecla
+    gnome-maps
+    gnome-calculator
+    gnome-characters
+    gnome-disk-utility
   ];
 
   xdg.configFile = {

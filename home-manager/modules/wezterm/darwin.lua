@@ -2,12 +2,11 @@ local wezterm = require("wezterm")
 local common = require("common")
 
 local config = common.config
--- config.leader = { key = ",", mods = "CMD" }
---
--- for _, mapping in ipairs(config.keys) do
--- 	if mapping.mods == "CTRL" then
--- 		mapping.mods = "CMD"
--- 	end
--- end
+
+local darwinOnlyMapping = {}
+
+for _, mapping in ipairs(darwinOnlyMapping) do
+	table.insert(config.keys, mapping)
+end
 
 return config
