@@ -32,6 +32,12 @@
     };
   };
   dconf.settings = {
+    "org/gnome/desktop/background" = {
+      picture-uri =
+        "file:///home/kghugo/.config/gtk-4.0/wallpapers/stardust-dragon.jpg";
+      picture-uri-dark =
+        "file:///home/kghugo/.config/gtk-4.0/wallpapers/shooting-quasar-dragon.jpg";
+    };
     "org/gnome/desktop/interface" = {
       font-hinting = "full";
       font-antialiasing = "rgba";
@@ -102,7 +108,11 @@
     };
     "org/gnome/shell/extensions/vitals" = { show-gpu = true; };
     "org/gnome/shell/extensions/clipboard-indicator" = { history-size = 25; };
-    "org/gnome/mutter" = { dynamic-workspaces = true; };
+    "org/gnome/mutter" = {
+      dynamic-workspaces = true;
+      experimental-features =
+        [ "variable-refresh-rate" "scale-monitor-framebuffer" ];
+    };
   };
 
   home.packages = with pkgs; [
@@ -143,5 +153,6 @@
 
   xdg.configFile = {
     "ibus/rime/default.custom.yaml" = { source = ./default.custom.yaml; };
+    "gtk-4.0/wallpapers" = { source = ./wallpapers; };
   };
 }
