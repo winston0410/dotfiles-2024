@@ -4,7 +4,7 @@
   # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
   programs.git.extraConfig = {
-    pull = { ff = false; };
+    pull = { ff = true; };
     # REF https://stackoverflow.com/a/61920529
     http = { postBuffer = 524288000; };
 
@@ -12,17 +12,19 @@
 
     user = {
       email = "hugosum.dev@protonmail.com";
-      name = "John Doe";
+      name = "oauth2";
     };
     credential = {
       helper = if isDarwin then [
         "osxkeychain"
-        "cache --timeout 43200"
-        "oauth"
-      ] else [
-        "cache --timeout 43200"
-        "oauth"
-      ];
+        # "cache --timeout 43200"
+        "manager"
+      ] else
+        [
+          # "cache --timeout 43200"
+          # "store"
+          "manager"
+        ];
     };
     core = { editor = "nvim"; };
 
@@ -37,5 +39,8 @@
 
     diff = { colorMoved = "default"; };
   };
-  home.packages = with pkgs; [ git-credential-oauth ];
+  home.packages = with pkgs;
+    [ # git-credential-oauth
+      git-credential-manager
+    ];
 }
