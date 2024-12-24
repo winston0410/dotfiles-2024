@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, isDarwin, ... }: {
   programs.git.enable = true;
   programs.git.delta.enable = true;
 
@@ -13,6 +13,11 @@
       email = "hugosum.dev@protonmail.com";
       name = "John Doe";
     };
+    credential = {
+      helper =
+        # if isDarwin then [ "osxkeychain" "oauth" ] else [ "libsecret" "oauth" ];
+        if isDarwin then [ "osxkeychain" ] else [ "libsecret" ];
+    };
     core = { editor = "nvim"; };
 
     delta = {
@@ -26,5 +31,5 @@
 
     diff = { colorMoved = "default"; };
   };
-  programs.git-credential-oauth.enable = true;
+  home.packages = with pkgs; [ git-credential-oauth ];
 }

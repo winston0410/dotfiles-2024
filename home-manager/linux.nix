@@ -6,6 +6,7 @@
     ./modules/gnome/mod.nix
     ./modules/firefox/mod.nix
     ./modules/email/mod.nix
+    ./modules/steam/mod.nix
   ];
 
   nix.settings = { extra-trusted-users = "kghugo"; };
