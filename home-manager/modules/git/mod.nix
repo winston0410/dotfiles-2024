@@ -1,6 +1,7 @@
 { inputs, lib, config, pkgs, isDarwin, ... }: {
   programs.git.enable = true;
   programs.git.delta.enable = true;
+  # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
   programs.git.extraConfig = {
     pull = { ff = false; };
@@ -14,23 +15,14 @@
       name = "John Doe";
     };
     credential = {
-      helper = if isDarwin then
-        [
-          # "osxkeychain"
-          "oauth"
-        ]
-      else
-        [
-          "secretservice"
-          # "oauth"
-        ];
-      # if isDarwin then [
-      #   "osxkeychain"
-      #   # "oauth"
-      # ] else [
-      #   "secretservice"
-      #   # "oauth"
-      # ];
+      helper = if isDarwin then [
+        "osxkeychain"
+        "cache --timeout 43200"
+        "oauth"
+      ] else [
+        "cache --timeout 43200"
+        "oauth"
+      ];
     };
     core = { editor = "nvim"; };
 
