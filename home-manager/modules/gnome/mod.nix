@@ -149,7 +149,12 @@
     papers
     # disk usage viewer
     baobab
+    # secret manager
+    seahorse
+    gcr
   ];
+
+  services.gnome-keyring.enable = true;
 
   xdg.configFile = {
     "ibus/rime/default.custom.yaml" = { source = ./default.custom.yaml; };
