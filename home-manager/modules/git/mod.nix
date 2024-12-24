@@ -15,8 +15,14 @@
     };
     credential = {
       helper =
-        # if isDarwin then [ "osxkeychain" "oauth" ] else [ "libsecret" "oauth" ];
-        if isDarwin then [ "osxkeychain" ] else [ "libsecret" ];
+        # if isDarwin then [ "osxkeychain" "oauth" ] else [ "store" "oauth" ];
+        if isDarwin then [
+          "osxkeychain"
+          # "oauth"
+        ] else [
+          "secretservice"
+          # "oauth"
+        ];
     };
     core = { editor = "nvim"; };
 
