@@ -12,19 +12,14 @@
 
     user = {
       email = "hugosum.dev@protonmail.com";
-      name = "oauth2";
+      name = "nobody";
     };
     credential = {
-      helper = if isDarwin then [
-        "osxkeychain"
-        # "cache --timeout 43200"
-        "manager"
-      ] else
-        [
-          # "cache --timeout 43200"
-          # "store"
-          "manager"
-        ];
+      credentialStore = "cache";
+      helper = if isDarwin then
+        [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ]
+      else
+        [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ];
     };
     core = { editor = "nvim"; };
 
@@ -40,7 +35,9 @@
     diff = { colorMoved = "default"; };
   };
   home.packages = with pkgs;
-    [ # git-credential-oauth
+    [
+      # NOTE it is trigger every single time when I open a Git repo, cannot fix it at all
+      # git-credential-oauth
       git-credential-manager
     ];
 }
