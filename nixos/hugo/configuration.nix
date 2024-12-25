@@ -1,4 +1,3 @@
-
 { config, pkgs, ... }:
 
 {
@@ -113,11 +112,26 @@
     pulse.enable = true;
     jack.enable = true;
   };
-  # NOTE after applying the config, you need to create an OpenRGB profile so the setting can be persisted. The OpenRGB profile file is binary, therefore not suitable to be generated with home-manager at the moment
   # NOTE OpenRGB does not support XPG Lancer Blade RGB yet, cannot turn off RGB light on RAM
   services.hardware.openrgb.enable = true;
   services.hardware.openrgb.motherboard = "amd";
-  # TODO disable all RGB lights, https://nixos.wiki/wiki/OpenRGB
+  # REF https://nixos.wiki/wiki/OpenRGB
+  systemd.services.no-rgb = let
+    no-rgb = pkgs.writeShellScriptBin "no-rgb" ''
+      NUM_DEVICES=$(${pkgs.openrgb}/bin/openrgb --noautoconnect --list-devices | grep -E '^[0-9]+: ' | wc -l)
+
+      for i in $(seq 0 $(($NUM_DEVICES - 1))); do
+        ${pkgs.openrgb}/bin/openrgb --noautoconnect --device $i --mode static --color 000000
+      done
+    '';
+  in {
+    description = "no-rgb";
+    serviceConfig = {
+      ExecStart = "${no-rgb}/bin/no-rgb";
+      Type = "oneshot";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kghugo = {
