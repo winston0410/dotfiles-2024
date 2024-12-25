@@ -97,6 +97,13 @@
         };
       };
 
+      nixosConfigurations = {
+        hugo = nixpkgs.lib.nixosSystem {
+          system = linuxAmdSystem;
+          modules = [ ./nixos/hugo/configuration.nix ];
+        };
+      };
+
       darwinConfigurations = {
         "darwin" = darwin.lib.darwinSystem {
           system = darwinArmSystem;
