@@ -24,6 +24,13 @@ nix run home-manager/release-24.11 -- --flake .#linux switch
 nix run home-manager/release-24.11 -- --flake .#darwin switch
 ```
 
+## Switch nixos system
+
+```sh 
+# use-remote-sudo or sudo is needed to run this command correctly
+nixos-rebuild switch --flake .#hugo --use-remote-sudo
+```
+
 ## Init and switch nix-darwin
 
 ```sh

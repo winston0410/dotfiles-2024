@@ -103,7 +103,7 @@
   };
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  security.sudo.enable = false;
+  security.sudo.enable = true;
   security.pam.services.gdm-password.enableGnomeKeyring = true;
   services.pipewire = {
     enable = true;
@@ -154,8 +154,7 @@
   programs.nano.enable = false;
   environment.systemPackages = with pkgs; [
     vim
-    # git-credential-manager does not show URL when browser is not avaliable. As we cannot run Firefox as root, having a url in terminal is cruical
-    git-credential-oauth
+    git-credential-manager
     # NOTE to allow all console applications to use system Xserver clipboard
     xclip
   ];
@@ -185,10 +184,9 @@
         name = "nobody";
         email = "johndoe@example.com";
       };
-      # NOTE do not use cache as root, so the socket created would not intervene with normal user
       credential = {
         credentialStore = "cache";
-        helper = [ "oauth" ];
+        helper = [ "manager" ];
       };
     };
   };
