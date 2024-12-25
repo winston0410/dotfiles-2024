@@ -1055,7 +1055,7 @@ require("lazy").setup({
 		},
 		{
 			"stevearc/oil.nvim",
-			version = "2.13.0",
+			version = "2.14.0",
 			keys = {
 				{
 					"<leader>o",
@@ -1078,12 +1078,17 @@ require("lazy").setup({
 				watch_for_changes = true,
 				keymaps = {
 					["<CR>"] = { "actions.select", mode = "n", desc = "Select a file" },
+					["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 					["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
 				},
 				use_default_keymaps = false,
+				win_options = {
+					wrap = true,
+				},
 				view_options = {
 					show_hidden = true,
 				},
+				skip_confirm_for_simple_edits = true,
 			},
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 		},
@@ -1091,6 +1096,18 @@ require("lazy").setup({
 			"folke/edgy.nvim",
 			event = "VeryLazy",
 			opts = {
+				left = {
+					-- TODO enable again, once the oil.nvim bug is fixed
+					-- {
+					-- 	ft = "oil",
+					-- 	size = { width = 0.3, height = 1 },
+					-- },
+					-- edgy.nvim does not provide a wrap options, content not readable
+					-- {
+					-- 	ft = "NeogitStatus",
+					-- 	size = { width = 0.3 },
+					-- },
+				},
 				bottom = {
 					{
 						ft = "trouble",
