@@ -149,6 +149,8 @@
     papers
     # disk usage viewer
     baobab
+    # secret manager
+    seahorse
   ];
 
   xdg.configFile = {
