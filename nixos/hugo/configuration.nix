@@ -11,11 +11,11 @@
   # limit max generations to 10
   boot.loader.systemd-boot.configurationLimit = 10;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   networking.wireless.enable = false;
   networking.networkmanager.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.kernelParams = [ "nvidia_drm.modeset=1" ];
+  boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ];
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
@@ -39,7 +39,17 @@
   };
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    # package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    # package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+    #   version = "560.35.03";
+    #   sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+    #   sha256_aarch64 = "sha256-s8ZAVKvRNXpjxRYqM3E5oss5FdqW+tv1qQC2pDjfG+s=";
+    #   openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
+    #   settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
+    #   persistencedSha256 =
+    #     "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
+    # };
     modesetting.enable = true;
     open = true;
     powerManagement.enable = true;
@@ -80,10 +90,10 @@
     "${pkgs.gnome-session}/bin/gnome-session";
   services.xrdp.openFirewall = true;
   # NOTE disable suspend completely, as Nvidia GPU does not work correctly on suspend without offloading mode, and we do not have iGPU for offloading
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
+  # systemd.targets.sleep.enable = false;
+  # systemd.targets.suspend.enable = false;
+  # systemd.targets.hibernate.enable = false;
+  # systemd.targets.hybrid-sleep.enable = false;
 
   # Configure keymap in X11
   services.xserver.xkb = {

@@ -10,6 +10,7 @@
     ./modules/zsh/mod.nix
     ./modules/fzf/mod.nix
     ./modules/du/mod.nix
+    ./modules/nom/mod.nix
     ./modules/tree/mod.nix
     ./modules/font/mod.nix
     ./modules/k9s/mod.nix
