@@ -37,6 +37,12 @@ nixos-rebuild switch --flake .#hugo --use-remote-sudo
 nix run nix-darwin -- --flake .#hugosum switch
 ```
 
+## Update flake input without pinned to commit
+
+```sh 
+nix flake update
+```
+
 ## Set up Neovim
 
 Install all plugins in Neovim, using Vim command panel:

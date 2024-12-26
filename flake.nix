@@ -30,7 +30,7 @@
 
     # nur
     nur.url =
-      "github:nix-community/NUR?rev=142f0732df8dce2521240d9e1e983160a6a0c669";
+      "github:nix-community/NUR/master";
     nur.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs-firefox-darwin.url =
