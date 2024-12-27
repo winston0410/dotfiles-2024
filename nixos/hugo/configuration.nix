@@ -11,11 +11,11 @@
   # limit max generations to 10
   boot.loader.systemd-boot.configurationLimit = 10;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   networking.wireless.enable = false;
   networking.networkmanager.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.kernelParams = [ "nvidia_drm.modeset=1" ];
+  boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ];
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
@@ -39,7 +39,7 @@
   };
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
     modesetting.enable = true;
     open = true;
     powerManagement.enable = true;
