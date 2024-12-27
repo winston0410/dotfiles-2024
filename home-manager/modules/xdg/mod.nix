@@ -44,6 +44,16 @@
     RLWRAP_HOME = "${config.xdg.dataHome}/rlwrap";
     CUDA_CACHE_PATH = "${config.xdg.dataHome}/.nv";
     GRADLE_USER_HOME = "${config.xdg.cacheHome}/gradle";
+    REDISCLI_HISTFILE = "${config.xdg.dataHome}/redis/rediscli_history";
+    REDISCLI_RCFILE = "${config.xdg.configHome}/redis/redisclirc";
+    RUFF_CACHE_DIR = "${config.xdg.cacheHome}/ruff";
+    SOLARGRAPH_CACHE = "${config.xdg.cacheHome}/solargraph";
+    SQLITE_HISTORY = "${config.xdg.dataHome}/sqlite_history";
+    W3M_DIR = "${config.xdg.stateHome}/w3m";
+    WAKATIME_HOME = "${config.xdg.configHome}/wakatime";
+    WGETRC = "${config.xdg.configHome}/wgetrc";
+    XINITRC = "${config.xdg.configHome}/X11/xinitrc";
+    XSERVERRC = "${config.xdg.configHome}/X11/xserverrc";
   };
   home.shellAliases = {
     nvidia-settings =
