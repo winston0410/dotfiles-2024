@@ -3,9 +3,17 @@
   xdg.mime.enable = true;
   xdg.mimeApps = {
     enable = !isDarwin;
-    associations.added = { };
+    associations.added = {
+      "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+      "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    };
     associations.removed = { };
-    defaultApplications = { };
+    defaultApplications = {
+      "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
+    };
   };
   xdg.userDirs = {
     enable = !isDarwin;
@@ -23,6 +31,7 @@
   };
 
   # REF https://github.com/TLATER/dotfiles/blob/master/home-config/config/xdg-settings.nix
+  # REF nix run github:b3nj5m1n/xdg-ninja
   home.sessionVariables = {
     LESSKEY = "${config.xdg.cacheHome}/less/key";
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
@@ -32,9 +41,12 @@
     MAILCAPS = "${config.xdg.configHome}/mailcap";
     IPYTHONDIR = "${config.xdg.dataHome}/ipython";
     JUPYTER_CONFIG_DIR = "${config.xdg.dataHome}/ipython";
-    HISTFILE = "${config.xdg.dataHome}/histfile";
     RLWRAP_HOME = "${config.xdg.dataHome}/rlwrap";
-    CUDA_CACHE_PATH = "${config.xdg.dataHome}/cuda";
+    CUDA_CACHE_PATH = "${config.xdg.dataHome}/.nv";
     GRADLE_USER_HOME = "${config.xdg.cacheHome}/gradle";
+  };
+  home.shellAliases = {
+    nvidia-settings =
+      "nvidia-settings --config=$XDG_CONFIG_HOME/nvidia/settings";
   };
 }

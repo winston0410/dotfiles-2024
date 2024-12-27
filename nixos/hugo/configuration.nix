@@ -228,9 +228,11 @@
   xdg.portal = { enable = true; };
 
   documentation.nixos.enable = false;
+  nix.settings.use-xdg-base-directories = true;
   nix.settings.experimental-features =
     [ "nix-command" "flakes" "pipe-operators" ];
   nix.settings.auto-optimise-store = true;
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

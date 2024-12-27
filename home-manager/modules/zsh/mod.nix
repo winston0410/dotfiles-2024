@@ -2,6 +2,9 @@
   home.packages = with pkgs; [ neofetch ];
   programs.zsh = {
     enable = true;
+    # TODO enable this once zshenv is not hardcoded
+    # dotDir = "${config.xdg.configHome}/zsh";
+    # history = { path = "${config.xdg.stateHome}/zsh/history"; };
     autosuggestion = {
       enable = true;
       strategy = [ "history" "completion" ];
@@ -10,6 +13,7 @@
     syntaxHighlighting = { enable = true; };
     zplug = {
       enable = true;
+      zplugHome = "${config.xdg.dataHome}/zplug";
       plugins = [
         {
           name = "mafredri/zsh-async";
@@ -42,6 +46,12 @@
       '' + linuxInit
     else
       linuxInit;
+  };
+  home.sessionVariables = {
+    ZPLUG_HOME = config.programs.zsh.zplug.zplugHome;
+    # TODO enable this once zshenv is not hardcoded
+    # HISTFILE = config.programs.zsh.history.path;
+    # ZDOTDIR = config.programs.zsh.dotDir;
   };
 
   programs.direnv.enable = true;
