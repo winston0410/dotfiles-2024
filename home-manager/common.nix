@@ -19,6 +19,13 @@
   ];
 
   nix.package = pkgs.nix;
+  nix.enable = true;
+  nix.settings.trusted-users = [ "@wheel" ];
+  nix.settings.use-xdg-base-directories = true;
+  nix.settings.experimental-features =
+    [ "nix-command" "flakes" "pipe-operators" ];
+  nix.settings.auto-optimise-store = true;
+
   nixpkgs = {
     config = {
       allowUnfree = true;
