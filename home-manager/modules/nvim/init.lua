@@ -1099,11 +1099,14 @@ require("lazy").setup({
 			"folke/edgy.nvim",
 			event = "VeryLazy",
 			opts = {
+				animate = {
+					enabled = false,
+				},
 				left = {
 					-- TODO enable again, once the oil.nvim bug is fixed
 					{
 						ft = "oil",
-                        pinned = true,
+						pinned = true,
 						size = { width = 0.3 },
 					},
 					-- edgy.nvim does not provide a wrap options, content not readable
