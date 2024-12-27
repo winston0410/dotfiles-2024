@@ -14,6 +14,7 @@
     ./modules/font/mod.nix
     ./modules/k9s/mod.nix
     ./modules/android/mod.nix
+    ./modules/xdg/mod.nix
     # # ./rust/mod.nix
   ];
 
@@ -28,7 +29,6 @@
   news = { display = "show"; };
   home.packages = with pkgs; [ procs unstable.go ];
   home.preferXdgDirectories = true;
-  xdg.enable = true;
   programs.man.enable = false;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "24.11";

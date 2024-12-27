@@ -1089,6 +1089,9 @@ require("lazy").setup({
 					show_hidden = true,
 				},
 				skip_confirm_for_simple_edits = true,
+				float = {
+					border = "none",
+				},
 			},
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 		},
@@ -1098,10 +1101,11 @@ require("lazy").setup({
 			opts = {
 				left = {
 					-- TODO enable again, once the oil.nvim bug is fixed
-					-- {
-					-- 	ft = "oil",
-					-- 	size = { width = 0.3, height = 1 },
-					-- },
+					{
+						ft = "oil",
+                        pinned = true,
+						size = { width = 0.3 },
+					},
 					-- edgy.nvim does not provide a wrap options, content not readable
 					-- {
 					-- 	ft = "NeogitStatus",
