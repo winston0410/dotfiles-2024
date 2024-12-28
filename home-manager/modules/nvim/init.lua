@@ -1056,7 +1056,9 @@ require("lazy").setup({
 			keys = {
 				{
 					"<leader>o",
-					"<cmd>Oil --float<cr>",
+					function()
+						require("oil").toggle_float()
+					end,
 					mode = { "n" },
 					noremap = true,
 					silent = true,
