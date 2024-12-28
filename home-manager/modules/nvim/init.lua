@@ -1,6 +1,3 @@
--- -- Set the search path for Lua, so files in .config/nvim/plugins will be loaded
--- package.path = package.path .. ";" .. vim.fn.getenv("HOME") .. "/.config/nvim/?.lua"
-
 -- Use space as leader key
 vim.g.mapleader = " "
 
@@ -1059,7 +1056,9 @@ require("lazy").setup({
 			keys = {
 				{
 					"<leader>o",
-					"<cmd>Oil --float<cr>",
+					function()
+						require("oil").toggle_float()
+					end,
 					mode = { "n" },
 					noremap = true,
 					silent = true,
@@ -1077,7 +1076,7 @@ require("lazy").setup({
 				constrain_cursor = "editable",
 				watch_for_changes = true,
 				keymaps = {
-					["<CR>"] = { "actions.select", mode = "n", desc = "Select a file" },
+					["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
 					["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 					["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
 				},
@@ -1099,11 +1098,14 @@ require("lazy").setup({
 			"folke/edgy.nvim",
 			event = "VeryLazy",
 			opts = {
+				animate = {
+					enabled = false,
+				},
 				left = {
 					-- TODO enable again, once the oil.nvim bug is fixed
 					{
 						ft = "oil",
-                        pinned = true,
+						pinned = true,
 						size = { width = 0.3 },
 					},
 					-- edgy.nvim does not provide a wrap options, content not readable
@@ -1449,7 +1451,6 @@ require("lazy").setup({
 					-- use postgres_lsp for now
 					-- "sqlls",
 					"vimls",
-					-- "rnix",
 					"nixd",
 					"r_language_server",
 					"kotlin_language_server",

@@ -103,7 +103,7 @@
   };
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  security.sudo.enable = true;
+  security.sudo-rs.enable = true;
   security.pam.services.gdm-password.enableGnomeKeyring = true;
   services.pipewire = {
     enable = true;
