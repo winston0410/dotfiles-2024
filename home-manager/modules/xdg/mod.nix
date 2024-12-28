@@ -52,7 +52,9 @@
     };
   };
 
-  xdg.desktopEntries = {
+  xdg.desktopEntries = if isDarwin then
+    { }
+  else {
     nvim = {
       name = "Neovim";
       exec = "wezterm start -- nvim %F";
