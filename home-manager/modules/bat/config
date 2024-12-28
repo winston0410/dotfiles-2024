@@ -3,3 +3,6 @@
 --italic-text=always
 
 --style=plain
+
+--paging=never
+
