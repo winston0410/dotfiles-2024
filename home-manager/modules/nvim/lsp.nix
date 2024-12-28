@@ -13,7 +13,7 @@
     pkgs.nodePackages.vls
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
-    # pkgs.nodePackages.pyright
+    pkgs.pyright
     pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph
@@ -31,25 +31,8 @@
     pkgs.tilt
     pkgs.slint-lsp
     pkgs.ltex-ls
+    pkgs.angular-language-server
     # TODO install @astrojs/language-server, https://github.com/withastro/language-tools/tree/main/packages/language-server
-    # # Not sure how to handle pnpm package yet, https://github.com/NixOS/nixpkgs/issues/231513
-    # (pkgs.buildNpmPackage rec {
-    #   pname = "@angular/language-server";
-    #   version = "16.2.0";
-    #
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "angular";
-    #     repo = "vscode-ng-language-service";
-    #     rev = "v${version}";
-    #     hash = "sha256-NLemLEYfvRFVSIK8deCVUUU2/27sjflNBnMAyyrAGzc=";
-    #   };
-    #
-    #   # # REF https://github.com/nodejs/node/issues/2341
-    #   # # We need libtool 2.6.2 to avoid issue, but it is really old and building it is causing issue
-    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
-    #
-    #   npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-    # })
     # # # REF https://github.com/NixOS/nixpkgs/issues/245849
     # (pkgs.buildNpmPackage rec {
     #   pname = "@cucumber/language-server";

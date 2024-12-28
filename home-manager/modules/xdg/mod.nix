@@ -8,6 +8,28 @@
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
       "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
       "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+
+      "text/javascript" = "nvim.desktop";
+      "text/x-python" = "nvim.desktop";
+      "text/markdown" = "nvim.desktop";
+      "text/plain" = "nvim.desktop";
+      "text/x-log" = "nvim.desktop";
+      "text/x-makefile" = "nvim.desktop";
+      "text/x-c++hdr" = "nvim.desktop";
+      "text/x-c++src" = "nvim.desktop";
+      "text/x-chdr" = "nvim.desktop";
+      "text/x-csrc" = "nvim.desktop";
+      "text/x-java" = "nvim.desktop";
+      "text/x-moc" = "nvim.desktop";
+      "text/x-pascal" = "nvim.desktop";
+      "text/x-tcl" = "nvim.desktop";
+      "text/x-tex" = "nvim.desktop";
+      "text/xml" = "nvim.desktop";
+      "text/x-c" = "nvim.desktop";
+      "text/x-c++" = "nvim.desktop";
+
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
     };
     associations.removed = { };
     defaultApplications = {
