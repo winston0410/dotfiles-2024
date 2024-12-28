@@ -1,6 +1,6 @@
 { inputs, lib, config, pkgs, isDarwin, ... }: {
   xdg.enable = true;
-  xdg.mime.enable = true;
+  xdg.mime.enable = !isDarwin;
   xdg.mimeApps = {
     enable = !isDarwin;
     associations.added = {
