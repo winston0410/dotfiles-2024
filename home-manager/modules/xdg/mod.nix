@@ -30,8 +30,19 @@
     };
   };
 
+  xdg.desktopEntries = {
+    nvim = {
+      name = "Neovim";
+      exec = "wezterm start -- nvim %F";
+      terminal = false;
+      type = "Application";
+      categories = [ "Development" ];
+    };
+  };
+
   # REF https://github.com/TLATER/dotfiles/blob/master/home-config/config/xdg-settings.nix
   # REF nix run github:b3nj5m1n/xdg-ninja
+  # REF https://wiki.archlinux.org/title/XDG_Base_Directory
   home.sessionVariables = {
     LESSKEY = "${config.xdg.cacheHome}/less/key";
     LESSHISTFILE = "${config.xdg.cacheHome}/less/history";
@@ -44,6 +55,8 @@
     RLWRAP_HOME = "${config.xdg.dataHome}/rlwrap";
     CUDA_CACHE_PATH = "${config.xdg.dataHome}/.nv";
     GRADLE_USER_HOME = "${config.xdg.cacheHome}/gradle";
+    FFMPEG_DATADIR = "${config.xdg.configHome}/ffmpeg";
+    FCEUX_HOME = "${config.xdg.configHome}/fceux";
   };
   home.shellAliases = {
     nvidia-settings =
