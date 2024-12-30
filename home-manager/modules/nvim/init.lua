@@ -1300,7 +1300,7 @@ require("lazy").setup({
 							}),
 						},
 						python = { require("formatter.filetypes.python").black },
-						dockerfile = { dockfmt },
+						-- dockerfile = { dockfmt },
 						make = {
 							require("formatter.filetypes.javascript").prettier,
 						},
