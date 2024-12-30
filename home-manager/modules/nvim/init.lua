@@ -846,8 +846,11 @@ require("lazy").setup({
 			},
 			opts = {
 				winopts = {
+					width = 0.9,
 					preview = {
 						wrap = "wrap",
+						layout = "horizontal",
+						horizontal = "right:60%",
 					},
 				},
 				fzf_layout = "reverse-list",
