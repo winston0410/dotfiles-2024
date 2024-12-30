@@ -16,8 +16,12 @@ end)
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
 vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
--- FIXME not sure why we need this in first place
--- vim.keymap.set(modes, "<leader>d", '"+d' )
+vim.keymap.set(
+	modes,
+	"<leader>d",
+	'"+d',
+	{ silent = true, noremap = true, desc = "Delete text and yank to system clipboard" }
+)
 --
 -- make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set(modes, "Y", "y$", {
