@@ -15,6 +15,7 @@
       name = "nobody";
     };
     credential = {
+      "https://forgejo.28281428.xyz" = { provider = "generic"; };
       credentialStore = "cache";
       helper = if isDarwin then
         [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ]
