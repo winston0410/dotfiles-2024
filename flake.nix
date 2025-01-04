@@ -101,6 +101,7 @@
         hugo = nixpkgs.lib.nixosSystem {
           system = linuxAmdSystem;
           modules = [ ./nixos/hugo/configuration.nix ];
+          specialArgs = { inherit inputs outputs; };
         };
       };
 
