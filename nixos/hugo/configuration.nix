@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
@@ -205,9 +205,7 @@
     containers = { enable = true; };
     podman = {
       enable = true;
-
       dockerCompat = true;
-
       defaultNetwork.settings.dns_enabled = true;
     };
   };
@@ -231,6 +229,13 @@
   nix.settings.trusted-users = [ "@wheel" ];
   nix.settings.experimental-features =
     [ "nix-command" "flakes" "pipe-operators" ];
+
+  # REF https://nixos-and-flakes.thiscute.world/best-practices/nix-path-and-flake-registry
+  nix.channel.enable = false;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
+  nix.settings.nix-path = lib.mkForce "nixpkgs=/etc/nix/inputs/nixpkgs";
+
   system.stateVersion = "24.11"; # Did you read the comment?
 
 }
