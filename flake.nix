@@ -4,15 +4,13 @@
   # REF https://github.com/Mic92/sops-nix
   # investigate later
   inputs = {
-    # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
+    proxy-flake.url = "github:winston0410/proxy-flake?main";
+    nixpkgs.follows = "proxy-flake/nixpkgs";
+    nur.follows = "proxy-flake/nur";
+    flake-parts.follows = "proxy-flake/flake-parts";
+
     unstable.url =
       "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
-
-    # flake-utils alternative solution, which seems to be something we don't need now
-    # REF https://discourse.nixos.org/t/what-are-reasons-to-not-use-flake-utils/21140/14
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     nixd.url =
       # unstable
@@ -28,10 +26,6 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    # nur
-    nur.url = "github:nix-community/NUR/master";
-    nur.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs-firefox-darwin.url =
       "github:bandithedoge/nixpkgs-firefox-darwin?rev=7ae689d7b8a17209854d7966641d4201926f12c7";
