@@ -52,7 +52,30 @@
           # TODO examine whether we should add the following config for privacy
           # https://wiki.mozilla.org/Privacy/Privacy_Task_Force/firefox_about_config_privacy_tweeks
         };
-        search = { force = true; };
+        search = {
+          force = true;
+          engines = {
+            "Nix Packages" = {
+              urls = [{
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }];
+
+              icon =
+                "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "@nix" ];
+            };
+          };
+        };
         extensions = with pkgs; [
           nur.repos.rycee.firefox-addons.bitwarden
           nur.repos.rycee.firefox-addons.ublock-origin
