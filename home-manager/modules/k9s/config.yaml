@@ -5,13 +5,12 @@ k9s:
   readOnly: false
   noExitOnCtrlC: false
   ui:
-    enableMouse: true
+    # NOTE somehow after setting this to true, I cannot use cursor in k9s, not sure if this is a bug
+    enableMouse: false
     headless: true
     logoless: true
     crumbsless: false
-    # Toggles reactive UI. This option provide for watching on disk artifacts changes and update the UI live  Defaults to false.
-    reactive: false
-    # Toggles icons display as not all terminal support these chars.
+    reactive: true
     noIcons: false
     # TODO figure out a good skin later
     # skin: in_the_navy
