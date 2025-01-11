@@ -44,6 +44,7 @@
       font-antialiasing = "rgba";
       monospace-font-name = "0xProto Nerd Font Mono";
       document-font-name = "Inter";
+      font-name = "Inter 11";
     };
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
