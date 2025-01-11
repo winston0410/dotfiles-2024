@@ -8,6 +8,7 @@
     nixpkgs.follows = "proxy-flake/nixpkgs";
     nur.follows = "proxy-flake/nur";
     flake-parts.follows = "proxy-flake/flake-parts";
+    sops-nix.follows = "proxy-flake/sops-nix";
 
     unstable.url =
       "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
@@ -33,7 +34,7 @@
   };
 
   outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, rust-overlay
-    , nur, nixpkgs-firefox-darwin, ... }@inputs:
+    , sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
 
     let
       inherit (self) outputs;
@@ -94,7 +95,8 @@
       nixosConfigurations = {
         hugo = nixpkgs.lib.nixosSystem {
           system = linuxAmdSystem;
-          modules = [ ./nixos/hugo/configuration.nix ];
+          modules =
+            [ ./nixos/hugo/configuration.nix sops-nix.nixosModules.sops ];
           specialArgs = { inherit inputs outputs; };
         };
       };
