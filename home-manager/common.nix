@@ -15,6 +15,7 @@
     ./modules/k9s/mod.nix
     ./modules/android/mod.nix
     ./modules/xdg/mod.nix
+    ./modules/sops/mod.nix
     # # ./rust/mod.nix
   ];
 
