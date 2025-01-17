@@ -35,7 +35,7 @@
   };
 
   news = { display = "show"; };
-  home.packages = with pkgs; [ procs unstable.go ];
+  home.packages = with pkgs; [ procs unstable.go brave ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
