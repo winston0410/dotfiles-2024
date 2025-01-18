@@ -11,11 +11,17 @@
   # limit max generations to 10
   boot.loader.systemd-boot.configurationLimit = 10;
 
+  boot.plymouth.enable = true;
+  boot.consoleLogLevel = 0;
+  boot.initrd.verbose = false;
+
   networking.hostName = "nixos";
   networking.wireless.enable = false;
   networking.networkmanager.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ];
+  boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ] ++
+    # for plymouth
+    [ "quiet" "splash" ];
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
