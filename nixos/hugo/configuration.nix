@@ -12,9 +12,11 @@
   boot.loader.systemd-boot.configurationLimit = 10;
 
   boot.plymouth.enable = true;
-  boot.plymouth.themePackages = with pkgs; [ nixos-bgrt-plymouth ];
-  boot.plymouth.theme = "nixos-bgrt";
+  # boot.plymouth.themePackages = with pkgs; [ nixos-bgrt-plymouth ];
+  # boot.plymouth.theme = "nixos-bgrt";
+  boot.plymouth.theme = "breeze";
   boot.consoleLogLevel = 0;
+  boot.initrd.systemd.enable = true;
   boot.initrd.verbose = false;
   # so the boot loader screen does not look blurry
   boot.loader.systemd-boot.consoleMode = "max";
