@@ -16,7 +16,6 @@
   # boot.plymouth.theme = "nixos-bgrt";
   boot.plymouth.theme = "breeze";
   boot.consoleLogLevel = 0;
-  boot.initrd.systemd.enable = true;
   boot.initrd.verbose = false;
   # so the boot loader screen does not look blurry
   boot.loader.systemd-boot.consoleMode = "max";
@@ -27,7 +26,8 @@
   boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ] ++
     # for plymouth
-    [ "quiet" "splash" ];
+    # (if config.boot.plymouth.enable then [ "quiet" "splash" ] else [ ]);
+    (lib.lists.optionals config.boot.plymouth.enable [ "quiet" "splash" ]);
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
