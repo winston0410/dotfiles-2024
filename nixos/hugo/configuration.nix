@@ -8,8 +8,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # limit max generations to 10
-  boot.loader.systemd-boot.configurationLimit = 10;
+  # limit max generations to 5
+  boot.loader.systemd-boot.configurationLimit = 5;
 
   boot.plymouth.enable = true;
   # boot.plymouth.themePackages = with pkgs; [ nixos-bgrt-plymouth ];
@@ -25,7 +25,7 @@
   networking.networkmanager.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ] ++
-    # for plymouth
+    # NOTE document how to use conditional operator
     # (if config.boot.plymouth.enable then [ "quiet" "splash" ] else [ ]);
     (lib.lists.optionals config.boot.plymouth.enable [ "quiet" "splash" ]);
   boot.tmp.cleanOnBoot = true;
