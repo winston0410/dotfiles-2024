@@ -569,9 +569,9 @@ require("lazy").setup({
 		-- },
 		{
 			"NeogitOrg/neogit",
-			commit = "d7772bca4ac00c02282b0d02623f2f8316c21f32",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
+				"ibhagwan/fzf-lua",
 			},
 			keys = {
 				{
@@ -588,7 +588,7 @@ require("lazy").setup({
 			opts = {
 				disable_hint = true,
 				disable_commit_confirmation = true,
-				kind = "floating",
+				kind = "tab",
 				integrations = {
 					fzf_lua = true,
 				},
