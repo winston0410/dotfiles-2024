@@ -781,22 +781,23 @@ require("lazy").setup({
 			"ibhagwan/fzf-lua",
 			commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
 			keys = {
-				{
-					"/",
-					function()
-						local bufname = vim.api.nvim_buf_get_name(0)
-						local info = vim.uv.fs_stat(bufname)
-						if info ~= nil then
-							require("fzf-lua").lgrep_curbuf()
-						else
-							vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("/", true, false, true), "n", true)
-						end
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search text in current buffer",
-				},
+				-- -- NOTE it does not search in buffer, not sure what is a better alternative
+				-- {
+				-- 	"/",
+				-- 	function()
+				-- 		local bufname = vim.api.nvim_buf_get_name(0)
+				-- 		local info = vim.uv.fs_stat(bufname)
+				-- 		if info ~= nil then
+				-- 			require("fzf-lua").lgrep_curbuf()
+				-- 		else
+				-- 			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("/", true, false, true), "n", true)
+				-- 		end
+				-- 	end,
+				-- 	mode = { "n", "v" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Search text in current buffer",
+				-- },
 				{
 					",m",
 					function()
