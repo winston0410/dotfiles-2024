@@ -864,6 +864,7 @@ require("lazy").setup({
 				},
 				grep = {
 					prompt = "Rg❯ ",
+					rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
 				},
 			},
 			dependencies = {
