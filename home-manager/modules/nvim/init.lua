@@ -1296,18 +1296,18 @@ require("lazy").setup({
 						rest = { kulala_fmt },
 						toml = { require("formatter.filetypes.toml").taplo },
 						vue = { require("formatter.filetypes.javascript").prettier },
-						svelte = {
-							--[[ prettier({
-							"--plugin-search-dir=.",
-							"--plugin=prettier-plugin-svelte",
-						}), ]]
-							prettier({
-								"--config=$XDG_CONFIG_HOME/prettier/.prettierrc",
-								-- FIXME bug of prettier, wait for 3.1 and then we can remove this
-								-- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
-								"--plugin=prettier-plugin-svelte",
-							}),
-						},
+						-- svelte = {
+						-- 	--[[ prettier({
+						-- 	"--plugin-search-dir=.",
+						-- 	"--plugin=prettier-plugin-svelte",
+						-- }), ]]
+						-- 	prettier({
+						-- 		"--config=$XDG_CONFIG_HOME/prettier/.prettierrc",
+						-- 		-- FIXME bug of prettier, wait for 3.1 and then we can remove this
+						-- 		-- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
+						-- 		"--plugin=prettier-plugin-svelte",
+						-- 	}),
+						-- },
 						python = { require("formatter.filetypes.python").black },
 						-- dockerfile = { dockfmt },
 						make = {
@@ -1639,12 +1639,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.buf.implementation,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
 		)
-		vim.keymap.set(
-			supported_modes,
-			"<leader>lh",
-			vim.lsp.buf.hover,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" }
-		)
+		vim.keymap.set(supported_modes, "<leader>lh", function()
+			-- call twice, so we enter the hover windows immediately after running the keybinding
+			vim.lsp.buf.hover()
+			vim.lsp.buf.hover()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
 		vim.keymap.set(
 			supported_modes,
 			"<leader>ld",
@@ -1675,7 +1674,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
 		end)
 		vim.diagnostic.config({
-			virtual_text = true,
+			virtual_text = false,
 			signs = false,
 			-- FIXME: cannot customize the icon, without not showing it in signcolumn
 			-- signs = {

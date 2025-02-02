@@ -26,21 +26,21 @@
   home.file =
     let prettierPluginDir = "${config.xdg.dataHome}/prettier/node_modules";
     in {
-      "${prettierPluginDir}/plugin-plugin-svelte" = {
-        source = pkgs.buildNpmPackage rec {
-          pname = "prettier-plugin-svelte";
-          version = "3.0.3";
-
-          src = pkgs.fetchFromGitHub {
-            owner = "sveltejs";
-            repo = pname;
-            rev = "v${version}";
-            hash = "sha256-/kHHnzkWtlFR/SVyr98sEvjIBp4oA1a+V3Q3pc9iKIw=";
-          };
-
-          npmDepsHash = "sha256-r1AeUGs9LCKDyydppgVaJVtQf6w43nm4OfNqNNe4/p8=";
-        };
-      };
+      # "${prettierPluginDir}/plugin-plugin-svelte" = {
+      #   source = pkgs.buildNpmPackage rec {
+      #     pname = "prettier-plugin-svelte";
+      #     version = "3.0.3";
+      #
+      #     src = pkgs.fetchFromGitHub {
+      #       owner = "sveltejs";
+      #       repo = pname;
+      #       rev = "v${version}";
+      #       hash = "sha256-/kHHnzkWtlFR/SVyr98sEvjIBp4oA1a+V3Q3pc9iKIw=";
+      #     };
+      #
+      #     npmDepsHash = "sha256-r1AeUGs9LCKDyydppgVaJVtQf6w43nm4OfNqNNe4/p8=";
+      #   };
+      # };
 
       # FIXME Cannot build this package, as this is a PNPM package, missing package-lock.json
       # "${prettierPluginDir}/@prettier/plugin-pug" = {
