@@ -31,9 +31,9 @@
   };
 
   xdg.configFile = {
-    "nvim/init.lua" = { source = ./init.lua; };
-    "nvim/ftplugin" = { source = ./ftplugin; };
-    "nvim/ftdetect" = { source = ./ftdetect; };
-    "nvim/plugins" = { source = ./plugins; };
+    "nvim/init.lua" = { source = config.lib.file.mkOutOfStoreSymlink ./init.lua; };
+    "nvim/ftplugin" = { source = config.lib.file.mkOutOfStoreSymlink ./ftplugin; };
+    "nvim/ftdetect" = { source = config.lib.file.mkOutOfStoreSymlink ./ftdetect; };
+    "nvim/plugins" = { source = config.lib.file.mkOutOfStoreSymlink ./plugins; };
   };
 }

@@ -9,7 +9,9 @@ local HINT_ICON = "󰌶 "
 local modes = { "n", "v", "c" }
 
 pcall(function()
-	vim.keymap.del(modes, "q:")
+	-- NOTE somehow using keymap.del does not work on q:
+	-- vim.keymap.del(modes, "q:")
+	vim.keymap.set(modes, "q:", "<Nop>", { noremap = true, silent = true })
 	vim.keymap.del(modes, "s")
 	vim.keymap.del(modes, "S")
 end)
@@ -22,8 +24,7 @@ vim.keymap.set(
 	'"+d',
 	{ silent = true, noremap = true, desc = "Delete text and yank to system clipboard" }
 )
---
--- make Y consistent with how C and D behave for changing or deleting to the end of the line.
+-- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set(modes, "Y", "y$", {
 	silent = true,
 	noremap = true,
@@ -60,20 +61,20 @@ vim.keymap.set(modes, "<Char-0xAD>j", "<C-w>j", { silent = true, noremap = true,
 -- vim.keymap.set(modes, "<Char-0xBA>n", "<cmd>tabnext<cr>" )
 -- vim.keymap.set(modes, "<Char-0xBA>p", "<cmd>tabprev<cr>" )
 
--- NOTE <Char-0xBB> is Cmd + e
-vim.keymap.set(
-	modes,
-	"<Char-0xBB>q",
-	"<cmd>bprevious<bar>bdelete #<cr>",
-	{ silent = true, noremap = true, desc = "delete current buffer and switch to prev buffer" }
-)
-vim.keymap.set(
-	modes,
-	"<Char-0xBB>n",
-	"<cmd>bprev<cr>",
-	{ silent = true, noremap = true, desc = "goto previous buffer" }
-)
-vim.keymap.set(modes, "<Char-0xBB>p", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "goto next buffer" })
+-- -- NOTE <Char-0xBB> is Cmd + e
+-- vim.keymap.set(
+-- 	modes,
+-- 	"<Char-0xBB>q",
+-- 	"<cmd>bprevious<bar>bdelete #<cr>",
+-- 	{ silent = true, noremap = true, desc = "delete current buffer and switch to prev buffer" }
+-- )
+-- vim.keymap.set(
+-- 	modes,
+-- 	"<Char-0xBB>n",
+-- 	"<cmd>bprev<cr>",
+-- 	{ silent = true, noremap = true, desc = "goto previous buffer" }
+-- )
+-- vim.keymap.set(modes, "<Char-0xBB>p", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "goto next buffer" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -1123,13 +1124,20 @@ require("lazy").setup({
 					-- 	size = { width = 0.3 },
 					-- },
 				},
-				bottom = {
+				right = {
 					{
 						ft = "trouble",
 						pinned = true,
-						size = { height = 0.1 },
+						size = { width = 0.3 },
 					},
 				},
+				-- bottom = {
+				-- 	{
+				-- 		ft = "trouble",
+				-- 		pinned = true,
+				-- 		size = { height = 0.1 },
+				-- 	},
+				-- },
 				exit_when_last = true,
 			},
 			init = function()
@@ -1618,6 +1626,11 @@ require("lazy").setup({
 					auto_preview = false,
 					auto_close = true,
 					auto_refresh = true,
+					win = {
+						wo = {
+							wrap = true,
+						},
+					},
 					modes = {
 						diagnostics = { auto_open = true },
 					},
