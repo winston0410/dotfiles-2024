@@ -35,39 +35,46 @@ vim.keymap.set(modes, "Y", "y$", {
 vim.keymap.set({ "i", "n", "v" }, "<Char-0xAE>", "<C-r>", { silent = true, noremap = true, desc = "Redo" })
 
 -- Binding for split
-vim.keymap.set(modes, "<Char-0xAD>w", "<C-w>w", { silent = true, noremap = true, desc = "cycle focus to next split" })
+vim.keymap.set(modes, "<leader>ww", "<C-w>w", { silent = true, noremap = true, desc = "cycle focus to next split" })
 vim.keymap.set(
 	modes,
-	"<Char-0xAD>v",
+	"<leader>wv",
 	"<cmd>vsplit<cr>",
 	{ silent = true, noremap = true, desc = "Create a vertical split" }
 )
 vim.keymap.set(
 	modes,
-	"<Char-0xAD>c",
+	"<leader>ws",
 	"<cmd>split<cr>",
 	{ silent = true, noremap = true, desc = "Create a horizontal split" }
 )
-vim.keymap.set(modes, "<Char-0xAD>q", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
-vim.keymap.set(modes, "<Char-0xAD>l", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
-vim.keymap.set(modes, "<Char-0xAD>h", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
-vim.keymap.set(modes, "<Char-0xAD>k", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
-vim.keymap.set(modes, "<Char-0xAD>j", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
+vim.keymap.set(modes, "<leader>qw", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
+vim.keymap.set(modes, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
+vim.keymap.set(modes, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
+vim.keymap.set(modes, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
+vim.keymap.set(modes, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
--- NOTE enable this in the future, if we really need to use tab in nvim
--- vim.keymap.set(modes, "<Char-0xBA>c", "<cmd>tabnew .<cr>" )
--- vim.keymap.set(modes, "<Char-0xBA>q", "<cmd>tabclose<cr>" )
--- vim.keymap.set(modes, "<Char-0xBA>t", "gt" )
--- vim.keymap.set(modes, "<Char-0xBA>n", "<cmd>tabnext<cr>" )
--- vim.keymap.set(modes, "<Char-0xBA>p", "<cmd>tabprev<cr>" )
+-- NOTE to open a new tab, use Oil.nvim creates a file and then enter it
+vim.keymap.set(
+	modes,
+	"<leader>t",
+	"gt",
+	{ silent = true, noremap = true, desc = "Go to the next tab page. Wraps around from the last to the first one." }
+)
+vim.keymap.set(modes, "<leader>T", "gT", {
+	silent = true,
+	noremap = true,
+	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
+})
+vim.keymap.set(modes, "<leader>qt", "<cmd>tabclose<cr>", { silent = true, noremap = true, desc = "Close a tab" })
 
+vim.keymap.set(
+	modes,
+	"<leader>qb",
+	"<cmd>bprevious<bar>bdelete #<cr>",
+	{ silent = true, noremap = true, desc = "Delete current buffer and switch to prev buffer" }
+)
 -- -- NOTE <Char-0xBB> is Cmd + e
--- vim.keymap.set(
--- 	modes,
--- 	"<Char-0xBB>q",
--- 	"<cmd>bprevious<bar>bdelete #<cr>",
--- 	{ silent = true, noremap = true, desc = "delete current buffer and switch to prev buffer" }
--- )
 -- vim.keymap.set(
 -- 	modes,
 -- 	"<Char-0xBB>n",
@@ -1087,6 +1094,24 @@ require("lazy").setup({
 				watch_for_changes = true,
 				keymaps = {
 					["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
+					["<leader>t<CR>"] = {
+						"actions.select",
+						mode = "n",
+						opts = { close = false, tab = true },
+						desc = "Select a file and open in a new tab",
+					},
+					["<leader>wv<CR>"] = {
+						"actions.select",
+						mode = "n",
+						opts = { close = false, vertical = true },
+						desc = "Select a file and open in a vertical split",
+					},
+					["<leader>ws<CR>"] = {
+						"actions.select",
+						mode = "n",
+						opts = { close = false, horizontal = true },
+						desc = "Select a file and open in a horizontal split",
+					},
 					["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 					["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
 				},
