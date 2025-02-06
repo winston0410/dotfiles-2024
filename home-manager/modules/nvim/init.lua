@@ -426,8 +426,8 @@ require("lazy").setup({
 						component_separators = "",
 						section_separators = "",
 						disabled_filetypes = {
-							winbar = { "trouble" },
-							inactive_winbar = { "trouble" },
+							winbar = { "trouble", "oil", "qf" },
+							inactive_winbar = { "trouble", "oil", "qf" },
 						},
 						globalstatus = true,
 					},
@@ -884,30 +884,10 @@ require("lazy").setup({
 			event = "CursorHold",
 			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 			config = function()
-				-- local treesitter = require("nvim-treesitter.configs")
 				local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 				local installer = require("nvim-treesitter.install")
 				installer.prefer_git = true
 
-				-- FIXME cannot install these two in Linux
-				-- parser_config.wast = {
-				-- 	install_info = {
-				-- 		branch = "main",
-				-- 		url = "https://github.com/wasm-lsp/tree-sitter-wasm",
-				-- 		files = { "wast/src/parser.c" },
-				-- 	},
-				-- 	filetype = "wast",
-				-- 	used_by = { "wast" },
-				-- }
-				-- parser_config.wat = {
-				-- 	install_info = {
-				-- 		branch = "main",
-				-- 		url = "https://github.com/wasm-lsp/tree-sitter-wasm",
-				-- 		files = { "wat/src/parser.c" },
-				-- 	},
-				-- 	filetype = "wat",
-				-- 	used_by = { "wat" },
-				-- }
 				parser_config.ejs = {
 					install_info = {
 						branch = "master",
@@ -1117,11 +1097,13 @@ require("lazy").setup({
 				animate = {
 					enabled = false,
 				},
+				wo = {
+					winbar = false,
+				},
 				left = {
 					-- TODO enable again, once the oil.nvim bug is fixed
 					{
 						ft = "oil",
-						pinned = true,
 						size = { width = 0.3 },
 					},
 					-- edgy.nvim does not provide a wrap options, content not readable
@@ -1133,8 +1115,13 @@ require("lazy").setup({
 				right = {
 					{
 						ft = "trouble",
-						pinned = true,
-						size = { width = 0.3 },
+						title = "Diagnostics",
+						size = { width = 0.3, height = 0.5 },
+					},
+					{
+						ft = "qf",
+						title = "Quickfix",
+						size = { width = 0.3, height = 0.5 },
 					},
 				},
 				-- bottom = {
@@ -1398,7 +1385,7 @@ require("lazy").setup({
 		},
 		{
 			"neovim/nvim-lspconfig",
-			commit = "e869c7e6af0a3c40a2b344a9765779d74dd12720",
+			version = "1.6.0",
 			-- Reference the lazyload event from LazyVim
 			-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 			event = { "BufReadPre", "BufNewFile" },

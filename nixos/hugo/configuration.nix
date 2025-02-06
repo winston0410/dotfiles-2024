@@ -24,8 +24,10 @@
   networking.wireless.enable = false;
   networking.networkmanager.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.kernelParams = [ "nvidia_drm.modeset=1" "mem_sleep_default=deep" ]
-    ++ (lib.lists.optionals config.boot.plymouth.enable [ "quiet" "splash" ]);
+  boot.kernelParams = [ ] ++ (lib.lists.optionals config.hardware.nvidia.open [
+    "nvidia_drm.modeset=1"
+    "mem_sleep_default=deep"
+  ]) ++ (lib.lists.optionals config.boot.plymouth.enable [ "quiet" "splash" ]);
   boot.tmp.cleanOnBoot = true;
 
   time.timeZone = "Europe/London";
