@@ -488,7 +488,7 @@ require("lazy").setup({
 					sections = {
 						lualine_a = { "mode" },
 						lualine_b = { "branch" },
-						lualine_c = { "location" },
+						lualine_c = { "location", "encoding", "filesize" },
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {
@@ -615,56 +615,6 @@ require("lazy").setup({
 				delete_check_events = "TextChanged",
 			},
 		},
-		-- NOTE keep this just in case, as blink.cmp is unstable
-		-- {
-		-- 	"hrsh7th/nvim-cmp",
-		-- 	commit = "ed31156aa2cc14e3bc066c59357cc91536a2bc01",
-		-- 	event = "InsertEnter",
-		-- 	dependencies = {
-		-- 		"hrsh7th/cmp-nvim-lsp",
-		-- 		"hrsh7th/cmp-buffer",
-		-- 		"hrsh7th/cmp-path",
-		-- 		"saadparwaiz1/cmp_luasnip",
-		-- 	},
-		-- 	opts = function()
-		-- 		local cmp = require("cmp")
-		-- 		local defaults = require("cmp.config.default")()
-		-- 		return {
-		-- 			completion = {
-		-- 				completeopt = "menu,menuone,noinsert",
-		-- 			},
-		-- 			snippet = {
-		-- 				expand = function(args)
-		-- 					require("luasnip").lsp_expand(args.body)
-		-- 				end,
-		-- 			},
-		-- 			mapping = cmp.mapping.preset.insert({
-		-- 				["<Char-0xAC>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-		-- 				["<Char-0xAB>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-		-- 				["<CR>"] = cmp.mapping.confirm({ select = true }),
-		-- 			}),
-		-- 			sources = cmp.config.sources({
-		-- 				{ name = "nvim_lsp" },
-		-- 				{ name = "luasnip" },
-		-- 				{ name = "path" },
-		-- 			}, {
-		-- 				{ name = "buffer" },
-		-- 			}),
-		-- 			sorting = defaults.sorting,
-		-- 			experimental = {
-		-- 				ghost_text = {
-		-- 					hl_group = "CmpGhostText",
-		-- 				},
-		-- 			},
-		-- 		}
-		-- 	end,
-		-- 	config = function(_, opts)
-		-- 		for _, source in ipairs(opts.sources) do
-		-- 			source.group_index = source.group_index or 1
-		-- 		end
-		-- 		require("cmp").setup(opts)
-		-- 	end,
-		-- },
 		{
 			"mrjones2014/smart-splits.nvim",
 			version = "1.7.0",
@@ -676,7 +626,7 @@ require("lazy").setup({
 					end,
 					mode = "n",
 					silent = true,
-					desc = "resize split to right",
+					desc = "Resize split to right",
 				},
 				{
 					"<leader>wH",
@@ -685,7 +635,7 @@ require("lazy").setup({
 					end,
 					mode = "n",
 					silent = true,
-					desc = "resize split to left",
+					desc = "Resize split to left",
 				},
 				{
 					"<leader>wK",
@@ -694,7 +644,7 @@ require("lazy").setup({
 					end,
 					mode = "n",
 					silent = true,
-					desc = "resize split to top",
+					desc = "Resize split to top",
 				},
 				{
 					"<leader>wJ",
@@ -703,7 +653,7 @@ require("lazy").setup({
 					end,
 					mode = "n",
 					silent = true,
-					desc = "resize split to bottom",
+					desc = "Resize split to bottom",
 				},
 			},
 			opts = {
@@ -795,7 +745,7 @@ require("lazy").setup({
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "search files",
+					desc = "Search files",
 				},
 				{
 					",f",
@@ -805,7 +755,7 @@ require("lazy").setup({
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "search text in files",
+					desc = "Search text in files",
 				},
 				{
 					",gc",
@@ -815,7 +765,7 @@ require("lazy").setup({
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "search text in git commits",
+					desc = "Search text in git commits",
 				},
 				{
 					",gs",
@@ -825,7 +775,7 @@ require("lazy").setup({
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "search text in git stash",
+					desc = "Search text in git stash",
 				},
 				{
 					",la",
@@ -835,27 +785,41 @@ require("lazy").setup({
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "search lsp code actions",
+					desc = "Search lsp code actions",
 				},
 			},
-			opts = {
-				winopts = {
-					width = 0.9,
-					preview = {
-						wrap = "wrap",
-						layout = "horizontal",
-						horizontal = "right:60%",
+			config = function()
+				-- local actions = require("fzf-lua").actions
+
+				require("fzf-lua").setup({
+					winopts = {
+						width = 0.9,
+						preview = {
+							wrap = "wrap",
+							layout = "horizontal",
+							horizontal = "right:60%",
+						},
 					},
-				},
-				fzf_layout = "reverse-list",
-				files = {
-					prompt = "Fd❯ ",
-				},
-				grep = {
-					prompt = "Rg❯ ",
-					-- rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
-				},
-			},
+					-- actions = {
+					-- 	grep = {
+					-- 		["enter"]       = actions.file_edit_or_qf,
+					-- 		["ctrl-h"] = actions.toggle_ignore,
+					-- 	},
+					-- 	files = {
+					-- 		["enter"]       = actions.file_edit_or_qf,
+					-- 		["ctrl-h"] =  actions.toggle_ignore,
+					-- 	},
+					-- },
+					fzf_layout = "reverse-list",
+					files = {
+						prompt = "Fd❯ ",
+					},
+					grep = {
+						prompt = "Rg❯ ",
+						-- rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
+					},
+				})
+			end,
 			dependencies = {
 				"nvim-tree/nvim-web-devicons",
 			},
@@ -990,7 +954,7 @@ require("lazy").setup({
 					mode = { "n", "v", "o" },
 					noremap = true,
 					silent = true,
-					desc = "find 1 character forward",
+					desc = "Find 1 character forward",
 				},
 				{
 					"F",
@@ -1000,7 +964,7 @@ require("lazy").setup({
 					mode = { "n", "v", "o" },
 					noremap = true,
 					silent = true,
-					desc = "find 1 character backward",
+					desc = "Find 1 character backward",
 				},
 			},
 			config = function()
@@ -1040,7 +1004,7 @@ require("lazy").setup({
 					mode = { "n" },
 					noremap = true,
 					silent = true,
-					desc = "toggle Oil.nvim panel",
+					desc = "Toggle Oil.nvim panel",
 				},
 			},
 			opts = {
@@ -1104,7 +1068,7 @@ require("lazy").setup({
 					-- TODO enable again, once the oil.nvim bug is fixed
 					{
 						ft = "oil",
-						size = { width = 0.3 },
+						size = { width = 0.25 },
 					},
 					-- edgy.nvim does not provide a wrap options, content not readable
 					-- {
@@ -1115,22 +1079,30 @@ require("lazy").setup({
 				right = {
 					{
 						ft = "trouble",
+						title = "Symbols",
+						filter = function(_buf, win)
+							return vim.w[win].trouble
+								and (
+									vim.w[win].trouble.mode == "symbols"
+									or vim.w[win].trouble.mode == "lsp_document_symbols"
+								)
+						end,
+						size = { width = 0.2 },
+					},
+					{
+						ft = "trouble",
 						title = "Diagnostics",
-						size = { width = 0.3, height = 0.5 },
+						filter = function(_buf, win)
+							return vim.w[win].trouble and vim.w[win].trouble.mode == "diagnostics"
+						end,
+						size = { width = 0.2, height = 0.25 },
 					},
 					{
 						ft = "qf",
 						title = "Quickfix",
-						size = { width = 0.3, height = 0.5 },
+						size = { width = 0.2, height = 0.25 },
 					},
 				},
-				-- bottom = {
-				-- 	{
-				-- 		ft = "trouble",
-				-- 		pinned = true,
-				-- 		size = { height = 0.1 },
-				-- 	},
-				-- },
 				exit_when_last = true,
 			},
 			init = function()
@@ -1589,26 +1561,9 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- {
-		-- 	"tadaa/vimade",
-		-- 	opts = {
-		-- 		recipe = { "default", { animate = false } },
-		-- 		ncmode = "buffers",
-		-- 		fadelevel = 0.4,
-		-- 		-- FIXME blocklist is now buggy, wait for author to fix
-		-- 		-- blocklist = {
-		-- 		-- 	default = {
-		-- 		-- 		buf_opts = function(win, current)
-		-- 		-- 			vim.print(win)
-		-- 		-- 			return false
-		-- 		-- 		end,
-		-- 		-- 	},
-		-- 		-- },
-		-- 	},
-		-- },
 		{
 			"folke/trouble.nvim",
-			version = "3.6.0",
+			version = "3.7.0",
 			event = { "BufReadPre", "BufNewFile" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
@@ -1626,6 +1581,19 @@ require("lazy").setup({
 					},
 					modes = {
 						diagnostics = { auto_open = true },
+						lsp_document_symbols = {
+							auto_open = true,
+							format = "{kind_icon} {symbol.name}",
+						},
+						-- symbols = {
+						-- 	auto_open = true,
+						-- 	format = "{kind_icon} {symbol.name} {pos}",
+						-- },
+					},
+					keys = {
+						["<cr>"] = "jump",
+						["<leader>ws<cr>"] = "jump_split",
+						["<leader>wv<cr>"] = "jump_vsplit",
 					},
 				})
 			end,
@@ -1693,11 +1661,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- },
 			update_in_insert = false,
 		})
-
-		-- -- NOTE we need to disable semnatic token from LSP for now, so it wont affect treesitter highlight
-		-- local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		-- if client then
-		-- 	client.server_capabilities.semanticTokensProvider = nil
-		-- end
 	end,
 })
