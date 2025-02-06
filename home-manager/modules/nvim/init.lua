@@ -104,13 +104,6 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Revert back to previous cursor position" }
 )
 
-local all_modes = { "i", "n", "v", "c", "t", "s" }
-
-vim.keymap.set(all_modes, "<Char-0xAA>", "<esc>", { silent = true, noremap = true, desc = "remap escape to CMD + [" })
-vim.keymap.set(all_modes, "<Char-0xAB>", "<Up>", { silent = true, noremap = true, desc = "remap up to CMD + p" })
-vim.keymap.set(all_modes, "<Char-0xAC>", "<Down>", { silent = true, noremap = true, desc = "remap down to CMD + n" })
--- vim.keymap.set(all_modes, "<Char-0xAF>", "<cmd>write<cr>", { silent = true, noremap = true, desc = "Saved current file by <command-s>" })
-
 --Quit default plugin early
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
@@ -206,9 +199,9 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local function startsWith(str, prefix)
-	return string.sub(str, 1, #prefix) == prefix
-end
+-- local function startsWith(str, prefix)
+-- 	return string.sub(str, 1, #prefix) == prefix
+-- end
 
 require("lazy").setup({
 	rocks = {
@@ -255,12 +248,14 @@ require("lazy").setup({
 		{
 			"saghen/blink.cmp",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "0.8.1",
+			version = "0.11.0",
 			opts = {
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
 					["<Down>"] = { "select_next", "fallback" },
+					["<C-n>"] = { "select_next", "fallback" },
 					["<Char-0xAC>"] = { "select_next", "fallback" },
+					["<C-p>"] = { "select_prev", "fallback" },
 					["<Char-0xAB>"] = { "select_prev", "fallback" },
 					["<CR>"] = { "accept", "fallback" },
 				},
@@ -270,36 +265,22 @@ require("lazy").setup({
 					nerd_font_variant = "mono",
 				},
 
-				snippets = {
-					expand = function(snippet)
-						require("luasnip").lsp_expand(snippet)
-					end,
-					active = function(filter)
-						if filter and filter.direction then
-							return require("luasnip").jumpable(filter.direction)
-						end
-						return require("luasnip").in_snippet()
-					end,
-					jump = function(direction)
-						require("luasnip").jump(direction)
-					end,
-				},
+				snippets = { preset = "luasnip" },
 
 				sources = {
-					default = { "lsp", "path", "luasnip", "buffer" },
+					default = { "lsp", "path", "snippets", "buffer" },
 					-- FIXME enable again once it become stable
 					cmdline = {},
 				},
 				completion = {
+					keyword = { range = "full" },
 					documentation = {
 						auto_show = true,
 					},
 				},
 				signature = { enabled = true },
 				fuzzy = {
-					prebuilt_binaries = {
-						force_version = "v0.8.1",
-					},
+					prebuilt_binaries = {},
 				},
 			},
 		},
@@ -689,7 +670,7 @@ require("lazy").setup({
 			version = "1.7.0",
 			keys = {
 				{
-					"<Char-0xAD>L",
+					"<leader>wL",
 					function()
 						require("smart-splits").resize_right()
 					end,
@@ -698,7 +679,7 @@ require("lazy").setup({
 					desc = "resize split to right",
 				},
 				{
-					"<Char-0xAD>H",
+					"<leader>wH",
 					function()
 						require("smart-splits").resize_left()
 					end,
@@ -707,7 +688,7 @@ require("lazy").setup({
 					desc = "resize split to left",
 				},
 				{
-					"<Char-0xAD>K",
+					"<leader>wK",
 					function()
 						require("smart-splits").resize_up()
 					end,
@@ -716,7 +697,7 @@ require("lazy").setup({
 					desc = "resize split to top",
 				},
 				{
-					"<Char-0xAD>J",
+					"<leader>wJ",
 					function()
 						require("smart-splits").resize_down()
 					end,
@@ -872,7 +853,7 @@ require("lazy").setup({
 				},
 				grep = {
 					prompt = "Rg❯ ",
-					rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
+					-- rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
 				},
 			},
 			dependencies = {
