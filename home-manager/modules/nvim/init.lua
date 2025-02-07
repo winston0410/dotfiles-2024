@@ -431,6 +431,14 @@ require("lazy").setup({
 						},
 						globalstatus = true,
 					},
+					tabline = {
+						lualine_a = {},
+						lualine_b = {},
+						lualine_c = { "filename" },
+						lualine_x = {},
+						lualine_y = {},
+						lualine_z = { "tabs" },
+					},
 					winbar = {
 						lualine_a = {},
 						lualine_b = {},
