@@ -408,6 +408,55 @@ require("lazy").setup({
 			},
 		},
 		{
+			"chentoast/marks.nvim",
+			event = "VeryLazy",
+			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
+			keys = {
+				{
+					"m",
+					function()
+						require("marks").set()
+					end,
+
+					silent = true,
+					noremap = true,
+					desc = "Set mark",
+				},
+				{
+					"m,",
+					function()
+						require("marks").set_next()
+					end,
+
+					silent = true,
+					noremap = true,
+					desc = "Set next available mark",
+				},
+				{
+					"dm",
+					function()
+						require("marks").delete()
+					end,
+
+					silent = true,
+					noremap = true,
+					desc = "Delete mark",
+				},
+			},
+			opts = {
+				default_mappings = false,
+				builtin_marks = {
+					-- beginning of last change. This is not reliable, as plugin such as formatter.nvim would reset its location back to line 1
+					".",
+					"<",
+					">",
+					-- beginning of last insert
+					"^",
+				},
+				excluded_filetypes = {},
+			},
+		},
+		{
 			"nvim-lualine/lualine.nvim",
 			commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
 			event = "VeryLazy",
@@ -458,7 +507,8 @@ require("lazy").setup({
 								"filename",
 								file_status = true,
 								path = 3,
-								color = { fg = colors.fg, bg = colors.bg_statusline },
+								-- color = { fg = colors.fg, bg = colors.bg_statusline },
+								color = "TabLineFill",
 								padding = 0,
 							},
 						},
@@ -481,7 +531,8 @@ require("lazy").setup({
 								"filename",
 								file_status = true,
 								path = 3,
-								color = { fg = colors.fg, bg = colors.bg_statusline },
+								-- color = { fg = colors.fg, bg = colors.bg_statusline },
+								color = "TabLine",
 								padding = 0,
 							},
 						},
@@ -608,7 +659,7 @@ require("lazy").setup({
 				{
 					"?",
 					function()
-						require("which-key").show({ global = false })
+						require("which-key").show({ global = true })
 					end,
 					desc = "Show local keymaps",
 				},
@@ -1133,6 +1184,20 @@ require("lazy").setup({
 		-- 	end,
 		-- },
 		{
+			"stevearc/quicker.nvim",
+			event = "FileType qf",
+			opts = {
+				opts = {
+					buflisted = false,
+					number = false,
+					relativenumber = false,
+					signcolumn = "auto:2",
+					winfixheight = true,
+					wrap = true,
+				},
+			},
+		},
+		{
 			"folke/edgy.nvim",
 			version = "1.10.2",
 			event = "VeryLazy",
@@ -1183,14 +1248,15 @@ require("lazy").setup({
 						end,
 						size = { width = 0.5, height = 1 },
 					},
-					{
-						ft = "trouble",
-						title = "Quickfix",
-						filter = function(_buf, win)
-							return vim.w[win].trouble and vim.w[win].trouble.mode == "qflist"
-						end,
-						size = { width = 0.5, height = 1 },
-					},
+					{ ft = "qf", title = "QuickFix", size = { width = 0.5, height = 1 } },
+					-- {
+					-- 	ft = "trouble",
+					-- 	title = "Quickfix",
+					-- 	filter = function(_buf, win)
+					-- 		return vim.w[win].trouble and vim.w[win].trouble.mode == "qflist"
+					-- 	end,
+					-- 	size = { width = 0.5, height = 1 },
+					-- },
 				},
 				exit_when_last = true,
 			},
@@ -1694,16 +1760,6 @@ require("lazy").setup({
 						["<leader>wv<cr>"] = "jump_vsplit",
 					},
 				})
-				vim.api.nvim_create_autocmd("BufRead", {
-					callback = function(ev)
-						if vim.bo[ev.buf].buftype == "quickfix" then
-							vim.schedule(function()
-								vim.cmd([[cclose]])
-								vim.cmd([[Trouble qflist open]])
-							end)
-						end
-					end,
-				})
 			end,
 		},
 		{ "echasnovski/mini.icons", version = false },
@@ -1771,3 +1827,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		})
 	end,
 })
+
+-- TODO how can I always open helpfiles in a tab?
