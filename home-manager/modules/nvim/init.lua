@@ -48,40 +48,34 @@ vim.keymap.set(
 	"<cmd>split<cr>",
 	{ silent = true, noremap = true, desc = "Create a horizontal split" }
 )
-vim.keymap.set(modes, "<leader>qw", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
+vim.keymap.set(modes, "<leader>wq", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
 vim.keymap.set(modes, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
 vim.keymap.set(modes, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
 vim.keymap.set(modes, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set(modes, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
--- NOTE to open a new tab, use Oil.nvim creates a file and then enter it
+vim.keymap.set(modes, "<leader>tv", "<cmd>tabnew<cr>", { silent = true, noremap = true, desc = "Create a new tab" })
 vim.keymap.set(
 	modes,
-	"<leader>t",
+	"<leader>tl",
 	"gt",
 	{ silent = true, noremap = true, desc = "Go to the next tab page. Wraps around from the last to the first one." }
 )
-vim.keymap.set(modes, "<leader>T", "gT", {
+vim.keymap.set(modes, "<leader>th", "gT", {
 	silent = true,
 	noremap = true,
 	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
 })
-vim.keymap.set(modes, "<leader>qt", "<cmd>tabclose<cr>", { silent = true, noremap = true, desc = "Close a tab" })
+vim.keymap.set(modes, "<leader>tq", "<cmd>tabclose<cr>", { silent = true, noremap = true, desc = "Close a tab" })
 
 vim.keymap.set(
 	modes,
-	"<leader>qb",
+	"<leader>bq",
 	"<cmd>bprevious<bar>bdelete #<cr>",
 	{ silent = true, noremap = true, desc = "Delete current buffer and switch to prev buffer" }
 )
--- -- NOTE <Char-0xBB> is Cmd + e
--- vim.keymap.set(
--- 	modes,
--- 	"<Char-0xBB>n",
--- 	"<cmd>bprev<cr>",
--- 	{ silent = true, noremap = true, desc = "goto previous buffer" }
--- )
--- vim.keymap.set(modes, "<Char-0xBB>p", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "goto next buffer" })
+vim.keymap.set(modes, "<leader>bl", "<cmd>bprev<cr>", { silent = true, noremap = true, desc = "Go to previous buffer" })
+vim.keymap.set(modes, "<leader>bh", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "Go to next buffer" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -429,15 +423,25 @@ require("lazy").setup({
 							winbar = { "trouble", "oil", "qf" },
 							inactive_winbar = { "trouble", "oil", "qf" },
 						},
+						always_show_tabline = false,
 						globalstatus = true,
 					},
 					tabline = {
 						lualine_a = {},
 						lualine_b = {},
-						lualine_c = { "filename" },
+						lualine_c = {},
 						lualine_x = {},
 						lualine_y = {},
-						lualine_z = { "tabs" },
+						lualine_z = {
+							{
+								"tabs",
+								mode = 2,
+								tabs_color = {
+									active = "TabLineFill",
+									inactive = "TabLine",
+								},
+							},
+						},
 					},
 					winbar = {
 						lualine_a = {},
@@ -1684,6 +1688,7 @@ require("lazy").setup({
 						},
 					},
 					keys = {
+						["?"] = false,
 						["<cr>"] = "jump",
 						["<leader>ws<cr>"] = "jump_split",
 						["<leader>wv<cr>"] = "jump_vsplit",
