@@ -408,6 +408,34 @@ require("lazy").setup({
 			},
 		},
 		{
+			"yorickpeterse/nvim-window",
+			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
+			keys = {
+				{
+					"<leader>wj",
+					function()
+						require("nvim-window").pick()
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Jump to window",
+				},
+			},
+			config = function()
+				local chars = {} -- a list from a-z
+				for i = 97, 122 do
+					table.insert(chars, string.char(i))
+				end
+				require("nvim-window").setup({
+					chars = chars,
+					normal_hl = "Normal",
+					hint_hl = "Bold",
+					border = "single",
+					render = "float",
+				})
+			end,
+		},
+		{
 			"chentoast/marks.nvim",
 			event = "VeryLazy",
 			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
