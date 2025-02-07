@@ -824,6 +824,56 @@ require("lazy").setup({
 				"nvim-tree/nvim-web-devicons",
 			},
 		},
+		-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
+		-- {
+		-- 	"petertriho/nvim-scrollbar",
+		-- 	config = function()
+		-- 		local colors = require("tokyonight.colors").setup()
+		--
+		-- 		require("scrollbar").setup({
+		-- 			show = true,
+		-- 			show_in_active_only = false,
+		-- 			set_highlights = true,
+		-- 			throttle_ms = 100,
+		-- 			handle = {
+		-- 				text = " ",
+		-- 				blend = 30,
+		-- 				color = colors.bg_highlight,
+		-- 				highlight = "CursorColumn",
+		-- 				hide_if_all_visible = false,
+		-- 			},
+		-- 			excluded_filetypes = {
+		-- 				"dropbar_menu",
+		-- 				"dropbar_menu_fzf",
+		-- 				"DressingInput",
+		-- 				"cmp_docs",
+		-- 				"cmp_menu",
+		-- 				"noice",
+		-- 				"prompt",
+		-- 				"TelescopePrompt",
+		-- 				"trouble",
+		-- 			},
+		-- 			marks = {
+		-- 				Search = { color = colors.orange },
+		-- 				Error = { color = colors.error },
+		-- 				Warn = { color = colors.warning },
+		-- 				Info = { color = colors.info },
+		-- 				Hint = { color = colors.hint },
+		-- 				Misc = { color = colors.purple },
+		-- 			},
+		-- 			handlers = {
+		-- 				cursor = true,
+		-- 				diagnostic = true,
+		-- 				gitsigns = true,
+		-- 				handle = true,
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- 	dependencies = {
+		-- 		"folke/tokyonight.nvim",
+		-- 		"lewis6991/gitsigns.nvim",
+		-- 	},
+		-- },
 		{
 			"nvim-treesitter/nvim-treesitter-context",
 			opts = {
@@ -1054,8 +1104,25 @@ require("lazy").setup({
 			},
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 		},
+		-- NOTE just a plugin for fun, maybe later
+		-- {
+		-- 	"Isrothy/neominimap.nvim",
+		-- 	version = "v3.*.*",
+		-- 	enabled = true,
+		-- 	lazy = false, -- NOTE: NO NEED to Lazy load
+		-- 	init = function()
+		-- 		vim.opt.wrap = false
+		-- 		vim.opt.sidescrolloff = 36 -- Set a large value
+		-- 		vim.g.neominimap = {
+		-- 			auto_enable = true,
+		-- 			-- NOTE to have higher z-index than nvim-treesitter
+		-- 			float = { z_index = 11 },
+		-- 		}
+		-- 	end,
+		-- },
 		{
 			"folke/edgy.nvim",
+			version = "1.10.2",
 			event = "VeryLazy",
 			opts = {
 				animate = {
@@ -1071,7 +1138,6 @@ require("lazy").setup({
 					top = { size = 10 },
 				},
 				left = {
-					-- TODO enable again, once the oil.nvim bug is fixed
 					{
 						ft = "oil",
 						size = { width = 0.25 },
@@ -1083,18 +1149,18 @@ require("lazy").setup({
 					-- },
 				},
 				right = {
-					-- {
-					-- 	ft = "trouble",
-					-- 	title = "LSP Symbols",
-					-- 	filter = function(_buf, win)
-					-- 		return vim.w[win].trouble
-					-- 			and (
-					-- 				vim.w[win].trouble.mode == "symbols"
-					-- 				or vim.w[win].trouble.mode == "lsp_document_symbols"
-					-- 			)
-					-- 	end,
-					-- 	size = { width = 0.2 },
-					-- },
+					{
+						ft = "trouble",
+						title = "LSP Symbols",
+						filter = function(_buf, win)
+							return vim.w[win].trouble
+								and (
+									vim.w[win].trouble.mode == "symbols"
+									or vim.w[win].trouble.mode == "lsp_document_symbols"
+								)
+						end,
+						size = { width = 0.2 },
+					},
 				},
 				bottom = {
 					{
@@ -1106,8 +1172,11 @@ require("lazy").setup({
 						size = { width = 0.5, height = 1 },
 					},
 					{
-						ft = "qf",
+						ft = "trouble",
 						title = "Quickfix",
+						filter = function(_buf, win)
+							return vim.w[win].trouble and vim.w[win].trouble.mode == "qflist"
+						end,
 						size = { width = 0.5, height = 1 },
 					},
 				},
@@ -1594,7 +1663,12 @@ require("lazy").setup({
 						},
 						lsp_document_symbols = {
 							auto_open = false,
-							format = "{kind_icon} {symbol.name}",
+							win = {
+								wo = {
+									wrap = false,
+								},
+							},
+							format = "{kind_icon} {symbol.name} {text:Comment} {pos}",
 						},
 						symbols = {
 							auto_open = false,
@@ -1606,6 +1680,16 @@ require("lazy").setup({
 						["<leader>ws<cr>"] = "jump_split",
 						["<leader>wv<cr>"] = "jump_vsplit",
 					},
+				})
+				vim.api.nvim_create_autocmd("BufRead", {
+					callback = function(ev)
+						if vim.bo[ev.buf].buftype == "quickfix" then
+							vim.schedule(function()
+								vim.cmd([[cclose]])
+								vim.cmd([[Trouble qflist open]])
+							end)
+						end
+					end,
 				})
 			end,
 		},
