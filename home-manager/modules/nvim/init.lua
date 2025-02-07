@@ -1064,6 +1064,12 @@ require("lazy").setup({
 				wo = {
 					winbar = false,
 				},
+				options = {
+					left = { size = 30 },
+					bottom = { size = 4 },
+					right = { size = 30 },
+					top = { size = 10 },
+				},
 				left = {
 					-- TODO enable again, once the oil.nvim bug is fixed
 					{
@@ -1077,30 +1083,32 @@ require("lazy").setup({
 					-- },
 				},
 				right = {
-					{
-						ft = "trouble",
-						title = "Symbols",
-						filter = function(_buf, win)
-							return vim.w[win].trouble
-								and (
-									vim.w[win].trouble.mode == "symbols"
-									or vim.w[win].trouble.mode == "lsp_document_symbols"
-								)
-						end,
-						size = { width = 0.2 },
-					},
+					-- {
+					-- 	ft = "trouble",
+					-- 	title = "LSP Symbols",
+					-- 	filter = function(_buf, win)
+					-- 		return vim.w[win].trouble
+					-- 			and (
+					-- 				vim.w[win].trouble.mode == "symbols"
+					-- 				or vim.w[win].trouble.mode == "lsp_document_symbols"
+					-- 			)
+					-- 	end,
+					-- 	size = { width = 0.2 },
+					-- },
+				},
+				bottom = {
 					{
 						ft = "trouble",
 						title = "Diagnostics",
 						filter = function(_buf, win)
 							return vim.w[win].trouble and vim.w[win].trouble.mode == "diagnostics"
 						end,
-						size = { width = 0.2, height = 0.25 },
+						size = { width = 0.5, height = 1 },
 					},
 					{
 						ft = "qf",
 						title = "Quickfix",
-						size = { width = 0.2, height = 0.25 },
+						size = { width = 0.5, height = 1 },
 					},
 				},
 				exit_when_last = true,
@@ -1580,15 +1588,18 @@ require("lazy").setup({
 						},
 					},
 					modes = {
-						diagnostics = { auto_open = true },
-						lsp_document_symbols = {
+						diagnostics = {
 							auto_open = true,
+							format = "{severity_icon} {message:md} {item.source} {code}",
+						},
+						lsp_document_symbols = {
+							auto_open = false,
 							format = "{kind_icon} {symbol.name}",
 						},
-						-- symbols = {
-						-- 	auto_open = true,
-						-- 	format = "{kind_icon} {symbol.name} {pos}",
-						-- },
+						symbols = {
+							auto_open = false,
+							format = "{kind_icon} {symbol.name}",
+						},
 					},
 					keys = {
 						["<cr>"] = "jump",
