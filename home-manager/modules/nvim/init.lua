@@ -624,6 +624,7 @@ require("lazy").setup({
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"ibhagwan/fzf-lua",
+				-- "sindrets/diffview.nvim",
 			},
 			keys = {
 				{
@@ -634,7 +635,7 @@ require("lazy").setup({
 					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "open Neogit panel",
+					desc = "Open Neogit panel",
 				},
 			},
 			opts = {
@@ -642,6 +643,7 @@ require("lazy").setup({
 				disable_commit_confirmation = true,
 				kind = "tab",
 				integrations = {
+					-- diffview = true,
 					fzf_lua = true,
 				},
 				mappings = {
@@ -1195,6 +1197,9 @@ require("lazy").setup({
 					winfixheight = true,
 					wrap = true,
 				},
+				follow = {
+					enabled = false,
+				},
 			},
 		},
 		{
@@ -1219,11 +1224,6 @@ require("lazy").setup({
 						ft = "oil",
 						size = { width = 0.25 },
 					},
-					-- edgy.nvim does not provide a wrap options, content not readable
-					-- {
-					-- 	ft = "NeogitStatus",
-					-- 	size = { width = 0.3 },
-					-- },
 				},
 				right = {
 					{
