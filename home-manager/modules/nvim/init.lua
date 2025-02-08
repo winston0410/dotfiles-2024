@@ -864,25 +864,35 @@ require("lazy").setup({
 					desc = "Search text in files",
 				},
 				{
-					",gc",
+					"<leader>gb",
 					function()
-						require("fzf-lua").git_commits()
+						require("fzf-lua").git_branches()
 					end,
 					mode = { "n", "v" },
 					silent = true,
 					noremap = true,
-					desc = "Search text in git commits",
+					desc = "Search git branches",
 				},
-				{
-					",gs",
-					function()
-						require("fzf-lua").git_stash()
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search text in git stash",
-				},
+				-- {
+				-- 	",gc",
+				-- 	function()
+				-- 		require("fzf-lua").git_commits()
+				-- 	end,
+				-- 	mode = { "n", "v" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Search text in git commits",
+				-- },
+				-- {
+				-- 	",gs",
+				-- 	function()
+				-- 		require("fzf-lua").git_stash()
+				-- 	end,
+				-- 	mode = { "n", "v" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Search text in git stash",
+				-- },
 				{
 					",la",
 					function()
