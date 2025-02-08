@@ -30,12 +30,8 @@ vim.keymap.set(modes, "Y", "y$", {
 	noremap = true,
 	desc = "Yanks from the cursor position to the end of the line.",
 })
--- FIXME for visual block, not sure do we need this
--- vim.keymap.set(modes, "<Char-0xAD>", "<C-v>" )
 vim.keymap.set({ "i", "n", "v" }, "<Char-0xAE>", "<C-r>", { silent = true, noremap = true, desc = "Redo" })
 
--- Binding for split
-vim.keymap.set(modes, "<leader>ww", "<C-w>w", { silent = true, noremap = true, desc = "cycle focus to next split" })
 vim.keymap.set(
 	modes,
 	"<leader>wv",
@@ -652,9 +648,11 @@ require("lazy").setup({
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"ibhagwan/fzf-lua",
-				-- "sindrets/diffview.nvim",
+				-- TODO add configuration for this plugin later
+				"sindrets/diffview.nvim",
 			},
 			keys = {
+				-- NOTE only use one keybinding for Neogit, as the default panel provide enough bindings, and it is as efficent as a new binding
 				{
 					"<leader>g",
 					function()
@@ -663,7 +661,7 @@ require("lazy").setup({
 					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "Open Neogit panel",
+					desc = "Open Neogit status",
 				},
 			},
 			opts = {
@@ -671,7 +669,7 @@ require("lazy").setup({
 				disable_commit_confirmation = true,
 				kind = "tab",
 				integrations = {
-					-- diffview = true,
+					diffview = true,
 					fzf_lua = true,
 				},
 				mappings = {
@@ -768,12 +766,6 @@ require("lazy").setup({
 			},
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
-		-- FIXME this plugin is not working somehow
-		-- {
-		-- 	"nacro90/numb.nvim",
-		-- 	commit = "3f7d4a74bd456e747a1278ea1672b26116e0824d",
-		-- 	event = "CmdlineEnter",
-		-- },
 		{
 			"lukas-reineke/indent-blankline.nvim",
 			main = "ibl",
