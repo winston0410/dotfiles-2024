@@ -470,6 +470,7 @@ require("lazy").setup({
 					"^",
 				},
 				excluded_filetypes = { "fzf" },
+				excluded_buftypes = { "nofile" },
 			},
 		},
 		{
@@ -792,6 +793,16 @@ require("lazy").setup({
 					desc = "Stage hunk",
 				},
 				{
+					"<leader>ghp",
+					function()
+						require("gitsigns").preview_hunk()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Preview hunk",
+				},
+				{
 					"<leader>ghr",
 					function()
 						require("gitsigns").reset_hunk()
@@ -799,7 +810,7 @@ require("lazy").setup({
 					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "Stage hunk",
+					desc = "Reset hunk",
 				},
 				{
 					"<leader>ghi",
@@ -834,6 +845,13 @@ require("lazy").setup({
 					end
 				end,
 				current_line_blame = true,
+				preview_config = {
+					border = "rounded",
+					style = "minimal",
+					relative = "cursor",
+					row = 0,
+					col = 1,
+				},
 			},
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
