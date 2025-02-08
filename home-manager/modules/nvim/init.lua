@@ -9,11 +9,11 @@ local HINT_ICON = "󰌶 "
 local modes = { "n", "v", "c" }
 
 pcall(function()
-	-- NOTE somehow using keymap.del does not work on q:
-	-- vim.keymap.del(modes, "q:")
+	vim.keymap.del(modes, "q:")
+	-- NOTE somehow using keymap.del does not work on q:, we need to set <Nop> as well
 	vim.keymap.set(modes, "q:", "<Nop>", { noremap = true, silent = true })
-	vim.keymap.del(modes, "s")
-	vim.keymap.del(modes, "S")
+	vim.keymap.del(modes, "s", { desc = "Synonym for 'cl' (not linewise)" })
+	vim.keymap.del(modes, "S", { desc = "Synonym for 'cc' linewise" })
 end)
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -81,9 +81,8 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
--- FIXME create a new keymapping that start subtitue for the highlighted word globally, and then replace these two mappings
--- vim.keymap.set("n", "gs", ":%s/", { silent = true, noremap = true })
--- vim.keymap.set("v", "gs", ":s/", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>s", ":%s/", { silent = true, noremap = true, desc = "Substitute globally" })
+vim.keymap.set("v", "<leader>s", ":s/", { silent = true, noremap = true, desc = "Substitute the selected area" })
 
 vim.keymap.set("v", "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set("v", "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
@@ -188,10 +187,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
-
--- local function startsWith(str, prefix)
--- 	return string.sub(str, 1, #prefix) == prefix
--- end
 
 require("lazy").setup({
 	rocks = {
@@ -441,7 +436,6 @@ require("lazy").setup({
 					function()
 						require("marks").set()
 					end,
-
 					silent = true,
 					noremap = true,
 					desc = "Set mark",
@@ -451,7 +445,6 @@ require("lazy").setup({
 					function()
 						require("marks").set_next()
 					end,
-
 					silent = true,
 					noremap = true,
 					desc = "Set next available mark",
@@ -461,7 +454,6 @@ require("lazy").setup({
 					function()
 						require("marks").delete()
 					end,
-
 					silent = true,
 					noremap = true,
 					desc = "Delete mark",
@@ -470,14 +462,14 @@ require("lazy").setup({
 			opts = {
 				default_mappings = false,
 				builtin_marks = {
-					-- beginning of last change. This is not reliable, as plugin such as formatter.nvim would reset its location back to line 1
-					".",
+					-- NOTE beginning of last change. This is not reliable, as plugin such as formatter.nvim would reset its location back to line 1
+					-- ".",
 					"<",
 					">",
 					-- beginning of last insert
 					"^",
 				},
-				excluded_filetypes = {},
+				excluded_filetypes = { "fzf" },
 			},
 		},
 		{
@@ -509,6 +501,9 @@ require("lazy").setup({
 							{
 								"tabs",
 								mode = 2,
+								max_length = function()
+									return vim.o.columns / 2
+								end,
 								tabs_color = {
 									active = "TabLineFill",
 									inactive = "TabLine",
@@ -694,6 +689,27 @@ require("lazy").setup({
 			},
 			opts = {
 				preset = "helix",
+				plugins = {
+					marks = true,
+					registers = true,
+					spelling = {
+						enabled = true,
+						suggestions = 20,
+					},
+					presets = {
+						operators = true,
+						motions = true,
+						text_objects = true,
+						windows = true,
+						nav = true,
+						z = false,
+						g = false,
+					},
+				},
+				keys = {
+					scroll_down = "<c-n>",
+					scroll_up = "<c-p>",
+				},
 			},
 		},
 		{
@@ -755,14 +771,19 @@ require("lazy").setup({
 			"lewis6991/gitsigns.nvim",
 			version = "0.9.0",
 			event = "CursorHold",
+			keys = {},
 			opts = {
-				-- on_attach = function(bufnr)
-				-- 	local ft = vim.bo[bufnr].filetype
-				-- 	if startsWith(ft, "Neogit") or ft == "trouble" or ft == "gitcommit" then
-				-- 		return false
-				-- 	end
-				-- end,
-				-- current_line_blame = true,
+				on_attach = function(bufnr)
+					local function startsWith(str, prefix)
+						return string.sub(str, 1, #prefix) == prefix
+					end
+
+					local ft = vim.bo[bufnr].filetype
+					if startsWith(ft, "Neogit") or ft == "trouble" or ft == "gitcommit" then
+						return false
+					end
+				end,
+				current_line_blame = true,
 			},
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
