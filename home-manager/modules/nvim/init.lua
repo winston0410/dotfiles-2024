@@ -464,8 +464,8 @@ require("lazy").setup({
 				builtin_marks = {
 					-- NOTE beginning of last change. This is not reliable, as plugin such as formatter.nvim would reset its location back to line 1
 					-- ".",
-					"<",
-					">",
+					"[",
+					"]",
 					-- beginning of last insert
 					"^",
 				},
@@ -647,9 +647,8 @@ require("lazy").setup({
 				"sindrets/diffview.nvim",
 			},
 			keys = {
-				-- NOTE only use one keybinding for Neogit, as the default panel provide enough bindings, and it is as efficent as a new binding
 				{
-					"<leader>g",
+					"<leader>gg",
 					function()
 						require("neogit").open()
 					end,
@@ -771,7 +770,58 @@ require("lazy").setup({
 			"lewis6991/gitsigns.nvim",
 			version = "0.9.0",
 			event = "CursorHold",
-			keys = {},
+			keys = {
+				{
+					"<leader>gh",
+					function()
+						require("gitsigns").select_hunk()
+					end,
+					mode = { "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Select hunk",
+				},
+				{
+					"<leader>ghs",
+					function()
+						require("gitsigns").stage_hunk()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Stage hunk",
+				},
+				{
+					"<leader>ghr",
+					function()
+						require("gitsigns").reset_hunk()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Stage hunk",
+				},
+				{
+					"<leader>ghi",
+					function()
+						require("gitsigns").nav_hunk("next")
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Jump to next hunk",
+				},
+				{
+					"<leader>gho",
+					function()
+						require("gitsigns").nav_hunk("prev")
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Jump to previous hunk",
+				},
+			},
 			opts = {
 				on_attach = function(bufnr)
 					local function startsWith(str, prefix)
