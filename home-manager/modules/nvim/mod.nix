@@ -37,6 +37,7 @@
     vimdiff = "nvim -d";
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
+    k11s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = true })'";
   };
 
   xdg.configFile = {

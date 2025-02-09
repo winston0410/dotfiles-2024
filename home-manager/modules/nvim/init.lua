@@ -403,7 +403,7 @@ require("lazy").setup({
 			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
 			keys = {
 				{
-					"<leader>wj",
+					"<leader>wf",
 					function()
 						require("nvim-window").pick()
 					end,
@@ -1143,6 +1143,8 @@ require("lazy").setup({
 				require("nvim-treesitter.configs").setup({
 					ensure_installed = "all",
 					auto_install = false,
+					sync_install = false,
+					ignore_install = {},
 					incremental_selection = { enable = true },
 					highlight = {
 						enable = true,
@@ -1267,12 +1269,13 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
-						require("oil").toggle_float()
+						vim.cmd("tabnew")
+						require("oil").open()
 					end,
 					mode = { "n" },
 					noremap = true,
 					silent = true,
-					desc = "Toggle Oil.nvim panel",
+					desc = "Open Oil.nvim panel",
 				},
 			},
 			config = function()
@@ -1307,7 +1310,14 @@ require("lazy").setup({
 							desc = "Select a file and open in a horizontal split",
 						},
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
-						["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
+						["q"] = {
+							function()
+								require("oil.actions").close()
+								vim.cmd("tabclose")
+							end,
+							mode = "n",
+							desc = "Quit Oil.nvim panel",
+						},
 						["p"] = { "actions.preview", mode = "n", desc = "Preview file" },
 					},
 					use_default_keymaps = false,
@@ -1376,10 +1386,11 @@ require("lazy").setup({
 					top = { size = 10 },
 				},
 				left = {
-					{
-						ft = "oil",
-						size = { width = 0.25 },
-					},
+					-- NOTE use oil.nvim for create/edit/delete files. For opening file, use picker is a better option
+					-- {
+					-- 	ft = "oil",
+					-- 	size = { width = 0.25 },
+					-- },
 				},
 				right = {
 					{
