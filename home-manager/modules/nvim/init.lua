@@ -919,11 +919,18 @@ require("lazy").setup({
 			config = function()
 				require("snacks").setup({
 					-- dim
+					picker = {
+						enabled = true,
+					},
+					scroll = {
+						enabled = true,
+					},
 					input = {
 						enabled = true,
 					},
 					notifier = {
 						enabled = true,
+						style = "fancy",
 					},
 					indent = {
 						enabled = true,
