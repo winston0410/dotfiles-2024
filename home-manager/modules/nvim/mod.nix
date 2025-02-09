@@ -36,6 +36,7 @@
     vim = "nvim";
     vimdiff = "nvim -d";
     oil = ''nvim -c "Oil"'';
+    neogit = "nvim -c 'lua require(\"neogit\").open()'";
   };
 
   xdg.configFile = {

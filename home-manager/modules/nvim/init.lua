@@ -917,8 +917,7 @@ require("lazy").setup({
 				{
 					"<leader>k",
 					function()
-						-- FIXME allow starting from a tab instead
-						require("kubectl").toggle()
+						require("kubectl").toggle({ tab = true })
 					end,
 					mode = { "n" },
 					silent = true,
