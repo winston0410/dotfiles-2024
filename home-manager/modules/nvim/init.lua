@@ -917,9 +917,8 @@ require("lazy").setup({
 			priority = 1000,
 			lazy = false,
 			config = function()
-				local snacks = require("snacks")
-				---@type snacks.Config
-				snacks.setup({
+				require("snacks").setup({
+					-- dim
 					input = {
 						enabled = true,
 					},
@@ -1879,21 +1878,14 @@ require("lazy").setup({
 							},
 							workspace = {
 								checkThirdParty = false,
-								library = {
-									vim.env.VIMRUNTIME,
-									-- REF https://github.com/LuaLS/lua-language-server/tree/master/meta/3rd
-									"${3rd}/luv/library",
-									"${3rd}/luassert/library",
-									"${3rd}/busted/library",
-									"${3rd}/luafilesystem/library",
-								},
+								library = {},
 							},
 						})
 					end,
 					settings = {
 						Lua = {
 							diagnostics = {
-								globals = { "vim" },
+								globals = {},
 							},
 							telemetry = {
 								enable = false,

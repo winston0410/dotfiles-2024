@@ -32,6 +32,7 @@
     pkgs.slint-lsp
     pkgs.ltex-ls
     pkgs.angular-language-server
+    pkgs.shellcheck
     # TODO install @astrojs/language-server, https://github.com/withastro/language-tools/tree/main/packages/language-server
     # # # REF https://github.com/NixOS/nixpkgs/issues/245849
     # (pkgs.buildNpmPackage rec {

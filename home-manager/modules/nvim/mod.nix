@@ -6,7 +6,9 @@
       extraLuaPackages =
         (ps: with ps; [ luafilesystem jsregexp luarocks magick luassert ]);
     })
-    (lua.override { version = "5.1.0"; })
+    # FIXME No idea why but override from lua package does not work and the version will be 5.2, we have to use lua5_1 instead
+    # (lua.override { version = "5.1.0"; })
+    lua5_1
     luarocks
     # needed for treesitter
     tree-sitter
