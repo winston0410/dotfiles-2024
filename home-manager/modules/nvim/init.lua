@@ -207,18 +207,18 @@ require("lazy").setup({
 				},
 			},
 		},
-		{
-			"rcarriga/nvim-notify",
-			version = "3.14.0",
-			priority = 999,
-			config = function()
-				require("notify").setup({
-					max_width = 50,
-					render = "wrapped-compact",
-				})
-				vim.notify = require("notify")
-			end,
-		},
+		-- {
+		-- 	"rcarriga/nvim-notify",
+		-- 	version = "3.14.0",
+		-- 	priority = 999,
+		-- 	config = function()
+		-- 		require("notify").setup({
+		-- 			max_width = 50,
+		-- 			render = "wrapped-compact",
+		-- 		})
+		-- 		vim.notify = require("notify")
+		-- 	end,
+		-- },
 		{
 			"folke/tokyonight.nvim",
 			commit = "c2725eb6d086c8c9624456d734bd365194660017",
@@ -855,17 +855,84 @@ require("lazy").setup({
 			},
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
+		-- {
+		-- 	"skardyy/neo-img",
+		-- 	-- TODO install ttyimg with nix packages
+		-- 	config = function()
+		-- 		require("neo-img").setup({
+		-- 			supported_extensions = {
+		-- 				["png"] = true,
+		-- 				["jpg"] = true,
+		-- 				["jpeg"] = true,
+		-- 				["webp"] = true,
+		-- 				["tiff"] = true,
+		-- 				["avif"] = true,
+		-- 			},
+		-- 			auto_open = true,
+		-- 			-- TODO enable this later
+		-- 			oil_preview = false,
+		-- 			backend = "auto",
+		-- 		})
+		-- 	end,
+		-- },
+		-- {
+		-- 	"3rd/image.nvim",
+		-- 	build = false,
+		-- 	ft = { "markdown", "vimwiki", "norg", "typst" },
+		-- 	config = function()
+		-- 		require("image").setup({
+		-- 			backend = "kitty",
+		-- 			processor = "magick_cli",
+		-- 			integrations = {
+		-- 				markdown = {
+		-- 					enabled = true,
+		-- 					clear_in_insert_mode = false,
+		-- 					download_remote_images = true,
+		-- 					only_render_image_at_cursor = false,
+		-- 					floating_windows = false,
+		-- 					filetypes = { "markdown", "vimwiki" },
+		-- 				},
+		-- 				neorg = {
+		-- 					enabled = true,
+		-- 					filetypes = { "norg" },
+		-- 				},
+		-- 				typst = {
+		-- 					enabled = true,
+		-- 					filetypes = { "typst" },
+		-- 				},
+		-- 				html = {
+		-- 					enabled = false,
+		-- 				},
+		-- 				css = {
+		-- 					enabled = false,
+		-- 				},
+		-- 			},
+		-- 			-- NOTE we rely on neo-img for viewing image
+		-- 			hijack_file_patterns = {},
+		-- 		})
+		-- 	end,
+		-- },
 		{
-			"lukas-reineke/indent-blankline.nvim",
-			main = "ibl",
-			version = "3.8.6",
-			event = "CursorHold",
-			opts = {
-				indent = {
-					char = "▏",
-					highlight = { "IblIndent" },
-				},
-			},
+			"folke/snacks.nvim",
+			priority = 1000,
+			lazy = false,
+			config = function()
+				local snacks = require("snacks")
+				---@type snacks.Config
+				snacks.setup({
+					input = {
+						enabled = true,
+					},
+					notifier = {
+						enabled = true,
+					},
+					indent = {
+						enabled = true,
+						char = "│",
+						hl = "SnacksIndent",
+					},
+				})
+			end,
 		},
 		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = "CursorHold" },
 		{
@@ -1241,51 +1308,54 @@ require("lazy").setup({
 					desc = "Toggle Oil.nvim panel",
 				},
 			},
-			opts = {
-				columns = {
-					"icon",
-					"permissions",
-					-- NOTE wait until these fields to be excluded by constrain_cursor, then enable these fields again
-					-- "size",
-					-- "mtime",
-				},
-				constrain_cursor = "editable",
-				watch_for_changes = true,
-				keymaps = {
-					["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
-					["<leader>t<CR>"] = {
-						"actions.select",
-						mode = "n",
-						opts = { close = false, tab = true },
-						desc = "Select a file and open in a new tab",
+			config = function()
+				require("oil").setup({
+					columns = {
+						"icon",
+						"permissions",
+						-- NOTE wait until these fields to be excluded by constrain_cursor, then enable these fields again
+						-- "size",
+						-- "mtime",
 					},
-					["<leader>wv<CR>"] = {
-						"actions.select",
-						mode = "n",
-						opts = { close = false, vertical = true },
-						desc = "Select a file and open in a vertical split",
+					constrain_cursor = "editable",
+					watch_for_changes = true,
+					keymaps = {
+						["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
+						["<leader>t<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, tab = true },
+							desc = "Select a file and open in a new tab",
+						},
+						["<leader>wv<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, vertical = true },
+							desc = "Select a file and open in a vertical split",
+						},
+						["<leader>ws<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, horizontal = true },
+							desc = "Select a file and open in a horizontal split",
+						},
+						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
+						["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
+						["p"] = { "actions.preview", mode = "n", desc = "Preview file" },
 					},
-					["<leader>ws<CR>"] = {
-						"actions.select",
-						mode = "n",
-						opts = { close = false, horizontal = true },
-						desc = "Select a file and open in a horizontal split",
+					use_default_keymaps = false,
+					win_options = {
+						wrap = true,
 					},
-					["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
-					["q"] = { "actions.close", mode = "n", desc = "Quit Oil.nvim panel" },
-				},
-				use_default_keymaps = false,
-				win_options = {
-					wrap = true,
-				},
-				view_options = {
-					show_hidden = true,
-				},
-				skip_confirm_for_simple_edits = true,
-				float = {
-					border = "none",
-				},
-			},
+					view_options = {
+						show_hidden = true,
+					},
+					skip_confirm_for_simple_edits = true,
+					float = {
+						border = "none",
+					},
+				})
+			end,
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 		},
 		-- NOTE just a plugin for fun, maybe later
@@ -1792,7 +1862,13 @@ require("lazy").setup({
 
 						if client.workspace_folders then
 							local path = client.workspace_folders[1].name
-							if vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc") then
+							if
+								path ~= vim.fn.stdpath("config")
+								and (
+									vim.loop.fs_stat(path .. "/.luarc.json")
+									or vim.loop.fs_stat(path .. "/.luarc.jsonc")
+								)
+							then
 								return
 							end
 						end
@@ -1805,8 +1881,11 @@ require("lazy").setup({
 								checkThirdParty = false,
 								library = {
 									vim.env.VIMRUNTIME,
+									-- REF https://github.com/LuaLS/lua-language-server/tree/master/meta/3rd
 									"${3rd}/luv/library",
+									"${3rd}/luassert/library",
 									"${3rd}/busted/library",
+									"${3rd}/luafilesystem/library",
 								},
 							},
 						})
