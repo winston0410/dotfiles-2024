@@ -982,15 +982,16 @@ require("lazy").setup({
 					dashboard = {
 						enabled = true,
 						sections = {
+							{ section = "header" },
 							{
-								section = "session",
-								height = 17,
-								padding = 1,
+								icon = " ",
+								title = "Recent Files",
+								section = "recent_files",
+								indent = 2,
+								padding = { 2, 2 },
 							},
-							{
-								pane = 2,
-								{ section = "startup" },
-							},
+							{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 2 },
+							{ section = "startup" },
 						},
 					},
 					picker = {
