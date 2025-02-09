@@ -916,6 +916,48 @@ require("lazy").setup({
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
+			keys = {
+				{
+					"<leader>f",
+					function()
+						Snacks.picker.grep()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Grep files",
+				},
+				{
+					"<leader>m",
+					function()
+						Snacks.picker.files()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Find files",
+				},
+				{
+					"<leader>gb",
+					function()
+						Snacks.picker.git_branches()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search Git branches",
+				},
+				{
+					"<leader>gl",
+					function()
+						Snacks.picker.git_log()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search Git log",
+				},
+			},
 			config = function()
 				require("snacks").setup({
 					-- dim
@@ -962,124 +1004,6 @@ require("lazy").setup({
 					},
 				})
 			end,
-		},
-		{
-			"ibhagwan/fzf-lua",
-			commit = "cd3a9cb9ef55933be6152a77e8aeb36f12a0467b",
-			keys = {
-				-- -- NOTE it does not search in buffer, not sure what is a better alternative
-				-- {
-				-- 	"/",
-				-- 	function()
-				-- 		local bufname = vim.api.nvim_buf_get_name(0)
-				-- 		local info = vim.uv.fs_stat(bufname)
-				-- 		if info ~= nil then
-				-- 			require("fzf-lua").lgrep_curbuf()
-				-- 		else
-				-- 			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("/", true, false, true), "n", true)
-				-- 		end
-				-- 	end,
-				-- 	mode = { "n", "v" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Search text in current buffer",
-				-- },
-				{
-					",m",
-					function()
-						require("fzf-lua").files()
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search files",
-				},
-				{
-					",f",
-					function()
-						require("fzf-lua").live_grep_resume()
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search text in files",
-				},
-				{
-					"<leader>gb",
-					function()
-						require("fzf-lua").git_branches()
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search git branches",
-				},
-				-- {
-				-- 	",gc",
-				-- 	function()
-				-- 		require("fzf-lua").git_commits()
-				-- 	end,
-				-- 	mode = { "n", "v" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Search text in git commits",
-				-- },
-				-- {
-				-- 	",gs",
-				-- 	function()
-				-- 		require("fzf-lua").git_stash()
-				-- 	end,
-				-- 	mode = { "n", "v" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Search text in git stash",
-				-- },
-				{
-					",la",
-					function()
-						require("fzf-lua").lsp_code_actions()
-					end,
-					mode = { "n", "v" },
-					silent = true,
-					noremap = true,
-					desc = "Search lsp code actions",
-				},
-			},
-			config = function()
-				-- local actions = require("fzf-lua").actions
-
-				require("fzf-lua").setup({
-					winopts = {
-						width = 0.9,
-						preview = {
-							wrap = "wrap",
-							layout = "horizontal",
-							horizontal = "right:60%",
-						},
-					},
-					-- actions = {
-					-- 	grep = {
-					-- 		["enter"]       = actions.file_edit_or_qf,
-					-- 		["ctrl-h"] = actions.toggle_ignore,
-					-- 	},
-					-- 	files = {
-					-- 		["enter"]       = actions.file_edit_or_qf,
-					-- 		["ctrl-h"] =  actions.toggle_ignore,
-					-- 	},
-					-- },
-					fzf_layout = "reverse-list",
-					files = {
-						prompt = "Fd❯ ",
-					},
-					grep = {
-						prompt = "Rg❯ ",
-						-- rg_opts = "--column --line-number --no-heading --color=always --case-sensitive --max-columns=4096 -e",
-					},
-				})
-			end,
-			dependencies = {
-				"nvim-tree/nvim-web-devicons",
-			},
 		},
 		-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
 		-- {
