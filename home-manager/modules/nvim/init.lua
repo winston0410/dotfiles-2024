@@ -1318,7 +1318,6 @@ require("lazy").setup({
 							mode = "n",
 							desc = "Quit Oil.nvim panel",
 						},
-						["p"] = { "actions.preview", mode = "n", desc = "Preview file" },
 					},
 					use_default_keymaps = false,
 					win_options = {
