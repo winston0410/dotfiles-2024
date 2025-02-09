@@ -643,7 +643,6 @@ require("lazy").setup({
 			"NeogitOrg/neogit",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
-				"ibhagwan/fzf-lua",
 				-- TODO add configuration for this plugin later
 				"sindrets/diffview.nvim",
 			},
@@ -665,7 +664,6 @@ require("lazy").setup({
 				kind = "tab",
 				integrations = {
 					diffview = true,
-					fzf_lua = true,
 				},
 				mappings = {
 					status = {
@@ -840,7 +838,7 @@ require("lazy").setup({
 					end
 
 					local ft = vim.bo[bufnr].filetype
-					if startsWith(ft, "Neogit") or ft == "trouble" or ft == "gitcommit" then
+					if startsWith(ft, "Neogit") or startsWith(ft, "k8s") or ft == "trouble" or ft == "gitcommit" then
 						return false
 					end
 				end,
@@ -913,6 +911,26 @@ require("lazy").setup({
 		-- 	end,
 		-- },
 		{
+			"ramilito/kubectl.nvim",
+			cmd = { "Kubectl", "Kubectx", "Kubens" },
+			keys = {
+				{
+					"<leader>k",
+					function()
+						-- FIXME allow starting from a tab instead
+						require("kubectl").toggle()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Open kubectl.nvim panel",
+				},
+			},
+			config = function()
+				require("kubectl").setup({})
+			end,
+		},
+		{
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
@@ -961,11 +979,26 @@ require("lazy").setup({
 			config = function()
 				require("snacks").setup({
 					-- dim
+					dashboard = {
+						enabled = true,
+						sections = {
+							{
+								section = "session",
+								height = 17,
+								padding = 1,
+							},
+							{
+								pane = 2,
+								{ section = "startup" },
+							},
+						},
+					},
 					picker = {
 						enabled = true,
+						ui_select = true,
 					},
 					scroll = {
-						enabled = true,
+						enabled = false,
 					},
 					input = {
 						enabled = true,
@@ -991,6 +1024,9 @@ require("lazy").setup({
 			keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
 			config = function()
 				require("Comment").setup({
+					padding = true,
+					sticky = true,
+					post_hook = function() end,
 					pre_hook = function()
 						require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
 					end,
@@ -1226,6 +1262,7 @@ require("lazy").setup({
 		{
 			"stevearc/oil.nvim",
 			version = "2.14.0",
+			cmd = { "Oil" },
 			keys = {
 				{
 					"<leader>o",

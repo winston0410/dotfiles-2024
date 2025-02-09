@@ -2,6 +2,8 @@
   imports = [ ./lsp.nix ./formatter.nix ];
 
   home.packages = with pkgs; [
+    figlet
+    fastfetch
     (unstable.neovim.override {
       extraLuaPackages =
         (ps: with ps; [ luafilesystem jsregexp luarocks magick luassert ]);
@@ -33,11 +35,15 @@
     vi = "nvim";
     vim = "nvim";
     vimdiff = "nvim -d";
+    oil = ''nvim -c "Oil"'';
   };
 
   xdg.configFile = {
     "nvim/init.lua" = {
       source = config.lib.file.mkOutOfStoreSymlink ./init.lua;
+    };
+    "nvim/.luarc.jsonc" = {
+      source = config.lib.file.mkOutOfStoreSymlink ./.luarc.jsonc;
     };
     "nvim/ftplugin" = {
       source = config.lib.file.mkOutOfStoreSymlink ./ftplugin;

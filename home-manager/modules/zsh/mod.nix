@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, isDarwin, ... }: {
-  home.packages = with pkgs; [ neofetch ];
+  home.packages = with pkgs; [ ];
   programs.zsh = {
     enable = true;
     # NOTE somehow this path is relative
