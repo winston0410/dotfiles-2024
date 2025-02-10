@@ -50,9 +50,6 @@
     "nvim/ftplugin" = {
       source = config.lib.file.mkOutOfStoreSymlink ./ftplugin;
     };
-    "nvim/ftdetect" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./ftdetect;
-    };
     "nvim/plugins" = {
       source = config.lib.file.mkOutOfStoreSymlink ./plugins;
     };

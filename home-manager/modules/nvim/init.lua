@@ -6,6 +6,13 @@ local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
+vim.cmd("filetype on")
+vim.filetype.add({
+	extension = {
+		http = "http",
+	},
+})
+
 local modes = { "n", "v", "c" }
 
 pcall(function()
