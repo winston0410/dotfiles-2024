@@ -1697,6 +1697,21 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"vyfor/cord.nvim",
+			build = ":Cord update",
+			opts = {
+				timestamp = {
+					enabled = true,
+					reset_on_idle = false,
+					reset_on_change = false,
+				},
+				editor = {
+					client = "neovim",
+					tooltip = "Hugo's ultimate editor",
+				},
+			},
+		},
+		{
 			"neovim/nvim-lspconfig",
 			version = "1.6.0",
 			-- Reference the lazyload event from LazyVim
