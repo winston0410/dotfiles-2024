@@ -1,4 +1,4 @@
-{ inputs, unstable, lib, config, pkgs, system, ... }: {
+{ inputs, unstable, lib, config, pkgs, system, isDarwin, ... }: {
   home.packages = let
   in [
     pkgs.rust-analyzer
@@ -22,7 +22,6 @@
     pkgs.lua-language-server
     unstable.deno
     pkgs.jsonnet-language-server
-    # pkgs.buf-language-server
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${system}.default
     pkgs.ansible-language-server
@@ -79,21 +78,26 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-    # FIXME this build does not work yet
-    # (pkgs.buildNpmPackage rec {
-    #   pname = "@mistweaverco/kulala-ls";
-    #   version = "1.0.12";
-    #
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "mistweaverco";
-    #     repo = "kulala-ls";
-    #     rev = "v${version}";
-    #     hash = "sha256-ifOmj/n8Fp9oi4BQ7yyfRHSIB1Bd/mxOXAcbkUGtoF8=";
-    #   };
-    #
-    #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool ];
-    #
-    #   npmDepsHash = "sha256-CJQLK3PpdWb4SXqk15xrPQU4CrYFPh2kO2wLb+VaIPY=";
-    # })
-  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
+  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ]
+  ++ (if !isDarwin then
+    [
+      # FIXME cannot build correctly on Darwin yet
+      (pkgs.buildNpmPackage rec {
+        pname = "@mistweaverco/kulala-ls";
+        version = "1.3.0";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "mistweaverco";
+          repo = "kulala-ls";
+          rev = "v${version}";
+          hash = "sha256-IavvGIBUPnPRlHbyaJbkUuXQXKEEzv/SKY0Ii2eLDNs=";
+        };
+
+        nativeBuildInputs = [ pkgs.python3 pkgs.libtool pkgs.cacert ];
+
+        npmDepsHash = "sha256-/6JZYsIYDJHS/8TOPjtR/SrRbzTbL43X0g/tPIn2YfQ=";
+      })
+    ]
+  else
+    [ ]);
 }
