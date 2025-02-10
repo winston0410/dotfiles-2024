@@ -24,9 +24,18 @@ nix run home-manager/release-24.11 -- --flake .#linux switch
 nix run home-manager/release-24.11 -- --flake .#darwin switch
 ```
 
+And to run in WSL layer:
+
+```sh
+sudo mkdir -p /etc/nix
+sudo touch /etc/nix/nix.conf
+sudo echo 'extra-experimental-features = nix-command flakes' > /etc/nix/nix.conf
+nix run home-manager/release-24.11 -- --flake .#wsl switch
+```
+
 ## Switch nixos system
 
-```sh 
+```sh
 # use-remote-sudo or sudo is needed to run this command correctly
 nixos-rebuild switch --flake .#hugo --use-remote-sudo
 ```
@@ -39,7 +48,7 @@ nix run nix-darwin -- --flake .#hugosum switch
 
 ## Update flake input without pinned to commit
 
-```sh 
+```sh
 nix flake update
 ```
 
