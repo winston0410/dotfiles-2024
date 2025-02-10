@@ -5,6 +5,7 @@
     font = {
       name = "Inter";
       package = pkgs.inter;
+      size = 11;
     };
     # these are somehow not good enough
     # theme = {
@@ -44,8 +45,8 @@
       font-antialiasing = "rgba";
       monospace-font-name = "0xProto Nerd Font Mono";
       document-font-name = "Inter";
-      # system font size is defined here
-      font-name = "Inter 11";
+      # # system font size is defined here
+      # font-name = "Inter 11";
     };
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
