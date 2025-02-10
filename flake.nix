@@ -78,7 +78,10 @@
             system = darwinArmSystem;
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
-          modules = [ inputs.sops-nix.homeManagerModules.sops ./home-manager/darwin.nix ];
+          modules = [
+            inputs.sops-nix.homeManagerModules.sops
+            ./home-manager/darwin.nix
+          ];
         };
         "linux" = home-manager.lib.homeManagerConfiguration {
           pkgs = linuxAmdPkgs;
@@ -88,7 +91,21 @@
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
           };
-          modules = [ inputs.sops-nix.homeManagerModules.sops ./home-manager/linux.nix ];
+          modules = [
+            inputs.sops-nix.homeManagerModules.sops
+            ./home-manager/linux.nix
+          ];
+        };
+        "wsl" = home-manager.lib.homeManagerConfiguration {
+          pkgs = linuxAmdPkgs;
+          extraSpecialArgs = {
+            inherit inputs outputs;
+            isDarwin = lib.strings.hasInfix "darwin" linuxAmdSystem;
+            system = linuxAmdSystem;
+            unstable = unstable.legacyPackages.x86_64-linux;
+          };
+          modules =
+            [ inputs.sops-nix.homeManagerModules.sops ./home-manager/wsl.nix ];
         };
       };
 
