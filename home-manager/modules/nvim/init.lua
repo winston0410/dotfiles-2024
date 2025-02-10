@@ -930,6 +930,22 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"mistweaverco/kulala.nvim",
+			version = "4.10.0",
+			opts = {
+				curl_path = "curl",
+				display_mode = "split",
+				split_direction = "vertical",
+				debug = false,
+				winbar = true,
+				vscode_rest_client_environmentvars = true,
+				disable_script_print_output = false,
+				environment_scope = "b",
+				urlencode = "always",
+				show_variable_info_text = "float",
+			},
+		},
+		{
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
