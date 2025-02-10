@@ -1788,6 +1788,7 @@ require("lazy").setup({
 					"ballerina",
 					"bitbake_ls",
 					"ltex",
+					"csharp_ls",
 				}
 
 				for _, server in ipairs(servers) do

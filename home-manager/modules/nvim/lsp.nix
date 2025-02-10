@@ -1,6 +1,7 @@
 { inputs, unstable, lib, config, pkgs, system, isDarwin, ... }: {
   home.packages = let
   in [
+    pkgs.csharp-ls
     pkgs.rust-analyzer
     unstable.gopls
     pkgs.ccls
