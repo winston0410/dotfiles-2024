@@ -1,4 +1,4 @@
-{ inputs, unstable, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   home.packages = with pkgs; [ k9s ];
 
   xdg.configFile = {
