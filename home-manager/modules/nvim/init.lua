@@ -994,6 +994,7 @@ require("lazy").setup({
 			config = function()
 				require("snacks").setup({
 					-- dim
+					image = { enabled = true },
 					dashboard = {
 						enabled = true,
 						sections = {
@@ -1285,7 +1286,6 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
-						vim.cmd("tabnew")
 						require("oil").open()
 					end,
 					mode = { "n" },
@@ -1327,10 +1327,7 @@ require("lazy").setup({
 						},
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 						["q"] = {
-							function()
-								require("oil.actions").close()
-								vim.cmd("tabclose")
-							end,
+							"actions.close",
 							mode = "n",
 							desc = "Quit Oil.nvim panel",
 						},
