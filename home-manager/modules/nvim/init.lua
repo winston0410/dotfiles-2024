@@ -997,8 +997,6 @@ require("lazy").setup({
 					pattern = "k8s_*",
 					callback = function(ev)
 						local opts = { buffer = ev.buf }
-
-						vim.keymap.del("n", "g?", opts)
 					end,
 				})
 			end,
