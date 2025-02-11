@@ -687,8 +687,10 @@ require("lazy").setup({
 				{
 					"?",
 					function()
-						require("which-key").show({ global = true })
+						require("which-key").show({ global = false })
 					end,
+					silent = true,
+					noremap = true,
 					desc = "Show local keymaps",
 				},
 			},
@@ -775,8 +777,8 @@ require("lazy").setup({
 		{
 			"brenoprata10/nvim-highlight-colors",
 			opts = {
-				-- render = "background",
 				render = "virtual",
+				enable_tailwind = true,
 				exclude_filetypes = {},
 				exclude_buftypes = {},
 			},
@@ -941,9 +943,7 @@ require("lazy").setup({
 					desc = "Open kubectl.nvim panel",
 				},
 			},
-			config = function()
-				require("kubectl").setup({})
-			end,
+			opts = {},
 		},
 		{
 			"mistweaverco/kulala.nvim",
@@ -961,10 +961,33 @@ require("lazy").setup({
 				show_variable_info_text = "float",
 			},
 		},
+		-- FIXME seems to be buggy, and it seems to be too intrusive
+		-- {
+		-- 	"mcauley-penney/visual-whitespace.nvim",
+		-- 	config = function()
+		-- 		-- https://github.com/mcauley-penney/visual-whitespace.nvim
+		-- 		require("visual-whitespace").setup({
+		-- 			highlight = { link = "Visual" },
+		-- 			space_char = "·",
+		-- 			-- tab_char = "→",
+		-- 			-- nl_char = "↲",
+		-- 			-- cr_char = "←",
+		-- 			tab_char = "",
+		-- 			nl_char = "",
+		-- 			cr_char = "",
+		-- 			enabled = true,
+		-- 			excluded = {
+		-- 				filetypes = {},
+		-- 				buftypes = {},
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- },
 		{
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
+			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
 					"<leader>f",
@@ -1008,6 +1031,34 @@ require("lazy").setup({
 				},
 			},
 			config = function()
+				local pickerKeys = {
+					["<2-LeftMouse>"] = "confirm",
+					["<S-CR>"] = { "qflist", mode = { "i", "n" } },
+					["<CR>"] = { "confirm", mode = { "n", "i" } },
+					-- ["<CR>"] = {
+					-- 	function(picker)
+					-- 		local selected = picker:selected()
+					-- 		if #selected > 0 then
+					-- 			return Snacks.picker.actions.qflist()
+					-- 		end
+					-- 		return Snacks.picker.actions.confirm()
+					-- 	end,
+					-- 	mode = { "n", "i" },
+					-- },
+					["<Down>"] = { "list_down", mode = { "i", "n" } },
+					["<Up>"] = { "list_up", mode = { "i", "n" } },
+					["<Esc>"] = "close",
+					["<S-Tab>"] = { "select_and_prev", mode = { "i", "n" } },
+					["<Tab>"] = { "select_and_next", mode = { "i", "n" } },
+					["G"] = "list_bottom",
+					["gg"] = "list_top",
+					["j"] = "list_down",
+					["k"] = "list_up",
+					["q"] = "close",
+					["?"] = function()
+						require("which-key").show({ global = false })
+					end,
+				}
 				require("snacks").setup({
 					-- dim
 					image = { enabled = true },
@@ -1029,6 +1080,14 @@ require("lazy").setup({
 					picker = {
 						enabled = true,
 						ui_select = true,
+						win = {
+							input = {
+								keys = pickerKeys,
+							},
+							list = {
+								keys = pickerKeys,
+							},
+						},
 					},
 					scroll = {
 						enabled = false,
@@ -1060,6 +1119,7 @@ require("lazy").setup({
 					padding = true,
 					sticky = true,
 					post_hook = function() end,
+					---@diagnostic disable-next-line: missing-return
 					pre_hook = function()
 						require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
 					end,
@@ -1152,6 +1212,7 @@ require("lazy").setup({
 				local installer = require("nvim-treesitter.install")
 				installer.prefer_git = true
 
+				---@diagnostic disable-next-line: inject-field
 				parser_config.ejs = {
 					install_info = {
 						branch = "master",
@@ -1161,6 +1222,7 @@ require("lazy").setup({
 					filetype = "ejs",
 					used_by = { "erb" },
 				}
+				---@diagnostic disable-next-line: inject-field
 				parser_config.make = {
 					install_info = {
 						branch = "main",
@@ -1983,7 +2045,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local supported_modes = { "n", "v" }
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		vim.keymap.set(supported_modes, "<leader>lt", require("trouble").toggle, { silent = true, noremap = true })
 		vim.keymap.set(
 			supported_modes,
 			"<leader>li",
@@ -1992,12 +2053,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		)
 		vim.keymap.set(supported_modes, "<leader>lh", function()
 			-- call twice, so we enter the hover windows immediately after running the keybinding
+			-- TODO dont call twice, so there will be only one notification
 			vim.lsp.buf.hover()
 			vim.lsp.buf.hover()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
 		vim.keymap.set(
 			supported_modes,
-			"<leader>ld",
+			"<leader>ldd",
 			vim.lsp.buf.definition,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" }
 		)
@@ -2007,12 +2069,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.buf.type_definition,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" }
 		)
-		vim.keymap.set(
-			supported_modes,
-			"<leader>lr",
-			vim.lsp.buf.rename,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
-		)
+		-- vim.keymap.set(
+		-- 	supported_modes,
+		-- 	"<leader>lr",
+		-- 	vim.lsp.buf.rename,
+		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
+		-- )
 		vim.keymap.set(
 			supported_modes,
 			"<leader>la",
