@@ -779,7 +779,7 @@ require("lazy").setup({
 			opts = {
 				render = "virtual",
 				enable_tailwind = true,
-				exclude_filetypes = {},
+				exclude_filetypes = { "lazy" },
 				exclude_buftypes = {},
 			},
 		},
@@ -943,6 +943,7 @@ require("lazy").setup({
 					desc = "Open kubectl.nvim panel",
 				},
 			},
+			dependencies = { "folke/snacks.nvim" },
 			config = function()
 				require("kubectl").setup({
 					log_level = vim.log.levels.INFO,
@@ -990,11 +991,22 @@ require("lazy").setup({
 					headers = true,
 					completion = { follow_cursor = true },
 				})
+				local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = true })
+				vim.api.nvim_create_autocmd("FileType", {
+					group = group,
+					pattern = "k8s_*",
+					callback = function(ev)
+						local opts = { buffer = ev.buf }
+
+						vim.keymap.del("n", "g?", opts)
+					end,
+				})
 			end,
 		},
 		{
 			"mistweaverco/kulala.nvim",
 			version = "4.10.0",
+			ft = { "http", "rest" },
 			opts = {
 				curl_path = "curl",
 				display_mode = "split",
@@ -2045,12 +2057,15 @@ require("lazy").setup({
 			config = function()
 				vim.g.baleia = require("baleia").setup({})
 
-				-- Command to colorize the current buffer
 				vim.api.nvim_create_user_command("BaleiaColorize", function()
-					vim.g.baleia.once(vim.api.nvim_get_current_buf())
+					local bufId = tonumber(vim.api.nvim_get_current_buf())
+					if bufId == nil then
+						vim.notify("Unable to find current buffer handle", vim.log.levels.ERROR)
+						return
+					end
+					vim.g.baleia.once(bufId)
 				end, { bang = true })
 
-				-- Command to show logs
 				vim.api.nvim_create_user_command("BaleiaLogs", vim.g.baleia.logger.show, { bang = true })
 			end,
 		},
