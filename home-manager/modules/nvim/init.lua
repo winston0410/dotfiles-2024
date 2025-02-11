@@ -773,6 +773,15 @@ require("lazy").setup({
 			},
 		},
 		{
+			"brenoprata10/nvim-highlight-colors",
+			opts = {
+				-- render = "background",
+				render = "virtual",
+				exclude_filetypes = {},
+				exclude_buftypes = {},
+			},
+		},
+		{
 			"lewis6991/gitsigns.nvim",
 			version = "0.9.0",
 			event = "CursorHold",
@@ -1888,7 +1897,7 @@ require("lazy").setup({
 
 						client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
 							runtime = {
-								version = "Lua 5.4",
+								version = "LuaJIT",
 							},
 							workspace = {
 								checkThirdParty = false,
