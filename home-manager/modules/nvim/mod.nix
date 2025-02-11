@@ -37,12 +37,12 @@
     vimdiff = "nvim -d";
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
-    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = true })'";
+    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
     nrg =
       # NOTE using sed for removing ansi code
       # ''sed -r "s/\x1B\[[0-9;]*[mK]//g" | nvim -c "lua Snacks.picker.lines()"'';
       ''nvim -c "BaleiaColorize" -c "lua Snacks.picker.lines()"'';
-    nfd = ''nvim -c "lua Snacks.picker.smart()"'';
+    nfd = ''nvim -c "lua Snacks.picker.files()"'';
   };
 
   xdg.configFile = {
