@@ -872,26 +872,6 @@ require("lazy").setup({
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
 		-- {
-		-- 	"skardyy/neo-img",
-		-- 	-- TODO install ttyimg with nix packages
-		-- 	config = function()
-		-- 		require("neo-img").setup({
-		-- 			supported_extensions = {
-		-- 				["png"] = true,
-		-- 				["jpg"] = true,
-		-- 				["jpeg"] = true,
-		-- 				["webp"] = true,
-		-- 				["tiff"] = true,
-		-- 				["avif"] = true,
-		-- 			},
-		-- 			auto_open = true,
-		-- 			-- TODO enable this later
-		-- 			oil_preview = false,
-		-- 			backend = "auto",
-		-- 		})
-		-- 	end,
-		-- },
-		-- {
 		-- 	"3rd/image.nvim",
 		-- 	build = false,
 		-- 	ft = { "markdown", "vimwiki", "norg", "typst" },
