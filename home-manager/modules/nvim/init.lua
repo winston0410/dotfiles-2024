@@ -1027,6 +1027,16 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
+					"<leader>ghf",
+					function()
+						Snacks.picker.git_diff()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search Git Hunks",
+				},
+				{
 					"<leader>f",
 					function()
 						Snacks.picker.grep()
