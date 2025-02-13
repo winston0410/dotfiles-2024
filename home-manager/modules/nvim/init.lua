@@ -1166,8 +1166,8 @@ require("lazy").setup({
 					padding = true,
 					sticky = true,
 					post_hook = function() end,
-					---@diagnostic disable-next-line: missing-return
 					pre_hook = function()
+						---@diagnostic disable-next-line: missing-return
 						require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
 					end,
 					toggler = {
@@ -1246,6 +1246,14 @@ require("lazy").setup({
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 			commit = "9c74db656c3d0b1c4392fc89a016b1910539e7c0",
 		},
+		-- NOTE try later
+		-- {
+		-- 	"aaronik/treewalker.nvim",
+		-- 	event = "CursorHold",
+		-- 	opts = {
+		-- 		highlight = false,
+		-- 	},
+		-- },
 		{
 			"nvim-treesitter/nvim-treesitter",
 			commit = "5874cac1b76c97ebb3fc03225bd7215d4e671cd2",
@@ -1287,7 +1295,15 @@ require("lazy").setup({
 					auto_install = false,
 					sync_install = false,
 					ignore_install = {},
-					incremental_selection = { enable = true },
+					incremental_selection = {
+						enable = true,
+						keymaps = {
+							init_selection = "gnn",
+							node_incremental = "grn",
+							scope_incremental = "grc",
+							node_decremental = "grm",
+						},
+					},
 					highlight = {
 						enable = true,
 						additional_vim_regex_highlighting = false,
@@ -1351,6 +1367,12 @@ require("lazy").setup({
 						},
 					},
 				})
+				vim.keymap.set(
+					{ "n" },
+					"-",
+					function() end,
+					{ silent = true, noremap = true, desc = "Jump to textobject with a bigger scope" }
+				)
 			end,
 		},
 		{
@@ -2051,6 +2073,7 @@ require("lazy").setup({
 						vim.notify("Unable to find current buffer handle", vim.log.levels.ERROR)
 						return
 					end
+					---@diagnostic disable-next-line: param-type-mismatch
 					vim.g.baleia.once(bufId)
 				end, { bang = true })
 
@@ -2118,9 +2141,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
 		)
 		vim.keymap.set(supported_modes, "<leader>lh", function()
-			-- call twice, so we enter the hover windows immediately after running the keybinding
-			-- TODO dont call twice, so there will be only one notification
-			vim.lsp.buf.hover()
+			-- if we call twice, we will enter the hover windows immediately after running the keybinding
 			vim.lsp.buf.hover()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
 		vim.keymap.set(
