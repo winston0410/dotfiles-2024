@@ -1322,46 +1322,10 @@ require("lazy").setup({
 						select = {
 							enable = true,
 							lookahead = true,
-							keymaps = {
-								-- ["af"] = "@function.outer",
-								-- ["if"] = "@function.inner",
-								-- ["ai"] = "@conditional.outer",
-								-- ["ii"] = "@conditional.inner",
-								-- ["ac"] = "@call.inner",
-								-- ["ic"] = "@call.outer",
-							},
 						},
 						move = {
 							enable = true,
 							set_jumps = true,
-							-- goto_next_start = {
-							-- 	["xf"] = "@function.outer",
-							-- 	["xc"] = "@call.outer",
-							-- 	["xs"] = "@parameter.inner",
-							-- 	["xz"] = "@conditional.outer",
-							-- 	["xv"] = "@class.outer",
-							-- },
-							-- goto_next_end = {
-							-- 	["xF"] = "@function.outer",
-							-- 	["xC"] = "@call.outer",
-							-- 	["xS"] = "@parameter.inner",
-							-- 	["xZ"] = "@conditional.outer",
-							-- 	["xV"] = "@class.outer",
-							-- },
-							-- goto_previous_start = {
-							-- 	["Xf"] = "@function.outer",
-							-- 	["Xc"] = "@call.outer",
-							-- 	["Xs"] = "@parameter.inner",
-							-- 	["Xz"] = "@conditional.outer",
-							-- 	["Xv"] = "@class.outer",
-							-- },
-							-- goto_previous_end = {
-							-- 	["XF"] = "@function.outer",
-							-- 	["XC"] = "@call.outer",
-							-- 	["XS"] = "@parameter.inner",
-							-- 	["XZ"] = "@conditional.outer",
-							-- 	["XV"] = "@class.outer",
-							-- },
 						},
 					},
 				})
