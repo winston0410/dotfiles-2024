@@ -1298,10 +1298,8 @@ require("lazy").setup({
 					incremental_selection = {
 						enable = true,
 						keymaps = {
-							init_selection = "gnn",
-							node_incremental = "grn",
-							scope_incremental = "grc",
-							node_decremental = "grm",
+							node_incremental = "+",
+							node_decremental = "-",
 						},
 					},
 					highlight = {
@@ -1367,12 +1365,6 @@ require("lazy").setup({
 						},
 					},
 				})
-				vim.keymap.set(
-					{ "n" },
-					"-",
-					function() end,
-					{ silent = true, noremap = true, desc = "Jump to textobject with a bigger scope" }
-				)
 			end,
 		},
 		{
