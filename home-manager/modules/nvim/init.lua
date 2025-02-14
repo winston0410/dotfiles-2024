@@ -647,10 +647,69 @@ require("lazy").setup({
 		-- 	end,
 		-- },
 		{
+			"sindrets/diffview.nvim",
+			config = function()
+				-- Lua
+				local actions = require("diffview.actions")
+
+				require("diffview").setup({
+					enhanced_diff_hl = true,
+					use_icons = true,
+					show_help_hints = false,
+					watch_index = true,
+					icons = {
+						folder_closed = "",
+						folder_open = "",
+					},
+					signs = {
+						fold_closed = "",
+						fold_open = "",
+						done = "✓",
+					},
+					file_panel = {
+						listing_style = "tree",
+						tree_options = {
+							flatten_dirs = true,
+							folder_statuses = "only_folded",
+						},
+						win_config = {
+							position = "left",
+							width = 25,
+							win_opts = {
+								wrap = true,
+							},
+						},
+					},
+					file_history_panel = {
+						log_options = {
+							git = {
+								single_file = {
+									diff_merges = "combined",
+								},
+								multi_file = {
+									diff_merges = "first-parent",
+								},
+							},
+						},
+						win_config = {
+							position = "bottom",
+							height = 16,
+							win_opts = {},
+						},
+					},
+					commit_log_panel = {
+						win_config = {},
+					},
+					keymaps = {
+						disable_defaults = true,
+					},
+				})
+			end,
+		},
+		{
 			"NeogitOrg/neogit",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
-				-- TODO add configuration for this plugin later
 				"sindrets/diffview.nvim",
 			},
 			keys = {
