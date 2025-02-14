@@ -22,14 +22,22 @@
     bat
     delta
     chafa
-    # needed for image.nvim
-    imagemagick
   ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
   };
+
+  programs.zsh.initExtra = ''
+    nrg() {
+        if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
+            nvim -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -
+        else
+            nvim -c "lua Snacks.picker.grep()"
+        fi
+    }
+  '';
 
   home.shellAliases = {
     vi = "nvim";
@@ -38,10 +46,6 @@
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
     k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
-    nrg =
-      # NOTE using sed for removing ansi code
-      # ''sed -r "s/\x1B\[[0-9;]*[mK]//g" | nvim -c "lua Snacks.picker.lines()"'';
-      ''nvim -c "BaleiaColorize" -c "lua Snacks.picker.lines()"'';
     nfd = ''nvim -c "lua Snacks.picker.files()"'';
   };
 

@@ -1305,14 +1305,13 @@ require("lazy").setup({
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 			commit = "9c74db656c3d0b1c4392fc89a016b1910539e7c0",
 		},
-		-- NOTE try later
-		-- {
-		-- 	"aaronik/treewalker.nvim",
-		-- 	event = "CursorHold",
-		-- 	opts = {
-		-- 		highlight = false,
-		-- 	},
-		-- },
+		{
+			"aaronik/treewalker.nvim",
+			event = "CursorHold",
+			opts = {
+				highlight = false,
+			},
+		},
 		{
 			"nvim-treesitter/nvim-treesitter",
 			commit = "5874cac1b76c97ebb3fc03225bd7215d4e671cd2",
