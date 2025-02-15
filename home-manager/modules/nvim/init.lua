@@ -1320,38 +1320,58 @@ require("lazy").setup({
 				highlight = false,
 			},
 			keys = {
-				-- {
-				-- 	"<leader>th",
-				-- 	"<cmd>Treewalker Left<cr>",
-				-- 	mode = { "n", "v" },
-				-- 	noremap = true,
-				-- 	silent = true,
-				-- 	desc = "Move left to a Treesitter node",
-				-- },
-				-- {
-				-- 	"<leader>tl",
-				-- 	"<cmd>Treewalker Right<cr>",
-				-- 	mode = { "n", "v" },
-				-- 	noremap = true,
-				-- 	silent = true,
-				-- 	desc = "Move right to a Treesitter node",
-				-- },
-				-- {
-				-- 	"<leader>tk",
-				-- 	"<cmd>Treewalker Up<cr>",
-				-- 	mode = { "n", "v" },
-				-- 	noremap = true,
-				-- 	silent = true,
-				-- 	desc = "Move upward to a Treesitter node",
-				-- },
-				-- {
-				-- 	"<leader>tj",
-				-- 	"<cmd>Treewalker Down<cr>",
-				-- 	mode = { "n", "v" },
-				-- 	noremap = true,
-				-- 	silent = true,
-				-- 	desc = "Move downward to a Treesitter node",
-				-- },
+				{
+					"<leader>sh",
+					function()
+						local count = vim.v.count1
+						for _ = 1, count do
+							vim.cmd("Treewalker Left")
+						end
+					end,
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move left to a Treesitter node",
+				},
+				{
+					"<leader>sl",
+					function()
+						local count = vim.v.count1
+						for _ = 1, count do
+							vim.cmd("Treewalker Right")
+						end
+					end,
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move right to a Treesitter node",
+				},
+				{
+					"<leader>sk",
+					function()
+						local count = vim.v.count1
+						for _ = 1, count do
+							vim.cmd("Treewalker Up")
+						end
+					end,
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move upward to a Treesitter node",
+				},
+				{
+					"<leader>sj",
+					function()
+						local count = vim.v.count1
+						for _ = 1, count do
+							vim.cmd("Treewalker Down")
+						end
+					end,
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move downward to a Treesitter node",
+				},
 			},
 		},
 		{
