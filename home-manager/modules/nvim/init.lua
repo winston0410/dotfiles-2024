@@ -467,8 +467,8 @@ require("lazy").setup({
 						component_separators = "",
 						section_separators = "",
 						disabled_filetypes = {
-							winbar = { "trouble", "oil", "qf" },
-							inactive_winbar = { "trouble", "oil", "qf" },
+							winbar = { "trouble", "oil", "qf", "DiffviewFileHistory", "DiffviewFiles" },
+							inactive_winbar = { "trouble", "oil", "qf", "DiffviewFileHistory", "DiffviewFiles" },
 						},
 						always_show_tabline = false,
 						globalstatus = true,
@@ -1313,6 +1313,18 @@ require("lazy").setup({
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 			commit = "9c74db656c3d0b1c4392fc89a016b1910539e7c0",
 		},
+		-- NOTE it is a bit intrusive and noisy, disable for now
+		{
+			"tzachar/highlight-undo.nvim",
+			enabled = false,
+			event = "VeryLazy",
+			opts = {
+				hlgroup = "Visual",
+				duration = 500,
+				pattern = { "*" },
+				ignored_filetypes = { "neo-tree", "fugitive", "TelescopePrompt", "mason", "lazy", "snack_dashboard" },
+			},
+		},
 		{
 			"aaronik/treewalker.nvim",
 			event = "CursorHold",
@@ -2053,7 +2065,7 @@ require("lazy").setup({
 				})
 			end,
 		},
-		{ "echasnovski/mini.icons", version = false },
+		{ "echasnovski/mini.icons", version = false, event = "VeryLazy" },
 	},
 })
 vim.api.nvim_create_autocmd("LspAttach", {
