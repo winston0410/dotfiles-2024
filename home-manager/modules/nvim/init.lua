@@ -157,6 +157,11 @@ local window_options = {
 	{ "scrolloff", 8 },
 	-- Ensure tilde signs are not show at the end of buffer
 	{ "fillchars", "eob: " },
+	-- NOTE investigate how to use nvim-ufo
+	-- { "foldmethod", "expr" },
+	-- { "foldexpr", "v:lua.vim.treesitter.foldexpr()" },
+	-- { "foldminlines", 3 },
+	-- { "foldtext", "" },
 }
 
 for _, option in ipairs(window_options) do
@@ -1092,7 +1097,7 @@ require("lazy").setup({
 					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "Grep files",
+					desc = "Grep in files",
 				},
 				{
 					"<leader>ff",
@@ -1109,7 +1114,7 @@ require("lazy").setup({
 					function()
 						Snacks.picker.treesitter({
 							filter = {
-								default = true,
+								-- default = true,
 							},
 						})
 					end,
@@ -1148,6 +1153,16 @@ require("lazy").setup({
 					noremap = true,
 					desc = "Search Git log",
 				},
+				{
+					"<leader>go",
+					function()
+						Snacks.gitbrowse.open()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Browse files in remote Git server",
+				},
 			},
 			config = function()
 				local pickerKeys = {
@@ -1179,6 +1194,7 @@ require("lazy").setup({
 					end,
 				}
 				require("snacks").setup({
+					gitbrowse = { enabled = true },
 					bigfile = { enabled = true },
 					-- dim
 					image = { enabled = true },
