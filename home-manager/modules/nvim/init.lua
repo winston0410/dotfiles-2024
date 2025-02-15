@@ -1550,7 +1550,7 @@ require("lazy").setup({
 					end,
 				})
 			end,
-			dependencies = { "nvim-tree/nvim-web-devicons" },
+			dependencies = { "nvim-tree/nvim-web-devicons", "folke/snacks.nvim" },
 		},
 		-- NOTE just a plugin for fun, maybe later
 		-- {
@@ -1649,249 +1649,90 @@ require("lazy").setup({
 			end,
 		},
 		{
-			"mhartington/formatter.nvim",
-			commit = "34dcdfa0c75df667743b2a50dd99c84a557376f0",
-			event = "BufWritePre",
+			"stevearc/conform.nvim",
+			version = "8.4.0",
+			event = { "BufWritePre" },
+			cmd = { "ConformInfo" },
 			config = function()
-				local function mintfmt()
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function javafmt()
-					-- https://github.com/google/google-java-format
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function inifmt()
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function nimfmt()
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function njkfmt()
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function liquidfmt()
-					return {
-						exe = "",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function dhall_format()
-					return {
-						exe = "dhall",
-						args = { "format", "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-				local function dhall_lint()
-					return {
-						exe = "dhall",
-						args = { "lint", "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
+				local prettier = { "prettierd", "prettier", stop_after_first = true }
+				require("conform").setup({
+					formatters_by_ft = {
+						html = prettier,
+						xml = prettier,
+						svg = prettier,
+						css = prettier,
+						scss = prettier,
+						sass = prettier,
+						less = prettier,
+						javascript = prettier,
+						javascriptreact = prettier,
+						["javascript.jsx"] = prettier,
+						typescript = prettier,
+						typescriptreact = prettier,
+						["typescript.jsx"] = prettier,
+						sh = { "shfmt" },
+						zsh = { "shfmt" },
+						markdown = prettier,
+						json = prettier,
+						jsonl = prettier,
+						jsonc = prettier,
+						json5 = prettier,
+						yaml = prettier,
+						vue = prettier,
+						http = { "kulala_fmt" },
+						rest = { "kulala_fmt" },
+						toml = { "taplo" },
 
-				local function styler()
-					return {
-						exe = "",
-						args = { vim.api.nvim_buf_get_name(0) },
-						stdin = true,
-					}
-				end
-
-				local function swift_format()
-					return {
-						exe = "swift-format",
-						args = { vim.api.nvim_buf_get_name(0) },
-						stdin = true,
-					}
-				end
-
-				local function clang_format()
-					return {
-						exe = "clang-format",
-						args = { vim.api.nvim_buf_get_name(0) },
-						stdin = true,
-					}
-				end
-
-				local function prettier(opts)
-					opts = opts or {}
-					return function()
-						return {
-							exe = "prettier",
-							args = { vim.api.nvim_buf_get_name(0), table.unpack(opts) },
-							stdin = true,
-						}
-					end
-				end
-
-				local function dockfmt()
-					return {
-						exe = "dockfmt",
-						args = { "fmt", "--", vim.api.nvim_buf_get_name(0) },
-						stdin = true,
-					}
-				end
-				local function kulala_fmt()
-					return {
-						exe = "kulala-fmt",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = true,
-					}
-				end
-
-				local function hindent()
-					return {
-						exe = "hindent",
-						-- args = {"-w", "--", vim.api.nvim_buf_get_name(0)},
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-
-				local function rufo()
-					return {
-						exe = "rufo",
-						args = { "--", vim.api.nvim_buf_get_name(0) },
-						stdin = false,
-					}
-				end
-
-				require("formatter").setup({
-					logging = true,
-					log_level = vim.log.levels.WARN,
-					filetype = {
-						html = { require("formatter.filetypes.javascript").prettier },
-						xml = { require("formatter.filetypes.javascript").prettier },
-						svg = { require("formatter.filetypes.javascript").prettier },
-						css = { require("formatter.filetypes.javascript").prettier },
-						scss = { require("formatter.filetypes.javascript").prettier },
-						sass = { require("formatter.filetypes.javascript").prettier },
-						less = { require("formatter.filetypes.javascript").prettier },
-						javascript = { require("formatter.filetypes.javascript").prettier },
-						typescript = { require("formatter.filetypes.javascript").prettier },
-						javascriptreact = { require("formatter.filetypes.javascript").prettier },
-						typescriptreact = { require("formatter.filetypes.javascript").prettier },
-						["javascript.jsx"] = { require("formatter.filetypes.javascript").prettier },
-						["typescript.jsx"] = { require("formatter.filetypes.javascript").prettier },
-						sh = { require("formatter.filetypes.sh").shfmt },
-						zsh = { require("formatter.filetypes.sh").shfmt },
-						markdown = { require("formatter.filetypes.javascript").prettier },
-						json = { require("formatter.filetypes.javascript").prettier },
-						jsonc = { require("formatter.filetypes.javascript").prettier },
-						json5 = { require("formatter.filetypes.javascript").prettier },
-						yaml = {
-							require("formatter.filetypes.yaml").prettier,
-						},
-						http = { kulala_fmt },
-						rest = { kulala_fmt },
-						toml = { require("formatter.filetypes.toml").taplo },
-						vue = { require("formatter.filetypes.javascript").prettier },
-						-- svelte = {
-						-- 	--[[ prettier({
-						-- 	"--plugin-search-dir=.",
-						-- 	"--plugin=prettier-plugin-svelte",
-						-- }), ]]
-						-- 	prettier({
-						-- 		"--config=$XDG_CONFIG_HOME/prettier/.prettierrc",
-						-- 		-- FIXME bug of prettier, wait for 3.1 and then we can remove this
-						-- 		-- https://github.com/sveltejs/prettier-plugin-svelte/pull/404
-						-- 		"--plugin=prettier-plugin-svelte",
-						-- 	}),
-						-- },
-						python = { require("formatter.filetypes.python").black },
-						-- dockerfile = { dockfmt },
-						make = {
-							require("formatter.filetypes.javascript").prettier,
-						},
-						ruby = { rufo },
-						lua = { require("formatter.filetypes.lua").stylua },
-						teal = { require("formatter.filetypes.lua").stylua },
-						rust = { require("formatter.filetypes.rust").rustfmt },
-						nix = { require("formatter.filetypes.nix").nixfmt },
-						go = { require("formatter.filetypes.go").gofmt, require("formatter.filetypes.go").goimports },
-						dart = { require("formatter.filetypes.dart").dartformat },
-						haskell = { hindent },
-						purescript = {
-							{
-								exe = "purty",
-								args = { "--", vim.api.nvim_buf_get_name(0) },
-								stdin = true,
-							},
-						},
-						kotlin = { require("formatter.filetypes.kotlin").ktlint },
-						java = { javafmt },
-						fennel = {
-							{
-								exe = "fnlfmt",
-								args = { vim.api.nvim_buf_get_name(0) },
-								stdin = true,
-							},
-						},
-						cpp = { clang_format },
-						c = { clang_format },
-						cs = { clang_format },
-						swift = { swift_format },
-						r = { styler },
-						elm = {
-							{
-								exe = "elm-format",
-								args = { "--", vim.api.nvim_buf_get_name(0) },
-								stdin = false,
-							},
-						},
-						elixir = { require("formatter.filetypes.elixir").mixformat },
-						sql = { require("formatter.filetypes.sql").pgformat },
-						tf = { require("formatter.filetypes.terraform").terraformfmt },
-						ini = { inifmt },
-						dosini = { inifmt },
-						dhall = { dhall_lint, dhall_format },
-						pug = {
-							prettier({
-								"--plugin-search-dir=.",
-								"--plugin=plugin-pug",
-							}),
-							--  Falling back with system plugin
-							prettier({
-								"--plugin-search-dir=$XDG_DATA_HOME/prettier",
-								"--plugin=plugin-pug",
-							}),
-						},
-						nunjucks = { njkfmt },
-						liquid = { liquidfmt },
-						mustache = {},
-						wren = {},
-						haml = {},
-						nim = { nimfmt },
-						mint = { mintfmt },
+						lua = { "stylua" },
+						teal = { "stylua" },
+						python = { "black" },
+						rust = { "rustfmt", lsp_format = "fallback" },
+						go = { "goimports", "gofmt" },
+						nix = { "nixfmt" },
+						nginx = { "nginxfmt" },
+						ruby = { "rufo" },
+						dart = { "dartformat" },
+						haskell = { "hindent" },
+						kotlin = { "ktlint" },
+						cpp = { "clang_format" },
+						c = { "clang_format" },
+						cs = { "clang_format" },
+						swift = { "swift_format" },
+						r = { "styler" },
+						elm = { "elm-format" },
+						elixir = { "mix" },
+						sql = { "pg_format" },
+						tf = { "hcl" },
+						ini = { "inifmt" },
+						dosini = { "inifmt" },
+						dhall = { "dhall_format" },
+						fennel = { "fnlfmt" },
+						-- copied from formatter.nvim
+						-- 				pug = {
+						-- 					prettier({
+						-- 						"--plugin-search-dir=.",
+						-- 						"--plugin=plugin-pug",
+						-- 					}),
+						-- 					--  Falling back with system plugin
+						-- 					prettier({
+						-- 						"--plugin-search-dir=$XDG_DATA_HOME/prettier",
+						-- 						"--plugin=plugin-pug",
+						-- 					}),
+						-- 				},
+						nunjucks = { "njkfmt" },
+						liquid = { "liquidfmt" },
+						nim = { "nimpretty" },
+						mint = { "mintfmt" },
 					},
+					default_format_opts = {
+						lsp_format = "fallback",
+					},
+					format_on_save = { timeout_ms = 500 },
+					formatters = {},
 				})
-
-				vim.api.nvim_create_autocmd("BufWritePost", {
-					pattern = { "*" },
-					command = "FormatWrite",
-				})
+			end,
+			init = function()
+				vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 			end,
 		},
 		{
