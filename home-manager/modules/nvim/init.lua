@@ -687,6 +687,13 @@ require("lazy").setup({
 				})
 			end,
 		},
+		-- NOTE doesn't seems to be particularly useful. qa ... Q seems to be good enough for me
+		{
+			"chrisgrieser/nvim-recorder",
+			dependencies = { "folke/snacks.nvim" },
+			enabled = false,
+			opts = {},
+		},
 		{
 			"NeogitOrg/neogit",
 			dependencies = {
