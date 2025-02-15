@@ -213,6 +213,7 @@ require("lazy").setup({
 		},
 		{
 			"saghen/blink.cmp",
+			event = "VeryLazy",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
 			version = "0.11.0",
 			opts = {
@@ -816,6 +817,7 @@ require("lazy").setup({
 		},
 		{
 			"brenoprata10/nvim-highlight-colors",
+			event = "VeryLazy",
 			opts = {
 				render = "virtual",
 				enable_tailwind = true,
@@ -1743,6 +1745,7 @@ require("lazy").setup({
 		},
 		{
 			"vyfor/cord.nvim",
+			event = "VeryLazy",
 			build = ":Cord update",
 			opts = {
 				timestamp = {
