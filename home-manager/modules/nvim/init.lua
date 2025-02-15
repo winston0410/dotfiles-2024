@@ -1559,6 +1559,7 @@ require("lazy").setup({
 		{
 			"stevearc/quicker.nvim",
 			event = "FileType qf",
+			ft = { "qf" },
 			opts = {
 				opts = {
 					buflisted = false,
@@ -1694,6 +1695,7 @@ require("lazy").setup({
 						dosini = { "inifmt" },
 						dhall = { "dhall_format" },
 						fennel = { "fnlfmt" },
+						svelte = prettier,
 						-- copied from formatter.nvim
 						-- 				pug = {
 						-- 					prettier({

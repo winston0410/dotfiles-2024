@@ -8,14 +8,14 @@
     # nodePackages.purty
     # Not working with Python at the moment
     # python39Packages.black
-    # Install rustfmt in the rust module. Not sure if there is a better way
     rustfmt
-    nodePackages.prettier
+    prettierd
     yamlfmt
     taplo
     shfmt
-    # nodePackages.prettier_d_slim
+    nginx-config-formatter
     rufo
+    hclfmt
     elmPackages.elm-format
     haskellPackages.hindent
     pgformatter
@@ -26,7 +26,7 @@
   home.file =
     let prettierPluginDir = "${config.xdg.dataHome}/prettier/node_modules";
     in {
-      # "${prettierPluginDir}/plugin-plugin-svelte" = {
+      # "${prettierPluginDir}/prettier-plugin-svelte" = {
       #   source = pkgs.buildNpmPackage rec {
       #     pname = "prettier-plugin-svelte";
       #     version = "3.0.3";
