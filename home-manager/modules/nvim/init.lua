@@ -1696,22 +1696,21 @@ require("lazy").setup({
 						dhall = { "dhall_format" },
 						fennel = { "fnlfmt" },
 						svelte = prettier,
-						-- copied from formatter.nvim
-						-- 				pug = {
-						-- 					prettier({
-						-- 						"--plugin-search-dir=.",
-						-- 						"--plugin=plugin-pug",
-						-- 					}),
-						-- 					--  Falling back with system plugin
-						-- 					prettier({
-						-- 						"--plugin-search-dir=$XDG_DATA_HOME/prettier",
-						-- 						"--plugin=plugin-pug",
-						-- 					}),
-						-- 				},
+						pug = prettier,
 						nunjucks = { "njkfmt" },
 						liquid = { "liquidfmt" },
 						nim = { "nimpretty" },
 						mint = { "mintfmt" },
+						kdl = { "kdlfmt" },
+						just = { "just" },
+						erb = { "erb_format" },
+						ql = { "codeql" },
+						d2 = { "d2" },
+						erlang = { "efmt" },
+						awk = { "gawk" },
+						gleam = { "gleam" },
+						rego = { "opa_fmt" },
+						zig = { "zigfmt" },
 					},
 					default_format_opts = {
 						lsp_format = "fallback",
