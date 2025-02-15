@@ -622,6 +622,13 @@ require("lazy").setup({
 		-- },
 		{
 			"sindrets/diffview.nvim",
+			cmd = {
+				"DiffviewOpen",
+				"DiffviewToggleFiles",
+				"DiffviewFocusFiles",
+				"DiffviewRefresh",
+				"DiffviewFileHistory",
+			},
 			config = function()
 				-- Lua
 				local actions = require("diffview.actions")
