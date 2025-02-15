@@ -214,18 +214,6 @@ require("lazy").setup({
 				},
 			},
 		},
-		-- {
-		-- 	"rcarriga/nvim-notify",
-		-- 	version = "3.14.0",
-		-- 	priority = 999,
-		-- 	config = function()
-		-- 		require("notify").setup({
-		-- 			max_width = 50,
-		-- 			render = "wrapped-compact",
-		-- 		})
-		-- 		vim.notify = require("notify")
-		-- 	end,
-		-- },
 		{
 			"folke/tokyonight.nvim",
 			commit = "c2725eb6d086c8c9624456d734bd365194660017",
