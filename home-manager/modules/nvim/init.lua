@@ -201,20 +201,6 @@ require("lazy").setup({
 	},
 	spec = {
 		{
-			"LazyVim/LazyVim",
-			version = "13.6.0",
-			opts = {
-				defaults = {
-					autocmds = true,
-					keymaps = false,
-				},
-				news = {
-					lazyvim = false,
-					neovim = false,
-				},
-			},
-		},
-		{
 			"folke/tokyonight.nvim",
 			commit = "c2725eb6d086c8c9624456d734bd365194660017",
 			lazy = false,
@@ -1084,7 +1070,7 @@ require("lazy").setup({
 					desc = "Search Git Hunks",
 				},
 				{
-					"<leader>f",
+					"<leader>fg",
 					function()
 						Snacks.picker.grep()
 					end,
@@ -1094,7 +1080,7 @@ require("lazy").setup({
 					desc = "Grep files",
 				},
 				{
-					"<leader>m",
+					"<leader>ff",
 					function()
 						Snacks.picker.files()
 					end,
@@ -1102,6 +1088,30 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Find files",
+				},
+				{
+					"<leader>fn",
+					function()
+						Snacks.picker.treesitter({
+							filter = {
+								default = true,
+							},
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Find Treesitter nodes",
+				},
+				{
+					"<leader>fs",
+					function()
+						Snacks.picker.lsp_workspace_symbols()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Find LSP workspace symbols",
 				},
 				{
 					"<leader>gb",
@@ -1154,6 +1164,7 @@ require("lazy").setup({
 					end,
 				}
 				require("snacks").setup({
+					bigfile = { enabled = true },
 					-- dim
 					image = { enabled = true },
 					dashboard = {
@@ -2020,41 +2031,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
 		local supported_modes = { "n", "v" }
-		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		vim.keymap.set(
-			supported_modes,
-			"<leader>li",
-			vim.lsp.buf.implementation,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
-		)
+		-- TODO combine all these functions, using Snacks.picker
+		-- vim.keymap.set(
+		-- 	supported_modes,
+		-- 	"<leader>li",
+		-- 	vim.lsp.buf.implementation,
+		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
+		-- )
 		vim.keymap.set(supported_modes, "<leader>lh", function()
 			-- if we call twice, we will enter the hover windows immediately after running the keybinding
 			vim.lsp.buf.hover()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
-		vim.keymap.set(
-			supported_modes,
-			"<leader>ldd",
-			vim.lsp.buf.definition,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" }
-		)
-		vim.keymap.set(
-			supported_modes,
-			"<leader>ldt",
-			vim.lsp.buf.type_definition,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" }
-		)
+		-- vim.keymap.set(
+		-- 	supported_modes,
+		-- 	"<leader>ldd",
+		-- 	vim.lsp.buf.definition,
+		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" }
+		-- )
+		-- vim.keymap.set(
+		-- 	supported_modes,
+		-- 	"<leader>ldt",
+		-- 	vim.lsp.buf.type_definition,
+		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" }
+		-- )
 		-- vim.keymap.set(
 		-- 	supported_modes,
 		-- 	"<leader>lr",
 		-- 	vim.lsp.buf.rename,
 		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
 		-- )
-		vim.keymap.set(
-			supported_modes,
-			"<leader>la",
-			vim.lsp.buf.code_action,
-			{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
-		)
+		-- vim.keymap.set(
+		-- 	supported_modes,
+		-- 	"<leader>la",
+		-- 	vim.lsp.buf.code_action,
+		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
+		-- )
 		pcall(function()
 			-- Remove default keybinding added by lspconfig
 			-- REF https://neovim.io/doc/user/lsp.html#lsp-config
