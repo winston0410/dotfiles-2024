@@ -22,6 +22,8 @@
     bat
     delta
     chafa
+    # needed for snacks.nvim
+    imagemagick
   ];
 
   home.sessionVariables = {
@@ -58,9 +60,6 @@
     };
     "nvim/ftplugin" = {
       source = config.lib.file.mkOutOfStoreSymlink ./ftplugin;
-    };
-    "nvim/plugins" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./plugins;
     };
   };
 }

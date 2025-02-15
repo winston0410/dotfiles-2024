@@ -1210,6 +1210,7 @@ require("lazy").setup({
 						char = "│",
 						hl = "SnacksIndent",
 					},
+					words = { enabled = false },
 				})
 			end,
 		},
@@ -1310,6 +1311,40 @@ require("lazy").setup({
 			event = "CursorHold",
 			opts = {
 				highlight = false,
+			},
+			keys = {
+				{
+					"<leader>th",
+					"<cmd>Treewalker Left<cr>",
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move left to a Treesitter node",
+				},
+				{
+					"<leader>tl",
+					"<cmd>Treewalker Right<cr>",
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move right to a Treesitter node",
+				},
+				{
+					"<leader>tk",
+					"<cmd>Treewalker Up<cr>",
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move upward to a Treesitter node",
+				},
+				{
+					"<leader>tj",
+					"<cmd>Treewalker Down<cr>",
+					mode = { "n", "v" },
+					noremap = true,
+					silent = true,
+					desc = "Move downward to a Treesitter node",
+				},
 			},
 		},
 		{
@@ -1504,6 +1539,15 @@ require("lazy").setup({
 					float = {
 						border = "none",
 					},
+				})
+				-- REF https://github.com/folke/snacks.nvim/blob/main/docs/rename.md
+				vim.api.nvim_create_autocmd("User", {
+					pattern = "OilActionsPost",
+					callback = function(event)
+						if event.data.actions.type == "move" then
+							Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+						end
+					end,
 				})
 			end,
 			dependencies = { "nvim-tree/nvim-web-devicons" },
