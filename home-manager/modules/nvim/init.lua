@@ -202,7 +202,6 @@ require("lazy").setup({
 	spec = {
 		{
 			"folke/tokyonight.nvim",
-			commit = "c2725eb6d086c8c9624456d734bd365194660017",
 			lazy = false,
 			priority = 1000,
 			requires = { "nvim-tree/nvim-web-devicons" },
