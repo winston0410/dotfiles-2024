@@ -137,7 +137,8 @@ local global_options = {
 	{ "wildmode", "longest:full,full" },
 	-- NOTE Make it false, so once a buffer is closed with :q, the LSP message will be removed as well
 	{ "hidden", false },
-	{ "cursorline", true },
+	-- NOTE disable cursorline it would be shown in inactive split as well, not really useful when using splits
+	{ "cursorline", false },
 }
 
 for _, option in ipairs(global_options) do
@@ -154,11 +155,6 @@ local window_options = {
 	{ "scrolloff", 8 },
 	-- Ensure tilde signs are not show at the end of buffer
 	{ "fillchars", "eob: " },
-	-- NOTE investigate how to use nvim-ufo
-	-- { "foldmethod", "expr" },
-	-- { "foldexpr", "v:lua.vim.treesitter.foldexpr()" },
-	-- { "foldminlines", 3 },
-	-- { "foldtext", "" },
 }
 
 for _, option in ipairs(window_options) do
@@ -301,6 +297,11 @@ require("lazy").setup({
 					end,
 				},
 				completion = {
+					menu = {
+						auto_show = function(ctx)
+							return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
+						end,
+					},
 					keyword = { range = "full" },
 					documentation = {
 						auto_show = true,
@@ -686,7 +687,7 @@ require("lazy").setup({
 				"DiffviewFileHistory",
 			},
 			config = function()
-				-- local actions = require("diffview.actions")
+				local actions = require("diffview.actions")
 
 				require("diffview").setup({
 					enhanced_diff_hl = true,
@@ -706,7 +707,7 @@ require("lazy").setup({
 						listing_style = "tree",
 						tree_options = {
 							flatten_dirs = true,
-							folder_statuses = "only_folded",
+							folder_statuses = "never",
 						},
 						win_config = {
 							position = "left",
@@ -729,7 +730,7 @@ require("lazy").setup({
 						},
 						win_config = {
 							position = "bottom",
-							height = 16,
+							height = 10,
 							win_opts = {},
 						},
 					},
@@ -738,7 +739,104 @@ require("lazy").setup({
 					},
 					keymaps = {
 						disable_defaults = true,
+						view = {
+							{
+								"n",
+								"[x",
+								actions.prev_conflict,
+								{ desc = "In the merge-tool: jump to the previous conflict" },
+							},
+							{
+								"n",
+								"]x",
+								actions.next_conflict,
+								{ desc = "In the merge-tool: jump to the next conflict" },
+							},
+							{
+								"n",
+								"<tab>",
+								actions.select_next_entry,
+								{ desc = "Open the diff for the next file" },
+							},
+							{
+								"n",
+								"<s-tab>",
+								actions.select_prev_entry,
+								{ desc = "Open the diff for the previous file" },
+							},
+						},
+						file_panel = {
+							{
+								"n",
+								"<cr>",
+								actions.select_entry,
+								{ desc = "Open the diff for the selected entry" },
+							},
+							{
+								"n",
+								"<2-LeftMouse>",
+								actions.select_entry,
+								{ desc = "Open the diff for the selected entry" },
+							},
+							{
+								"n",
+								"[x",
+								actions.prev_conflict,
+								{ desc = "Go to the previous conflict" },
+							},
+							{
+								"n",
+								"]x",
+								actions.next_conflict,
+								{ desc = "Go to the next conflict" },
+							},
+							{
+								"n",
+								"<tab>",
+								actions.select_next_entry,
+								{ desc = "Open the diff for the next file" },
+							},
+							{
+								"n",
+								"<s-tab>",
+								actions.select_prev_entry,
+								{ desc = "Open the diff for the previous file" },
+							},
+						},
+						file_history_panel = {
+							{
+								"n",
+								"<cr>",
+								actions.select_entry,
+								{ desc = "Open the diff for the selected entry" },
+							},
+							{
+								"n",
+								"<2-LeftMouse>",
+								actions.select_entry,
+								{ desc = "Open the diff for the selected entry" },
+							},
+							{
+								"n",
+								"<tab>",
+								actions.select_next_entry,
+								{ desc = "Open the diff for the next file" },
+							},
+							{
+								"n",
+								"<s-tab>",
+								actions.select_prev_entry,
+								{ desc = "Open the diff for the previous file" },
+							},
+						},
 					},
+				})
+				vim.api.nvim_create_autocmd("User", {
+					pattern = "DiffviewDiffBufRead",
+					callback = function(args)
+						vim.api.nvim_buf_set_option(args.buf, "foldcolumn", "0")
+						vim.api.nvim_buf_set_option(args.buf, "foldmethod", "manual")
+					end,
 				})
 			end,
 		},
