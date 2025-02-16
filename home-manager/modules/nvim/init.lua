@@ -768,7 +768,7 @@ require("lazy").setup({
 			},
 			config = function()
 				local wk = require("which-key")
-				-- TODO fix typing for luarocks modules installed with Nix
+				-- TODO fix typing for luarocks modules installed with Nix, seems like the penlight modules has to adapot lua-language-server's annotation to make it work
 				local ignored_bindings = require("pl.tablex").makeset({
 					"z<CR>",
 					"z=",
@@ -782,6 +782,9 @@ require("lazy").setup({
 					"zv",
 					"zw",
 					"zz",
+					-- NOTE ignored as we don't use regular f,t
+					",",
+					";",
 				})
 
 				wk.setup({
@@ -813,7 +816,12 @@ require("lazy").setup({
 					},
 				})
 				wk.add({
-					{ "<leader>s", desc = "LSP and Treesitter" },
+					{ "<leader>s", group = "LSP and Treesitter" },
+					{ "<leader>t", group = "Tabs management" },
+					{ "<leader>w", group = "Splits management" },
+					{ "<leader>b", group = "Buffers management" },
+					{ "<leader>g", group = "Git management" },
+					{ "<leader>f", group = "File search" },
 				})
 			end,
 		},
