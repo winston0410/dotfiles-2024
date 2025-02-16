@@ -221,6 +221,37 @@ require("lazy").setup({
 			"kevinhwang91/nvim-ufo",
 			version = "1.4.0",
 			dependencies = { "kevinhwang91/promise-async" },
+			cmd = {
+				"UfoEnable",
+				"UfoDisable",
+				"UfoInspect",
+				"UfoAttach",
+				"UfoDetach",
+				"UfoEnableFold",
+				"UfoDisableFold",
+			},
+			keys = {
+				{
+					{ "n" },
+					"zR",
+					function()
+						require("ufo").openAllFolds()
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Open all folds",
+				},
+				{
+					{ "n" },
+					"zM",
+					function()
+						require("ufo").closeAllFolds()
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Close all folds",
+				},
+			},
 			event = "VeryLazy",
 			init = function()
 				vim.o.foldcolumn = "0"
