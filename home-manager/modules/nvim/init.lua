@@ -261,8 +261,13 @@ require("lazy").setup({
 
 				sources = {
 					default = { "lsp", "path", "snippets", "buffer" },
-					-- FIXME enable again once it become stable
-					cmdline = {},
+					min_keyword_length = function(ctx)
+						-- only applies when typing a command, doesn't apply to arguments
+						if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
+							return 4
+						end
+						return 0
+					end,
 				},
 				completion = {
 					keyword = { range = "full" },
@@ -785,6 +790,8 @@ require("lazy").setup({
 					-- NOTE ignored as we don't use regular f,t
 					",",
 					";",
+					-- NOTE ignored as this is a synonym
+					"&",
 				})
 
 				wk.setup({
@@ -816,9 +823,10 @@ require("lazy").setup({
 					},
 				})
 				wk.add({
+					{ "<leader>c", group = "Comment management" },
 					{ "<leader>s", group = "LSP and Treesitter" },
 					{ "<leader>t", group = "Tabs management" },
-					{ "<leader>w", group = "Splits management" },
+					{ "<leader>w", group = "Windows management" },
 					{ "<leader>b", group = "Buffers management" },
 					{ "<leader>g", group = "Git management" },
 					{ "<leader>f", group = "File search" },
@@ -967,6 +975,8 @@ require("lazy").setup({
 						return false
 					end
 				end,
+				signcolumn = false,
+				linehl = true,
 				current_line_blame = true,
 				preview_config = {
 					border = "rounded",
@@ -978,43 +988,6 @@ require("lazy").setup({
 			},
 			dependencies = { "nvim-lua/plenary.nvim" },
 		},
-		-- {
-		-- 	"3rd/image.nvim",
-		-- 	build = false,
-		-- 	ft = { "markdown", "vimwiki", "norg", "typst" },
-		-- 	config = function()
-		-- 		require("image").setup({
-		-- 			backend = "kitty",
-		-- 			processor = "magick_cli",
-		-- 			integrations = {
-		-- 				markdown = {
-		-- 					enabled = true,
-		-- 					clear_in_insert_mode = false,
-		-- 					download_remote_images = true,
-		-- 					only_render_image_at_cursor = false,
-		-- 					floating_windows = false,
-		-- 					filetypes = { "markdown", "vimwiki" },
-		-- 				},
-		-- 				neorg = {
-		-- 					enabled = true,
-		-- 					filetypes = { "norg" },
-		-- 				},
-		-- 				typst = {
-		-- 					enabled = true,
-		-- 					filetypes = { "typst" },
-		-- 				},
-		-- 				html = {
-		-- 					enabled = false,
-		-- 				},
-		-- 				css = {
-		-- 					enabled = false,
-		-- 				},
-		-- 			},
-		-- 			-- NOTE we rely on neo-img for viewing image
-		-- 			hijack_file_patterns = {},
-		-- 		})
-		-- 	end,
-		-- },
 		{
 			"ramilito/kubectl.nvim",
 			cmd = { "Kubectl", "Kubectx", "Kubens" },
