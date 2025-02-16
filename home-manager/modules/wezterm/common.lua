@@ -15,7 +15,7 @@ M.config = {
 		-- "Mononoki Nerd Font Mono",
 		"Noto Sans Mono CJK HK",
 	}),
-	font_size = 15.0,
+	font_size = 15.5,
 	enable_tab_bar = true,
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",
