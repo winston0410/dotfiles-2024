@@ -88,9 +88,6 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
-vim.keymap.set("n", "<leader>s", ":%s/", { silent = true, noremap = true, desc = "Substitute globally" })
-vim.keymap.set("v", "<leader>s", ":s/", { silent = true, noremap = true, desc = "Substitute the selected area" })
-
 vim.keymap.set("v", "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set("v", "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set(
@@ -216,10 +213,34 @@ require("lazy").setup({
 			end,
 		},
 		{
-			"saghen/blink.cmp",
+			"jackplus-xyz/player-one.nvim",
+			enabled = false,
+			opts = {},
+		},
+		{
+			"kevinhwang91/nvim-ufo",
+			version = "1.4.0",
+			dependencies = { "kevinhwang91/promise-async" },
 			event = "VeryLazy",
+			init = function()
+				vim.o.foldcolumn = "0"
+				vim.o.foldlevel = 99
+				vim.o.foldlevelstart = 99
+				vim.o.foldenable = true
+			end,
+			config = function()
+				require("ufo").setup({
+					provider_selector = function(bufnr, filetype, buftype)
+						return { "treesitter", "indent" }
+					end,
+				})
+			end,
+		},
+		{
+			"saghen/blink.cmp",
+			event = "InsertEnter",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "0.11.0",
+			version = "0.12.0",
 			opts = {
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
@@ -739,37 +760,64 @@ require("lazy").setup({
 				{
 					"?",
 					function()
-						require("which-key").show({ global = false })
+						require("which-key").show({ global = true, loop = true })
 					end,
 					silent = true,
 					noremap = true,
 					desc = "Show local keymaps",
 				},
 			},
-			opts = {
-				preset = "helix",
-				plugins = {
-					marks = true,
-					registers = true,
-					spelling = {
-						enabled = true,
-						suggestions = 20,
+			config = function()
+				local wk = require("which-key")
+				-- TODO fix typing for luarocks modules installed with Nix
+				local ignored_bindings = require("pl.tablex").makeset({
+					"z<CR>",
+					"z=",
+					"zH",
+					"zL",
+					"zb",
+					"ze",
+					"zg",
+					"zs",
+					"zt",
+					"zv",
+					"zw",
+					"zz",
+				})
+
+				wk.setup({
+					preset = "helix",
+					---@param mapping wk.Mapping
+					filter = function(mapping)
+						vim.print(mapping)
+						return ignored_bindings[mapping.lhs] == nil
+					end,
+					plugins = {
+						marks = true,
+						registers = false,
+						spelling = {
+							enabled = false,
+							suggestions = 20,
+						},
+						presets = {
+							operators = true,
+							motions = true,
+							text_objects = true,
+							windows = true,
+							nav = true,
+							z = true,
+							g = false,
+						},
 					},
-					presets = {
-						operators = true,
-						motions = true,
-						text_objects = true,
-						windows = true,
-						nav = true,
-						z = false,
-						g = false,
+					keys = {
+						scroll_down = "<c-n>",
+						scroll_up = "<c-p>",
 					},
-				},
-				keys = {
-					scroll_down = "<c-n>",
-					scroll_up = "<c-p>",
-				},
-			},
+				})
+				wk.add({
+					{ "<leader>s", desc = "LSP and Treesitter" },
+				})
+			end,
 		},
 		{
 			"L3MON4D3/LuaSnip",
@@ -1190,7 +1238,7 @@ require("lazy").setup({
 					["k"] = "list_up",
 					["q"] = "close",
 					["?"] = function()
-						require("which-key").show({ global = false })
+						require("which-key").show({ global = false, loop = true })
 					end,
 				}
 				require("snacks").setup({
@@ -1453,8 +1501,10 @@ require("lazy").setup({
 					incremental_selection = {
 						enable = true,
 						keymaps = {
+							init_selection = false,
 							node_incremental = "+",
 							node_decremental = "-",
+							scope_incremental = false,
 						},
 					},
 					highlight = {
@@ -2095,46 +2145,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
 		local supported_modes = { "n", "v" }
-		-- TODO combine all these functions, using Snacks.picker
-		-- vim.keymap.set(
-		-- 	supported_modes,
-		-- 	"<leader>li",
-		-- 	vim.lsp.buf.implementation,
-		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" }
-		-- )
-		vim.keymap.set(supported_modes, "<leader>lh", function()
+		vim.keymap.set(supported_modes, "<leader>ss", function()
 			-- if we call twice, we will enter the hover windows immediately after running the keybinding
 			vim.lsp.buf.hover()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
-		-- vim.keymap.set(
-		-- 	supported_modes,
-		-- 	"<leader>ldd",
-		-- 	vim.lsp.buf.definition,
-		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" }
-		-- )
-		-- vim.keymap.set(
-		-- 	supported_modes,
-		-- 	"<leader>ldt",
-		-- 	vim.lsp.buf.type_definition,
-		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" }
-		-- )
-		-- vim.keymap.set(
-		-- 	supported_modes,
-		-- 	"<leader>lr",
-		-- 	vim.lsp.buf.rename,
-		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
-		-- )
-		-- vim.keymap.set(
-		-- 	supported_modes,
-		-- 	"<leader>la",
-		-- 	vim.lsp.buf.code_action,
-		-- 	{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
-		-- )
+		-- TODO combine all these functions, using Snacks.picker
+		vim.keymap.set(supported_modes, "<leader>s1", function()
+			Snacks.picker.lsp_definitions()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" })
+		vim.keymap.set(supported_modes, "<leader>s2", function()
+			Snacks.picker.lsp_type_definitions()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" })
+		vim.keymap.set(supported_modes, "<leader>s3", function()
+			Snacks.picker.lsp_implementations()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" })
+		vim.keymap.set(supported_modes, "<leader>s4", function()
+			Snacks.picker.lsp_references()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to references", nowait = true })
+		vim.keymap.set(
+			supported_modes,
+			"<leader>s5",
+			vim.lsp.buf.rename,
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
+		)
+		vim.keymap.set(
+			supported_modes,
+			"<leader>s6",
+			vim.lsp.buf.code_action,
+			{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
+		)
 		pcall(function()
 			-- Remove default keybinding added by lspconfig
 			-- REF https://neovim.io/doc/user/lsp.html#lsp-config
 			vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
 		end)
+
 		vim.diagnostic.config({
 			virtual_text = false,
 			signs = false,

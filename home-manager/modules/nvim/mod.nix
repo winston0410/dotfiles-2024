@@ -6,7 +6,8 @@
     fastfetch
     (unstable.neovim.override {
       extraLuaPackages =
-        (ps: with ps; [ luafilesystem jsregexp luarocks magick luassert ]);
+        (ps: with ps; [ luafilesystem jsregexp penlight luassert ]);
+      withNodeJs = true;
     })
     # FIXME No idea why but override from lua package does not work and the version will be 5.2, we have to use lua5_1 instead
     # (lua.override { version = "5.1.0"; })
@@ -15,7 +16,6 @@
     # needed for treesitter
     tree-sitter
     gcc14
-    nodejs_20
     # needed for fzf-lua
     fzf
     fd
