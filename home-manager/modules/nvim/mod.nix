@@ -20,7 +20,6 @@
     fzf
     fd
     bat
-    delta
     chafa
     # needed for snacks.nvim
     imagemagick
@@ -42,9 +41,11 @@
   '';
 
   home.shellAliases = {
-    vi = "nvim";
+    # Use system default vim as last resort
+    vi = "vim";
     vim = "nvim";
     vimdiff = "nvim -d";
+    nvimdiff = "nvim -d";
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
     k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";

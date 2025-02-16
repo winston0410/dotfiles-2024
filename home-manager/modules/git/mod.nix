@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, isDarwin, ... }: {
   programs.git.enable = true;
-  programs.git.delta.enable = true;
   # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
   programs.git.extraConfig = {
@@ -31,9 +30,9 @@
 
     lfs = { enable = true; };
 
-    merge = { conflictstyle = "diff3"; };
+    merge = { tool = "nvimdiff"; };
 
-    diff = { colorMoved = "default"; };
+    diff = { tool = "nvimdiff"; };
   };
   home.packages = with pkgs;
     [
