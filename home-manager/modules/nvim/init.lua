@@ -232,21 +232,21 @@ require("lazy").setup({
 			},
 			keys = {
 				{
-					{ "n" },
 					"zR",
 					function()
 						require("ufo").openAllFolds()
 					end,
+					mode = { "n" },
 					silent = true,
 					noremap = true,
 					desc = "Open all folds",
 				},
 				{
-					{ "n" },
 					"zM",
 					function()
 						require("ufo").closeAllFolds()
 					end,
+					mode = { "n" },
 					silent = true,
 					noremap = true,
 					desc = "Close all folds",
@@ -1323,56 +1323,57 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
-		-- {
-		-- 	"petertriho/nvim-scrollbar",
-		-- 	config = function()
-		-- 		local colors = require("tokyonight.colors").setup()
-		--
-		-- 		require("scrollbar").setup({
-		-- 			show = true,
-		-- 			show_in_active_only = false,
-		-- 			set_highlights = true,
-		-- 			throttle_ms = 100,
-		-- 			handle = {
-		-- 				text = " ",
-		-- 				blend = 30,
-		-- 				color = colors.bg_highlight,
-		-- 				highlight = "CursorColumn",
-		-- 				hide_if_all_visible = false,
-		-- 			},
-		-- 			excluded_filetypes = {
-		-- 				"dropbar_menu",
-		-- 				"dropbar_menu_fzf",
-		-- 				"DressingInput",
-		-- 				"cmp_docs",
-		-- 				"cmp_menu",
-		-- 				"noice",
-		-- 				"prompt",
-		-- 				"TelescopePrompt",
-		-- 				"trouble",
-		-- 			},
-		-- 			marks = {
-		-- 				Search = { color = colors.orange },
-		-- 				Error = { color = colors.error },
-		-- 				Warn = { color = colors.warning },
-		-- 				Info = { color = colors.info },
-		-- 				Hint = { color = colors.hint },
-		-- 				Misc = { color = colors.purple },
-		-- 			},
-		-- 			handlers = {
-		-- 				cursor = true,
-		-- 				diagnostic = true,
-		-- 				gitsigns = true,
-		-- 				handle = true,
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- 	dependencies = {
-		-- 		"folke/tokyonight.nvim",
-		-- 		"lewis6991/gitsigns.nvim",
-		-- 	},
-		-- },
+		{
+			"petertriho/nvim-scrollbar",
+			-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
+			enabled = false,
+			config = function()
+				local colors = require("tokyonight.colors").setup()
+
+				require("scrollbar").setup({
+					show = true,
+					show_in_active_only = false,
+					set_highlights = true,
+					throttle_ms = 100,
+					handle = {
+						text = " ",
+						blend = 30,
+						color = colors.bg_highlight,
+						highlight = "CursorColumn",
+						hide_if_all_visible = false,
+					},
+					excluded_filetypes = {
+						"dropbar_menu",
+						"dropbar_menu_fzf",
+						"DressingInput",
+						"cmp_docs",
+						"cmp_menu",
+						"noice",
+						"prompt",
+						"TelescopePrompt",
+						"trouble",
+					},
+					marks = {
+						Search = { color = colors.orange },
+						Error = { color = colors.error },
+						Warn = { color = colors.warning },
+						Info = { color = colors.info },
+						Hint = { color = colors.hint },
+						Misc = { color = colors.purple },
+					},
+					handlers = {
+						cursor = true,
+						diagnostic = true,
+						gitsigns = true,
+						handle = true,
+					},
+				})
+			end,
+			dependencies = {
+				"folke/tokyonight.nvim",
+				"lewis6991/gitsigns.nvim",
+			},
+		},
 		{
 			"nvim-treesitter/nvim-treesitter-context",
 			opts = {
@@ -1668,22 +1669,21 @@ require("lazy").setup({
 			end,
 			dependencies = { "nvim-tree/nvim-web-devicons", "folke/snacks.nvim" },
 		},
-		-- NOTE just a plugin for fun, maybe later
-		-- {
-		-- 	"Isrothy/neominimap.nvim",
-		-- 	version = "v3.*.*",
-		-- 	enabled = true,
-		-- 	lazy = false, -- NOTE: NO NEED to Lazy load
-		-- 	init = function()
-		-- 		vim.opt.wrap = false
-		-- 		vim.opt.sidescrolloff = 36 -- Set a large value
-		-- 		vim.g.neominimap = {
-		-- 			auto_enable = true,
-		-- 			-- NOTE to have higher z-index than nvim-treesitter
-		-- 			float = { z_index = 11 },
-		-- 		}
-		-- 	end,
-		-- },
+		{
+			"Isrothy/neominimap.nvim",
+			version = "v3.*.*",
+			enabled = false,
+			lazy = false,
+			init = function()
+				vim.opt.wrap = false
+				vim.opt.sidescrolloff = 36 -- Set a large value
+				vim.g.neominimap = {
+					auto_enable = true,
+					-- NOTE to have higher z-index than nvim-treesitter
+					float = { z_index = 11 },
+				}
+			end,
+		},
 		{
 			"stevearc/quicker.nvim",
 			event = "FileType qf",
