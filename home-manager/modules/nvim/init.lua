@@ -230,7 +230,7 @@ require("lazy").setup({
 			end,
 			config = function()
 				require("ufo").setup({
-					provider_selector = function(bufnr, filetype, buftype)
+					provider_selector = function()
 						return { "treesitter", "indent" }
 					end,
 				})
@@ -656,8 +656,7 @@ require("lazy").setup({
 				"DiffviewFileHistory",
 			},
 			config = function()
-				-- Lua
-				local actions = require("diffview.actions")
+				-- local actions = require("diffview.actions")
 
 				require("diffview").setup({
 					enhanced_diff_hl = true,
@@ -789,7 +788,6 @@ require("lazy").setup({
 					preset = "helix",
 					---@param mapping wk.Mapping
 					filter = function(mapping)
-						vim.print(mapping)
 						return ignored_bindings[mapping.lhs] == nil
 					end,
 					plugins = {
@@ -1077,7 +1075,7 @@ require("lazy").setup({
 					group = group,
 					pattern = "k8s_*",
 					callback = function(ev)
-						local opts = { buffer = ev.buf }
+						local _ = { buffer = ev.buf }
 					end,
 				})
 			end,
@@ -1726,7 +1724,7 @@ require("lazy").setup({
 					{
 						ft = "trouble",
 						title = "LSP Symbols",
-						filter = function(_buf, win)
+						filter = function(_, win)
 							return vim.w[win].trouble
 								and (
 									vim.w[win].trouble.mode == "symbols"
@@ -1740,7 +1738,7 @@ require("lazy").setup({
 					{
 						ft = "trouble",
 						title = "Diagnostics",
-						filter = function(_buf, win)
+						filter = function(_, win)
 							return vim.w[win].trouble and vim.w[win].trouble.mode == "diagnostics"
 						end,
 						size = { width = 0.5, height = 1 },
