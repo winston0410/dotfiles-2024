@@ -153,8 +153,9 @@ local window_options = {
 	-- at most 2 columns for left hand signcolumn
 	{ "signcolumn", "auto:2" },
 	{ "scrolloff", 8 },
-	-- Ensure tilde signs are not show at the end of buffer
-	{ "fillchars", "eob: " },
+	-- Ensure tilde signs are not show at the end of buffer, and use diagonal as filler for diff
+	-- REF https://github.com/sindrets/diffview.nvim/issues/35#issuecomment-871455517
+	{ "fillchars", "diff:╱,eob: " },
 }
 
 for _, option in ipairs(window_options) do
@@ -835,7 +836,6 @@ require("lazy").setup({
 					pattern = "DiffviewDiffBufRead",
 					callback = function(args)
 						vim.api.nvim_buf_set_option(args.buf, "foldcolumn", "0")
-						vim.api.nvim_buf_set_option(args.buf, "foldmethod", "manual")
 					end,
 				})
 			end,
