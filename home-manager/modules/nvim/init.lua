@@ -6,6 +6,8 @@ local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
+local in_diff_mode = vim.api.nvim_win_get_option(0, "diff")
+
 vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
@@ -757,15 +759,15 @@ require("lazy").setup({
 						view = {
 							{
 								"n",
-								"[x",
+								"[c",
 								actions.prev_conflict,
-								{ desc = "In the merge-tool: jump to the previous conflict" },
+								{ desc = "Jump to the previous conflict" },
 							},
 							{
 								"n",
-								"]x",
+								"]c",
 								actions.next_conflict,
-								{ desc = "In the merge-tool: jump to the next conflict" },
+								{ desc = "Jump to the next conflict" },
 							},
 							{
 								"n",
@@ -795,15 +797,15 @@ require("lazy").setup({
 							},
 							{
 								"n",
-								"[x",
+								"[c",
 								actions.prev_conflict,
-								{ desc = "Go to the previous conflict" },
+								{ desc = "Jump to the previous conflict" },
 							},
 							{
 								"n",
-								"]x",
+								"]c",
 								actions.next_conflict,
-								{ desc = "Go to the next conflict" },
+								{ desc = "Jump to the next conflict" },
 							},
 							{
 								"n",
@@ -819,6 +821,12 @@ require("lazy").setup({
 							},
 						},
 						file_history_panel = {
+							{
+								"n",
+								"y",
+								actions.copy_hash,
+								{ desc = "Copy the commit hash of the entry under the cursor" },
+							},
 							{
 								"n",
 								"<cr>",
@@ -975,6 +983,12 @@ require("lazy").setup({
 					{ "<leader>g", group = "Git management" },
 					{ "<leader>f", group = "File search" },
 				})
+				if in_diff_mode then
+					wk.add({
+						{ "[c", desc = "Previous change" },
+						{ "]c", desc = "Next change" },
+					})
+				end
 			end,
 		},
 		{
@@ -1088,7 +1102,7 @@ require("lazy").setup({
 					desc = "Reset hunk",
 				},
 				{
-					"<leader>ghi",
+					"]gh",
 					function()
 						require("gitsigns").nav_hunk("next")
 					end,
@@ -1098,7 +1112,7 @@ require("lazy").setup({
 					desc = "Jump to next hunk",
 				},
 				{
-					"<leader>gho",
+					"[gh",
 					function()
 						require("gitsigns").nav_hunk("prev")
 					end,
@@ -1388,6 +1402,7 @@ require("lazy").setup({
 									icon = " ",
 									title = "Recent Files",
 									section = "recent_files",
+									limit = 3,
 									indent = 2,
 									padding = { 2, 2 },
 								},
@@ -1535,6 +1550,8 @@ require("lazy").setup({
 		{
 			"aaronik/treewalker.nvim",
 			event = "CursorHold",
+			-- NOTE not really that accurate
+			enabled = false,
 			opts = {
 				highlight = false,
 			},
@@ -1595,7 +1612,6 @@ require("lazy").setup({
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",
-			commit = "5874cac1b76c97ebb3fc03225bd7215d4e671cd2",
 			build = function()
 				vim.cmd("TSUpdate")
 			end,
@@ -1667,6 +1683,20 @@ require("lazy").setup({
 						move = {
 							enable = true,
 							set_jumps = true,
+							goto_previous = {
+								["[f"] = { query = "@function.outer", desc = "Jump to previous function" },
+								["[i"] = { query = "@conditional.outer", desc = "Jump to previous conditional" },
+								["[s"] = {
+									query = "@local.scope",
+									query_group = "locals",
+									desc = "Jump to previous scope",
+								},
+							},
+							goto_next = {
+								["]f"] = { query = "@function.outer", desc = "Jump to next function" },
+								["]i"] = { query = "@conditional.outer", desc = "Jump to next conditional" },
+								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
+							},
 						},
 					},
 				})
