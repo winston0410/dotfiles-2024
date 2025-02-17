@@ -1376,7 +1376,7 @@ require("lazy").setup({
 							{
 								section = "terminal",
 								cmd = string.format(
-									"chafa %s --format symbols --symbols block --fit-width",
+									"chafa %s --format symbols --symbols block --size 60x17",
 									vim.fs.joinpath(config_dir, "assets", "flag_of_british_hk.png")
 								),
 								height = 17,
