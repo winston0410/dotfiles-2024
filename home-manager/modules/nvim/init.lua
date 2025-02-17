@@ -531,8 +531,22 @@ require("lazy").setup({
 						component_separators = "",
 						section_separators = "",
 						disabled_filetypes = {
-							winbar = { "trouble", "oil", "qf", "DiffviewFileHistory", "DiffviewFiles" },
-							inactive_winbar = { "trouble", "oil", "qf", "DiffviewFileHistory", "DiffviewFiles" },
+							winbar = {
+								"trouble",
+								"oil",
+								"qf",
+								"DiffviewFileHistory",
+								"DiffviewFiles",
+								"snacks_dashboard",
+							},
+							inactive_winbar = {
+								"trouble",
+								"oil",
+								"qf",
+								"DiffviewFileHistory",
+								"DiffviewFiles",
+								"snacks_dashboard",
+							},
 						},
 						always_show_tabline = false,
 						globalstatus = true,
@@ -832,11 +846,18 @@ require("lazy").setup({
 						},
 					},
 				})
+
+				local autocmd_callback = function(args)
+					vim.api.nvim_buf_set_option(args.buf, "foldcolumn", "0")
+				end
+
 				vim.api.nvim_create_autocmd("User", {
 					pattern = "DiffviewDiffBufRead",
-					callback = function(args)
-						vim.api.nvim_buf_set_option(args.buf, "foldcolumn", "0")
-					end,
+					callback = autocmd_callback,
+				})
+				vim.api.nvim_create_autocmd("User", {
+					pattern = "DiffviewDiffBufWinEnter",
+					callback = autocmd_callback,
 				})
 			end,
 		},
@@ -1343,6 +1364,7 @@ require("lazy").setup({
 						require("which-key").show({ global = false, loop = true })
 					end,
 				}
+				local config_dir = vim.fn.stdpath("config")
 				require("snacks").setup({
 					gitbrowse = { enabled = true },
 					bigfile = { enabled = true },
@@ -1351,16 +1373,27 @@ require("lazy").setup({
 					dashboard = {
 						enabled = true,
 						sections = {
-							{ section = "header" },
 							{
-								icon = " ",
-								title = "Recent Files",
-								section = "recent_files",
-								indent = 2,
-								padding = { 2, 2 },
+								section = "terminal",
+								cmd = string.format(
+									"chafa %s --format symbols --symbols block --fit-width",
+									vim.fs.joinpath(config_dir, "assets", "flag_of_british_hk.png")
+								),
+								height = 17,
+								padding = 1,
 							},
-							{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 2 },
-							{ section = "startup" },
+							{
+								pane = 2,
+								{
+									icon = " ",
+									title = "Recent Files",
+									section = "recent_files",
+									indent = 2,
+									padding = { 2, 2 },
+								},
+								{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 2 },
+								{ section = "startup" },
+							},
 						},
 					},
 					picker = {
