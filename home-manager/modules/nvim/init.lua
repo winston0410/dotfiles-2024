@@ -17,13 +17,16 @@ vim.filetype.add({
 
 local modes = { "n", "v", "c" }
 
-pcall(function()
-	vim.keymap.del(modes, "q:")
-	-- NOTE somehow using keymap.del does not work on q:, we need to set <Nop> as well
-	vim.keymap.set(modes, "q:", "<Nop>", { noremap = true, silent = true })
-	vim.keymap.del(modes, "s", { desc = "Synonym for 'cl' (not linewise)" })
-	vim.keymap.del(modes, "S", { desc = "Synonym for 'cc' linewise" })
-end)
+vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
+-- useless synonym of cc
+vim.keymap.set({ "n" }, "s", "<Nop>")
+vim.keymap.set({ "n" }, "S", "<Nop>")
+-- useless default bindings
+vim.keymap.set({ "n" }, "[f", "<Nop>")
+vim.keymap.set({ "n" }, "]f", "<Nop>")
+vim.keymap.set({ "n" }, "[i", "<Nop>")
+vim.keymap.set({ "n" }, "]i", "<Nop>")
+
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
 vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -1519,6 +1522,11 @@ require("lazy").setup({
 				"folke/tokyonight.nvim",
 				"lewis6991/gitsigns.nvim",
 			},
+		},
+		{
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			event = "CursorHold",
+			dependencies = { "nvim-treesitter/nvim-treesitter" },
 		},
 		{
 			"nvim-treesitter/nvim-treesitter-context",
