@@ -124,6 +124,11 @@ vim.g.loaded_spellfile_plugin = 1
 vim.g.loaded_tarPlugin = 1
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_tutor_mode_plugin = 1
+-- silent provider warning
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
 
 local global_options = {
 	{ "encoding", "UTF-8" },
@@ -298,7 +303,8 @@ require("lazy").setup({
 					["<Char-0xAB>"] = { "select_prev", "fallback" },
 					["<CR>"] = { "accept", "fallback" },
 					-- NOTE mimick the behavior for vscode
-					["<Tab>"] = { "accept", "fallback" },
+					["<S-Tab>"] = { "select_prev", "fallback" },
+					["<Tab>"] = { "select_next", "fallback" },
 				},
 
 				appearance = {
@@ -1184,8 +1190,9 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd("FileType", {
 					group = group,
 					pattern = "k8s_*",
-					callback = function(ev)
-						local _ = { buffer = ev.buf }
+					callback = function()
+						local tab_id = vim.api.nvim_get_current_tabpage()
+						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "Kubectl")
 					end,
 				})
 			end,
@@ -1959,7 +1966,7 @@ require("lazy").setup({
 		},
 		{
 			"stevearc/conform.nvim",
-			version = "8.4.0",
+			version = "9.0.0",
 			event = { "BufWritePre" },
 			cmd = { "ConformInfo" },
 			config = function()

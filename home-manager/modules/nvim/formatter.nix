@@ -7,7 +7,9 @@
     # Not using Purescript anymore
     # nodePackages.purty
     # Not working with Python at the moment
-    # python39Packages.black
+    just
+    kulala-fmt
+    black
     rustfmt
     prettierd
     yamlfmt
