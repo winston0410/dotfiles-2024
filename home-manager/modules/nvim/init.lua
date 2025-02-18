@@ -6,12 +6,6 @@ local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
-local in_diff_mode = vim.api.nvim_win_get_option(0, "diff")
--- if in_diff_mode then
---     vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to previous diff" })
---     vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to next diff" })
--- end
-
 vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
@@ -23,8 +17,8 @@ local modes = { "n", "v", "c" }
 
 vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
-vim.keymap.set({ "n" }, "s", "<Nop>")
-vim.keymap.set({ "n" }, "S", "<Nop>")
+vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
+vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -927,8 +921,7 @@ require("lazy").setup({
 			},
 			config = function()
 				local wk = require("which-key")
-				-- TODO fix typing for luarocks modules installed with Nix, seems like the penlight modules has to adapot lua-language-server's annotation to make it work
-				local ignored_bindings = require("pl.tablex").makeset({
+				local ignored_bindings = {
 					"z<CR>",
 					"z=",
 					"zH",
@@ -946,13 +939,13 @@ require("lazy").setup({
 					";",
 					-- NOTE ignored as this is a synonym
 					"&",
-				})
+				}
 
 				wk.setup({
 					preset = "helix",
 					---@param mapping wk.Mapping
 					filter = function(mapping)
-						return ignored_bindings[mapping.lhs] == nil
+						return not vim.list_contains(ignored_bindings, mapping.lhs)
 					end,
 					plugins = {
 						marks = true,
@@ -985,6 +978,12 @@ require("lazy").setup({
 					{ "<leader>g", group = "Git management" },
 					{ "<leader>f", group = "File search" },
 				})
+				if vim.wo.diff then
+					wk.add({
+						{ "[c", desc = "Jump to previous change", mode = "n" },
+						{ "]c", desc = "Jump to next change", mode = "n" },
+					})
+				end
 			end,
 		},
 		{
@@ -1696,6 +1695,7 @@ require("lazy").setup({
 									desc = "Jump to previous scope",
 								},
 								["[p"] = { query = "@parameter.outer", desc = "Jump to previous parameter" },
+								["[r"] = { query = "@return.outer", desc = "Jump to previous return" },
 							},
 							goto_next = {
 								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
@@ -1705,6 +1705,7 @@ require("lazy").setup({
 								["]i"] = { query = "@conditional.outer", desc = "Jump to next conditional" },
 								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
 								["]p"] = { query = "@parameter.outer", desc = "Jump to next parameter" },
+								["]r"] = { query = "@return.outer", desc = "Jump to next return" },
 							},
 						},
 					},
@@ -1778,14 +1779,14 @@ require("lazy").setup({
 				},
 			},
 			config = function()
+				local show_detail = false
+				local default_columns = {
+					"icon",
+					"permissions",
+				}
+				local detail_columns = vim.list_extend(vim.list_slice(default_columns), { "size", "mtime" })
 				require("oil").setup({
-					columns = {
-						"icon",
-						"permissions",
-						-- NOTE wait until these fields to be excluded by constrain_cursor, then enable these fields again
-						-- "size",
-						-- "mtime",
-					},
+					columns = default_columns,
 					constrain_cursor = "editable",
 					watch_for_changes = true,
 					keymaps = {
@@ -1808,6 +1809,24 @@ require("lazy").setup({
 							opts = { close = false, horizontal = true },
 							desc = "Select a file and open in a horizontal split",
 						},
+						["<a-m>"] = {
+							callback = function()
+								show_detail = not show_detail
+								if show_detail then
+									require("oil").set_columns(detail_columns)
+								else
+									require("oil").set_columns(default_columns)
+								end
+							end,
+							mode = "n",
+							desc = "Toggle file detail",
+						},
+						["<a-h>"] = {
+							"actions.toggle_hidden",
+							mode = "n",
+							desc = "Toggle hidden files",
+						},
+						["<a-s>"] = { "actions.change_sort", mode = "n" },
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 						["q"] = {
 							"actions.close",

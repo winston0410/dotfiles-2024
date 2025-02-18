@@ -5,8 +5,7 @@
     figlet
     fastfetch
     (unstable.neovim.override {
-      extraLuaPackages =
-        (ps: with ps; [ luafilesystem jsregexp penlight luassert ]);
+      extraLuaPackages = (ps: with ps; [ luafilesystem jsregexp luassert ]);
       withNodeJs = true;
     })
     # FIXME No idea why but override from lua package does not work and the version will be 5.2, we have to use lua5_1 instead
