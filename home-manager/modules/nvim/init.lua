@@ -1074,7 +1074,7 @@ require("lazy").setup({
 			opts = {
 				render = "virtual",
 				enable_tailwind = true,
-				exclude_filetypes = { "lazy" },
+				exclude_filetypes = { "lazy", "checkhealth", "snacks_dashboard" },
 				exclude_buftypes = {},
 			},
 		},
