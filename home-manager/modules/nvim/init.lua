@@ -176,6 +176,11 @@ for _, option in ipairs(buffer_options) do
 	vim.bo[option[1]] = option[2]
 end
 
+if vim.wo.diff then
+	-- disable wrap so filler line will always align with changes
+	vim.o.wrap = false
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -852,7 +857,8 @@ require("lazy").setup({
 				})
 
 				local autocmd_callback = function(args)
-					vim.api.nvim_buf_set_option(args.buf, "foldcolumn", "0")
+					vim.api.nvim_set_option_value("foldcolumn", "0", { buf = args.buf })
+					vim.api.nvim_set_option_value("wrap", false, { buf = args.buf })
 				end
 
 				vim.api.nvim_create_autocmd("User", {
@@ -1374,6 +1380,7 @@ require("lazy").setup({
 					end,
 				}
 				local config_dir = vim.fn.stdpath("config")
+				---@cast config_dir string
 				require("snacks").setup({
 					gitbrowse = { enabled = true },
 					bigfile = { enabled = true },
@@ -1434,6 +1441,13 @@ require("lazy").setup({
 						hl = "SnacksIndent",
 					},
 					words = { enabled = false },
+					styles = {
+						notification = {
+							wo = {
+								wrap = true,
+							},
+						},
+					},
 				})
 			end,
 		},
