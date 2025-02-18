@@ -7,6 +7,10 @@ local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
 local in_diff_mode = vim.api.nvim_win_get_option(0, "diff")
+-- if in_diff_mode then
+--     vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to previous diff" })
+--     vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to next diff" })
+-- end
 
 vim.cmd("filetype on")
 vim.filetype.add({
@@ -21,11 +25,6 @@ vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>")
 vim.keymap.set({ "n" }, "S", "<Nop>")
--- useless default bindings
-vim.keymap.set({ "n" }, "[f", "<Nop>")
-vim.keymap.set({ "n" }, "]f", "<Nop>")
-vim.keymap.set({ "n" }, "[i", "<Nop>")
-vim.keymap.set({ "n" }, "]i", "<Nop>")
 
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -986,12 +985,6 @@ require("lazy").setup({
 					{ "<leader>g", group = "Git management" },
 					{ "<leader>f", group = "File search" },
 				})
-				if in_diff_mode then
-					wk.add({
-						{ "[c", desc = "Previous change" },
-						{ "]c", desc = "Next change" },
-					})
-				end
 			end,
 		},
 		{
@@ -1692,6 +1685,9 @@ require("lazy").setup({
 							enable = true,
 							set_jumps = true,
 							goto_previous = {
+								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
+								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
+								["[k"] = { query = "@call.outer", desc = "Jump to previous call" },
 								["[f"] = { query = "@function.outer", desc = "Jump to previous function" },
 								["[i"] = { query = "@conditional.outer", desc = "Jump to previous conditional" },
 								["[s"] = {
@@ -1699,11 +1695,16 @@ require("lazy").setup({
 									query_group = "locals",
 									desc = "Jump to previous scope",
 								},
+								["[p"] = { query = "@parameter.outer", desc = "Jump to previous parameter" },
 							},
 							goto_next = {
+								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
+								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
+								["]k"] = { query = "@call.outer", desc = "Jump to next call" },
 								["]f"] = { query = "@function.outer", desc = "Jump to next function" },
 								["]i"] = { query = "@conditional.outer", desc = "Jump to next conditional" },
 								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
+								["]p"] = { query = "@parameter.outer", desc = "Jump to next parameter" },
 							},
 						},
 					},
