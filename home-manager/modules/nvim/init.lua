@@ -520,11 +520,20 @@ require("lazy").setup({
 									inactive = "TabLine",
 								},
 								fmt = function(name, context)
-									-- local buflist = vim.fn.tabpagebuflist(context.tabnr)
-									-- local winnr = vim.fn.tabpagewinnr(context.tabnr)
-									-- local bufnr = buflist[winnr]
-									-- local mod = vim.fn.getbufvar(bufnr, "&mod")
-									--
+									local ok, result = pcall(function()
+										return vim.api.nvim_tabpage_get_var(context.tabnr, "tabtitle")
+									end)
+
+									local tab_title = ""
+
+									if ok then
+										tab_title = result
+									end
+
+									if tab_title ~= "" then
+										return tab_title
+									end
+
 									return name
 								end,
 							},
