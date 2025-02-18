@@ -336,76 +336,6 @@ require("lazy").setup({
 			},
 		},
 		-- {
-		-- 	"gennaro-tedesco/nvim-possession",
-		-- 	version = "0.0.15",
-		-- 	dependencies = {
-		-- 		"ibhagwan/fzf-lua",
-		-- 	},
-		-- 	opts = {
-		-- 		sessions = {
-		-- 			sessions_path = vim.fn.stdpath("data") .. "/sessions/",
-		-- 			sessions_variable = "session",
-		-- 			sessions_icon = "📌",
-		-- 			sessions_prompt = "sessions:",
-		-- 		},
-		-- 		autoload = true,
-		-- 		autosave = true,
-		-- 	},
-		-- 	keys = {
-		-- 		{
-		-- 			"<leader>sl",
-		-- 			function()
-		-- 				require("nvim-possession").list()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "List sessions",
-		--                silent = true,
-		-- 		},
-		-- 		{
-		-- 			"<leader>sn",
-		-- 			function()
-		-- 				require("nvim-possession").new()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Create new session",
-		--                silent = true,
-		-- 		},
-		-- 		{
-		-- 			"<leader>su",
-		-- 			function()
-		-- 				require("nvim-possession").update()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Update session",
-		--                silent = true,
-		-- 		},
-		-- 		{
-		-- 			"<leader>sd",
-		-- 			function()
-		-- 				require("nvim-possession").delete()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Delete session",
-		--                silent = true,
-		-- 		},
-		-- 	},
-		-- 	init = function()
-		-- 		local lfs = require("lfs")
-		-- 		local sessionsPath = vim.fn.stdpath("data") .. "/sessions/"
-		-- 		local attr = lfs.attributes(sessionsPath)
-		--
-		-- 		if attr and attr.mode == "directory" then
-		-- 			return
-		-- 		end
-		--
-		-- 		local _, err = lfs.mkdir(sessionsPath)
-		-- 		if err then
-		-- 			vim.notify("failed to create dir for sessions", vim.log.levels.ERROR)
-		-- 			vim.notify(err, vim.log.levels.ERROR)
-		-- 		end
-		-- 	end,
-		-- },
-		-- {
 		-- 	"folke/persistence.nvim",
 		-- 	version = "3.1.0",
 		-- 	event = "BufReadPre",
@@ -589,6 +519,14 @@ require("lazy").setup({
 									active = "TabLineFill",
 									inactive = "TabLine",
 								},
+								fmt = function(name, context)
+									-- local buflist = vim.fn.tabpagebuflist(context.tabnr)
+									-- local winnr = vim.fn.tabpagewinnr(context.tabnr)
+									-- local bufnr = buflist[winnr]
+									-- local mod = vim.fn.getbufvar(bufnr, "&mod")
+									--
+									return name
+								end,
 							},
 						},
 					},
@@ -1840,7 +1778,7 @@ require("lazy").setup({
 					watch_for_changes = true,
 					keymaps = {
 						-- NOTE disable these bindings for now, so we force ourselves to go back to the original tab to open those files, and only use oil.nvim for manipulating files
-						-- ["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
+						["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
 						-- ["<leader>t<CR>"] = {
 						-- 	"actions.select",
 						-- 	mode = "n",
