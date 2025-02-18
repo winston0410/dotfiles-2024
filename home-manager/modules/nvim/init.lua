@@ -281,6 +281,8 @@ require("lazy").setup({
 					["<C-p>"] = { "select_prev", "fallback" },
 					["<Char-0xAB>"] = { "select_prev", "fallback" },
 					["<CR>"] = { "accept", "fallback" },
+					-- NOTE mimick the behavior for vscode
+					["<Tab>"] = { "accept", "fallback" },
 				},
 
 				appearance = {
@@ -856,9 +858,9 @@ require("lazy").setup({
 					},
 				})
 
-				local autocmd_callback = function(args)
-					vim.api.nvim_set_option_value("foldcolumn", "0", { buf = args.buf })
-					vim.api.nvim_set_option_value("wrap", false, { buf = args.buf })
+				local autocmd_callback = function(_)
+					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
+					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
 				end
 
 				vim.api.nvim_create_autocmd("User", {
@@ -945,6 +947,11 @@ require("lazy").setup({
 					";",
 					-- NOTE ignored as this is a synonym
 					"&",
+					-- NOTE default binding set by neovim that does not use treesitter
+					"[m",
+					"]m",
+					"[M",
+					"]M",
 				}
 
 				wk.setup({
@@ -1697,7 +1704,12 @@ require("lazy").setup({
 						move = {
 							enable = true,
 							set_jumps = true,
+							goto_next_start = {},
+							goto_next_end = {},
+							goto_previous_start = {},
+							goto_previous_end = {},
 							goto_previous = {
+								["[a"] = { query = "@assignment.outer", desc = "Jump to previous assignment" },
 								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
 								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
 								["[k"] = { query = "@call.outer", desc = "Jump to previous call" },
@@ -1712,6 +1724,7 @@ require("lazy").setup({
 								["[r"] = { query = "@return.outer", desc = "Jump to previous return" },
 							},
 							goto_next = {
+								["]a"] = { query = "@assignment.outer", desc = "Jump to next assignment" },
 								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
 								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
 								["]k"] = { query = "@call.outer", desc = "Jump to next call" },
