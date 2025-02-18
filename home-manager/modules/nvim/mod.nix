@@ -22,6 +22,9 @@
     chafa
     # needed for snacks.nvim
     imagemagick
+    mermaid-cli
+    ghostscript_headless
+    tectonic
   ];
 
   home.sessionVariables = {

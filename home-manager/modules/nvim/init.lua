@@ -13,6 +13,19 @@ vim.filetype.add({
 	},
 })
 
+local function find_tab_with_filetype(filetype)
+	for _, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
+		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+			local buf = vim.api.nvim_win_get_buf(win)
+			local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+			if buf_ft == filetype then
+				return tabpage
+			end
+		end
+	end
+	return nil
+end
+
 local modes = { "n", "v", "c" }
 
 vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
@@ -135,8 +148,9 @@ local global_options = {
 	{ "wildmode", "longest:full,full" },
 	-- NOTE Make it false, so once a buffer is closed with :q, the LSP message will be removed as well
 	{ "hidden", false },
-	-- NOTE disable cursorline it would be shown in inactive split as well, not really useful when using splits
-	{ "cursorline", false },
+	{ "cursorline", true },
+	-- NOTE disable cursorline in background as it would be shown in inactive split as well, not really useful when using splits
+	{ "cursorlineopt", "number" },
 }
 
 for _, option in ipairs(global_options) do
@@ -1797,7 +1811,13 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
-						require("oil").open()
+						local tab_id = find_tab_with_filetype("oil")
+						if tab_id == -1 then
+							vim.api.nvim_set_current_tabpage(tab_id)
+							return
+						end
+						vim.cmd("tabnew | Oil .")
+						vim.cmd("leftabove vsplit | Oil .")
 					end,
 					mode = { "n" },
 					noremap = true,
@@ -1817,25 +1837,26 @@ require("lazy").setup({
 					constrain_cursor = "editable",
 					watch_for_changes = true,
 					keymaps = {
-						["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
-						["<leader>t<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, tab = true },
-							desc = "Select a file and open in a new tab",
-						},
-						["<leader>wv<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, vertical = true },
-							desc = "Select a file and open in a vertical split",
-						},
-						["<leader>ws<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, horizontal = true },
-							desc = "Select a file and open in a horizontal split",
-						},
+						-- NOTE disable these bindings for now, so we force ourselves to go back to the original tab to open those files, and only use oil.nvim for manipulating files
+						-- ["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
+						-- ["<leader>t<CR>"] = {
+						-- 	"actions.select",
+						-- 	mode = "n",
+						-- 	opts = { close = false, tab = true },
+						-- 	desc = "Select a file and open in a new tab",
+						-- },
+						-- ["<leader>wv<CR>"] = {
+						-- 	"actions.select",
+						-- 	mode = "n",
+						-- 	opts = { close = false, vertical = true },
+						-- 	desc = "Select a file and open in a vertical split",
+						-- },
+						-- ["<leader>ws<CR>"] = {
+						-- 	"actions.select",
+						-- 	mode = "n",
+						-- 	opts = { close = false, horizontal = true },
+						-- 	desc = "Select a file and open in a horizontal split",
+						-- },
 						["<a-m>"] = {
 							callback = function()
 								show_detail = not show_detail
@@ -1856,7 +1877,13 @@ require("lazy").setup({
 						["<a-s>"] = { "actions.change_sort", mode = "n" },
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 						["q"] = {
-							"actions.close",
+							callback = function()
+								local tab_id = find_tab_with_filetype("oil")
+								if tab_id == -1 then
+									return
+								end
+								vim.cmd(string.format("tabclose %s", tab_id))
+							end,
 							mode = "n",
 							desc = "Quit Oil.nvim panel",
 						},
