@@ -13,17 +13,19 @@ vim.filetype.add({
 	},
 })
 
+---@param filetype string A Nvim filetype
+---@return number
 local function find_tab_with_filetype(filetype)
-	for _, tabpage in ipairs(vim.api.nvim_list_tabpages()) do
-		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabpage)) do
+	for i, tab_id in ipairs(vim.api.nvim_list_tabpages()) do
+		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab_id)) do
 			local buf = vim.api.nvim_win_get_buf(win)
 			local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 			if buf_ft == filetype then
-				return tabpage
+				return i
 			end
 		end
 	end
-	return nil
+	return -1
 end
 
 local modes = { "n", "v", "c" }
@@ -1811,13 +1813,13 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
-						local tab_id = find_tab_with_filetype("oil")
-						if tab_id == -1 then
-							vim.api.nvim_set_current_tabpage(tab_id)
+						local tab_idx = find_tab_with_filetype("oil")
+						if tab_idx == -1 then
+							vim.cmd("tabnew | Oil .")
+							vim.cmd("leftabove vsplit | Oil .")
 							return
 						end
-						vim.cmd("tabnew | Oil .")
-						vim.cmd("leftabove vsplit | Oil .")
+						vim.api.nvim_set_current_tabpage(tab_idx)
 					end,
 					mode = { "n" },
 					noremap = true,
@@ -1878,11 +1880,11 @@ require("lazy").setup({
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
 						["q"] = {
 							callback = function()
-								local tab_id = find_tab_with_filetype("oil")
-								if tab_id == -1 then
+								local tab_idx = find_tab_with_filetype("oil")
+								if tab_idx == -1 then
 									return
 								end
-								vim.cmd(string.format("tabclose %s", tab_id))
+								vim.cmd(string.format("tabclose %s", tab_idx))
 							end,
 							mode = "n",
 							desc = "Quit Oil.nvim panel",
