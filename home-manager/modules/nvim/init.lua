@@ -840,6 +840,20 @@ require("lazy").setup({
 					pattern = "DiffviewDiffBufWinEnter",
 					callback = autocmd_callback,
 				})
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = "DiffviewFileHistory",
+					callback = function()
+						local tab_id = vim.api.nvim_get_current_tabpage()
+						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFileHistory")
+					end,
+				})
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = "DiffviewFiles",
+					callback = function()
+						local tab_id = vim.api.nvim_get_current_tabpage()
+						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFiles")
+					end,
+				})
 			end,
 		},
 		-- NOTE doesn't seems to be particularly useful. qa ... Q seems to be good enough for me
