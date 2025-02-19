@@ -324,7 +324,7 @@ require("lazy").setup({
 					min_keyword_length = function(ctx)
 						-- only applies when typing a command, doesn't apply to arguments
 						if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
-							return 4
+							return 3
 						end
 						return 0
 					end,
