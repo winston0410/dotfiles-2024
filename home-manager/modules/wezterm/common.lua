@@ -3,6 +3,7 @@ local wezterm = require("wezterm")
 local M = {}
 
 M.config = {
+	native_macos_fullscreen_mode = true,
 	initial_rows = 36,
 	initial_cols = 120,
 	default_prog = { "zsh" },
