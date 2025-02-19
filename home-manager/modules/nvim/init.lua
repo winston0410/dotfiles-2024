@@ -83,6 +83,11 @@ vim.keymap.set(modes, "<leader>th", "gT", {
 	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
 })
 vim.keymap.set(modes, "<leader>tq", "<cmd>tabclose<cr>", { silent = true, noremap = true, desc = "Close a tab" })
+for i = 1, 9 do
+	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
+		vim.cmd(string.format("tabn %s", i))
+	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
+end
 
 vim.keymap.set(
 	modes,
@@ -1693,7 +1698,8 @@ require("lazy").setup({
 							goto_previous_start = {},
 							goto_previous_end = {},
 							goto_previous = {
-								["[a"] = { query = "@assignment.outer", desc = "Jump to previous assignment" },
+								["[al"] = { query = "@assignment.lhs", desc = "Jump to previous assignment lhs" },
+								["[ar"] = { query = "@assignment.rhs", desc = "Jump to previous assignment rhs" },
 								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
 								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
 								["[k"] = { query = "@call.outer", desc = "Jump to previous call" },
@@ -1708,7 +1714,8 @@ require("lazy").setup({
 								["[r"] = { query = "@return.outer", desc = "Jump to previous return" },
 							},
 							goto_next = {
-								["]a"] = { query = "@assignment.outer", desc = "Jump to next assignment" },
+								["]al"] = { query = "@assignment.lhs", desc = "Jump to next assignment lhs" },
+								["]ar"] = { query = "@assignment.rhs", desc = "Jump to next assignment rhs" },
 								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
 								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
 								["]k"] = { query = "@call.outer", desc = "Jump to next call" },
@@ -1987,6 +1994,23 @@ require("lazy").setup({
 				local prettier = { "prettierd", "prettier", stop_after_first = true }
 				require("conform").setup({
 					formatters_by_ft = {
+						ember = {},
+						apex = {},
+						astro = {},
+						bibtex = {},
+						cuda = {},
+						foam = {},
+						fish = {},
+						glsl = {},
+						hack = {},
+						inko = {},
+						julia = {},
+						odin = {},
+						tact = {},
+						nasm = {},
+						slang = {},
+						perl = {},
+						wgsl = {},
 						html = prettier,
 						xml = prettier,
 						svg = prettier,
@@ -2002,6 +2026,7 @@ require("lazy").setup({
 						["typescript.jsx"] = prettier,
 						sh = { "shfmt" },
 						zsh = { "shfmt" },
+						bash = { "shfmt" },
 						markdown = prettier,
 						json = prettier,
 						jsonl = prettier,
