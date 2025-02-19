@@ -733,16 +733,17 @@ require("lazy").setup({
 					},
 					keymaps = {
 						disable_defaults = true,
+						-- the view for the changed files
 						view = {
 							{
 								"n",
-								"[c",
+								"[x",
 								actions.prev_conflict,
 								{ desc = "Jump to the previous conflict" },
 							},
 							{
 								"n",
-								"]c",
+								"]x",
 								actions.next_conflict,
 								{ desc = "Jump to the next conflict" },
 							},
@@ -757,6 +758,19 @@ require("lazy").setup({
 								"<s-tab>",
 								actions.select_prev_entry,
 								{ desc = "Open the diff for the previous file" },
+							},
+							-- TODO decide the right bindings, and apply it to all views
+							{
+								"n",
+								"<leader>ed",
+								actions.cycle_layout,
+								{ desc = "Cycle through available layouts." },
+							},
+							{
+								"n",
+								"<leader>ee",
+								actions.toggle_files,
+								{ desc = "Toggle the file panel." },
 							},
 						},
 						file_panel = {
@@ -774,13 +788,13 @@ require("lazy").setup({
 							},
 							{
 								"n",
-								"[c",
+								"[x",
 								actions.prev_conflict,
 								{ desc = "Jump to the previous conflict" },
 							},
 							{
 								"n",
-								"]c",
+								"]x",
 								actions.next_conflict,
 								{ desc = "Jump to the next conflict" },
 							},
@@ -829,12 +843,25 @@ require("lazy").setup({
 								{ desc = "Open the diff for the previous file" },
 							},
 						},
+						option_panel = {
+							{ "n", "<tab>", actions.select_entry, { desc = "Change the current option" } },
+							{ "n", "q", actions.close, { desc = "Close the panel" } },
+						},
+						help_panel = {
+							{ "n", "q", actions.close, { desc = "Close help menu" } },
+							{ "n", "<esc>", actions.close, { desc = "Close help menu" } },
+						},
 					},
 				})
 
 				local autocmd_callback = function(_)
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
+
+					require("which-key").add({
+						{ "[c", desc = "Jump to previous change", mode = "n" },
+						{ "]c", desc = "Jump to next change", mode = "n" },
+					})
 				end
 
 				vim.api.nvim_create_autocmd("User", {
