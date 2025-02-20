@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, isDarwin, ... }: {
+{ inputs, lib, config, pkgs, isDarwin, isWsl, ... }: {
   programs.git.enable = true;
   # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
@@ -16,8 +16,8 @@
     credential = {
       "https://forgejo.28281428.xyz" = { provider = "generic"; };
       credentialStore = "cache";
-      helper = if isDarwin then
-        [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ]
+      helper = if isWsl then
+        [ "/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager" ]
       else
         [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ];
     };
