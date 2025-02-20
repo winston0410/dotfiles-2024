@@ -611,7 +611,26 @@ require("lazy").setup({
 					sections = {
 						lualine_a = { "mode" },
 						lualine_b = { "branch" },
-						lualine_c = { "location", "encoding", "filesize" },
+						lualine_c = {
+							{
+								"location",
+								cond = function()
+									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+								end,
+							},
+							{
+								"encoding",
+								cond = function()
+									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+								end,
+							},
+							{
+								"filesize",
+								cond = function()
+									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+								end,
+							},
+						},
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {
@@ -625,6 +644,9 @@ require("lazy").setup({
 									hint = HINT_ICON,
 								},
 								color = { bg = colors.bg_statusline },
+								cond = function()
+									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+								end,
 							},
 							{
 								function()
