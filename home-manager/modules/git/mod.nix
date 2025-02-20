@@ -17,7 +17,7 @@
       "https://forgejo.28281428.xyz" = { provider = "generic"; };
       credentialStore = "cache";
       helper = if isWsl then
-        [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager" ]
+        [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe" ]
       else
         [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ];
     };
