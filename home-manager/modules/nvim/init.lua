@@ -1257,7 +1257,7 @@ require("lazy").setup({
 		},
 		{
 			"mistweaverco/kulala.nvim",
-			version = "4.10.0",
+			version = "4.11.0",
 			ft = { "http", "rest" },
 			opts = {
 				curl_path = "curl",
