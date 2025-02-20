@@ -9,7 +9,7 @@
     # Not working with Python at the moment
     just
     kulala-fmt
-    black
+    ruff
     rustfmt
     prettierd
     yamlfmt

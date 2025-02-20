@@ -2078,7 +2078,13 @@ require("lazy").setup({
 						toml = { "taplo" },
 						lua = { "stylua" },
 						teal = { "stylua" },
-						python = { "black" },
+						python = function(bufnr)
+							if require("conform").get_formatter_info("ruff_format", bufnr).available then
+								return { "ruff_format" }
+							else
+								return { "isort", "black" }
+							end
+						end,
 						rust = { "rustfmt", lsp_format = "fallback" },
 						go = { "goimports", "gofmt" },
 						nix = { "nixfmt" },
