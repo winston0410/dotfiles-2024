@@ -491,32 +491,26 @@ require("lazy").setup({
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
 				local colors = require("tokyonight.colors").setup()
+
+				local utility_filetypes = {
+					"oil",
+					"trouble",
+					"qf",
+					"DiffviewFileHistory",
+					"DiffviewFiles",
+					"snacks_dashboard",
+					"NeogitStatus",
+					"NeogitLogView",
+					"NeogitDiffView",
+				}
 				require("lualine").setup({
 					options = {
 						theme = "tokyonight",
 						component_separators = "",
 						section_separators = "",
 						disabled_filetypes = {
-							winbar = {
-								"trouble",
-								"qf",
-								"DiffviewFileHistory",
-								"DiffviewFiles",
-								"snacks_dashboard",
-								"NeogitStatus",
-								"NeogitLogView",
-								"NeogitDiffView",
-							},
-							inactive_winbar = {
-								"trouble",
-								"qf",
-								"DiffviewFileHistory",
-								"DiffviewFiles",
-								"snacks_dashboard",
-								"NeogitStatus",
-								"NeogitLogView",
-								"NeogitDiffView",
-							},
+							winbar = utility_filetypes,
+							inactive_winbar = utility_filetypes,
 						},
 						always_show_tabline = false,
 						globalstatus = true,
@@ -568,9 +562,6 @@ require("lazy").setup({
 								icon_only = true,
 								icon = { align = "left" },
 								padding = { left = 1, right = 0 },
-								cond = function()
-									return vim.bo.filetype ~= "oil"
-								end,
 							},
 							{
 								"filename",
@@ -579,9 +570,6 @@ require("lazy").setup({
 								-- color = { fg = colors.fg, bg = colors.bg_statusline },
 								color = "TabLineFill",
 								padding = 0,
-								cond = function()
-									return vim.bo.filetype ~= "oil"
-								end,
 							},
 						},
 						lualine_x = {},
@@ -598,9 +586,6 @@ require("lazy").setup({
 								icon_only = true,
 								icon = { align = "left" },
 								padding = { left = 1, right = 0 },
-								cond = function()
-									return vim.bo.filetype ~= "oil"
-								end,
 							},
 							{
 								"filename",
@@ -609,9 +594,6 @@ require("lazy").setup({
 								-- color = { fg = colors.fg, bg = colors.bg_statusline },
 								color = "TabLine",
 								padding = 0,
-								cond = function()
-									return vim.bo.filetype ~= "oil"
-								end,
 							},
 						},
 						lualine_x = {},
@@ -660,12 +642,20 @@ require("lazy").setup({
 										return " LSP:" .. client_count .. " " .. table.concat(client_names, " ")
 									end
 								end,
+								cond = function()
+									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+								end,
 								color = { fg = colors.fg, bg = colors.bg_statusline },
 							},
 						},
 					},
 				})
 			end,
+		},
+		{
+			"nvzone/minty",
+			enabled = false,
+			cmd = { "Shades", "Huefy" },
 		},
 		-- Doesn't seems to be useful now, as it does not support winbar. bufferline will only work in the first split, when split or vsplit is being used.
 		{
@@ -1854,7 +1844,12 @@ require("lazy").setup({
 					watch_for_changes = true,
 					keymaps = {
 						-- NOTE disable these bindings for now, so we force ourselves to go back to the original tab to open those files, and only use oil.nvim for manipulating files
-						["<CR>"] = { "actions.select", mode = "n", opts = { close = false }, desc = "Select a file" },
+						["<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, tab = true },
+							desc = "Select a file",
+						},
 						-- ["<leader>t<CR>"] = {
 						-- 	"actions.select",
 						-- 	mode = "n",
@@ -2527,4 +2522,19 @@ vim.api.nvim_create_autocmd("LspProgress", {
 		})
 	end,
 })
+-- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
+if vim.fn.has("wsl") == 1 then
+	vim.g.clipboard = {
+		name = "WslClipboard",
+		copy = {
+			["+"] = "clip.exe",
+			["*"] = "clip.exe",
+		},
+		paste = {
+			["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+			["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+		},
+		cache_enabled = 0,
+	}
+end
 -- TODO how can I always open helpfiles in a tab?

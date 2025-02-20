@@ -1,13 +1,14 @@
 { inputs, lib, config, pkgs, ... }: {
-  imports = [ ./common.nix ];
+  imports = [ ./common.nix ./modules/font/mod.nix ];
 
-  home.packages = with pkgs; [
-    # No clipboard provider in WSL
-    yank
-    (nerdfonts.override { fonts = [ "0xProto" ]; })
-  ];
+  home.packages = with pkgs; [ ];
   home = {
     username = "hugosum";
     homeDirectory = "/home/hugosum";
   };
+
+  # REF https://superuser.com/a/1368878
+  home.sessionVariables = { BROWSER = "wslview"; };
+
+  fonts.fontconfig.enable = lib.mkForce false;
 }

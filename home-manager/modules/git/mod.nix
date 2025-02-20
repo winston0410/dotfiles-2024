@@ -15,6 +15,7 @@
     };
     credential = {
       "https://forgejo.28281428.xyz" = { provider = "generic"; };
+      # REF https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md#credentialcredentialstore
       credentialStore = "cache";
       helper = if isWsl then
         [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe" ]
