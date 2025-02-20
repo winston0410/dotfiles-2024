@@ -506,16 +506,16 @@ require("lazy").setup({
 						section_separators = "",
 						disabled_filetypes = {
 							winbar = {
-								"trouble",
 								"oil",
+								"trouble",
 								"qf",
 								"DiffviewFileHistory",
 								"DiffviewFiles",
 								"snacks_dashboard",
 							},
 							inactive_winbar = {
-								"trouble",
 								"oil",
+								"trouble",
 								"qf",
 								"DiffviewFileHistory",
 								"DiffviewFiles",
@@ -670,19 +670,20 @@ require("lazy").setup({
 			end,
 		},
 		-- Doesn't seems to be useful now, as it does not support winbar. bufferline will only work in the first split, when split or vsplit is being used.
-		-- {
-		-- 	"akinsho/bufferline.nvim",
-		-- 	commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
-		-- 	dependencies = "nvim-tree/nvim-web-devicons",
-		-- 	config = function()
-		-- 		require("bufferline").setup({
-		-- 			options = {
-		-- 				modified_icon = "󰧞",
-		-- 				close_icon = "",
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- },
+		{
+			"akinsho/bufferline.nvim",
+			commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
+			dependencies = "nvim-tree/nvim-web-devicons",
+			enabled = false,
+			config = function()
+				require("bufferline").setup({
+					options = {
+						modified_icon = "󰧞",
+						close_icon = "",
+					},
+				})
+			end,
+		},
 		{
 			"sindrets/diffview.nvim",
 			cmd = {
@@ -928,6 +929,7 @@ require("lazy").setup({
 			opts = {
 				disable_hint = true,
 				disable_commit_confirmation = true,
+				graph_style = "unicode",
 				kind = "tab",
 				integrations = {
 					diffview = true,
@@ -1873,6 +1875,7 @@ require("lazy").setup({
 						-- 	opts = { close = false, horizontal = true },
 						-- 	desc = "Select a file and open in a horizontal split",
 						-- },
+						["~"] = { "actions.cd", mode = "n", desc = "Change current directory of NeoVim" },
 						["<a-m>"] = {
 							callback = function()
 								show_detail = not show_detail
