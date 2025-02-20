@@ -346,6 +346,18 @@ require("lazy").setup({
 				},
 			},
 		},
+		{
+			"xemptuous/sqlua.nvim",
+			cmd = "SQLua",
+			config = function()
+				require("sqlua").setup({
+					keybinds = {
+						execute_query = "<cr>",
+						activate_db = "<cr>",
+					},
+				})
+			end,
+		},
 		-- {
 		-- 	"folke/persistence.nvim",
 		-- 	version = "3.1.0",

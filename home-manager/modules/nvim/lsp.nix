@@ -19,7 +19,7 @@
     pkgs.terraform-ls
     pkgs.solargraph
     pkgs.metals
-    pkgs.nodePackages.vscode-langservers-extracted
+    pkgs.vscode-langservers-extracted
     pkgs.lua-language-server
     unstable.deno
     pkgs.jsonnet-language-server
