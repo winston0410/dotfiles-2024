@@ -410,14 +410,6 @@ require("lazy").setup({
 		-- 	},
 		-- },
 		{
-			{
-				"linrongbin16/lsp-progress.nvim",
-				version = "1.0.13",
-				event = { "BufReadPre", "BufNewFile" },
-				opts = {},
-			},
-		},
-		{
 			"yorickpeterse/nvim-window",
 			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
 			keys = {
@@ -654,29 +646,19 @@ require("lazy").setup({
 							},
 							{
 								function()
-									return require("lsp-progress").progress({
-										format = function(messages)
-											local active_clients = vim.lsp.get_clients()
-											local client_count = #active_clients
-											if #messages > 0 then
-												return " LSP:" .. client_count .. " " .. table.concat(messages, " ")
+									local active_clients = vim.lsp.get_clients()
+									local client_count = #active_clients
+									if #active_clients <= 0 then
+										return " LSP:" .. client_count
+									else
+										local client_names = {}
+										for _, client in ipairs(active_clients) do
+											if client and client.name ~= "" then
+												table.insert(client_names, "[" .. client.name .. "]")
 											end
-											if #active_clients <= 0 then
-												return " LSP:" .. client_count
-											else
-												local client_names = {}
-												for _, client in ipairs(active_clients) do
-													if client and client.name ~= "" then
-														table.insert(client_names, "[" .. client.name .. "]")
-													end
-												end
-												return " LSP:"
-													.. client_count
-													.. " "
-													.. table.concat(client_names, " ")
-											end
-										end,
-									})
+										end
+										return " LSP:" .. client_count .. " " .. table.concat(client_names, " ")
+									end
 								end,
 								color = { fg = colors.fg, bg = colors.bg_statusline },
 							},
@@ -689,7 +671,7 @@ require("lazy").setup({
 		{
 			"akinsho/bufferline.nvim",
 			commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
-			dependencies = "nvim-tree/nvim-web-devicons",
+			dependencies = { "nvim-tree/nvim-web-devicons" },
 			enabled = false,
 			config = function()
 				require("bufferline").setup({
@@ -2502,5 +2484,47 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		})
 	end,
 })
+---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+local progress = vim.defaulttable()
+vim.api.nvim_create_autocmd("LspProgress", {
+	---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+		if not client or type(value) ~= "table" then
+			return
+		end
+		local p = progress[client.id]
 
+		for i = 1, #p + 1 do
+			if i == #p + 1 or p[i].token == ev.data.params.token then
+				p[i] = {
+					token = ev.data.params.token,
+					msg = ("[%3d%%] %s%s"):format(
+						value.kind == "end" and 100 or value.percentage or 100,
+						value.title or "",
+						value.message and (" **%s**"):format(value.message) or ""
+					),
+					done = value.kind == "end",
+				}
+				break
+			end
+		end
+
+		local msg = {} ---@type string[]
+		progress[client.id] = vim.tbl_filter(function(v)
+			return table.insert(msg, v.msg) or not v.done
+		end, p)
+
+		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+		vim.notify(table.concat(msg, "\n"), "info", {
+			id = "lsp_progress",
+			title = client.name,
+			opts = function(notif)
+				notif.icon = #progress[client.id] == 0 and " "
+					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+			end,
+		})
+	end,
+})
 -- TODO how can I always open helpfiles in a tab?
