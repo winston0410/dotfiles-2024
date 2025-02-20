@@ -506,20 +506,24 @@ require("lazy").setup({
 						section_separators = "",
 						disabled_filetypes = {
 							winbar = {
-								"oil",
 								"trouble",
 								"qf",
 								"DiffviewFileHistory",
 								"DiffviewFiles",
 								"snacks_dashboard",
+								"NeogitStatus",
+								"NeogitLogView",
+								"NeogitDiffView",
 							},
 							inactive_winbar = {
-								"oil",
 								"trouble",
 								"qf",
 								"DiffviewFileHistory",
 								"DiffviewFiles",
 								"snacks_dashboard",
+								"NeogitStatus",
+								"NeogitLogView",
+								"NeogitDiffView",
 							},
 						},
 						always_show_tabline = false,
@@ -572,6 +576,9 @@ require("lazy").setup({
 								icon_only = true,
 								icon = { align = "left" },
 								padding = { left = 1, right = 0 },
+								cond = function()
+									return vim.bo.filetype ~= "oil"
+								end,
 							},
 							{
 								"filename",
@@ -580,6 +587,9 @@ require("lazy").setup({
 								-- color = { fg = colors.fg, bg = colors.bg_statusline },
 								color = "TabLineFill",
 								padding = 0,
+								cond = function()
+									return vim.bo.filetype ~= "oil"
+								end,
 							},
 						},
 						lualine_x = {},
@@ -596,6 +606,9 @@ require("lazy").setup({
 								icon_only = true,
 								icon = { align = "left" },
 								padding = { left = 1, right = 0 },
+								cond = function()
+									return vim.bo.filetype ~= "oil"
+								end,
 							},
 							{
 								"filename",
@@ -604,6 +617,9 @@ require("lazy").setup({
 								-- color = { fg = colors.fg, bg = colors.bg_statusline },
 								color = "TabLine",
 								padding = 0,
+								cond = function()
+									return vim.bo.filetype ~= "oil"
+								end,
 							},
 						},
 						lualine_x = {},
