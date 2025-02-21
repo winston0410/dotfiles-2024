@@ -1314,6 +1314,16 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
+					"<leader>fgh",
+					function()
+						Snacks.picker.git_diff()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search Git Hunks",
+				},
+				{
 					"<leader>ghf",
 					function()
 						Snacks.picker.git_diff()
@@ -1465,6 +1475,12 @@ require("lazy").setup({
 					picker = {
 						enabled = true,
 						ui_select = true,
+						layout = {
+							cycle = true,
+							preset = function()
+								return vim.o.columns >= 120 and "default" or "vertical"
+							end,
+						},
 						win = {
 							input = {
 								keys = pickerKeys,
@@ -1708,6 +1724,11 @@ require("lazy").setup({
 				pcall(function()
 					vim.keymap.del({ "n", "v" }, "x")
 				end)
+				local previous_function_outer_binding = "[f"
+				local next_function_outer_binding = "]f"
+				local previous_call_outer_binding = "[k"
+				local next_call_outer_binding = "]k"
+
 				require("nvim-treesitter.configs").setup({
 					ensure_installed = "all",
 					auto_install = false,
@@ -1755,8 +1776,14 @@ require("lazy").setup({
 								["[ar"] = { query = "@assignment.rhs", desc = "Jump to previous assignment rhs" },
 								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
 								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
-								["[k"] = { query = "@call.outer", desc = "Jump to previous call" },
-								["[f"] = { query = "@function.outer", desc = "Jump to previous function" },
+								[previous_call_outer_binding] = {
+									query = "@call.outer",
+									desc = "Jump to previous call",
+								},
+								[previous_function_outer_binding] = {
+									query = "@function.outer",
+									desc = "Jump to previous function",
+								},
 								["[i"] = { query = "@conditional.outer", desc = "Jump to previous conditional" },
 								["[s"] = {
 									query = "@local.scope",
@@ -1771,8 +1798,11 @@ require("lazy").setup({
 								["]ar"] = { query = "@assignment.rhs", desc = "Jump to next assignment rhs" },
 								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
 								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
-								["]k"] = { query = "@call.outer", desc = "Jump to next call" },
-								["]f"] = { query = "@function.outer", desc = "Jump to next function" },
+								[next_call_outer_binding] = { query = "@call.outer", desc = "Jump to next call" },
+								[next_function_outer_binding] = {
+									query = "@function.outer",
+									desc = "Jump to next function",
+								},
 								["]i"] = { query = "@conditional.outer", desc = "Jump to next conditional" },
 								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
 								["]p"] = { query = "@parameter.outer", desc = "Jump to next parameter" },
@@ -1780,6 +1810,47 @@ require("lazy").setup({
 							},
 						},
 					},
+				})
+				vim.api.nvim_create_autocmd("CursorHold", {
+					pattern = "*",
+					callback = function(ev)
+						local ft = vim.bo.filetype
+						local query = vim.treesitter.query.get(ft, "textobjects")
+
+						if query == nil then
+							return
+						end
+
+						local treesitter_textobjects_modes = { "n", "x", "o" }
+						local del_desc = "Not available in this language"
+
+						pcall(function()
+							if not vim.list_contains(query.captures, "function.outer") then
+								vim.keymap.del(
+									treesitter_textobjects_modes,
+									previous_function_outer_binding,
+									{ buffer = ev.buf, desc = del_desc }
+								)
+								vim.keymap.del(
+									treesitter_textobjects_modes,
+									next_function_outer_binding,
+									{ buffer = ev.buf, desc = del_desc }
+								)
+							end
+							if not vim.list_contains(query.captures, "call.outer") then
+								vim.keymap.del(
+									treesitter_textobjects_modes,
+									previous_call_outer_binding,
+									{ buffer = ev.buf, desc = del_desc }
+								)
+								vim.keymap.del(
+									treesitter_textobjects_modes,
+									next_call_outer_binding,
+									{ buffer = ev.buf, desc = del_desc }
+								)
+							end
+						end)
+					end,
 				})
 			end,
 		},
@@ -1871,7 +1942,7 @@ require("lazy").setup({
 						["<CR>"] = {
 							"actions.select",
 							mode = "n",
-							opts = { close = false, tab = true },
+							opts = { close = false },
 							desc = "Select a file",
 						},
 						-- ["<leader>t<CR>"] = {
