@@ -1,4 +1,4 @@
-{ inputs, unstable, lib, config, pkgs, system, isDarwin, ... }: {
+{ inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
   in [
     pkgs.csharp-ls
@@ -79,26 +79,5 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ]
-  ++ (if !isDarwin then
-    [
-      # FIXME cannot build correctly on Darwin and Linux yet
-      # (pkgs.buildNpmPackage rec {
-      #   pname = "@mistweaverco/kulala-ls";
-      #   version = "1.3.0";
-      #
-      #   src = pkgs.fetchFromGitHub {
-      #     owner = "mistweaverco";
-      #     repo = "kulala-ls";
-      #     rev = "v${version}";
-      #     hash = "sha256-IavvGIBUPnPRlHbyaJbkUuXQXKEEzv/SKY0Ii2eLDNs=";
-      #   };
-      #
-      #   nativeBuildInputs = [ pkgs.python3 pkgs.libtool pkgs.cacert ];
-      #
-      #   npmDepsHash = "sha256-/6JZYsIYDJHS/8TOPjtR/SrRbzTbL43X0g/tPIn2YfQ=";
-      # })
-    ]
-  else
-    [ ]);
+  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
 }
