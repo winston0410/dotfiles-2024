@@ -1,8 +1,8 @@
-{ inputs, lib, config, pkgs, isDarwin, ... }: {
+{ inputs, lib, config, pkgs, ... }: {
   xdg.enable = true;
-  xdg.mime.enable = !isDarwin;
+  xdg.mime.enable = true;
   xdg.mimeApps = {
-    enable = !isDarwin;
+    enable = true;
     associations.added = {
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
@@ -38,7 +38,7 @@
     };
   };
   xdg.userDirs = {
-    enable = !isDarwin;
+    enable = true;
     desktop = "${config.home.homeDirectory}/Desktop";
     download = "${config.home.homeDirectory}/Downloads";
     documents = "${config.home.homeDirectory}/Documents";
@@ -52,9 +52,7 @@
     };
   };
 
-  xdg.desktopEntries = if isDarwin then
-    { }
-  else {
+  xdg.desktopEntries = {
     nvim = {
       name = "Neovim";
       exec = "wezterm start -- nvim %F";

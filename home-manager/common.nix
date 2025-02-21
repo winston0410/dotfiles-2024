@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, unstable, system, isDarwin, ... }: {
+{ inputs, lib, config, pkgs, unstable, system, ... }: {
   imports = [
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
@@ -22,7 +22,7 @@
   nix.package = pkgs.nix;
   nix.enable = true;
   nix.settings.trusted-users = [ "@wheel" ];
-  nix.settings.use-xdg-base-directories = !isDarwin;
+  nix.settings.use-xdg-base-directories = true;
   nix.settings.experimental-features =
     [ "nix-command" "flakes" "pipe-operators" ];
   nix.settings.auto-optimise-store = true;

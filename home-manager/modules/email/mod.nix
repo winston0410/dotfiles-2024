@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, isDarwin, ... }: {
+{ inputs, lib, config, pkgs, system, ... }: {
   # TODO https://github.com/nix-community/home-manager/issues/3019
   # Automate this in the future
   # home.packages = with pkgs;
