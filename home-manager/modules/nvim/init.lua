@@ -1429,6 +1429,7 @@ require("lazy").setup({
 				local config_dir = vim.fn.stdpath("config")
 				---@cast config_dir string
 				require("snacks").setup({
+					toggle = { enabled = true },
 					gitbrowse = { enabled = true },
 					bigfile = { enabled = true },
 					-- dim
