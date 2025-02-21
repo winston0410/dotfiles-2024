@@ -1,7 +1,7 @@
 { inputs, lib, config, pkgs, ... }: {
   imports = [ ./common.nix ./modules/font/mod.nix ];
 
-  home.packages = with pkgs; [ ];
+  home.packages = with pkgs; [ wslu ];
   home = {
     username = "hugosum";
     homeDirectory = "/home/hugosum";
