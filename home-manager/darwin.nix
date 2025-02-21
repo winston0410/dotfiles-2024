@@ -5,6 +5,16 @@
     extra-trusted-users = "hugosum";
     builders-use-substitutes = true;
   };
+  xdg.configFile = {
+    "wezterm/wezterm.lua" = {
+      source = lib.mkForce ./modules/wezterm/darwin.lua;
+    };
+  };
+  programs.zsh.initExtra = lib.mkBefore (''
+    export PATH="$PATH:/opt/homebrew/bin";
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
+    source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
+  '');
 
   home = {
     username = "hugosum";

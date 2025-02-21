@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, isDarwin, ... }: {
+{ inputs, lib, config, pkgs, system, ... }: {
   home.packages = with pkgs; [ ];
   programs.zsh = {
     enable = true;
@@ -25,27 +25,18 @@
         }
       ];
     };
-    initExtra = let
-      linuxInit = ''
-        source "$HOME/.config/fzf/fzf-color.sh"
-        bindkey '^P' up-line-or-history;
-        bindkey '^N' down-line-or-history;
+    initExtra = ''
+      source "$HOME/.config/fzf/fzf-color.sh"
+      bindkey '^P' up-line-or-history;
+      bindkey '^N' down-line-or-history;
 
-        # Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
-        # REF https://unix.stackexchange.com/a/290403
-        bindkey -v '^?' backward-delete-char
+      # Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
+      # REF https://unix.stackexchange.com/a/290403
+      bindkey -v '^?' backward-delete-char
 
-        KEYTIMEOUT=1;
-        unsetopt share_history;
-      '';
-    in if isDarwin then
-      ''
-        export PATH="$PATH:/opt/homebrew/bin";
-        source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
-        source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
-      '' + linuxInit
-    else
-      linuxInit;
+      KEYTIMEOUT=1;
+      unsetopt share_history;
+    '';
   };
   home.sessionVariables = {
     ZPLUG_HOME = config.programs.zsh.zplug.zplugHome;

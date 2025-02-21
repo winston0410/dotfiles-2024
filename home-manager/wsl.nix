@@ -13,4 +13,10 @@
   fonts.fontconfig.enable = lib.mkForce false;
   programs.git.extraConfig.credential.helper = lib.mkForce
     [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe" ];
+  xdg.mime.enable = lib.mkForce false;
+  xdg.mimeApps.enable = lib.mkForce false;
+  xdg.userDirs.enable = lib.mkForce false;
+  xdg.desktopEntries = lib.mkForce { };
+
+  nix.settings.use-xdg-base-directories = lib.mkForce false;
 }
