@@ -75,7 +75,6 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             isDarwin = lib.strings.hasInfix "darwin" darwinArmSystem;
-            isWsl = false;
             system = darwinArmSystem;
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
@@ -89,7 +88,6 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             isDarwin = lib.strings.hasInfix "darwin" linuxAmdSystem;
-            isWsl = false;
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
           };
@@ -103,7 +101,6 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             isDarwin = lib.strings.hasInfix "darwin" linuxAmdSystem;
-            isWsl = true;
             system = linuxAmdSystem;
             unstable = unstable.legacyPackages.x86_64-linux;
           };
