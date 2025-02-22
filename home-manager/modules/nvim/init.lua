@@ -1,5 +1,9 @@
 -- Use space as leader key
 vim.g.mapleader = " "
+-- Need to find plugin to improve mouse experience, to create something like vscode
+-- FIXME vim.opt is overriding value in vim.o. This is likely a bug in Neovim
+vim.o.mouse = "a"
+vim.o.mousefocus = true
 
 local ERROR_ICON = " "
 local WARNING_ICON = " "
@@ -50,7 +54,6 @@ vim.keymap.set(modes, "Y", "y$", {
 	noremap = true,
 	desc = "Yanks from the cursor position to the end of the line.",
 })
-vim.keymap.set({ "i", "n", "v" }, "<Char-0xAE>", "<C-r>", { silent = true, noremap = true, desc = "Redo" })
 
 vim.keymap.set(
 	modes,
@@ -139,7 +142,6 @@ local global_options = {
 	{ "encoding", "UTF-8" },
 	{ "fileencoding", "UTF-8" },
 	{ "termguicolors", true },
-	{ "mouse", "nvic" },
 	{ "timeoutlen", 400 },
 	{ "ttimeoutlen", 0 },
 	{ "updatetime", 300 },
@@ -1049,9 +1051,11 @@ require("lazy").setup({
 				delete_check_events = "TextChanged",
 			},
 		},
+		-- NOTE not sure if we need this
 		{
 			"mrjones2014/smart-splits.nvim",
 			version = "1.7.0",
+			enabled = false,
 			keys = {
 				{
 					"<leader>wL",
