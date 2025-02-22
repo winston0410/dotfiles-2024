@@ -1729,6 +1729,39 @@ require("lazy").setup({
 				pcall(function()
 					vim.keymap.del({ "n", "v" }, "x")
 				end)
+				vim.keymap.set({ "n", "v" }, "%", function()
+					local bufnr = vim.api.nvim_get_current_buf()
+					local cur_row, cur_col = unpack(vim.api.nvim_win_get_cursor(0))
+					local node = vim.treesitter.get_node({
+						bufnr,
+						pos = { cur_row, cur_col },
+					})
+
+					if node == nil then
+						vim.notify("No Treesitter node found at cursor position", vim.log.levels.WARN)
+						return
+					end
+					local start_row, start_col, end_row, end_col = node:range()
+					-- decide which position is further away from current cursor position, and jump to there
+					-- simple algo, row is always compared before column
+					local start_row_diff = math.abs(cur_row - start_row)
+					local end_row_diff = math.abs(end_row - cur_row)
+
+					local target_row = start_row
+					local target_col = start_col
+
+					if end_row_diff == start_row_diff then
+						if math.abs(end_col - cur_col) >= math.abs(cur_col - start_col) then
+							target_row = end_row
+							target_col = end_col
+						end
+					else
+						target_row = end_row
+						target_col = end_col
+					end
+					vim.print("target is", target_row, target_col)
+					vim.api.nvim_win_set_cursor(0, { target_row, target_col })
+				end, { silent = true, noremap = true, desc = "Jump between beginning and end of the node" })
 
 				local function_outer_binding = { "[f", "]f" }
 				local call_outer_binding = { "[k", "]k" }
