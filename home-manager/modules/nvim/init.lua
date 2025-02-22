@@ -1721,17 +1721,16 @@ require("lazy").setup({
 					filetype = "make",
 					used_by = { "make" },
 				}
+				-- NOTE not sure why we need to do that
 				pcall(function()
 					vim.keymap.del({ "n", "v" }, "x")
 				end)
-				local previous_function_outer_binding = "[f"
-				local next_function_outer_binding = "]f"
-				local previous_call_outer_binding = "[k"
-				local next_call_outer_binding = "]k"
-				local previous_parameter_outer_binding = "[p"
-				local next_parameter_outer_binding = "]p"
-				local previous_return_outer_binding = "[r"
-				local next_return_outer_binding = "]r"
+
+				local function_outer_binding = { "[f", "]f" }
+				local call_outer_binding = { "[k", "]k" }
+				local parameter_inner_binding = { "[p", "]p" }
+				local return_outer_binding = { "[r", "]r" }
+				local conditional_outer_binding = { "[i", "]i" }
 
 				require("nvim-treesitter.configs").setup({
 					ensure_installed = "all",
@@ -1780,25 +1779,28 @@ require("lazy").setup({
 								["[ar"] = { query = "@assignment.rhs", desc = "Jump to previous assignment rhs" },
 								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
 								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
-								[previous_call_outer_binding] = {
+								[call_outer_binding[1]] = {
 									query = "@call.outer",
 									desc = "Jump to previous call",
 								},
-								[previous_function_outer_binding] = {
+								[function_outer_binding[1]] = {
 									query = "@function.outer",
 									desc = "Jump to previous function",
 								},
-								["[i"] = { query = "@conditional.outer", desc = "Jump to previous conditional" },
+								[conditional_outer_binding[1]] = {
+									query = "@conditional.outer",
+									desc = "Jump to previous conditional",
+								},
 								["[s"] = {
 									query = "@local.scope",
 									query_group = "locals",
 									desc = "Jump to previous scope",
 								},
-								[previous_parameter_outer_binding] = {
-									query = "@parameter.outer",
+								[parameter_inner_binding[1]] = {
+									query = "@parameter.inner",
 									desc = "Jump to previous parameter",
 								},
-								[previous_return_outer_binding] = {
+								[return_outer_binding[1]] = {
 									query = "@return.outer",
 									desc = "Jump to previous return",
 								},
@@ -1808,18 +1810,21 @@ require("lazy").setup({
 								["]ar"] = { query = "@assignment.rhs", desc = "Jump to next assignment rhs" },
 								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
 								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
-								[next_call_outer_binding] = { query = "@call.outer", desc = "Jump to next call" },
-								[next_function_outer_binding] = {
+								[call_outer_binding[2]] = { query = "@call.outer", desc = "Jump to next call" },
+								[function_outer_binding[2]] = {
 									query = "@function.outer",
 									desc = "Jump to next function",
 								},
-								["]i"] = { query = "@conditional.outer", desc = "Jump to next conditional" },
+								[conditional_outer_binding[2]] = {
+									query = "@conditional.outer",
+									desc = "Jump to next conditional",
+								},
 								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
-								[next_parameter_outer_binding] = {
-									query = "@parameter.outer",
+								[parameter_inner_binding[2]] = {
+									query = "@parameter.inner",
 									desc = "Jump to next parameter",
 								},
-								[next_return_outer_binding] = { query = "@return.outer", desc = "Jump to next return" },
+								[return_outer_binding[2]] = { query = "@return.outer", desc = "Jump to next return" },
 							},
 						},
 					},
@@ -1829,6 +1834,7 @@ require("lazy").setup({
 					callback = function(ev)
 						local ft = vim.bo.filetype
 						local query = vim.treesitter.query.get(ft, "textobjects")
+						-- vim.print(query)
 
 						if query == nil then
 							return
@@ -1839,52 +1845,50 @@ require("lazy").setup({
 
 						pcall(function()
 							if not vim.list_contains(query.captures, "function.outer") then
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									previous_function_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									next_function_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
+								for _, lhs in ipairs(function_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
 							end
 							if not vim.list_contains(query.captures, "call.outer") then
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									previous_call_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									next_call_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
+								for _, lhs in ipairs(call_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
 							end
-							if not vim.list_contains(query.captures, "parameter.outer") then
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									previous_parameter_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									next_parameter_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
+							if not vim.list_contains(query.captures, "parameter.inner") then
+								for _, lhs in ipairs(parameter_inner_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
 							end
 							if not vim.list_contains(query.captures, "return.outer") then
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									previous_return_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
-								vim.keymap.del(
-									treesitter_textobjects_modes,
-									next_return_outer_binding,
-									{ buffer = ev.buf, desc = del_desc }
-								)
+								for _, lhs in ipairs(return_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
+							end
+
+							if not vim.list_contains(query.captures, "conditional.outer") then
+								for _, lhs in ipairs(conditional_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
 							end
 						end)
 					end,
