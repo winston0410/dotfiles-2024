@@ -1442,7 +1442,7 @@ require("lazy").setup({
 				require("snacks").setup({
 					toggle = { enabled = true },
 					gitbrowse = { enabled = true },
-					bigfile = { enabled = true },
+					bigfile = { enabled = false },
 					-- dim
 					image = { enabled = true },
 					dashboard = {
@@ -1491,7 +1491,7 @@ require("lazy").setup({
 						},
 					},
 					scroll = {
-						enabled = false,
+						enabled = true,
 					},
 					input = {
 						enabled = true,
@@ -1731,6 +1731,9 @@ require("lazy").setup({
 				local parameter_inner_binding = { "[p", "]p" }
 				local return_outer_binding = { "[r", "]r" }
 				local conditional_outer_binding = { "[i", "]i" }
+				local assignment_lhs_outer_binding = { "[al", "]al" }
+				local assignment_rhs_outer_binding = { "[ar", "]ar" }
+				local block_outer_binding = { "[b", "]b" }
 
 				require("nvim-treesitter.configs").setup({
 					ensure_installed = "all",
@@ -1770,14 +1773,20 @@ require("lazy").setup({
 						move = {
 							enable = true,
 							set_jumps = true,
-							goto_next_start = {},
+							goto_next = {},
 							goto_next_end = {},
-							goto_previous_start = {},
+							goto_previous = {},
 							goto_previous_end = {},
-							goto_previous = {
-								["[al"] = { query = "@assignment.lhs", desc = "Jump to previous assignment lhs" },
-								["[ar"] = { query = "@assignment.rhs", desc = "Jump to previous assignment rhs" },
-								["[b"] = { query = "@block.outer", desc = "Jump to previous block" },
+							goto_previous_start = {
+								[assignment_lhs_outer_binding[1]] = {
+									query = "@assignment.lhs",
+									desc = "Jump to previous assignment lhs",
+								},
+								[assignment_rhs_outer_binding[1]] = {
+									query = "@assignment.rhs",
+									desc = "Jump to previous assignment rhs",
+								},
+								[block_outer_binding[1]] = { query = "@block.outer", desc = "Jump to previous block" },
 								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
 								[call_outer_binding[1]] = {
 									query = "@call.outer",
@@ -1791,11 +1800,6 @@ require("lazy").setup({
 									query = "@conditional.outer",
 									desc = "Jump to previous conditional",
 								},
-								["[s"] = {
-									query = "@local.scope",
-									query_group = "locals",
-									desc = "Jump to previous scope",
-								},
 								[parameter_inner_binding[1]] = {
 									query = "@parameter.inner",
 									desc = "Jump to previous parameter",
@@ -1805,10 +1809,16 @@ require("lazy").setup({
 									desc = "Jump to previous return",
 								},
 							},
-							goto_next = {
-								["]al"] = { query = "@assignment.lhs", desc = "Jump to next assignment lhs" },
-								["]ar"] = { query = "@assignment.rhs", desc = "Jump to next assignment rhs" },
-								["]b"] = { query = "@block.outer", desc = "Jump to next block" },
+							goto_next_start = {
+								[assignment_lhs_outer_binding[2]] = {
+									query = "@assignment.lhs",
+									desc = "Jump to next assignment lhs",
+								},
+								[assignment_rhs_outer_binding[2]] = {
+									query = "@assignment.rhs",
+									desc = "Jump to next assignment rhs",
+								},
+								[block_outer_binding[2]] = { query = "@block.outer", desc = "Jump to next block" },
 								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
 								[call_outer_binding[2]] = { query = "@call.outer", desc = "Jump to next call" },
 								[function_outer_binding[2]] = {
@@ -1819,7 +1829,6 @@ require("lazy").setup({
 									query = "@conditional.outer",
 									desc = "Jump to next conditional",
 								},
-								["]s"] = { query = "@local.scope", query_group = "locals", desc = "Jump to next scope" },
 								[parameter_inner_binding[2]] = {
 									query = "@parameter.inner",
 									desc = "Jump to next parameter",
@@ -1844,6 +1853,15 @@ require("lazy").setup({
 						local del_desc = "Not available in this language"
 
 						pcall(function()
+							if not vim.list_contains(query.captures, "block.outer") then
+								for _, lhs in ipairs(block_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
+							end
 							if not vim.list_contains(query.captures, "function.outer") then
 								for _, lhs in ipairs(function_outer_binding) do
 									vim.keymap.del(
@@ -1873,6 +1891,25 @@ require("lazy").setup({
 							end
 							if not vim.list_contains(query.captures, "return.outer") then
 								for _, lhs in ipairs(return_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
+							end
+
+							if not vim.list_contains(query.captures, "assignment.lhs") then
+								for _, lhs in ipairs(assignment_lhs_outer_binding) do
+									vim.keymap.del(
+										treesitter_textobjects_modes,
+										lhs,
+										{ buffer = ev.buf, desc = del_desc }
+									)
+								end
+							end
+							if not vim.list_contains(query.captures, "assignment.rhs") then
+								for _, lhs in ipairs(assignment_rhs_outer_binding) do
 									vim.keymap.del(
 										treesitter_textobjects_modes,
 										lhs,
