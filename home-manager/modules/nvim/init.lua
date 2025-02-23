@@ -46,15 +46,17 @@ vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
 vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
-vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
-vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
-vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
-vim.keymap.set(
-	modes,
-	"<leader>d",
-	'"+d',
-	{ silent = true, noremap = true, desc = "Delete text and yank to system clipboard" }
-)
+-- NOTE no longer need these bindings, just use register correctly
+-- vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
+-- vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
+-- vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
+-- vim.keymap.set(
+-- 	modes,
+-- 	"<leader>d",
+-- 	'"+d',
+-- 	{ silent = true, noremap = true, desc = "Delete text and yank to system clipboard" }
+-- )
+
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set(modes, "Y", "y$", {
 	silent = true,
