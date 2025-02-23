@@ -1761,6 +1761,35 @@ require("lazy").setup({
 				pcall(function()
 					vim.keymap.del({ "n", "v" }, "x")
 				end)
+
+				local select_around_node = function()
+					local ts_utils = require("nvim-treesitter.ts_utils")
+					local node = ts_utils.get_node_at_cursor()
+					if node == nil then
+						vim.notify("No Treesitter node found at cursor position", vim.log.levels.WARN)
+						return
+					end
+					local start_row, start_col, end_row, end_col = ts_utils.get_vim_range({ node:range() })
+
+					if start_row > 0 and end_row > 0 then
+						vim.api.nvim_buf_set_mark(0, "<", start_row, start_col - 1, {})
+						vim.api.nvim_buf_set_mark(0, ">", end_row, end_col, {})
+						vim.cmd("normal! gv")
+					end
+				end
+
+				vim.keymap.set(
+					{ "o", "x" },
+					"%",
+					select_around_node,
+					{ silent = true, noremap = true, desc = "Treesitter node" }
+				)
+				vim.keymap.set(
+					{ "o", "x" },
+					"a%",
+					select_around_node,
+					{ silent = true, noremap = true, desc = "Treesitter node" }
+				)
 				vim.keymap.set({ "n", "v" }, "%", function()
 					local ts_utils = require("nvim-treesitter.ts_utils")
 					local cur_row, cur_col = unpack(vim.api.nvim_win_get_cursor(0))
