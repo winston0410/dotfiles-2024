@@ -289,9 +289,23 @@ require("lazy").setup({
 			end,
 			config = function()
 				require("ufo").setup({
+					open_fold_hl_timeout = 500,
+					close_fold_kinds_for_ft = { default = {} },
+					enable_get_fold_virt_text = false,
 					provider_selector = function()
 						return { "treesitter", "indent" }
 					end,
+					preview = {
+						win_config = {
+							border = "rounded",
+							winblend = 12,
+							winhighlight = "Normal:Normal",
+							maxheight = 20,
+						},
+						mappings = {
+							close = "q",
+						},
+					},
 				})
 			end,
 		},
@@ -994,6 +1008,9 @@ require("lazy").setup({
 					"]m",
 					"[M",
 					"]M",
+					-- NOTE for checking misspelled word, we can use latex-lsp to highlight, and then jump with [d and ]d
+					"[s",
+					"]s",
 				}
 
 				wk.setup({
@@ -1111,7 +1128,7 @@ require("lazy").setup({
 		{
 			"lewis6991/gitsigns.nvim",
 			version = "0.9.0",
-			event = "CursorHold",
+			event = { "VeryLazy" },
 			keys = {
 				{
 					"<leader>gh",
@@ -1317,16 +1334,16 @@ require("lazy").setup({
 			lazy = false,
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
-				{
-					"/",
-					function()
-						Snacks.picker.grep_buffers()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Search buffer",
-				},
+				-- {
+				-- 	"/",
+				-- 	function()
+				-- 		Snacks.picker.grep_buffers()
+				-- 	end,
+				-- 	mode = { "n" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Search buffer",
+				-- },
 				{
 					"<leader>fgh",
 					function()
@@ -1611,7 +1628,7 @@ require("lazy").setup({
 		},
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
-			event = "CursorHold",
+			event = { "VeryLazy" },
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 		},
 		{
@@ -1619,15 +1636,13 @@ require("lazy").setup({
 			opts = {
 				max_lines = 5,
 			},
-			event = "CursorHold",
+			event = { "VeryLazy" },
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
-			commit = "8ebcf62cf48dd97b3d121884ecb6bc4c00f1b069",
 		},
 		{
 			"JoosepAlviste/nvim-ts-context-commentstring",
-			event = "CursorHold",
+			event = { "VeryLazy" },
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
-			commit = "9c74db656c3d0b1c4392fc89a016b1910539e7c0",
 		},
 		-- NOTE it is a bit intrusive and noisy, disable for now
 		{
@@ -1709,7 +1724,8 @@ require("lazy").setup({
 			build = function()
 				vim.cmd("TSUpdate")
 			end,
-			event = "CursorHold",
+			event = { "VeryLazy" },
+			lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
 			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 			config = function()
 				local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -1943,7 +1959,7 @@ require("lazy").setup({
 						end, prev_next_binding),
 						select = vim.tbl_map(function(entry)
 							return {
-								lhs = entry.lhs .. call_textobj_binding,
+								lhs = entry.lhs .. assignment_lhs_textobj_binding,
 								desc = string.format(entry.desc, "lhs of assignment"),
 							}
 						end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
@@ -1957,7 +1973,7 @@ require("lazy").setup({
 						end, prev_next_binding),
 						select = vim.tbl_map(function(entry)
 							return {
-								lhs = entry.lhs .. call_textobj_binding,
+								lhs = entry.lhs .. assignment_rhs_textobj_binding,
 								desc = string.format(entry.desc, "rhs of assignment"),
 							}
 						end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
