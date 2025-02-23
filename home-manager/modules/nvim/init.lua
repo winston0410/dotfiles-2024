@@ -1349,16 +1349,16 @@ require("lazy").setup({
 			lazy = false,
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
-				-- {
-				-- 	"/",
-				-- 	function()
-				-- 		Snacks.picker.grep_buffers()
-				-- 	end,
-				-- 	mode = { "n" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Search buffer",
-				-- },
+				{
+					"<leader>fl",
+					function()
+						Snacks.picker.lines()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search lines in buffer",
+				},
 				{
 					"<leader>fgh",
 					function()
@@ -1805,6 +1805,7 @@ require("lazy").setup({
 				local assignment_lhs_textobj_binding = "al"
 				local assignment_rhs_textobj_binding = "ar"
 				local block_textobj_binding = "b"
+				local comment_textobj_binding = "n"
 				local prev_next_binding = {
 					{ lhs = "[", desc = "Jump to previous %s" },
 					{ lhs = "]", desc = "Jump to next %s" },
@@ -1837,6 +1838,29 @@ require("lazy").setup({
 							return {
 								lhs = entry.lhs .. block_textobj_binding,
 								desc = string.format(entry.desc, "block"),
+							}
+						end, select_around_binding),
+					},
+					["@comment.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. comment_textobj_binding,
+								desc = string.format(entry.desc, "comment"),
+							}
+						end, select_inside_binding),
+					},
+					["@comment.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. comment_textobj_binding,
+								desc = string.format(entry.desc, "comment"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. comment_textobj_binding,
+								desc = string.format(entry.desc, "comment"),
 							}
 						end, select_around_binding),
 					},
