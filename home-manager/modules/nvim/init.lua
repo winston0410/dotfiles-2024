@@ -1,3 +1,7 @@
+-- Config principle
+-- 1. Following the verb -> noun convention for defining mappings
+-- 2. Following the default Vim's mapping semantic and enhance it
+
 -- Use space as leader key
 vim.g.mapleader = " "
 -- Need to find plugin to improve mouse experience, to create something like vscode
@@ -38,6 +42,9 @@ vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
+
+vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
+vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
 vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -1022,7 +1029,7 @@ require("lazy").setup({
 					end,
 					plugins = {
 						marks = true,
-						registers = false,
+						registers = true,
 						spelling = {
 							enabled = false,
 							suggestions = 20,
@@ -1356,17 +1363,7 @@ require("lazy").setup({
 					desc = "Search Git Hunks",
 				},
 				{
-					"<leader>ghf",
-					function()
-						Snacks.picker.git_diff()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Search Git Hunks",
-				},
-				{
-					"<leader>fg",
+					"<leader>fw",
 					function()
 						Snacks.picker.grep()
 					end,
@@ -1410,7 +1407,7 @@ require("lazy").setup({
 					desc = "Find LSP workspace symbols",
 				},
 				{
-					"<leader>gb",
+					"<leader>fgb",
 					function()
 						Snacks.picker.git_branches()
 					end,
@@ -1420,7 +1417,7 @@ require("lazy").setup({
 					desc = "Search Git branches",
 				},
 				{
-					"<leader>gl",
+					"<leader>fgl",
 					function()
 						Snacks.picker.git_log()
 					end,
@@ -1549,7 +1546,7 @@ require("lazy").setup({
 				})
 			end,
 		},
-		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = "CursorHold" },
+		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
 		{
 			"numToStr/Comment.nvim",
 			commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
