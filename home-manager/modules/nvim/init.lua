@@ -1056,15 +1056,15 @@ require("lazy").setup({
 						scroll_up = "<c-p>",
 					},
 				})
-				wk.add({
-					{ "<leader>c", group = "Comment management" },
-					{ "<leader>s", group = "LSP and Treesitter" },
-					{ "<leader>t", group = "Tabs management" },
-					{ "<leader>w", group = "Windows management" },
-					{ "<leader>b", group = "Buffers management" },
-					{ "<leader>g", group = "Git management" },
-					{ "<leader>f", group = "File search" },
-				})
+				-- wk.add({
+				-- 	{ "<leader>c", group = "Comment management" },
+				-- 	{ "<leader>s", group = "LSP and Treesitter" },
+				-- 	{ "<leader>t", group = "Tabs management" },
+				-- 	{ "<leader>w", group = "Windows management" },
+				-- 	{ "<leader>b", group = "Buffers management" },
+				-- 	{ "<leader>g", group = "Git management" },
+				-- 	{ "<leader>f", group = "File search" },
+				-- })
 				if vim.wo.diff then
 					wk.add({
 						{ "[c", desc = "Jump to previous change", mode = "n" },
@@ -1773,7 +1773,7 @@ require("lazy").setup({
 
 					if start_row > 0 and end_row > 0 then
 						vim.api.nvim_buf_set_mark(0, "<", start_row, start_col - 1, {})
-						vim.api.nvim_buf_set_mark(0, ">", end_row, end_col, {})
+						vim.api.nvim_buf_set_mark(0, ">", end_row, end_col - 1, {})
 						vim.cmd("normal! gv")
 					end
 				end
