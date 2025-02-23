@@ -1318,6 +1318,16 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
+					"/",
+					function()
+						Snacks.picker.grep_buffers()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search buffer",
+				},
+				{
 					"<leader>fgh",
 					function()
 						Snacks.picker.git_diff()
@@ -1743,18 +1753,14 @@ require("lazy").setup({
 
 					local start_row, start_col, end_row, end_col = ts_utils.get_vim_range({ node:range() })
 
-					-- vim.print(start_row, start_col, end_row, end_col)
 					-- -- decide which position is further away from current cursor position, and jump to there
 					-- -- simple algo, row is always compared before column
 					local start_row_diff = math.abs(cur_row - start_row)
 					local end_row_diff = math.abs(end_row - cur_row)
-					--
+
 					local target_row = start_row
 					local target_col = start_col
-					--
-					-- vim.print("start row diff", start_row_diff)
-					-- vim.print("end row diff", end_row_diff)
-					--
+
 					if end_row_diff == start_row_diff then
 						if math.abs(end_col - cur_col) > math.abs(cur_col - start_col) then
 							target_row = end_row
@@ -1766,7 +1772,6 @@ require("lazy").setup({
 							target_col = end_col
 						end
 					end
-					-- vim.print("target is", target_row, target_col)
 					vim.api.nvim_win_set_cursor(0, { target_row, target_col - 1 })
 				end, { silent = true, noremap = true, desc = "Jump between beginning and end of the node" })
 
