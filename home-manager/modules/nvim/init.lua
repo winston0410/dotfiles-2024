@@ -1513,6 +1513,7 @@ require("lazy").setup({
 					notifier = {
 						enabled = true,
 						style = "fancy",
+						level = vim.log.levels.INFO,
 					},
 					indent = {
 						enabled = true,
@@ -1775,16 +1776,194 @@ require("lazy").setup({
 					vim.api.nvim_win_set_cursor(0, { target_row, target_col - 1 })
 				end, { silent = true, noremap = true, desc = "Jump between beginning and end of the node" })
 
-				local function_outer_binding = { "[f", "]f" }
-				local call_outer_binding = { "[k", "]k" }
-				local parameter_inner_binding = { "[p", "]p" }
-				local return_outer_binding = { "[r", "]r" }
-				local conditional_outer_binding = { "[i", "]i" }
-				local assignment_lhs_outer_binding = { "[al", "]al" }
-				local assignment_rhs_outer_binding = { "[ar", "]ar" }
-				local block_outer_binding = { "[b", "]b" }
+				local function_textobj_binding = "f"
+				local call_textobj_binding = "k"
+				local conditional_textobj_binding = "i"
+				local return_textobj_binding = "r"
+				local parameter_textobj_binding = "p"
+				local assignment_lhs_textobj_binding = "al"
+				local assignment_rhs_textobj_binding = "ar"
+				local block_textobj_binding = "b"
+				local prev_next_binding = {
+					{ lhs = "[", desc = "Jump to previous %s" },
+					{ lhs = "]", desc = "Jump to next %s" },
+				}
+				local select_around_binding = {
+					{ lhs = "a", desc = "Select around %s" },
+				}
+				local select_inside_binding = {
+					{ lhs = "i", desc = "Select inside %s" },
+				}
 
-				require("nvim-treesitter.configs").setup({
+				local enabled_ts_nodes = {
+					["@block.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. block_textobj_binding,
+								desc = string.format(entry.desc, "block"),
+							}
+						end, select_inside_binding),
+					},
+					["@block.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. block_textobj_binding,
+								desc = string.format(entry.desc, "block"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. block_textobj_binding,
+								desc = string.format(entry.desc, "block"),
+							}
+						end, select_around_binding),
+					},
+					["@return.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. return_textobj_binding,
+								desc = string.format(entry.desc, "return statement"),
+							}
+						end, select_inside_binding),
+					},
+					["@return.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. return_textobj_binding,
+								desc = string.format(entry.desc, "return statement"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. return_textobj_binding,
+								desc = string.format(entry.desc, "return statement"),
+							}
+						end, select_around_binding),
+					},
+					["@conditional.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. conditional_textobj_binding,
+								desc = string.format(entry.desc, "conditional"),
+							}
+						end, select_inside_binding),
+					},
+					["@conditional.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. conditional_textobj_binding,
+								desc = string.format(entry.desc, "conditional"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. conditional_textobj_binding,
+								desc = string.format(entry.desc, "conditional"),
+							}
+						end, select_around_binding),
+					},
+					["@parameter.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. parameter_textobj_binding,
+								desc = string.format(entry.desc, "parameter"),
+							}
+						end, select_inside_binding),
+					},
+					["@parameter.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. parameter_textobj_binding,
+								desc = string.format(entry.desc, "parameter"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. parameter_textobj_binding,
+								desc = string.format(entry.desc, "parameter"),
+							}
+						end, select_around_binding),
+					},
+					["@function.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. function_textobj_binding,
+								desc = string.format(entry.desc, "function"),
+							}
+						end, select_inside_binding),
+					},
+					["@function.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. function_textobj_binding,
+								desc = string.format(entry.desc, "function"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. function_textobj_binding,
+								desc = string.format(entry.desc, "function"),
+							}
+						end, select_around_binding),
+					},
+					["@call.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. call_textobj_binding,
+								desc = string.format(entry.desc, "call"),
+							}
+						end, select_inside_binding),
+					},
+					["@call.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. call_textobj_binding,
+								desc = string.format(entry.desc, "call"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. call_textobj_binding,
+								desc = string.format(entry.desc, "call"),
+							}
+						end, select_around_binding),
+					},
+					["@assignment.lhs"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. assignment_lhs_textobj_binding,
+								desc = string.format(entry.desc, "lhs of assignment"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. call_textobj_binding,
+								desc = string.format(entry.desc, "lhs of assignment"),
+							}
+						end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
+					},
+					["@assignment.rhs"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. assignment_rhs_textobj_binding,
+								desc = string.format(entry.desc, "rhs of assignment"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. call_textobj_binding,
+								desc = string.format(entry.desc, "rhs of assignment"),
+							}
+						end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
+					},
+				}
+				local config = {
 					ensure_installed = "all",
 					auto_install = false,
 					sync_install = false,
@@ -1818,6 +1997,7 @@ require("lazy").setup({
 						select = {
 							enable = true,
 							lookahead = true,
+							keymaps = {},
 						},
 						move = {
 							enable = true,
@@ -1826,73 +2006,29 @@ require("lazy").setup({
 							goto_next_end = {},
 							goto_previous = {},
 							goto_previous_end = {},
-							goto_previous_start = {
-								[assignment_lhs_outer_binding[1]] = {
-									query = "@assignment.lhs",
-									desc = "Jump to previous assignment lhs",
-								},
-								[assignment_rhs_outer_binding[1]] = {
-									query = "@assignment.rhs",
-									desc = "Jump to previous assignment rhs",
-								},
-								[block_outer_binding[1]] = { query = "@block.outer", desc = "Jump to previous block" },
-								-- ["[c"] = { query = "@comment.outer", desc = "Jump to previous comment" },
-								[call_outer_binding[1]] = {
-									query = "@call.outer",
-									desc = "Jump to previous call",
-								},
-								[function_outer_binding[1]] = {
-									query = "@function.outer",
-									desc = "Jump to previous function",
-								},
-								[conditional_outer_binding[1]] = {
-									query = "@conditional.outer",
-									desc = "Jump to previous conditional",
-								},
-								[parameter_inner_binding[1]] = {
-									query = "@parameter.inner",
-									desc = "Jump to previous parameter",
-								},
-								[return_outer_binding[1]] = {
-									query = "@return.outer",
-									desc = "Jump to previous return",
-								},
-							},
-							goto_next_start = {
-								[assignment_lhs_outer_binding[2]] = {
-									query = "@assignment.lhs",
-									desc = "Jump to next assignment lhs",
-								},
-								[assignment_rhs_outer_binding[2]] = {
-									query = "@assignment.rhs",
-									desc = "Jump to next assignment rhs",
-								},
-								[block_outer_binding[2]] = { query = "@block.outer", desc = "Jump to next block" },
-								-- ["]c"] = { query = "@comment.outer", desc = "Jump to next comment" },
-								[call_outer_binding[2]] = { query = "@call.outer", desc = "Jump to next call" },
-								[function_outer_binding[2]] = {
-									query = "@function.outer",
-									desc = "Jump to next function",
-								},
-								[conditional_outer_binding[2]] = {
-									query = "@conditional.outer",
-									desc = "Jump to next conditional",
-								},
-								[parameter_inner_binding[2]] = {
-									query = "@parameter.inner",
-									desc = "Jump to next parameter",
-								},
-								[return_outer_binding[2]] = { query = "@return.outer", desc = "Jump to next return" },
-							},
+							goto_previous_start = {},
+							goto_next_start = {},
 						},
 					},
-				})
+				}
+				for node, value in pairs(enabled_ts_nodes) do
+					if #value.move == 2 then
+						local prev = value.move[1]
+						local next = value.move[2]
+						config.textobjects.move.goto_previous_start[prev.lhs] = { query = node, desc = prev.desc }
+						config.textobjects.move.goto_next_start[next.lhs] = { query = node, desc = next.desc }
+					end
+
+					for _, item in ipairs(value.select) do
+						config.textobjects.select.keymaps[item.lhs] = { query = node, desc = item.desc }
+					end
+				end
+				require("nvim-treesitter.configs").setup(config)
 				vim.api.nvim_create_autocmd("CursorHold", {
 					pattern = "*",
 					callback = function(ev)
 						local ft = vim.bo.filetype
 						local query = vim.treesitter.query.get(ft, "textobjects")
-						-- vim.print(query)
 
 						if query == nil then
 							return
@@ -1902,78 +2038,16 @@ require("lazy").setup({
 						local del_desc = "Not available in this language"
 
 						pcall(function()
-							if not vim.list_contains(query.captures, "block.outer") then
-								for _, lhs in ipairs(block_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-							if not vim.list_contains(query.captures, "function.outer") then
-								for _, lhs in ipairs(function_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-							if not vim.list_contains(query.captures, "call.outer") then
-								for _, lhs in ipairs(call_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-							if not vim.list_contains(query.captures, "parameter.inner") then
-								for _, lhs in ipairs(parameter_inner_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-							if not vim.list_contains(query.captures, "return.outer") then
-								for _, lhs in ipairs(return_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-
-							if not vim.list_contains(query.captures, "assignment.lhs") then
-								for _, lhs in ipairs(assignment_lhs_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-							if not vim.list_contains(query.captures, "assignment.rhs") then
-								for _, lhs in ipairs(assignment_rhs_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
-								end
-							end
-
-							if not vim.list_contains(query.captures, "conditional.outer") then
-								for _, lhs in ipairs(conditional_outer_binding) do
-									vim.keymap.del(
-										treesitter_textobjects_modes,
-										lhs,
-										{ buffer = ev.buf, desc = del_desc }
-									)
+							for node_type, value in pairs(enabled_ts_nodes) do
+								local node_label = node_type:sub(2)
+								if not vim.list_contains(query.captures, node_label) then
+									for _, binding in ipairs(value.move) do
+										vim.keymap.del(
+											treesitter_textobjects_modes,
+											binding.lhs,
+											{ buffer = ev.buf, desc = del_desc }
+										)
+									end
 								end
 							end
 						end)
@@ -1983,6 +2057,8 @@ require("lazy").setup({
 		},
 		{
 			"rlane/pounce.nvim",
+			--NOTE relying the default f and treesitter textbobject seems to be enough
+			enabled = false,
 			commit = "2e36399ac09b517770c459f1a123e6b4b4c1c171",
 			keys = {
 				{
