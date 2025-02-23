@@ -945,13 +945,19 @@ require("lazy").setup({
 		},
 		{
 			"NeogitOrg/neogit",
+			cmd = {
+				"Neogit",
+				"NeogitCommit",
+				"NeogitLogCurrent",
+				"NeogitResetState",
+			},
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"sindrets/diffview.nvim",
 			},
 			keys = {
 				{
-					"<leader>gg",
+					"<leader>og",
 					function()
 						require("neogit").open()
 					end,
@@ -962,6 +968,7 @@ require("lazy").setup({
 				},
 			},
 			opts = {
+				-- FIXME range diffing is not working correctly, cannot select to
 				disable_hint = true,
 				disable_commit_confirmation = true,
 				graph_style = "unicode",
@@ -1228,7 +1235,7 @@ require("lazy").setup({
 			cmd = { "Kubectl", "Kubectx", "Kubens" },
 			keys = {
 				{
-					"<leader>k",
+					"<leader>ok",
 					function()
 						require("kubectl").toggle({ tab = true })
 					end,
@@ -1427,7 +1434,7 @@ require("lazy").setup({
 					desc = "Search Git log",
 				},
 				{
-					"<leader>go",
+					"<leader>ogr",
 					function()
 						Snacks.gitbrowse.open()
 					end,
@@ -2131,7 +2138,7 @@ require("lazy").setup({
 			cmd = { "Oil" },
 			keys = {
 				{
-					"<leader>o",
+					"<leader>oo",
 					function()
 						local tab_idx = find_tab_with_filetype("oil")
 						if tab_idx == -1 then
