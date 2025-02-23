@@ -55,25 +55,23 @@ vim.keymap.set(modes, "Y", "y$", {
 	desc = "Yanks from the cursor position to the end of the line.",
 })
 
-vim.keymap.set(
-	modes,
-	"<leader>wv",
-	"<cmd>vsplit<cr>",
-	{ silent = true, noremap = true, desc = "Create a vertical split" }
-)
-vim.keymap.set(
-	modes,
-	"<leader>ws",
-	"<cmd>split<cr>",
-	{ silent = true, noremap = true, desc = "Create a horizontal split" }
-)
-vim.keymap.set(modes, "<leader>wq", "<cmd>quit<cr>", { silent = true, noremap = true, desc = "Close a split" })
+vim.keymap.set(modes, "<leader>wv", function()
+	vim.cmd("vsplit")
+end, { silent = true, noremap = true, desc = "Create a vertical split" })
+vim.keymap.set(modes, "<leader>ws", function()
+	vim.cmd("split")
+end, { silent = true, noremap = true, desc = "Create a horizontal split" })
+vim.keymap.set(modes, "<leader>wq", function()
+	vim.cmd("quit")
+end, { silent = true, noremap = true, desc = "Close a split" })
 vim.keymap.set(modes, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
 vim.keymap.set(modes, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
 vim.keymap.set(modes, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set(modes, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
-vim.keymap.set(modes, "<leader>tv", "<cmd>tabnew<cr>", { silent = true, noremap = true, desc = "Create a new tab" })
+vim.keymap.set(modes, "<leader>tv", function()
+	vim.cmd("tabnew")
+end, { silent = true, noremap = true, desc = "Create a new tab" })
 vim.keymap.set(
 	modes,
 	"<leader>tl",
@@ -85,21 +83,24 @@ vim.keymap.set(modes, "<leader>th", "gT", {
 	noremap = true,
 	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
 })
-vim.keymap.set(modes, "<leader>tq", "<cmd>tabclose<cr>", { silent = true, noremap = true, desc = "Close a tab" })
+vim.keymap.set(modes, "<leader>tq", function()
+	vim.cmd("tabclose")
+end, { silent = true, noremap = true, desc = "Close a tab" })
 for i = 1, 9 do
 	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
 		vim.cmd(string.format("tabn %s", i))
 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
 end
 
-vim.keymap.set(
-	modes,
-	"<leader>bq",
-	"<cmd>bprevious<bar>bdelete #<cr>",
-	{ silent = true, noremap = true, desc = "Delete current buffer and switch to prev buffer" }
-)
-vim.keymap.set(modes, "<leader>bl", "<cmd>bprev<cr>", { silent = true, noremap = true, desc = "Go to previous buffer" })
-vim.keymap.set(modes, "<leader>bh", "<cmd>bnext<cr>", { silent = true, noremap = true, desc = "Go to next buffer" })
+vim.keymap.set(modes, "<leader>bq", function()
+	vim.cmd("bprevious | bdelete #")
+end, { silent = true, noremap = true, desc = "Delete current buffer and switch to prev buffer" })
+vim.keymap.set(modes, "<leader>bl", function()
+	vim.cmd("bnext")
+end, { silent = true, noremap = true, desc = "Go to next buffer" })
+vim.keymap.set(modes, "<leader>bh", function()
+	vim.cmd("bprev")
+end, { silent = true, noremap = true, desc = "Go to previous buffer" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -2057,6 +2058,10 @@ require("lazy").setup({
 							for node_type, value in pairs(enabled_ts_nodes) do
 								local node_label = node_type:sub(2)
 								if not vim.list_contains(query.captures, node_label) then
+									vim.notify(
+										string.format("found non-existent Treesitter node's binding: %s", node_label),
+										vim.log.levels.DEBUG
+									)
 									for _, binding in ipairs(value.move) do
 										vim.keymap.del(
 											treesitter_textobjects_modes,
