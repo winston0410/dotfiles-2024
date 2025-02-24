@@ -1,6 +1,7 @@
 -- Config principle
--- 1. Following the verb -> noun convention for defining mappings
--- 2. Following the default Vim's mapping semantic and enhance it
+-- 1. When defining mappings are related with operators and textobjects, follow the verb -> noun convention, so we don't have to go into visual mode all the time to get things done like in Helix
+-- 2. When defining mappings that are not related with operators and textobjects, follow the noun -> verb convention, as there could be conflicting actions between different topics, making mappings definition difficult
+-- 3. Following the default Vim's mapping semantic and enhance it
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -964,7 +965,7 @@ require("lazy").setup({
 			},
 			keys = {
 				{
-					"<leader>og",
+					"<leader>g",
 					function()
 						require("neogit").open()
 					end,
@@ -1070,7 +1071,7 @@ require("lazy").setup({
 				-- 	{ "<leader>w", group = "Windows management" },
 				-- 	{ "<leader>b", group = "Buffers management" },
 				-- 	{ "<leader>g", group = "Git management" },
-				-- 	{ "<leader>f", group = "File search" },
+				-- 	{ "<leader>p", group = "Picker" },
 				-- })
 			end,
 		},
@@ -1236,7 +1237,7 @@ require("lazy").setup({
 			cmd = { "Kubectl", "Kubectx", "Kubens" },
 			keys = {
 				{
-					"<leader>ok",
+					"<leader>k",
 					function()
 						require("kubectl").toggle({ tab = true })
 					end,
@@ -1351,7 +1352,7 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
-					"<leader>fl",
+					"<leader>pl",
 					function()
 						Snacks.picker.lines()
 					end,
@@ -1361,7 +1362,7 @@ require("lazy").setup({
 					desc = "Search lines in buffer",
 				},
 				{
-					"<leader>fgh",
+					"<leader>pgh",
 					function()
 						Snacks.picker.git_diff()
 					end,
@@ -1371,7 +1372,7 @@ require("lazy").setup({
 					desc = "Search Git Hunks",
 				},
 				{
-					"<leader>fw",
+					"<leader>pw",
 					function()
 						Snacks.picker.grep()
 					end,
@@ -1381,7 +1382,7 @@ require("lazy").setup({
 					desc = "Grep in files",
 				},
 				{
-					"<leader>ff",
+					"<leader>pf",
 					function()
 						Snacks.picker.files()
 					end,
@@ -1391,7 +1392,7 @@ require("lazy").setup({
 					desc = "Find files",
 				},
 				{
-					"<leader>fn",
+					"<leader>pn",
 					function()
 						Snacks.picker.treesitter({
 							filter = {
@@ -1405,7 +1406,7 @@ require("lazy").setup({
 					desc = "Find Treesitter nodes",
 				},
 				{
-					"<leader>fs",
+					"<leader>ps",
 					function()
 						Snacks.picker.lsp_workspace_symbols()
 					end,
@@ -1415,7 +1416,7 @@ require("lazy").setup({
 					desc = "Find LSP workspace symbols",
 				},
 				{
-					"<leader>fgb",
+					"<leader>pgb",
 					function()
 						Snacks.picker.git_branches()
 					end,
@@ -1425,7 +1426,7 @@ require("lazy").setup({
 					desc = "Search Git branches",
 				},
 				{
-					"<leader>fgl",
+					"<leader>pgl",
 					function()
 						Snacks.picker.git_log()
 					end,
@@ -1435,7 +1436,7 @@ require("lazy").setup({
 					desc = "Search Git log",
 				},
 				{
-					"<leader>ogr",
+					"<leader>go",
 					function()
 						Snacks.gitbrowse.open()
 					end,
@@ -1829,6 +1830,7 @@ require("lazy").setup({
 
 				local function_textobj_binding = "f"
 				local call_textobj_binding = "k"
+				local class_textobj_binding = "K"
 				local conditional_textobj_binding = "i"
 				local return_textobj_binding = "r"
 				local parameter_textobj_binding = "p"
@@ -2006,6 +2008,29 @@ require("lazy").setup({
 							return {
 								lhs = entry.lhs .. call_textobj_binding,
 								desc = string.format(entry.desc, "call"),
+							}
+						end, select_around_binding),
+					},
+					["@class.inner"] = {
+						move = {},
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. class_textobj_binding,
+								desc = string.format(entry.desc, "class"),
+							}
+						end, select_inside_binding),
+					},
+					["@class.outer"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. class_textobj_binding,
+								desc = string.format(entry.desc, "class"),
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. class_textobj_binding,
+								desc = string.format(entry.desc, "class"),
 							}
 						end, select_around_binding),
 					},
@@ -2192,7 +2217,7 @@ require("lazy").setup({
 			cmd = { "Oil" },
 			keys = {
 				{
-					"<leader>oo",
+					"<leader>o",
 					function()
 						local tab_idx = find_tab_with_filetype("oil")
 						if tab_idx == -1 then
@@ -2403,6 +2428,8 @@ require("lazy").setup({
 			event = { "BufWritePre" },
 			cmd = { "ConformInfo" },
 			config = function()
+				-- TODO add a key binding for formatting operator
+				-- TODO jump to specific kind of comments, for example TODO
 				local prettier = { "prettierd", "prettier", stop_after_first = true }
 				require("conform").setup({
 					formatters_by_ft = {
@@ -2499,9 +2526,36 @@ require("lazy").setup({
 					default_format_opts = {
 						lsp_format = "fallback",
 					},
-					format_on_save = { timeout_ms = 500 },
+					format_on_save = function(bufnr)
+						if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+							return
+						end
+						return { timeout_ms = 500, lsp_format = "fallback" }
+					end,
 					formatters = {},
 				})
+				vim.api.nvim_create_user_command("FormatDisable", function(args)
+					if args.bang then
+						-- FormatDisable! will disable formatting just for this buffer
+						vim.b.disable_autoformat = true
+					else
+						vim.g.disable_autoformat = true
+					end
+				end, {
+					desc = "Disable autoformat-on-save",
+					bang = true,
+				})
+				vim.api.nvim_create_user_command("FormatEnable", function()
+					vim.b.disable_autoformat = false
+					vim.g.disable_autoformat = false
+				end, {
+					desc = "Re-enable autoformat-on-save",
+				})
+
+				-- NOTE seems to be meaningness to create a new function, when gq is an operator to format code?
+				-- vim.keymap.set({ "n" }, "<leader>f", function()
+				-- 	require("conform")
+				-- end, { silent = true, noremap = true, desc = "Format code" })
 			end,
 			init = function()
 				vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
