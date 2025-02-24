@@ -1148,14 +1148,24 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			keys = {
 				{
-					"<leader>gh",
+					"gh",
 					function()
 						require("gitsigns").select_hunk()
 					end,
 					mode = { "o", "x" },
 					silent = true,
 					noremap = true,
-					desc = "Select hunk",
+					desc = "Git hunk",
+				},
+				{
+					"agh",
+					function()
+						require("gitsigns").select_hunk()
+					end,
+					mode = { "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Git hunk",
 				},
 				{
 					"<leader>ghs",
@@ -1558,7 +1568,6 @@ require("lazy").setup({
 		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
 		{
 			"numToStr/Comment.nvim",
-			commit = "e30b7f2008e52442154b66f7c519bfd2f1e32acb",
 			dependencies = { "nvim-treesitter/nvim-treesitter", "JoosepAlviste/nvim-ts-context-commentstring" },
 			-- FIXME cant really make custom key binding works, 06-12-2024
 			keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
