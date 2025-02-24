@@ -217,6 +217,8 @@ end
 if vim.wo.diff then
 	-- disable wrap so filler line will always align with changes
 	vim.o.wrap = false
+	vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
+	vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -908,10 +910,13 @@ require("lazy").setup({
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
 
-					require("which-key").add({
-						{ "[c", desc = "Jump to previous change", mode = "n" },
-						{ "]c", desc = "Jump to next change", mode = "n" },
-					})
+					vim.keymap.set(
+						"n",
+						"[h",
+						"[c",
+						{ noremap = true, silent = true, desc = "Jump to the previous hunk" }
+					)
+					vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 				end
 
 				vim.api.nvim_create_autocmd("User", {
@@ -1067,12 +1072,6 @@ require("lazy").setup({
 				-- 	{ "<leader>g", group = "Git management" },
 				-- 	{ "<leader>f", group = "File search" },
 				-- })
-				if vim.wo.diff then
-					wk.add({
-						{ "[c", desc = "Jump to previous change", mode = "n" },
-						{ "]c", desc = "Jump to next change", mode = "n" },
-					})
-				end
 			end,
 		},
 		{
@@ -1836,7 +1835,7 @@ require("lazy").setup({
 				local assignment_lhs_textobj_binding = "al"
 				local assignment_rhs_textobj_binding = "ar"
 				local block_textobj_binding = "b"
-				local comment_textobj_binding = "n"
+				local comment_textobj_binding = "c"
 				local prev_next_binding = {
 					{ lhs = "[", desc = "Jump to previous %s" },
 					{ lhs = "]", desc = "Jump to next %s" },
