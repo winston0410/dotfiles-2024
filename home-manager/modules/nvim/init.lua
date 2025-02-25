@@ -151,6 +151,11 @@ end, { silent = true, noremap = true, desc = "Go to next buffer" })
 vim.keymap.set(modes, "<leader>bh", function()
 	vim.cmd("bprev")
 end, { silent = true, noremap = true, desc = "Go to previous buffer" })
+for i = 1, 9 do
+	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
+		vim.cmd(string.format("buffer %s", i))
+	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
+end
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -582,11 +587,31 @@ require("lazy").setup({
 							winbar = utility_filetypes,
 							inactive_winbar = utility_filetypes,
 						},
-						always_show_tabline = false,
+						always_show_tabline = true,
 						globalstatus = true,
 					},
 					tabline = {
-						lualine_a = {},
+						lualine_a = {
+							{
+								"buffers",
+								mode = 0,
+								colored = true,
+								max_length = function()
+									return vim.o.columns / 2
+								end,
+								filetype_names = {
+									checkhealth = "Healthcheck",
+								},
+								buffers_color = {
+									active = "TabLineFill",
+									inactive = "TabLine",
+								},
+								symbols = {
+									modified = "[+]",
+									alternate_file = "",
+								},
+							},
+						},
 						lualine_b = {},
 						lualine_c = {},
 						lualine_x = {},
