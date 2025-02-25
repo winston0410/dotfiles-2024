@@ -14,7 +14,7 @@ vim.g.mapleader = " "
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
--- NOTE hide disable colorscheme provided by Neovim
+-- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
 	"blue.vim",
 	"darkblue.vim",
