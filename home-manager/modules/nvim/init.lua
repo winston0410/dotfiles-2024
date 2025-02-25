@@ -153,7 +153,7 @@ vim.keymap.set(modes, "<leader>bh", function()
 end, { silent = true, noremap = true, desc = "Go to previous buffer" })
 for i = 1, 9 do
 	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
-		vim.cmd(string.format("buffer %s", i))
+		vim.cmd(string.format("LualineBuffersJump %s", i))
 	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
 end
 
@@ -560,12 +560,9 @@ require("lazy").setup({
 		},
 		{
 			"nvim-lualine/lualine.nvim",
-			commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
-			event = "VeryLazy",
+			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
-				local colors = require("tokyonight.colors").setup()
-
 				local utility_filetypes = {
 					"oil",
 					"trouble",
@@ -595,7 +592,8 @@ require("lazy").setup({
 							{
 								"buffers",
 								mode = 0,
-								colored = true,
+								-- colored = true,
+								icons_enabled = true,
 								max_length = function()
 									return vim.o.columns / 2
 								end,
@@ -642,7 +640,7 @@ require("lazy").setup({
 										return tab_title
 									end
 
-									return name
+									return vim.fn.getcwd(-1, context.tabnr)
 								end,
 							},
 						},
@@ -662,7 +660,6 @@ require("lazy").setup({
 								"filename",
 								file_status = true,
 								path = 3,
-								-- color = { fg = colors.fg, bg = colors.bg_statusline },
 								color = "TabLineFill",
 								padding = 0,
 							},
@@ -738,7 +735,7 @@ require("lazy").setup({
 									info = INFO_ICON,
 									hint = HINT_ICON,
 								},
-								color = { bg = colors.bg_statusline },
+								color = "StatusLine",
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
@@ -762,7 +759,7 @@ require("lazy").setup({
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
-								color = { fg = colors.fg, bg = colors.bg_statusline },
+								color = "StatusLine",
 							},
 						},
 					},
@@ -1199,7 +1196,7 @@ require("lazy").setup({
 		},
 		{
 			"brenoprata10/nvim-highlight-colors",
-			event = "VeryLazy",
+			event = { "VeryLazy" },
 			opts = {
 				render = "virtual",
 				enable_tailwind = true,
@@ -2245,7 +2242,9 @@ require("lazy").setup({
 						additional_vim_regex_highlighting = false,
 						priority = {
 							["@comment.error"] = 999,
+							["@comment.hint"] = 999,
 							["@comment.warning"] = 999,
+							["@comment.info"] = 999,
 							["@comment.note"] = 999,
 							["@comment.todo"] = 999,
 						},
