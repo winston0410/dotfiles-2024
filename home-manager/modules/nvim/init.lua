@@ -1,7 +1,11 @@
--- Config principle
+-- # Config principle
 -- 1. When defining mappings are related with operators and textobjects, follow the verb -> noun convention, so we don't have to go into visual mode all the time to get things done like in Helix
 -- 2. When defining mappings that are not related with operators and textobjects, follow the noun -> verb convention, as there could be conflicting actions between different topics, making mappings definition difficult
 -- 3. Following the default Vim's mapping semantic and enhance it
+
+-- ## Operators
+-- REF https://neovim.io/doc/user/motion.html#operator
+-- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -9,6 +13,36 @@ vim.g.mapleader = " "
 -- FIXME vim.opt is overriding value in vim.o. This is likely a bug in Neovim
 vim.o.mouse = "a"
 vim.o.mousefocus = true
+
+-- NOTE hide disable colorscheme provided by Neovim
+vim.opt.wildignore:append({
+	"blue.vim",
+	"darkblue.vim",
+	"delek.vim",
+	"desert.vim",
+	"elflord.vim",
+	"evening.vim",
+	"industry.vim",
+	"habamax.vim",
+	"koehler.vim",
+	"lunaperche.vim",
+	"morning.vim",
+	"murphy.vim",
+	"pablo.vim",
+	"peachpuff.vim",
+	"quiet.vim",
+	"ron.vim",
+	"shine.vim",
+	"slate.vim",
+	"sorbet.vim",
+	"retrobox.vim",
+	"torte.vim",
+	"wildcharm.vim",
+	"zaibatsu.vim",
+	"zellner.vim",
+	"default.vim",
+	"vim.lua",
+})
 
 local ERROR_ICON = " "
 local WARNING_ICON = " "
@@ -39,13 +73,19 @@ end
 
 local modes = { "n", "v", "c" }
 
+vim.keymap.set({ "n" }, "vv", "<C-v>", { noremap = true, silent = true, desc = "Enter blockwise Visual mode" })
+-- vim.keymap.set({ "n" }, "gg", function()
+-- 	local lang = vim.bo.filetype
+-- 	local query = vim.treesitter.query.get(lang, "highlights")
+-- 	vim.print("result", query)
+-- end, { noremap = true, silent = true, desc = "Just testing" })
 vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 
-vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
-vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
+-- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
+-- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
 -- NOTE no longer need these bindings, just use register correctly
 -- vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
@@ -1362,6 +1402,26 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
+					"<leader>pb",
+					function()
+						Snacks.picker.buffers()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search buffers",
+				},
+				{
+					"<leader>pc",
+					function()
+						Snacks.picker.colorschemes()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search colorschemes",
+				},
+				{
 					"<leader>pl",
 					function()
 						Snacks.picker.lines()
@@ -1454,6 +1514,59 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Browse files in remote Git server",
+				},
+				{
+					"<leader>pr",
+					function()
+						Snacks.picker.resume()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Resume last picker",
+				},
+				{
+					"<leader>pe",
+					function()
+						Snacks.picker.explorer({
+							auto_close = false,
+							jump = { close = false },
+							win = {
+								list = {
+									keys = {
+										["-"] = "explorer_up",
+										["+"] = "explorer_focus",
+										["<cr>"] = "confirm",
+										["zc"] = "explorer_close",
+										["zC"] = "explorer_close_all",
+										-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
+										["d"] = "explorer_del",
+										["c"] = "explorer_rename",
+										["y"] = { "explorer_yank", mode = { "n", "x" } },
+										["p"] = "explorer_paste",
+										["<a-i>"] = "toggle_ignored",
+										["<a-h>"] = "toggle_hidden",
+										["]gh"] = "explorer_git_next",
+										["[gh"] = "explorer_git_prev",
+										["]d"] = "explorer_diagnostic_next",
+										["[d"] = "explorer_diagnostic_prev",
+										-- NOTE / is searching for files, not sure if we need grep at specific dir
+										-- ["<leader>/"] = "picker_grep",
+										["<leader>~"] = "tcd",
+										-- TODO not sure how to deal with these actions yet
+										-- ["o"] = "explorer_open",
+										-- ["c"] = "explorer_copy",
+										-- ["a"] = "explorer_add",
+										-- ["m"] = "explorer_move",
+									},
+								},
+							},
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Explore files",
 				},
 			},
 			config = function()
@@ -1847,6 +1960,7 @@ require("lazy").setup({
 				local assignment_rhs_textobj_binding = "ar"
 				local block_textobj_binding = "b"
 				local comment_textobj_binding = "c"
+				local fold_textobj_binding = "z"
 				local prev_next_binding = {
 					{ lhs = "[", desc = "Jump to previous %s" },
 					{ lhs = "]", desc = "Jump to next %s" },
@@ -1859,6 +1973,21 @@ require("lazy").setup({
 				}
 
 				local enabled_ts_nodes = {
+					["@fold"] = {
+						move = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. fold_textobj_binding,
+								desc = string.format(entry.desc, "fold"),
+								query_group = "folds",
+							}
+						end, prev_next_binding),
+						select = vim.tbl_map(function(entry)
+							return {
+								lhs = entry.lhs .. fold_textobj_binding,
+								desc = string.format(entry.desc, "fold"),
+							}
+						end, select_around_binding),
+					},
 					["@block.inner"] = {
 						move = {},
 						select = vim.tbl_map(function(entry)
@@ -2112,11 +2241,11 @@ require("lazy").setup({
 							enable = true,
 							set_jumps = true,
 							goto_next = {},
+							goto_next_start = {},
 							goto_next_end = {},
 							goto_previous = {},
 							goto_previous_end = {},
 							goto_previous_start = {},
-							goto_next_start = {},
 						},
 					},
 				}
@@ -2124,8 +2253,10 @@ require("lazy").setup({
 					if #value.move == 2 then
 						local prev = value.move[1]
 						local next = value.move[2]
-						config.textobjects.move.goto_previous_start[prev.lhs] = { query = node, desc = prev.desc }
-						config.textobjects.move.goto_next_start[next.lhs] = { query = node, desc = next.desc }
+						config.textobjects.move.goto_previous_start[prev.lhs] =
+							{ query = node, desc = prev.desc, query_group = prev.query_group }
+						config.textobjects.move.goto_next_start[next.lhs] =
+							{ query = node, desc = next.desc, query_group = next.query_group }
 					end
 
 					for _, item in ipairs(value.select) do
