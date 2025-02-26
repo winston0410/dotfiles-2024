@@ -573,7 +573,7 @@ require("lazy").setup({
 					"DiffviewFiles",
 					"snacks_dashboard",
 					"snacks_picker_list",
-					"snacks_layout",
+					"snacks_layout_box",
 					"snacks_picker_input",
 					"NeogitStatus",
 					"NeogitConsole",
