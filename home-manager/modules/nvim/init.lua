@@ -1492,6 +1492,16 @@ require("lazy").setup({
 					desc = "Search lines in buffer",
 				},
 				{
+					"<leader>pgs",
+					function()
+						Snacks.picker.git_stash()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search Git Stash",
+				},
+				{
 					"<leader>pgh",
 					function()
 						Snacks.picker.git_diff()
