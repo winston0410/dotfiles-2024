@@ -373,7 +373,7 @@ require("lazy").setup({
 			"saghen/blink.cmp",
 			event = "InsertEnter",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "0.12.0",
+			version = "0.13.0",
 			opts = {
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
@@ -575,6 +575,7 @@ require("lazy").setup({
 					"snacks_picker_list",
 					"snacks_layout_box",
 					"snacks_picker_input",
+					"snacks_win_backdrop",
 					"NeogitStatus",
 					"NeogitConsole",
 					"NeogitLogView",
@@ -3233,3 +3234,44 @@ if vim.fn.has("wsl") == 1 then
 	}
 end
 -- TODO how can I always open helpfiles in a tab?
+
+local function base64_encode_operator(mode)
+	local start_pos, end_pos
+
+	if mode == "visual" then
+		-- Get visual selection range
+		vim.cmd('normal! "vy') -- Yank selection to register v
+		start_pos = vim.fn.getpos("'<")
+		end_pos = vim.fn.getpos("'>")
+	else
+		-- Get range from '[ to '] (previously operated motion)
+		start_pos = vim.fn.getpos("'[")
+		end_pos = vim.fn.getpos("']")
+	end
+
+	-- Get selected text
+	local lines = vim.api.nvim_buf_get_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], {})
+
+	-- Concatenate lines and encode in base64
+	local text = table.concat(lines, "\n")
+	local encoded = vim.base64.encode(text)
+
+	-- Replace text with encoded version
+	vim.api.nvim_buf_set_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], { encoded })
+end
+
+-- Create a user command and operator mapping
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ee",
+	":set opfunc=v:lua.base64_encode_operator<CR>g@",
+	{ noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+	"x",
+	"<leader>ee",
+	":lua base64_encode_operator('visual')<CR>",
+	{ noremap = true, silent = true }
+)
+-- Expose function globally
+_G.base64_encode_operator = base64_encode_operator
