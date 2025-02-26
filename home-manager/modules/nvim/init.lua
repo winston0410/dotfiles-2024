@@ -1,7 +1,11 @@
--- Config principle
+-- # Config principle
 -- 1. When defining mappings are related with operators and textobjects, follow the verb -> noun convention, so we don't have to go into visual mode all the time to get things done like in Helix
 -- 2. When defining mappings that are not related with operators and textobjects, follow the noun -> verb convention, as there could be conflicting actions between different topics, making mappings definition difficult
 -- 3. Following the default Vim's mapping semantic and enhance it
+
+-- ## Operators
+-- REF https://neovim.io/doc/user/motion.html#operator
+-- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -9,6 +13,36 @@ vim.g.mapleader = " "
 -- FIXME vim.opt is overriding value in vim.o. This is likely a bug in Neovim
 vim.o.mouse = "a"
 vim.o.mousefocus = true
+
+-- NOTE hide colorscheme provided by Neovim in colorscheme picker
+vim.opt.wildignore:append({
+	"blue.vim",
+	"darkblue.vim",
+	"delek.vim",
+	"desert.vim",
+	"elflord.vim",
+	"evening.vim",
+	"industry.vim",
+	"habamax.vim",
+	"koehler.vim",
+	"lunaperche.vim",
+	"morning.vim",
+	"murphy.vim",
+	"pablo.vim",
+	"peachpuff.vim",
+	"quiet.vim",
+	"ron.vim",
+	"shine.vim",
+	"slate.vim",
+	"sorbet.vim",
+	"retrobox.vim",
+	"torte.vim",
+	"wildcharm.vim",
+	"zaibatsu.vim",
+	"zellner.vim",
+	"default.vim",
+	"vim.lua",
+})
 
 local ERROR_ICON = " "
 local WARNING_ICON = " "
@@ -39,13 +73,21 @@ end
 
 local modes = { "n", "v", "c" }
 
+-- vim.keymap.set({ "n" }, "<leader>gg", function()
+-- 	local query = vim.treesitter.query.get("comment", "highlights")
+--
+-- 	if query == nil then
+-- 		return
+-- 	end
+-- 	vim.print(query)
+-- end, { noremap = true, silent = true, desc = "Testing" })
 vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 
-vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
-vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
+-- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
+-- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
 -- NOTE no longer need these bindings, just use register correctly
 -- vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
@@ -111,6 +153,11 @@ end, { silent = true, noremap = true, desc = "Go to next buffer" })
 vim.keymap.set(modes, "<leader>bh", function()
 	vim.cmd("bprev")
 end, { silent = true, noremap = true, desc = "Go to previous buffer" })
+for i = 1, 9 do
+	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
+		vim.cmd(string.format("LualineBuffersJump %s", i))
+	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
+end
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -515,12 +562,9 @@ require("lazy").setup({
 		},
 		{
 			"nvim-lualine/lualine.nvim",
-			commit = "2a5bae925481f999263d6f5ed8361baef8df4f83",
-			event = "VeryLazy",
+			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
-				local colors = require("tokyonight.colors").setup()
-
 				local utility_filetypes = {
 					"oil",
 					"trouble",
@@ -528,6 +572,9 @@ require("lazy").setup({
 					"DiffviewFileHistory",
 					"DiffviewFiles",
 					"snacks_dashboard",
+					"snacks_picker_list",
+					"snacks_layout",
+					"snacks_picker_input",
 					"NeogitStatus",
 					"NeogitConsole",
 					"NeogitLogView",
@@ -535,18 +582,38 @@ require("lazy").setup({
 				}
 				require("lualine").setup({
 					options = {
-						theme = "tokyonight",
+						theme = "auto",
 						component_separators = "",
 						section_separators = "",
 						disabled_filetypes = {
 							winbar = utility_filetypes,
 							inactive_winbar = utility_filetypes,
 						},
-						always_show_tabline = false,
+						always_show_tabline = true,
 						globalstatus = true,
 					},
 					tabline = {
-						lualine_a = {},
+						lualine_a = {
+							{
+								"buffers",
+								mode = 0,
+								icons_enabled = true,
+								max_length = function()
+									return vim.o.columns / 2
+								end,
+								filetype_names = {
+									checkhealth = "Healthcheck",
+								},
+								buffers_color = {
+									active = "TabLineFill",
+									inactive = "TabLine",
+								},
+								symbols = {
+									modified = "[+]",
+									alternate_file = "",
+								},
+							},
+						},
 						lualine_b = {},
 						lualine_c = {},
 						lualine_x = {},
@@ -554,7 +621,7 @@ require("lazy").setup({
 						lualine_z = {
 							{
 								"tabs",
-								mode = 2,
+								mode = 0,
 								max_length = function()
 									return vim.o.columns / 2
 								end,
@@ -562,23 +629,24 @@ require("lazy").setup({
 									active = "TabLineFill",
 									inactive = "TabLine",
 								},
-								fmt = function(name, context)
-									local ok, result = pcall(function()
-										return vim.api.nvim_tabpage_get_var(context.tabnr, "tabtitle")
-									end)
-
-									local tab_title = ""
-
-									if ok then
-										tab_title = result
-									end
-
-									if tab_title ~= "" then
-										return tab_title
-									end
-
-									return name
-								end,
+								-- see if we need this again in the future
+								-- fmt = function(name, context)
+								-- 	local ok, result = pcall(function()
+								-- 		return vim.api.nvim_tabpage_get_var(context.tabnr, "tabtitle")
+								-- 	end)
+								--
+								-- 	local tab_title = ""
+								--
+								-- 	if ok then
+								-- 		tab_title = result
+								-- 	end
+								--
+								-- 	if tab_title ~= "" then
+								-- 		return tab_title
+								-- 	end
+								--
+								-- 	return vim.fn.getcwd(-1, context.tabnr)
+								-- end,
 							},
 						},
 					},
@@ -596,8 +664,7 @@ require("lazy").setup({
 							{
 								"filename",
 								file_status = true,
-								path = 3,
-								-- color = { fg = colors.fg, bg = colors.bg_statusline },
+								path = 1,
 								color = "TabLineFill",
 								padding = 0,
 							},
@@ -620,8 +687,7 @@ require("lazy").setup({
 							{
 								"filename",
 								file_status = true,
-								path = 3,
-								-- color = { fg = colors.fg, bg = colors.bg_statusline },
+								path = 1,
 								color = "TabLine",
 								padding = 0,
 							},
@@ -647,19 +713,37 @@ require("lazy").setup({
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
+								padding = { left = 1, right = 0 },
 							},
 							{
 								"encoding",
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
+								padding = { left = 1, right = 1 },
 							},
 							{
 								"filesize",
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
+								padding = { left = 1, right = 1 },
 							},
+							"%=",
+							{
+								function()
+									local current_tab = vim.api.nvim_get_current_tabpage()
+
+									local tab_number = vim.api.nvim_tabpage_get_number(current_tab)
+									local cwd = vim.fn.getcwd(-1, tab_number)
+									local home = os.getenv("HOME")
+									if home then
+										cwd = cwd:gsub("^" .. home, "~")
+									end
+									return cwd
+								end,
+							},
+							"%=",
 						},
 						lualine_x = {},
 						lualine_y = {},
@@ -673,7 +757,7 @@ require("lazy").setup({
 									info = INFO_ICON,
 									hint = HINT_ICON,
 								},
-								color = { bg = colors.bg_statusline },
+								color = "StatusLine",
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
@@ -697,7 +781,7 @@ require("lazy").setup({
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
-								color = { fg = colors.fg, bg = colors.bg_statusline },
+								color = "StatusLine",
 							},
 						},
 					},
@@ -1134,11 +1218,17 @@ require("lazy").setup({
 		},
 		{
 			"brenoprata10/nvim-highlight-colors",
-			event = "VeryLazy",
+			event = { "VeryLazy" },
 			opts = {
 				render = "virtual",
 				enable_tailwind = true,
-				exclude_filetypes = { "lazy", "checkhealth", "snacks_dashboard" },
+				exclude_filetypes = {
+					"lazy",
+					"checkhealth",
+					"snacks_dashboard",
+					"snacks_picker_list",
+					"snacks_picker_input",
+				},
 				exclude_buftypes = {},
 			},
 		},
@@ -1362,6 +1452,36 @@ require("lazy").setup({
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
 				{
+					"<leader>pb",
+					function()
+						Snacks.picker.buffers()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search buffers",
+				},
+				{
+					"<leader>pc",
+					function()
+						Snacks.picker.colorschemes()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search colorschemes",
+				},
+				{
+					"<leader>pd",
+					function()
+						Snacks.picker.diagnostics()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search diagnostics",
+				},
+				{
 					"<leader>pl",
 					function()
 						Snacks.picker.lines()
@@ -1402,7 +1522,7 @@ require("lazy").setup({
 					desc = "Find files",
 				},
 				{
-					"<leader>pn",
+					"<leader>pt",
 					function()
 						Snacks.picker.treesitter({
 							filter = {
@@ -1414,6 +1534,21 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Find Treesitter nodes",
+				},
+				{
+					"<leader>pn",
+					function()
+						Snacks.picker.notifications()
+						Snacks.picker.treesitter({
+							filter = {
+								-- default = true,
+							},
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Find notifications",
 				},
 				{
 					"<leader>ps",
@@ -1455,12 +1590,66 @@ require("lazy").setup({
 					noremap = true,
 					desc = "Browse files in remote Git server",
 				},
+				{
+					"<leader>pr",
+					function()
+						Snacks.picker.resume()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Resume last picker",
+				},
+				{
+					"<leader>pe",
+					function()
+						Snacks.picker.explorer({
+							auto_close = false,
+							jump = { close = false },
+							win = {
+								list = {
+									keys = {
+										["-"] = "explorer_up",
+										["+"] = "explorer_focus",
+										["<cr>"] = "confirm",
+										["zc"] = "explorer_close",
+										["zC"] = "explorer_close_all",
+										-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
+										["d"] = "explorer_del",
+										["c"] = "explorer_rename",
+										["y"] = { "explorer_yank", mode = { "n", "x" } },
+										["p"] = "explorer_paste",
+										["<a-i>"] = "toggle_ignored",
+										["<a-h>"] = "toggle_hidden",
+										["]gh"] = "explorer_git_next",
+										["[gh"] = "explorer_git_prev",
+										["]d"] = "explorer_diagnostic_next",
+										["[d"] = "explorer_diagnostic_prev",
+										-- NOTE / is searching for files, not sure if we need grep at specific dir
+										-- ["<leader>/"] = "picker_grep",
+										["<leader>~"] = "tcd",
+										-- TODO not sure how to deal with these actions yet
+										-- ["o"] = "explorer_open",
+										-- ["c"] = "explorer_copy",
+										-- ["a"] = "explorer_add",
+										-- ["m"] = "explorer_move",
+									},
+								},
+							},
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Explore files",
+				},
 			},
 			config = function()
 				local pickerKeys = {
 					["<2-LeftMouse>"] = "confirm",
 					["<S-CR>"] = { "qflist", mode = { "i", "n" } },
 					["<CR>"] = { "confirm", mode = { "n", "i" } },
+					-- NOTE no need to use something like this, it is better to
 					-- ["<CR>"] = {
 					-- 	function(picker)
 					-- 		local selected = picker:selected()
@@ -1591,57 +1780,57 @@ require("lazy").setup({
 				})
 			end,
 		},
-		{
-			"petertriho/nvim-scrollbar",
-			-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
-			enabled = false,
-			config = function()
-				local colors = require("tokyonight.colors").setup()
-
-				require("scrollbar").setup({
-					show = true,
-					show_in_active_only = false,
-					set_highlights = true,
-					throttle_ms = 100,
-					handle = {
-						text = " ",
-						blend = 30,
-						color = colors.bg_highlight,
-						highlight = "CursorColumn",
-						hide_if_all_visible = false,
-					},
-					excluded_filetypes = {
-						"dropbar_menu",
-						"dropbar_menu_fzf",
-						"DressingInput",
-						"cmp_docs",
-						"cmp_menu",
-						"noice",
-						"prompt",
-						"TelescopePrompt",
-						"trouble",
-					},
-					marks = {
-						Search = { color = colors.orange },
-						Error = { color = colors.error },
-						Warn = { color = colors.warning },
-						Info = { color = colors.info },
-						Hint = { color = colors.hint },
-						Misc = { color = colors.purple },
-					},
-					handlers = {
-						cursor = true,
-						diagnostic = true,
-						gitsigns = true,
-						handle = true,
-					},
-				})
-			end,
-			dependencies = {
-				"folke/tokyonight.nvim",
-				"lewis6991/gitsigns.nvim",
-			},
-		},
+		-- {
+		-- 	"petertriho/nvim-scrollbar",
+		-- 	-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
+		-- 	enabled = false,
+		-- 	config = function()
+		-- 		local colors = require("tokyonight.colors").setup()
+		--
+		-- 		require("scrollbar").setup({
+		-- 			show = true,
+		-- 			show_in_active_only = false,
+		-- 			set_highlights = true,
+		-- 			throttle_ms = 100,
+		-- 			handle = {
+		-- 				text = " ",
+		-- 				blend = 30,
+		-- 				color = colors.bg_highlight,
+		-- 				highlight = "CursorColumn",
+		-- 				hide_if_all_visible = false,
+		-- 			},
+		-- 			excluded_filetypes = {
+		-- 				"dropbar_menu",
+		-- 				"dropbar_menu_fzf",
+		-- 				"DressingInput",
+		-- 				"cmp_docs",
+		-- 				"cmp_menu",
+		-- 				"noice",
+		-- 				"prompt",
+		-- 				"TelescopePrompt",
+		-- 				"trouble",
+		-- 			},
+		-- 			marks = {
+		-- 				Search = { color = colors.orange },
+		-- 				Error = { color = colors.error },
+		-- 				Warn = { color = colors.warning },
+		-- 				Info = { color = colors.info },
+		-- 				Hint = { color = colors.hint },
+		-- 				Misc = { color = colors.purple },
+		-- 			},
+		-- 			handlers = {
+		-- 				cursor = true,
+		-- 				diagnostic = true,
+		-- 				gitsigns = true,
+		-- 				handle = true,
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- 	dependencies = {
+		-- 		"folke/tokyonight.nvim",
+		-- 		"lewis6991/gitsigns.nvim",
+		-- 	},
+		-- },
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			event = { "VeryLazy" },
@@ -1847,6 +2036,7 @@ require("lazy").setup({
 				local assignment_rhs_textobj_binding = "ar"
 				local block_textobj_binding = "b"
 				local comment_textobj_binding = "c"
+				-- local fold_textobj_binding = "z"
 				local prev_next_binding = {
 					{ lhs = "[", desc = "Jump to previous %s" },
 					{ lhs = "]", desc = "Jump to next %s" },
@@ -1859,6 +2049,21 @@ require("lazy").setup({
 				}
 
 				local enabled_ts_nodes = {
+					-- ["@fold"] = {
+					-- 	move = vim.tbl_map(function(entry)
+					-- 		return {
+					-- 			lhs = entry.lhs .. fold_textobj_binding,
+					-- 			desc = string.format(entry.desc, "fold"),
+					-- 			query_group = "folds",
+					-- 		}
+					-- 	end, prev_next_binding),
+					-- 	select = vim.tbl_map(function(entry)
+					-- 		return {
+					-- 			lhs = entry.lhs .. fold_textobj_binding,
+					-- 			desc = string.format(entry.desc, "fold"),
+					-- 		}
+					-- 	end, select_around_binding),
+					-- },
 					["@block.inner"] = {
 						move = {},
 						select = vim.tbl_map(function(entry)
@@ -2094,6 +2299,8 @@ require("lazy").setup({
 							["@comment.warning"] = 999,
 							["@comment.note"] = 999,
 							["@comment.todo"] = 999,
+							-- ["@comment.info"] = 999,
+							-- ["@comment.hint"] = 999,
 						},
 					},
 					indent = { enable = true },
@@ -2112,11 +2319,27 @@ require("lazy").setup({
 							enable = true,
 							set_jumps = true,
 							goto_next = {},
+							goto_next_start = {
+								-- ["]cd"] = {
+								-- 	query = "@comment.documentation",
+								-- 	query_group = "highlights",
+								-- 	desc = "Next lua doc comment",
+								-- },
+								-- ["]gg"] = {
+								-- 	query = "@comment.todo",
+								-- 	query_group = "injections",
+								-- 	desc = "Jump to next TODO comment",
+								-- },
+								-- ["]cn"] = {
+								-- 	query = "@comment.note",
+								-- 	query_group = "injections",
+								-- 	desc = "Jump to next NOTE comment",
+								-- },
+							},
 							goto_next_end = {},
 							goto_previous = {},
 							goto_previous_end = {},
 							goto_previous_start = {},
-							goto_next_start = {},
 						},
 					},
 				}
@@ -2124,8 +2347,10 @@ require("lazy").setup({
 					if #value.move == 2 then
 						local prev = value.move[1]
 						local next = value.move[2]
-						config.textobjects.move.goto_previous_start[prev.lhs] = { query = node, desc = prev.desc }
-						config.textobjects.move.goto_next_start[next.lhs] = { query = node, desc = next.desc }
+						config.textobjects.move.goto_previous_start[prev.lhs] =
+							{ query = node, desc = prev.desc, query_group = prev.query_group }
+						config.textobjects.move.goto_next_start[next.lhs] =
+							{ query = node, desc = next.desc, query_group = next.query_group }
 					end
 
 					for _, item in ipairs(value.select) do
@@ -2136,20 +2361,15 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd("CursorHold", {
 					pattern = "*",
 					callback = function(ev)
-						local ft = vim.bo.filetype
-						local query = vim.treesitter.query.get(ft, "textobjects")
-
-						if query == nil then
-							return
-						end
-
 						local treesitter_textobjects_modes = { "n", "x", "o" }
 						local del_desc = "Not available in this language"
 
+						local available_textobjects =
+							require("nvim-treesitter.textobjects.shared").available_textobjects()
 						pcall(function()
 							for node_type, value in pairs(enabled_ts_nodes) do
 								local node_label = node_type:sub(2)
-								if not vim.list_contains(query.captures, node_label) then
+								if not vim.list_contains(available_textobjects, node_label) then
 									vim.notify(
 										string.format("found non-existent Treesitter node's binding: %s", node_label),
 										vim.log.levels.DEBUG
@@ -2166,6 +2386,20 @@ require("lazy").setup({
 						end)
 					end,
 				})
+				local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+
+				vim.keymap.set(
+					{ "n", "x", "o" },
+					";",
+					ts_repeat_move.repeat_last_move_next,
+					{ noremap = true, silent = true, desc = "Repeat Treesitter motion" }
+				)
+				vim.keymap.set(
+					{ "n", "x", "o" },
+					",",
+					ts_repeat_move.repeat_last_move_previous,
+					{ noremap = true, silent = true, desc = "Repeat Treesitter motion" }
+				)
 			end,
 		},
 		{
@@ -2372,6 +2606,7 @@ require("lazy").setup({
 			"folke/edgy.nvim",
 			version = "1.10.2",
 			event = "VeryLazy",
+			enabled = false,
 			opts = {
 				animate = {
 					enabled = false,
@@ -2588,7 +2823,7 @@ require("lazy").setup({
 		},
 		{
 			"neovim/nvim-lspconfig",
-			version = "1.6.0",
+			version = "1.7.0",
 			-- Reference the lazyload event from LazyVim
 			-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 			event = { "BufReadPre", "BufNewFile" },
@@ -2819,6 +3054,7 @@ require("lazy").setup({
 			"folke/trouble.nvim",
 			version = "3.7.0",
 			event = { "BufReadPre", "BufNewFile" },
+			enabled = false,
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
 				require("trouble").setup({
@@ -2872,6 +3108,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			-- if we call twice, we will enter the hover windows immediately after running the keybinding
 			vim.lsp.buf.hover()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show hover tips" })
+		vim.keymap.set(supported_modes, "<leader>sd", function()
+			vim.diagnostic.open_float()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show diagnostics message" })
 		-- TODO combine all these functions, using Snacks.picker
 		vim.keymap.set(supported_modes, "<leader>s1", function()
 			Snacks.picker.lsp_definitions()
@@ -2904,17 +3143,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end)
 
 		vim.diagnostic.config({
+			underline = true,
 			virtual_text = false,
-			signs = false,
-			-- FIXME: cannot customize the icon, without not showing it in signcolumn
-			-- signs = {
-			-- 	text = {
-			-- 		[vim.diagnostic.severity.ERROR] = ERROR_ICON,
-			-- 		[vim.diagnostic.severity.WARN] = WARNING_ICON,
-			-- 		[vim.diagnostic.severity.INFO] = INFO_ICON,
-			-- 		[vim.diagnostic.severity.HINT] = HINT_ICON,
-			-- 	},
-			-- },
+			-- NOTE only available after 0.11.0
+			virtual_lines = { current_line = true },
+			signs = {
+				text = {
+					-- FIXME: cannot customize the icon, without not showing it in signcolumn
+					-- [vim.diagnostic.severity.ERROR] = ERROR_ICON,
+					-- [vim.diagnostic.severity.WARN] = WARNING_ICON,
+					-- [vim.diagnostic.severity.INFO] = INFO_ICON,
+					-- [vim.diagnostic.severity.HINT] = HINT_ICON,
+					[vim.diagnostic.severity.ERROR] = "",
+					[vim.diagnostic.severity.WARN] = "",
+					[vim.diagnostic.severity.INFO] = "",
+					[vim.diagnostic.severity.HINT] = "",
+				},
+			},
 			update_in_insert = false,
 		})
 	end,
