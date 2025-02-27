@@ -11,6 +11,8 @@
   home.sessionVariables = { BROWSER = "wslview"; };
 
   fonts.fontconfig.enable = lib.mkForce false;
+
+  programs.git.extraConfig.user.name = lib.mkForce "Hugo Sum";
   programs.git.extraConfig.credential.helper = lib.mkForce
     [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe" ];
   xdg.mime.enable = lib.mkForce false;
