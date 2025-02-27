@@ -16,6 +16,7 @@ vim.o.mousefocus = true
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
+	"tokyonight",
 	"blue.vim",
 	"darkblue.vim",
 	"delek.vim",
@@ -74,14 +75,6 @@ end
 
 local modes = { "n", "v", "c" }
 
--- vim.keymap.set({ "n" }, "<leader>gg", function()
--- 	local query = vim.treesitter.query.get("comment", "highlights")
---
--- 	if query == nil then
--- 		return
--- 	end
--- 	vim.print(query)
--- end, { noremap = true, silent = true, desc = "Testing" })
 vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
@@ -90,7 +83,7 @@ vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 -- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
 -- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
--- NOTE no longer need these bindings, just use register correctly
+-- NOTE no longer need these bindings, just use register correctly with "+
 -- vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
 -- vim.keymap.set(modes, "<leader>p", '"+p', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
 -- vim.keymap.set(modes, "<leader>P", '"+P', { silent = true, noremap = true, desc = "Paste text from system clipboard" })
@@ -382,13 +375,27 @@ require("lazy").setup({
 		hererocks = false,
 	},
 	spec = {
-		-- vibrant color for "digital paper", which is interesting
+		-- Where to check themes
 		-- https://vimcolorschemes.com/i/trending/b.dark
 		-- https://github.com/mcchrish/vim-no-color-collections
+		-- Too high constrast, but seems to have a good design theory
 		{ "nuvic/flexoki-nvim", lazy = true, enabled = false },
 		{
 			"slugbyte/lackluster.nvim",
 			enabled = false,
+			lazy = true,
+		},
+		{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
+		{
+			"AlexvZyl/nordic.nvim",
+			lazy = true,
+			config = function()
+				---@diagnostic disable-next-line: missing-fields
+				require("nordic").setup({})
+			end,
+		},
+		{
+			"vague2k/vague.nvim",
 			lazy = true,
 		},
 		{
@@ -400,7 +407,7 @@ require("lazy").setup({
 			config = function()
 				-- NOTE somehow defining in init does not work, defining again
 				vim.opt.background = "dark"
-				require("e-ink").setup({})
+				require("e-ink").setup()
 			end,
 		},
 		{
@@ -674,6 +681,71 @@ require("lazy").setup({
 			},
 		},
 		{
+			"chrisgrieser/nvim-spider",
+			keys = {
+				{
+					"W",
+					function()
+						require("spider").motion("w")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to word",
+				},
+				{
+					"w",
+					function()
+						require("spider").motion("w")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to word",
+				},
+				{
+					"e",
+					function()
+						require("spider").motion("e")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to end of word",
+				},
+				{
+					"E",
+					function()
+						require("spider").motion("e")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to end of word",
+				},
+				{
+					"b",
+					function()
+						require("spider").motion("b")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump backward to word",
+				},
+				{
+					"B",
+					function()
+						require("spider").motion("b")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump backward to word",
+				},
+			},
+		},
+		{
 			"nvim-lualine/lualine.nvim",
 			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -691,6 +763,7 @@ require("lazy").setup({
 					"snacks_win_backdrop",
 					"NeogitStatus",
 					"NeogitCommitView",
+					"NeogitStashView",
 					"NeogitConsole",
 					"NeogitLogView",
 					"NeogitDiffView",
@@ -872,7 +945,7 @@ require("lazy").setup({
 									info = INFO_ICON,
 									hint = HINT_ICON,
 								},
-								color = "StatusLine",
+								color = "lualine_c_normal",
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
@@ -896,7 +969,7 @@ require("lazy").setup({
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
-								color = "StatusLine",
+								color = "lualine_c_normal",
 							},
 						},
 					},
