@@ -291,12 +291,23 @@ require("lazy").setup({
 	},
 	spec = {
 		{
+			"alexxGmZ/e-ink.nvim",
+			priority = 1000,
+			init = function()
+				vim.cmd.colorscheme("e-ink")
+				vim.opt.background = "dark"
+			end,
+			config = function()
+				require("e-ink").setup()
+			end,
+		},
+		{
 			"folke/tokyonight.nvim",
 			lazy = false,
 			priority = 1000,
 			requires = { "nvim-tree/nvim-web-devicons" },
 			init = function()
-				vim.g.tokyonight_style = "night"
+				vim.g.tokyonight_style = "storm"
 				vim.cmd.colorscheme("tokyonight")
 			end,
 		},
@@ -3234,8 +3245,8 @@ if vim.fn.has("wsl") == 1 then
 	}
 end
 -- TODO how can I always open helpfiles in a tab?
-
-local function base64_encode_operator(mode)
+--
+local function select_area_for_operator(mode)
 	local start_pos, end_pos
 
 	if mode == "visual" then
@@ -3249,29 +3260,26 @@ local function base64_encode_operator(mode)
 		end_pos = vim.fn.getpos("']")
 	end
 
+	return start_pos, end_pos
+end
+
+local function base64_encode_operator(mode)
+	local start_pos, end_pos = select_area_for_operator(mode)
 	-- Get selected text
 	local lines = vim.api.nvim_buf_get_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], {})
 
-	-- Concatenate lines and encode in base64
+	vim.print("check selected lines", lines)
+
 	local text = table.concat(lines, "\n")
+
 	local encoded = vim.base64.encode(text)
 
 	-- Replace text with encoded version
 	vim.api.nvim_buf_set_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], { encoded })
 end
 
--- Create a user command and operator mapping
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ee",
-	":set opfunc=v:lua.base64_encode_operator<CR>g@",
-	{ noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-	"x",
-	"<leader>ee",
-	":lua base64_encode_operator('visual')<CR>",
-	{ noremap = true, silent = true }
-)
--- Expose function globally
+vim.keymap.set("n", "<leader>ee", ":set opfunc=v:lua.base64_encode_operator<CR>g@", { noremap = true, silent = true })
+vim.keymap.set("x", "<leader>ee", function()
+	base64_encode_operator("visual")
+end, { noremap = true, silent = true })
 _G.base64_encode_operator = base64_encode_operator
