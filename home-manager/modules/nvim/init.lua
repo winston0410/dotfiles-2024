@@ -292,14 +292,11 @@ require("lazy").setup({
 	spec = {
 		{
 			"alexxGmZ/e-ink.nvim",
-			priority = 1000,
+			lazy = true,
 			init = function()
-				vim.cmd.colorscheme("e-ink")
 				vim.opt.background = "dark"
 			end,
-			config = function()
-				require("e-ink").setup()
-			end,
+			opts = {},
 		},
 		{
 			"folke/tokyonight.nvim",
@@ -3245,41 +3242,77 @@ if vim.fn.has("wsl") == 1 then
 	}
 end
 -- TODO how can I always open helpfiles in a tab?
---
+
+---@param mode "visual" | nil
 local function select_area_for_operator(mode)
 	local start_pos, end_pos
 
 	if mode == "visual" then
-		-- Get visual selection range
-		vim.cmd('normal! "vy') -- Yank selection to register v
-		start_pos = vim.fn.getpos("'<")
-		end_pos = vim.fn.getpos("'>")
+		start_pos = vim.fn.getpos(".")
+		end_pos = vim.fn.getpos("v")
 	else
-		-- Get range from '[ to '] (previously operated motion)
 		start_pos = vim.fn.getpos("'[")
 		end_pos = vim.fn.getpos("']")
 	end
 
-	return start_pos, end_pos
+	local start_row = start_pos[2]
+	local start_col = start_pos[3]
+	local end_row = end_pos[2]
+	local end_col = end_pos[3]
+
+	if end_row > start_row then
+		return start_row, start_col, end_row, end_col
+	end
+
+	if start_row > end_row then
+		return end_row, end_col, start_row, start_col
+	end
+
+	if end_col > start_col then
+		return start_row, start_col, end_row, end_col
+	end
+	return end_row, end_col, start_row, start_col
 end
 
+---@param mode "visual"|nil
 local function base64_encode_operator(mode)
-	local start_pos, end_pos = select_area_for_operator(mode)
-	-- Get selected text
-	local lines = vim.api.nvim_buf_get_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], {})
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
 
-	vim.print("check selected lines", lines)
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
 
 	local text = table.concat(lines, "\n")
 
 	local encoded = vim.base64.encode(text)
 
-	-- Replace text with encoded version
-	vim.api.nvim_buf_set_text(0, start_pos[2] - 1, start_pos[3] - 1, end_pos[2] - 1, end_pos[3], { encoded })
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
+end
+---@param mode "visual"|nil
+local function base64_decode_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+
+	local text = table.concat(lines, "\n")
+
+	local encoded = vim.base64.decode(text)
+
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
 end
 
-vim.keymap.set("n", "<leader>ee", ":set opfunc=v:lua.base64_encode_operator<CR>g@", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ee", function()
+	vim.o.opfunc = "v:lua.base64_encode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Base64 encode", expr = true })
 vim.keymap.set("x", "<leader>ee", function()
 	base64_encode_operator("visual")
-end, { noremap = true, silent = true })
+end, { noremap = true, silent = true, desc = "Base64 encode" })
 _G.base64_encode_operator = base64_encode_operator
+
+vim.keymap.set({ "n" }, "<leader>ed", function()
+	vim.o.opfunc = "v:lua.base64_decode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Base64 decode", expr = true })
+vim.keymap.set("x", "<leader>ed", function()
+	base64_decode_operator("visual")
+end, { noremap = true, silent = true, desc = "Base64 decode" })
+_G.base64_decode_operator = base64_decode_operator
