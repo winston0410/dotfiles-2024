@@ -1164,7 +1164,7 @@ require("lazy").setup({
 			},
 			keys = {
 				{
-					"<leader>g",
+					"<leader>gg",
 					function()
 						require("neogit").open()
 					end,
@@ -2450,11 +2450,10 @@ require("lazy").setup({
 								-- 	query_group = "highlights",
 								-- 	desc = "Next lua doc comment",
 								-- },
-								-- ["]gg"] = {
-								-- 	query = "@comment.todo",
-								-- 	query_group = "injections",
-								-- 	desc = "Jump to next TODO comment",
-								-- },
+								["]ct"] = {
+									query = "@comment.todo",
+									desc = "Jump to next TODO comment",
+								},
 								-- ["]cn"] = {
 								-- 	query = "@comment.note",
 								-- 	query_group = "injections",
