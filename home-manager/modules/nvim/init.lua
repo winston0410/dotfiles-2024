@@ -43,6 +43,7 @@ vim.opt.wildignore:append({
 	"default.vim",
 	"vim.lua",
 })
+vim.opt.background = "dark"
 
 local ERROR_ICON = " "
 local WARNING_ICON = " "
@@ -269,6 +270,97 @@ if vim.wo.diff then
 	vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 end
 
+-- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
+if vim.fn.has("wsl") == 1 then
+	vim.g.clipboard = {
+		name = "WslClipboard",
+		copy = {
+			["+"] = "/mnt/c/Windows/System32/clip.exe",
+			["*"] = "/mnt/c/Windows/System32/clip.exe",
+		},
+		paste = {
+			["+"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+			["*"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+		},
+		cache_enabled = 0,
+	}
+end
+-- TODO how can I always open helpfiles in a tab?
+
+---@param mode "visual" | nil
+local function select_area_for_operator(mode)
+	local start_pos, end_pos
+
+	if mode == "visual" then
+		start_pos = vim.fn.getpos(".")
+		end_pos = vim.fn.getpos("v")
+	else
+		start_pos = vim.fn.getpos("'[")
+		end_pos = vim.fn.getpos("']")
+	end
+
+	local start_row = start_pos[2]
+	local start_col = start_pos[3]
+	local end_row = end_pos[2]
+	local end_col = end_pos[3]
+
+	if end_row > start_row then
+		return start_row, start_col, end_row, end_col
+	end
+
+	if start_row > end_row then
+		return end_row, end_col, start_row, start_col
+	end
+
+	if end_col > start_col then
+		return start_row, start_col, end_row, end_col
+	end
+	return end_row, end_col, start_row, start_col
+end
+
+---@param mode "visual"|nil
+local function base64_encode_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+
+	local text = table.concat(lines, "\n")
+
+	local encoded = vim.base64.encode(text)
+
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
+end
+---@param mode "visual"|nil
+local function base64_decode_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+
+	local text = table.concat(lines, "\n")
+
+	local encoded = vim.base64.decode(text)
+
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
+end
+
+vim.keymap.set("n", "<leader>ee", function()
+	vim.o.opfunc = "v:lua.base64_encode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Base64 encode", expr = true })
+vim.keymap.set("x", "<leader>ee", function()
+	base64_encode_operator("visual")
+end, { noremap = true, silent = true, desc = "Base64 encode" })
+_G.base64_encode_operator = base64_encode_operator
+
+vim.keymap.set({ "n" }, "<leader>ed", function()
+	vim.o.opfunc = "v:lua.base64_decode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Base64 decode", expr = true })
+vim.keymap.set("x", "<leader>ed", function()
+	base64_decode_operator("visual")
+end, { noremap = true, silent = true, desc = "Base64 decode" })
+_G.base64_decode_operator = base64_decode_operator
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -290,13 +382,26 @@ require("lazy").setup({
 		hererocks = false,
 	},
 	spec = {
+		-- vibrant color for "digital paper", which is interesting
+		-- https://vimcolorschemes.com/i/trending/b.dark
+		-- https://github.com/mcchrish/vim-no-color-collections
+		{ "nuvic/flexoki-nvim", lazy = true, enabled = false },
+		{
+			"slugbyte/lackluster.nvim",
+			enabled = false,
+			lazy = true,
+		},
 		{
 			"alexxGmZ/e-ink.nvim",
 			lazy = true,
 			init = function()
 				vim.opt.background = "dark"
 			end,
-			opts = {},
+			config = function()
+				-- NOTE somehow defining in init does not work, defining again
+				vim.opt.background = "dark"
+				require("e-ink").setup({})
+			end,
 		},
 		{
 			"folke/tokyonight.nvim",
@@ -3226,93 +3331,3 @@ vim.api.nvim_create_autocmd("LspProgress", {
 		})
 	end,
 })
--- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
-if vim.fn.has("wsl") == 1 then
-	vim.g.clipboard = {
-		name = "WslClipboard",
-		copy = {
-			["+"] = "/mnt/c/Windows/System32/clip.exe",
-			["*"] = "/mnt/c/Windows/System32/clip.exe",
-		},
-		paste = {
-			["+"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-			["*"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-		},
-		cache_enabled = 0,
-	}
-end
--- TODO how can I always open helpfiles in a tab?
-
----@param mode "visual" | nil
-local function select_area_for_operator(mode)
-	local start_pos, end_pos
-
-	if mode == "visual" then
-		start_pos = vim.fn.getpos(".")
-		end_pos = vim.fn.getpos("v")
-	else
-		start_pos = vim.fn.getpos("'[")
-		end_pos = vim.fn.getpos("']")
-	end
-
-	local start_row = start_pos[2]
-	local start_col = start_pos[3]
-	local end_row = end_pos[2]
-	local end_col = end_pos[3]
-
-	if end_row > start_row then
-		return start_row, start_col, end_row, end_col
-	end
-
-	if start_row > end_row then
-		return end_row, end_col, start_row, start_col
-	end
-
-	if end_col > start_col then
-		return start_row, start_col, end_row, end_col
-	end
-	return end_row, end_col, start_row, start_col
-end
-
----@param mode "visual"|nil
-local function base64_encode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local encoded = vim.base64.encode(text)
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
-end
----@param mode "visual"|nil
-local function base64_decode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local encoded = vim.base64.decode(text)
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
-end
-
-vim.keymap.set("n", "<leader>ee", function()
-	vim.o.opfunc = "v:lua.base64_encode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Base64 encode", expr = true })
-vim.keymap.set("x", "<leader>ee", function()
-	base64_encode_operator("visual")
-end, { noremap = true, silent = true, desc = "Base64 encode" })
-_G.base64_encode_operator = base64_encode_operator
-
-vim.keymap.set({ "n" }, "<leader>ed", function()
-	vim.o.opfunc = "v:lua.base64_decode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Base64 decode", expr = true })
-vim.keymap.set("x", "<leader>ed", function()
-	base64_decode_operator("visual")
-end, { noremap = true, silent = true, desc = "Base64 decode" })
-_G.base64_decode_operator = base64_decode_operator
