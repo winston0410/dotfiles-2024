@@ -690,6 +690,7 @@ require("lazy").setup({
 					"snacks_picker_input",
 					"snacks_win_backdrop",
 					"NeogitStatus",
+					"NeogitCommitView",
 					"NeogitConsole",
 					"NeogitLogView",
 					"NeogitDiffView",
