@@ -464,8 +464,11 @@ require("lazy").setup({
 		},
 		{
 			"jackplus-xyz/player-one.nvim",
-			enabled = true,
-			opts = {},
+			enabled = false,
+			opts = {
+				is_enabled = true,
+				debug = true,
+			},
 		},
 		{
 			"sphamba/smear-cursor.nvim",
