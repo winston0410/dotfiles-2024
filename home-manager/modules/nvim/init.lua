@@ -6,6 +6,7 @@
 -- ## Operators
 -- REF https://neovim.io/doc/user/motion.html#operator
 -- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects
+-- And finally gx for opening url in neovim
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -16,7 +17,6 @@ vim.o.mousefocus = true
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
-	"tokyonight",
 	"blue.vim",
 	"darkblue.vim",
 	"delek.vim",
@@ -379,23 +379,49 @@ require("lazy").setup({
 		-- https://vimcolorschemes.com/i/trending/b.dark
 		-- https://github.com/mcchrish/vim-no-color-collections
 		-- Too high constrast, but seems to have a good design theory
-		{ "nuvic/flexoki-nvim", lazy = true, enabled = false },
+		{
+			"nuvic/flexoki-nvim",
+			lazy = true,
+			init = function()
+				vim.opt.wildignore:append({
+					"flexoki.lua",
+					-- don't look good in dark theme
+					"flexoki-moon.lua",
+				})
+			end,
+		},
+		{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
+		-- comment is too dark when using lackluster
 		{
 			"slugbyte/lackluster.nvim",
 			enabled = false,
 			lazy = true,
 		},
-		{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
+		-- a warmer Nord variant
 		{
 			"AlexvZyl/nordic.nvim",
 			lazy = true,
-			config = function()
-				---@diagnostic disable-next-line: missing-fields
-				require("nordic").setup({})
-			end,
 		},
 		{
-			"vague2k/vague.nvim",
+			"thesimonho/kanagawa-paper.nvim",
+			lazy = true,
+		},
+		{
+			-- single accent color customizable theme, better than darkvoid
+			"wnkz/monoglow.nvim",
+			init = function()
+				vim.opt.wildignore:append({
+					"monoglow.lua",
+					"monoglow-void.lua",
+					"monoglow-lack.lua",
+				})
+			end,
+			config = function()
+				require("monoglow").setup({
+					on_colors = function(colors) end,
+					on_highlights = function() end,
+				})
+			end,
 			lazy = true,
 		},
 		{
@@ -411,18 +437,39 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"rose-pine/neovim",
+			name = "rose-pine",
+			lazy = true,
+			init = function()
+				vim.opt.wildignore:append({
+					"rose-pine.lua",
+					"rose-pine-dawn.lua",
+				})
+			end,
+		},
+		{
 			"folke/tokyonight.nvim",
 			lazy = false,
 			priority = 1000,
 			requires = { "nvim-tree/nvim-web-devicons" },
 			init = function()
-				vim.g.tokyonight_style = "storm"
+				vim.g.tokyonight_style = "moon"
 				vim.cmd.colorscheme("tokyonight")
+				vim.opt.wildignore:append({
+					"tokyonight.lua",
+					"tokyonight-night.lua",
+					"tokyonight-day.lua",
+				})
 			end,
 		},
 		{
 			"jackplus-xyz/player-one.nvim",
-			enabled = false,
+			enabled = true,
+			opts = {},
+		},
+		{
+			"sphamba/smear-cursor.nvim",
+			event = { "CursorHold" },
 			opts = {},
 		},
 		{
@@ -781,7 +828,9 @@ require("lazy").setup({
 						globalstatus = true,
 					},
 					tabline = {
-						lualine_a = {
+						lualine_a = {},
+						lualine_b = {},
+						lualine_c = {
 							{
 								"buffers",
 								mode = 0,
@@ -792,31 +841,19 @@ require("lazy").setup({
 								filetype_names = {
 									checkhealth = "Healthcheck",
 								},
-								buffers_color = {
-									active = "TabLineFill",
-									inactive = "TabLine",
-								},
 								symbols = {
 									modified = "[+]",
 									alternate_file = "",
 								},
 							},
 						},
-						lualine_b = {},
-						lualine_c = {},
-						lualine_x = {},
-						lualine_y = {},
-						lualine_z = {
+						lualine_x = {
 							{
 								"tabs",
 								mode = 0,
 								max_length = function()
 									return vim.o.columns / 2
 								end,
-								tabs_color = {
-									active = "TabLineFill",
-									inactive = "TabLine",
-								},
 								-- see if we need this again in the future
 								-- fmt = function(name, context)
 								-- 	local ok, result = pcall(function()
@@ -837,6 +874,8 @@ require("lazy").setup({
 								-- end,
 							},
 						},
+						lualine_y = {},
+						lualine_z = {},
 					},
 					winbar = {
 						lualine_a = {},
@@ -853,7 +892,6 @@ require("lazy").setup({
 								"filename",
 								file_status = true,
 								path = 1,
-								color = "TabLineFill",
 								padding = 0,
 							},
 						},
@@ -876,7 +914,6 @@ require("lazy").setup({
 								"filename",
 								file_status = true,
 								path = 1,
-								color = "TabLine",
 								padding = 0,
 							},
 						},
@@ -1508,7 +1545,7 @@ require("lazy").setup({
 					end
 				end,
 				signcolumn = false,
-				linehl = true,
+				linehl = false,
 				current_line_blame = true,
 				preview_config = {
 					border = "rounded",
