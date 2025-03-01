@@ -75,7 +75,27 @@ end
 
 local modes = { "n", "v", "c" }
 
-vim.keymap.set("n", "q:", "<Nop>", { noremap = true, silent = true })
+-- REF https://unix.stackexchange.com/a/637223/467987
+vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function(ev)
+		vim.api.nvim_buf_set_option(ev.buf, "number", false)
+		vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
+		vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
+
+		local shell_cmd = vim.opt.shell:get()
+		-- zsh
+		local _ = shell_cmd
+			-- match substring before the first space
+			:match("^(%S+)")
+			-- match the base"me of a path
+			:match("([^/]+)$")
+	end,
+})
+vim.keymap.set({ "c", "n" }, "q:", "<Nop>", { noremap = true, silent = true })
+vim.keymap.set({ "c", "n" }, "q/", "<Nop>", { noremap = true, silent = true })
+vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 -- useless synonym of cc
 vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
@@ -98,7 +118,7 @@ vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set(modes, "Y", "y$", {
 	silent = true,
 	noremap = true,
-	desc = "Yanks from the cursor position to the end of the line.",
+	desc = "Yanks to the end of the line.",
 })
 
 vim.keymap.set(modes, "<leader>wv", function()
@@ -418,7 +438,7 @@ require("lazy").setup({
 			end,
 			config = function()
 				require("monoglow").setup({
-					on_colors = function(colors) end,
+					on_colors = function() end,
 					on_highlights = function() end,
 				})
 			end,
@@ -801,6 +821,8 @@ require("lazy").setup({
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
 				local utility_filetypes = {
+					"terminal",
+					"snacks_terminal",
 					"oil",
 					"trouble",
 					"qf",
@@ -1346,6 +1368,10 @@ require("lazy").setup({
 					-- NOTE for checking misspelled word, we can use latex-lsp to highlight, and then jump with [d and ]d
 					"[s",
 					"]s",
+					-- NOTE <Nop> default keybinding
+					"q:",
+					"q/",
+					"q?",
 				}
 
 				wk.setup({
@@ -1651,34 +1677,40 @@ require("lazy").setup({
 				show_variable_info_text = "float",
 			},
 		},
-		-- FIXME seems to be buggy, and it seems to be too intrusive
-		-- {
-		-- 	"mcauley-penney/visual-whitespace.nvim",
-		-- 	config = function()
-		-- 		-- https://github.com/mcauley-penney/visual-whitespace.nvim
-		-- 		require("visual-whitespace").setup({
-		-- 			highlight = { link = "Visual" },
-		-- 			space_char = "·",
-		-- 			-- tab_char = "→",
-		-- 			-- nl_char = "↲",
-		-- 			-- cr_char = "←",
-		-- 			tab_char = "",
-		-- 			nl_char = "",
-		-- 			cr_char = "",
-		-- 			enabled = true,
-		-- 			excluded = {
-		-- 				filetypes = {},
-		-- 				buftypes = {},
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- },
+		{
+			"mcauley-penney/visual-whitespace.nvim",
+			-- this plugin is too intrusive
+			enabled = false,
+			opts = {},
+		},
 		{
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
+				{
+					"<leader>phn",
+					function()
+						Snacks.picker.notifications({
+							confirm = { "copy", "close" },
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search notifications history",
+				},
+				{
+					"<leader>phc",
+					function()
+						Snacks.picker.command_history()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search command history",
+				},
 				{
 					"<leader>pb",
 					function()
