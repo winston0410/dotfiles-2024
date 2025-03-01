@@ -473,6 +473,24 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"projekt0n/github-nvim-theme",
+			lazy = true,
+			init = function()
+				vim.opt.wildignore:append({
+					"github_dark.vim",
+					"github_dark_default.vim",
+					"github_dark_tritanopia.vim",
+					"github_dark_high_contrast.vim",
+
+					"github_light.vim",
+					"github_light_default.vim",
+					"github_light_tritanopia.vim",
+					"github_light_colorblind.vim",
+					"github_light_high_contrast.vim",
+				})
+			end,
+		},
+		{
 			"folke/tokyonight.nvim",
 			lazy = false,
 			priority = 1000,
@@ -1875,21 +1893,6 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Find Treesitter nodes",
-				},
-				{
-					"<leader>pn",
-					function()
-						Snacks.picker.notifications()
-						Snacks.picker.treesitter({
-							filter = {
-								-- default = true,
-							},
-						})
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Find notifications",
 				},
 				{
 					"<leader>ps",
