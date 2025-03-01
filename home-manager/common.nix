@@ -35,7 +35,11 @@
   };
 
   news = { display = "show"; };
-  home.packages = with pkgs; [ procs unstable.go brave ];
+  home.packages = with pkgs;
+    [
+      # # for extracting secret for env
+      # bitwarden-cli
+    ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

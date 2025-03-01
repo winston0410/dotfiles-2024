@@ -80,9 +80,12 @@ vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function(ev)
-		vim.api.nvim_buf_set_option(ev.buf, "number", false)
-		vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
-		vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
+		-- vim.api.nvim_buf_set_option(ev.buf, "number", false)
+		-- vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
+		-- vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
+		vim.api.nvim_set_option_value("number", false, { scope = "local" })
+		vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
+		vim.api.nvim_set_option_value("filetype", "terminal", { scope = "local" })
 
 		local shell_cmd = vim.opt.shell:get()
 		-- zsh
@@ -488,6 +491,35 @@ require("lazy").setup({
 			opts = {
 				is_enabled = true,
 				debug = true,
+			},
+		},
+		{
+			"olimorris/codecompanion.nvim",
+			event = { "VeryLazy" },
+			config = function()
+				require("codecompanion").setup({
+					-- https://codecompanion.olimorris.dev/configuration/adapters.html#changing-a-model
+					adapters = {
+						gemini = function()
+							return require("codecompanion.adapters").extend("gemini", {
+								schema = {
+									model = {
+										default = "gemini-2.0-flash",
+									},
+								},
+							})
+						end,
+					},
+					strategies = {
+						inline = {
+							adapter = "gemini",
+						},
+					},
+				})
+			end,
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
 			},
 		},
 		{
@@ -1689,6 +1721,16 @@ require("lazy").setup({
 			lazy = false,
 			dependencies = { "folke/which-key.nvim" },
 			keys = {
+				{
+					"<leader>phu",
+					function()
+						Snacks.picker.undo()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search undo history",
+				},
 				{
 					"<leader>phn",
 					function()
