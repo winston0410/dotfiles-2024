@@ -80,9 +80,10 @@ vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function(ev)
-		-- vim.api.nvim_buf_set_option(ev.buf, "number", false)
-		-- vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
-		-- vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
+		vim.api.nvim_buf_set_option(ev.buf, "number", false)
+		vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
+		vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
+		--
 		vim.api.nvim_set_option_value("number", false, { scope = "local" })
 		vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
 		vim.api.nvim_set_option_value("filetype", "terminal", { scope = "local" })
@@ -282,9 +283,10 @@ end
 if vim.wo.diff then
 	-- disable wrap so filler line will always align with changes
 	vim.o.wrap = false
-	vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
-	vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 end
+
+vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
+vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then
@@ -495,6 +497,7 @@ require("lazy").setup({
 		},
 		{
 			"olimorris/codecompanion.nvim",
+			cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
 			event = { "VeryLazy" },
 			config = function()
 				require("codecompanion").setup({
@@ -513,6 +516,32 @@ require("lazy").setup({
 					strategies = {
 						inline = {
 							adapter = "gemini",
+						},
+						keymaps = {
+							accept_change = {
+								modes = { n = "ga" },
+								description = "Accept the suggested change",
+							},
+							reject_change = {
+								modes = { n = "gr" },
+								description = "Reject the suggested change",
+							},
+						},
+					},
+					display = {
+						diff = {
+							enabled = true,
+							close_chat_at = 240,
+							layout = "vertical",
+							opts = {
+								"internal",
+								"filler",
+								"closeoff",
+								"algorithm:patience",
+								"followwrap",
+								"linematch:120",
+							},
+							provider = "default",
 						},
 					},
 				})
@@ -618,7 +647,7 @@ require("lazy").setup({
 				snippets = { preset = "luasnip" },
 
 				sources = {
-					default = { "lsp", "path", "snippets", "buffer" },
+					default = { "lsp", "path", "snippets", "buffer", "omni" },
 					min_keyword_length = function(ctx)
 						-- only applies when typing a command, doesn't apply to arguments
 						if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
