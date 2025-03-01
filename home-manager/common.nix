@@ -38,7 +38,7 @@
   home.packages = with pkgs;
     [
       # # for extracting secret for env
-      # bitwarden-cli
+      unstable.bitwarden-cli
     ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;

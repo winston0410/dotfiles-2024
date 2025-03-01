@@ -10,8 +10,7 @@
     flake-parts.follows = "proxy-flake/flake-parts";
     sops-nix.follows = "proxy-flake/sops-nix";
 
-    unstable.url =
-      "github:nixos/nixpkgs?rev=75d54b468a2a51b38c56aa8d09e33ac38cd732bc";
+    unstable.url = "github:nixos/nixpkgs";
 
     nixd.url =
       # unstable
