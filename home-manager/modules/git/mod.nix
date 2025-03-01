@@ -29,8 +29,16 @@
     lfs = { enable = true; };
 
     merge = { tool = "nvimdiff"; };
+    mergetool = {
+      prompt = false;
+      # cmd = "";
+    };
 
     diff = { tool = "nvimdiff"; };
+    difftool = {
+      prompt = false;
+      # cmd = "";
+    };
   };
   home.packages = with pkgs;
     [
