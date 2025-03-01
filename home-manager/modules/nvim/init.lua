@@ -1960,6 +1960,8 @@ require("lazy").setup({
 										["c"] = "explorer_rename",
 										["y"] = { "explorer_yank", mode = { "n", "x" } },
 										["p"] = "explorer_paste",
+										-- Use copy here, until there is a new action allows creating a new empty files or dir
+										["o"] = "explorer_copy",
 										["<a-i>"] = "toggle_ignored",
 										["<a-h>"] = "toggle_hidden",
 										["]gh"] = "explorer_git_next",
@@ -1970,8 +1972,6 @@ require("lazy").setup({
 										-- ["<leader>/"] = "picker_grep",
 										["<leader>~"] = "tcd",
 										-- TODO not sure how to deal with these actions yet
-										-- ["o"] = "explorer_open",
-										-- ["c"] = "explorer_copy",
 										-- ["a"] = "explorer_add",
 										-- ["m"] = "explorer_move",
 									},
