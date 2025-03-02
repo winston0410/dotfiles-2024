@@ -558,6 +558,26 @@ require("lazy").setup({
 					noremap = true,
 					desc = "Substitute",
 				},
+				{
+					"sx",
+					function()
+						require("substitute.exchange").operator()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Exchange",
+				},
+				{
+					"sx",
+					function()
+						require("substitute.exchange").visual()
+					end,
+					mode = { "x" },
+					silent = true,
+					noremap = true,
+					desc = "Exchange",
+				},
 			},
 			opts = {},
 		},
@@ -2034,19 +2054,8 @@ require("lazy").setup({
 			config = function()
 				local pickerKeys = {
 					["<2-LeftMouse>"] = "confirm",
-					["<S-CR>"] = { "qflist", mode = { "i", "n" } },
+					["<leader>q"] = { "qflist", mode = { "i", "n" } },
 					["<CR>"] = { "confirm", mode = { "n", "i" } },
-					-- NOTE no need to use something like this, it is better to
-					-- ["<CR>"] = {
-					-- 	function(picker)
-					-- 		local selected = picker:selected()
-					-- 		if #selected > 0 then
-					-- 			return Snacks.picker.actions.qflist()
-					-- 		end
-					-- 		return Snacks.picker.actions.confirm()
-					-- 	end,
-					-- 	mode = { "n", "i" },
-					-- },
 					["<Down>"] = { "list_down", mode = { "i", "n" } },
 					["<Up>"] = { "list_up", mode = { "i", "n" } },
 					["<Esc>"] = "close",
@@ -2973,21 +2982,35 @@ require("lazy").setup({
 		},
 		{
 			"stevearc/quicker.nvim",
-			event = "FileType qf",
 			ft = { "qf" },
-			opts = {
-				opts = {
-					buflisted = false,
-					number = false,
-					relativenumber = false,
-					signcolumn = "auto:2",
-					winfixheight = true,
-					wrap = true,
-				},
-				follow = {
-					enabled = false,
+			keys = {
+				{
+					"<leader>q",
+					function()
+						require("quicker").toggle()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Open quickfix list",
 				},
 			},
+			config = function()
+				require("quicker").setup({
+					keys = {},
+					opts = {
+						buflisted = false,
+						number = false,
+						relativenumber = false,
+						signcolumn = "auto:2",
+						winfixheight = true,
+						wrap = true,
+					},
+					follow = {
+						enabled = false,
+					},
+				})
+			end,
 		},
 		{
 			"folke/edgy.nvim",
