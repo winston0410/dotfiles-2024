@@ -3084,7 +3084,7 @@ require("lazy").setup({
 			config = function()
 				-- TODO add a key binding for formatting operator
 				-- TODO jump to specific kind of comments, for example TODO
-				local prettier = { "prettierd", "prettier", stop_after_first = true }
+				local prettier = { "biome", "prettierd", "prettier", stop_after_first = true }
 				require("conform").setup({
 					formatters_by_ft = {
 						ember = {},
@@ -3286,8 +3286,8 @@ require("lazy").setup({
 					"serve_d",
 					"gdscript",
 					"scry",
-					-- enable later when we work on ember project
-					-- "ember",
+					"ember",
+					"biome",
 					"eslint",
 					"angularls",
 					"bashls",

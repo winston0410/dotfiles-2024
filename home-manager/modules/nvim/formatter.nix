@@ -4,13 +4,11 @@
     gotools
     stylua
     nixfmt-classic
-    # Not using Purescript anymore
-    # nodePackages.purty
-    # Not working with Python at the moment
     just
     kulala-fmt
     ruff
     rustfmt
+    biome
     prettierd
     yamlfmt
     taplo
