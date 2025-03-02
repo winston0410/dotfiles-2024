@@ -481,12 +481,23 @@ require("lazy").setup({
 					"github_dark_default.vim",
 					"github_dark_tritanopia.vim",
 					"github_dark_high_contrast.vim",
-
+					"github_dark_dimmed.vim",
 					"github_light.vim",
 					"github_light_default.vim",
 					"github_light_tritanopia.vim",
 					"github_light_colorblind.vim",
 					"github_light_high_contrast.vim",
+				})
+			end,
+		},
+		{
+			"EdenEast/nightfox.nvim",
+			lazy = true,
+			init = function()
+				vim.opt.wildignore:append({
+					"dawnfox.vim",
+					"dayfox.vim",
+					"nightfox.vim",
 				})
 			end,
 		},
