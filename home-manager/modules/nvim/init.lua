@@ -578,6 +578,16 @@ require("lazy").setup({
 					noremap = true,
 					desc = "Exchange",
 				},
+				{
+					"sxc",
+					function()
+						require("substitute.exchange").cancel()
+					end,
+					mode = { "x" },
+					silent = true,
+					noremap = true,
+					desc = "Cancel Exchange",
+				},
 			},
 			opts = {},
 		},
@@ -1514,6 +1524,10 @@ require("lazy").setup({
 					"q:",
 					"q/",
 					"q?",
+					-- NOTE not really that useful, explore later
+					"ge",
+					"gu",
+					"gU",
 				}
 
 				wk.setup({
