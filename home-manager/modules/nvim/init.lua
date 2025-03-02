@@ -100,9 +100,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
 vim.keymap.set({ "c", "n" }, "q:", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q/", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
--- useless synonym of cc
-vim.keymap.set({ "n" }, "s", "<Nop>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "S", "<Nop>", { noremap = true, silent = true })
 
 -- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
 -- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
@@ -514,6 +511,63 @@ require("lazy").setup({
 					"tokyonight-night.lua",
 					"tokyonight-day.lua",
 				})
+			end,
+		},
+		{
+			"gbprod/substitute.nvim",
+			-- TODO define keybindings
+			keys = {
+				-- By default, s is a useless synonym of cc
+				{
+					"s",
+					function()
+						require("substitute").operator()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Substitute",
+				},
+				{
+					"ss",
+					function()
+						require("substitute").line()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Substitute line",
+				},
+				{
+					"S",
+					function()
+						require("substitute").eol()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Substitute EOL",
+				},
+				{
+					"s",
+					function()
+						require("substitute").visual()
+					end,
+					mode = { "x" },
+					silent = true,
+					noremap = true,
+					desc = "Substitute",
+				},
+			},
+			opts = {},
+		},
+		{
+			"Bekaboo/dropbar.nvim",
+			version = "12.0.1",
+			event = { "VeryLazy" },
+			dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
+			config = function()
+				require("dropbar").setup({})
 			end,
 		},
 		{
@@ -997,17 +1051,7 @@ require("lazy").setup({
 						lualine_b = {},
 						lualine_c = {
 							{
-								"filetype",
-								colored = true,
-								icon_only = true,
-								icon = { align = "left" },
-								padding = { left = 1, right = 0 },
-							},
-							{
-								"filename",
-								file_status = true,
-								path = 1,
-								padding = 0,
+								"%{%v:lua.dropbar()%}",
 							},
 						},
 						lualine_x = {},
@@ -1017,21 +1061,9 @@ require("lazy").setup({
 					inactive_winbar = {
 						lualine_a = {},
 						lualine_b = {},
-						lualine_c = {
-							{
-								"filetype",
-								colored = false,
-								icon_only = true,
-								icon = { align = "left" },
-								padding = { left = 1, right = 0 },
-							},
-							{
-								"filename",
-								file_status = true,
-								path = 1,
-								padding = 0,
-							},
-						},
+						lualine_c = { {
+							"%{%v:lua.dropbar()%}",
+						} },
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {},
@@ -2191,8 +2223,10 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 		},
+		-- replaced this plugin with dropbar.nvim, as it occupies less estate on screen
 		{
 			"nvim-treesitter/nvim-treesitter-context",
+			enabled = false,
 			opts = {
 				max_lines = 5,
 			},
@@ -2204,16 +2238,15 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 		},
-		-- NOTE it is a bit intrusive and noisy, disable for now
 		{
 			"tzachar/highlight-undo.nvim",
-			enabled = false,
+			enabled = true,
 			event = "VeryLazy",
 			opts = {
 				hlgroup = "Visual",
 				duration = 500,
 				pattern = { "*" },
-				ignored_filetypes = { "neo-tree", "fugitive", "TelescopePrompt", "mason", "lazy", "snack_dashboard" },
+				ignored_filetypes = { "neo-tree", "fugitive", "TelescopePrompt", "mason", "lazy", "snacks_dashboard" },
 			},
 		},
 		{

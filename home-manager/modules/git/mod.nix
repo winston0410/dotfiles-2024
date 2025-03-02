@@ -28,17 +28,17 @@
 
     lfs = { enable = true; };
 
-    merge = { tool = "nvimdiff"; };
-    mergetool = {
-      prompt = false;
-      # cmd = "";
+    merge = {
+      tool = "nvimdiff1";
+      conflictStyle = "zdiff3";
     };
+    mergetool = { prompt = false; };
 
-    diff = { tool = "nvimdiff"; };
-    difftool = {
-      prompt = false;
-      # cmd = "";
+    diff = {
+      tool = "nvimdiff1";
+      conflictStyle = "zdiff3";
     };
+    difftool = { prompt = false; };
   };
   home.packages = with pkgs;
     [
