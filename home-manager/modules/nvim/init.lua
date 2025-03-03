@@ -160,8 +160,8 @@ for i = 1, 9 do
 end
 
 vim.keymap.set(modes, "<leader>bq", function()
-	vim.cmd("bprevious | bdelete #")
-end, { silent = true, noremap = true, desc = "Delete current buffer and switch to prev buffer" })
+	Snacks.bufdelete.delete()
+end, { silent = true, noremap = true, desc = "Delete current buffer" })
 vim.keymap.set(modes, "<leader>bl", function()
 	vim.cmd("bnext")
 end, { silent = true, noremap = true, desc = "Go to next buffer" })
@@ -353,28 +353,70 @@ local function base64_decode_operator(mode)
 
 	local text = table.concat(lines, "\n")
 
-	local encoded = vim.base64.decode(text)
+	local decoded = vim.base64.decode(text)
+
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
+end
+---@param mode "visual"|nil
+local function uri_encode_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+
+	local text = table.concat(lines, "\n")
+
+	local encoded = vim.uri_encode(text, "rfc3986")
 
 	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
 end
+---@param mode "visual"|nil
+local function uri_decode_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
 
-vim.keymap.set("n", "<leader>ee", function()
+	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+
+	local text = table.concat(lines, "\n")
+
+	local decoded = vim.uri_decode(text)
+
+	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
+end
+
+vim.keymap.set("n", "<leader>ee1", function()
 	vim.o.opfunc = "v:lua.base64_encode_operator"
 	return "g@"
 end, { noremap = true, silent = true, desc = "Base64 encode", expr = true })
-vim.keymap.set("x", "<leader>ee", function()
+vim.keymap.set("x", "<leader>ee1", function()
 	base64_encode_operator("visual")
 end, { noremap = true, silent = true, desc = "Base64 encode" })
 _G.base64_encode_operator = base64_encode_operator
 
-vim.keymap.set({ "n" }, "<leader>ed", function()
+vim.keymap.set({ "n" }, "<leader>ed1", function()
 	vim.o.opfunc = "v:lua.base64_decode_operator"
 	return "g@"
 end, { noremap = true, silent = true, desc = "Base64 decode", expr = true })
-vim.keymap.set("x", "<leader>ed", function()
+vim.keymap.set("x", "<leader>ed1", function()
 	base64_decode_operator("visual")
 end, { noremap = true, silent = true, desc = "Base64 decode" })
 _G.base64_decode_operator = base64_decode_operator
+
+vim.keymap.set("n", "<leader>ee2", function()
+	vim.o.opfunc = "v:lua.uri_encode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "URI encode", expr = true })
+vim.keymap.set("x", "<leader>ee2", function()
+	base64_encode_operator("visual")
+end, { noremap = true, silent = true, desc = "URI encode" })
+_G.uri_encode_operator = uri_encode_operator
+
+vim.keymap.set({ "n" }, "<leader>ed2", function()
+	vim.o.opfunc = "v:lua.uri_decode_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "URI decode", expr = true })
+vim.keymap.set("x", "<leader>ed2", function()
+	base64_decode_operator("visual")
+end, { noremap = true, silent = true, desc = "URI decode" })
+_G.uri_decode_operator = uri_decode_operator
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
