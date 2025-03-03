@@ -419,7 +419,7 @@ end, { noremap = true, silent = true, desc = "URI decode" })
 _G.uri_decode_operator = uri_decode_operator
 
 local function accept_change_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+	local start_row, _, end_row, _ = select_area_for_operator(mode)
 
 	---@alias AcceptChangeDiffBuffer {buf_id: number, buf_name: string}
 	---@type AcceptChangeDiffBuffer[]
@@ -617,6 +617,29 @@ require("lazy").setup({
 					"tokyonight.lua",
 					"tokyonight-night.lua",
 					"tokyonight-day.lua",
+				})
+			end,
+		},
+		{
+			"kylechui/nvim-surround",
+			version = "*", -- Use for stability; omit to use `main` branch for the latest features
+			event = "VeryLazy",
+			config = function()
+				require("nvim-surround").setup({
+					keymaps = {
+						insert = false,
+						insert_line = false,
+						normal = "s",
+						normal_cur = false,
+						normal_line = false,
+						normal_cur_line = false,
+						visual = "s",
+						visual_line = false,
+						delete = "ds",
+						change = "cs",
+						change_line = false,
+					},
+					aliases = {},
 				})
 			end,
 		},
