@@ -7,6 +7,7 @@
 -- REF https://neovim.io/doc/user/motion.html#operator
 -- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects
 -- And finally gx for opening url in neovim
+-- for deleting without polluting the current register, use blackhold register _, for example "_dd
 
 -- Use space as leader key
 vim.g.mapleader = " "
@@ -79,11 +80,10 @@ local modes = { "n", "v", "c" }
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
-	callback = function(ev)
-		vim.api.nvim_buf_set_option(ev.buf, "number", false)
-		vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
-		vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
-		--
+	callback = function()
+		-- vim.api.nvim_buf_set_option(ev.buf, "number", false)
+		-- vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
+		-- vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
 		vim.api.nvim_set_option_value("number", false, { scope = "local" })
 		vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
 		vim.api.nvim_set_option_value("filetype", "terminal", { scope = "local" })
@@ -418,6 +418,71 @@ vim.keymap.set("x", "<leader>ed2", function()
 end, { noremap = true, silent = true, desc = "URI decode" })
 _G.uri_decode_operator = uri_decode_operator
 
+local function accept_change_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
+
+	---@alias AcceptChangeDiffBuffer {buf_id: number, buf_name: string}
+	---@type AcceptChangeDiffBuffer[]
+	local diff_buffers = vim.iter(vim.api.nvim_list_wins())
+		:filter(function(win_id)
+			return vim.api.nvim_win_get_option(win_id, "diff")
+		end)
+		:map(function(win_id)
+			local buf_id = vim.api.nvim_win_get_buf(win_id)
+			local buf_name = vim.api.nvim_buf_get_name(buf_id)
+			return { buf_id = buf_id, buf_name = buf_name }
+		end)
+		:totable()
+	vim.ui.select(
+		vim
+			.iter(diff_buffers)
+			--- @param buf AcceptChangeDiffBuffer
+			:map(function(buf)
+				return buf.buf_name
+			end)
+			:totable(),
+		{ prompt = "Accept hunk from" },
+		function(choice)
+			if choice == nil then
+				return
+			end
+
+			--- @param buf AcceptChangeDiffBuffer
+			--- @type AcceptChangeDiffBuffer | nil
+			local selected_buf = vim.iter(diff_buffers):find(function(buf)
+				return buf.buf_name == choice
+			end)
+			if selected_buf == nil then
+				vim.notify("Cannot find chosen buffer, aborting", vim.log.levels.WARN)
+				return
+			end
+			local curr_buf_id = vim.api.nvim_get_current_buf()
+			if selected_buf.buf_id == curr_buf_id then
+				-- accepted hunk in the current buffer, make other buffers accept this hunk
+				vim
+					.iter(diff_buffers)
+					:filter(function(buf)
+						return buf ~= curr_buf_id
+					end)
+					--- @param buf AcceptChangeDiffBuffer
+					:each(function(buf)
+						vim.api.nvim_buf_call(buf.buf_id, function()
+							vim.cmd(string.format("%d,%ddiffget %s", start_row, end_row, curr_buf_id))
+						end)
+					end)
+			else
+				-- accepted hunk of the selected buffer, make current buffer accept this hunk
+				vim.cmd(string.format("%d,%ddiffget %s", start_row, end_row, selected_buf.buf_id))
+			end
+		end
+	)
+end
+
+vim.keymap.set("x", "<leader>hp", function()
+	accept_change_operator("visual")
+end, { noremap = true, silent = true, desc = "Paste hunk" })
+_G.accept_change_operator = accept_change_operator
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -557,51 +622,50 @@ require("lazy").setup({
 		},
 		{
 			"gbprod/substitute.nvim",
-			-- TODO define keybindings
 			keys = {
 				-- By default, s is a useless synonym of cc
+				-- {
+				-- 	"s",
+				-- 	function()
+				-- 		require("substitute").operator()
+				-- 	end,
+				-- 	mode = { "n" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Substitute",
+				-- },
+				-- {
+				-- 	"ss",
+				-- 	function()
+				-- 		require("substitute").line()
+				-- 	end,
+				-- 	mode = { "n" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Substitute line",
+				-- },
+				-- {
+				-- 	"S",
+				-- 	function()
+				-- 		require("substitute").eol()
+				-- 	end,
+				-- 	mode = { "n" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Substitute EOL",
+				-- },
+				-- {
+				-- 	"s",
+				-- 	function()
+				-- 		require("substitute").visual()
+				-- 	end,
+				-- 	mode = { "x" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Substitute",
+				-- },
 				{
-					"s",
-					function()
-						require("substitute").operator()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Substitute",
-				},
-				{
-					"ss",
-					function()
-						require("substitute").line()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Substitute line",
-				},
-				{
-					"S",
-					function()
-						require("substitute").eol()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Substitute EOL",
-				},
-				{
-					"s",
-					function()
-						require("substitute").visual()
-					end,
-					mode = { "x" },
-					silent = true,
-					noremap = true,
-					desc = "Substitute",
-				},
-				{
-					"sx",
+					"x",
 					function()
 						require("substitute.exchange").operator()
 					end,
@@ -611,7 +675,7 @@ require("lazy").setup({
 					desc = "Exchange",
 				},
 				{
-					"sx",
+					"x",
 					function()
 						require("substitute.exchange").visual()
 					end,
@@ -621,11 +685,21 @@ require("lazy").setup({
 					desc = "Exchange",
 				},
 				{
-					"sxc",
+					"xx",
+					function()
+						require("substitute.exchange").line()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Exchange line",
+				},
+				{
+					"xc",
 					function()
 						require("substitute.exchange").cancel()
 					end,
-					mode = { "x" },
+					mode = { "n" },
 					silent = true,
 					noremap = true,
 					desc = "Cancel Exchange",
@@ -1592,7 +1666,7 @@ require("lazy").setup({
 							windows = true,
 							nav = true,
 							z = true,
-							g = false,
+							g = true,
 						},
 					},
 					keys = {
@@ -1600,15 +1674,21 @@ require("lazy").setup({
 						scroll_up = "<c-p>",
 					},
 				})
-				-- wk.add({
-				-- 	{ "<leader>c", group = "Comment management" },
-				-- 	{ "<leader>s", group = "LSP and Treesitter" },
-				-- 	{ "<leader>t", group = "Tabs management" },
-				-- 	{ "<leader>w", group = "Windows management" },
-				-- 	{ "<leader>b", group = "Buffers management" },
-				-- 	{ "<leader>g", group = "Git management" },
-				-- 	{ "<leader>p", group = "Picker" },
-				-- })
+				wk.add({
+					{ "<leader>c", group = "Comment management" },
+					{ "<leader>z", group = "Fold management" },
+					{ "<leader>s", group = "LSP and Treesitter" },
+					{ "<leader>t", group = "Tabs management" },
+					{ "<leader>w", group = "Windows management" },
+					{ "<leader>b", group = "Buffers management" },
+					{ "<leader>g", group = "Git management" },
+					{ "<leader>q", group = "Quickfix" },
+					{ "<leader>p", group = "Picker" },
+					{ "<leader>e", group = "Encoding and decoding" },
+					{ "<leader>ee", group = "Encode" },
+					{ "<leader>ed", group = "Decode" },
+					{ "x", group = "Exchange" },
+				})
 			end,
 		},
 		{
@@ -3041,7 +3121,7 @@ require("lazy").setup({
 			ft = { "qf" },
 			keys = {
 				{
-					"<leader>q",
+					"<leader>qq",
 					function()
 						require("quicker").toggle()
 					end,
@@ -3052,15 +3132,26 @@ require("lazy").setup({
 				},
 			},
 			config = function()
+				vim.keymap.set({ "n" }, "<leader>qy", function()
+					-- local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+					-- local entries = {}
+					-- for i, line in ipairs(lines) do
+					-- 	table.insert(entries, { lnum = i, text = line })
+					-- end
+					-- vim.fn.setqflist(entries, "r")
+				end, { noremap = true, silent = true, desc = "Send to Quickfix" })
 				require("quicker").setup({
 					keys = {},
+					borders = {
+						vert = "│",
+					},
 					opts = {
 						buflisted = false,
 						number = false,
 						relativenumber = false,
-						signcolumn = "auto:2",
+						signcolumn = "no",
 						winfixheight = true,
-						wrap = true,
+						wrap = false,
 					},
 					follow = {
 						enabled = false,
@@ -3630,46 +3721,60 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		})
 	end,
 })
----@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
-local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
 	---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
 	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
-		if not client or type(value) ~= "table" then
-			return
-		end
-		local p = progress[client.id]
-
-		for i = 1, #p + 1 do
-			if i == #p + 1 or p[i].token == ev.data.params.token then
-				p[i] = {
-					token = ev.data.params.token,
-					msg = ("[%3d%%] %s%s"):format(
-						value.kind == "end" and 100 or value.percentage or 100,
-						value.title or "",
-						value.message and (" **%s**"):format(value.message) or ""
-					),
-					done = value.kind == "end",
-				}
-				break
-			end
-		end
-
-		local msg = {} ---@type string[]
-		progress[client.id] = vim.tbl_filter(function(v)
-			return table.insert(msg, v.msg) or not v.done
-		end, p)
-
 		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-		vim.notify(table.concat(msg, "\n"), "info", {
+		vim.notify(vim.lsp.status(), "info", {
 			id = "lsp_progress",
-			title = client.name,
+			title = "LSP Progress",
 			opts = function(notif)
-				notif.icon = #progress[client.id] == 0 and " "
+				notif.icon = ev.data.params.value.kind == "end" and " "
 					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
 			end,
 		})
 	end,
 })
+-- ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+-- local progress = vim.defaulttable()
+-- vim.api.nvim_create_autocmd("LspProgress", {
+-- 	---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+-- 	callback = function(ev)
+-- 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+-- 		local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+-- 		if not client or type(value) ~= "table" then
+-- 			return
+-- 		end
+-- 		local p = progress[client.id]
+--
+-- 		for i = 1, #p + 1 do
+-- 			if i == #p + 1 or p[i].token == ev.data.params.token then
+-- 				p[i] = {
+-- 					token = ev.data.params.token,
+-- 					msg = ("[%3d%%] %s%s"):format(
+-- 						value.kind == "end" and 100 or value.percentage or 100,
+-- 						value.title or "",
+-- 						value.message and (" **%s**"):format(value.message) or ""
+-- 					),
+-- 					done = value.kind == "end",
+-- 				}
+-- 				break
+-- 			end
+-- 		end
+--
+-- 		local msg = {} ---@type string[]
+-- 		progress[client.id] = vim.tbl_filter(function(v)
+-- 			return table.insert(msg, v.msg) or not v.done
+-- 		end, p)
+--
+-- 		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+-- 		vim.notify(table.concat(msg, "\n"), "info", {
+-- 			id = "lsp_progress",
+-- 			title = client.name,
+-- 			opts = function(notif)
+-- 				notif.icon = #progress[client.id] == 0 and " "
+-- 					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+-- 			end,
+-- 		})
+-- 	end,
+-- })
