@@ -491,14 +491,21 @@ local function quickfix_add_entry_operator(mode)
 	local buf_id = vim.api.nvim_get_current_buf()
 	local start_row, _, end_row, _ = select_area_for_operator(mode)
 	start_row = start_row - 1
+
 	local lines = vim.api.nvim_buf_get_lines(buf_id, start_row, end_row, true)
 	local entries = {}
 	for index, line in ipairs(lines) do
-		table.insert(entries, {
-			text = line,
-			bufnr = buf_id,
-			lnum = start_row + index,
-		})
+		---@param entry QuickFixListEntry
+		local has_existing_entry = vim.iter(vim.fn.getqflist()):find(function(entry)
+			return entry.lnum == start_row + index
+		end)
+		if has_existing_entry == nil then
+			table.insert(entries, {
+				text = line,
+				bufnr = buf_id,
+				lnum = start_row + index,
+			})
+		end
 	end
 	vim.fn.setqflist(entries, "a")
 end
@@ -1188,6 +1195,7 @@ require("lazy").setup({
 								end,
 								filetype_names = {
 									checkhealth = "Healthcheck",
+									qf = "Quickfix",
 								},
 								symbols = {
 									modified = "[+]",
@@ -3687,7 +3695,7 @@ require("lazy").setup({
 })
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	callback = function()
-		vim.diagnostic.setqflist({ open = false })
+		vim.diagnostic.setqflist({ open = false, severity = vim.diagnostic.severity.ERROR })
 	end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
