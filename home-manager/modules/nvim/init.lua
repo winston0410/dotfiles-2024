@@ -347,6 +347,7 @@ local function base64_encode_operator(mode)
 	local encoded = vim.base64.encode(text)
 
 	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
+	vim.api.nvim_input("<Esc>")
 end
 ---@param mode "visual"|nil
 local function base64_decode_operator(mode)
@@ -359,6 +360,7 @@ local function base64_decode_operator(mode)
 	local decoded = vim.base64.decode(text)
 
 	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
+	vim.api.nvim_input("<Esc>")
 end
 ---@param mode "visual"|nil
 local function uri_encode_operator(mode)
@@ -371,6 +373,7 @@ local function uri_encode_operator(mode)
 	local encoded = vim.uri_encode(text, "rfc3986")
 
 	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
+	vim.api.nvim_input("<Esc>")
 end
 ---@param mode "visual"|nil
 local function uri_decode_operator(mode)
@@ -383,6 +386,7 @@ local function uri_decode_operator(mode)
 	local decoded = vim.uri_decode(text)
 
 	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
+	vim.api.nvim_input("<Esc>")
 end
 
 vim.keymap.set("n", "<leader>ee1", function()
@@ -508,6 +512,7 @@ local function quickfix_add_entry_operator(mode)
 		end
 	end
 	vim.fn.setqflist(entries, "a")
+	vim.api.nvim_input("<Esc>")
 end
 vim.keymap.set("n", "<leader>ky", function()
 	vim.o.opfunc = "v:lua.quickfix_add_entry_operator"
@@ -533,6 +538,7 @@ local function quickfix_remove_entry_operator(mode)
 		end)
 		:totable()
 	vim.fn.setqflist(filtered_entries, "r")
+	vim.api.nvim_input("<Esc>")
 end
 vim.keymap.set("n", "<leader>kd", function()
 	vim.o.opfunc = "v:lua.quickfix_remove_entry_operator"
