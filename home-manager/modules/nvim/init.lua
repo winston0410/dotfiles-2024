@@ -622,15 +622,22 @@ require("lazy").setup({
 		},
 		{
 			"kylechui/nvim-surround",
-			version = "*", -- Use for stability; omit to use `main` branch for the latest features
-			event = "VeryLazy",
+			version = "*",
+			-- By default, s is a useless synonym of cc
+			keys = {
+				{ "s", mode = "n" },
+				{ "ss", mode = "n" },
+				{ "cs", mode = "n" },
+				{ "ds", mode = "n" },
+				{ "s", mode = "x" },
+			},
 			config = function()
 				require("nvim-surround").setup({
 					keymaps = {
 						insert = false,
 						insert_line = false,
 						normal = "s",
-						normal_cur = false,
+						normal_cur = "ss",
 						normal_line = false,
 						normal_cur_line = false,
 						visual = "s",
@@ -646,47 +653,6 @@ require("lazy").setup({
 		{
 			"gbprod/substitute.nvim",
 			keys = {
-				-- By default, s is a useless synonym of cc
-				-- {
-				-- 	"s",
-				-- 	function()
-				-- 		require("substitute").operator()
-				-- 	end,
-				-- 	mode = { "n" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Substitute",
-				-- },
-				-- {
-				-- 	"ss",
-				-- 	function()
-				-- 		require("substitute").line()
-				-- 	end,
-				-- 	mode = { "n" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Substitute line",
-				-- },
-				-- {
-				-- 	"S",
-				-- 	function()
-				-- 		require("substitute").eol()
-				-- 	end,
-				-- 	mode = { "n" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Substitute EOL",
-				-- },
-				-- {
-				-- 	"s",
-				-- 	function()
-				-- 		require("substitute").visual()
-				-- 	end,
-				-- 	mode = { "x" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Substitute",
-				-- },
 				{
 					"x",
 					function()
