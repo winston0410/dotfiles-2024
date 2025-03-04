@@ -5,8 +5,11 @@
 
 -- ## Operators
 -- REF https://neovim.io/doc/user/motion.html#operator
--- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects
--- And finally gx for opening url in neovim
+-- We only use c, d, y, p, >, <, <leader>c, gq and ~ operator for manipulating textobjects.
+-- And finally gx for opening url in neovim.
+-- For compound operators, for example change surround, the topic specific operator should precede generic operator( i.e. we should use sc instead of cs. ), so that we will not confuse the topic speicifc operator with textobjects.
+
+-- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
 
 -- Use space as leader key
@@ -233,8 +236,8 @@ local global_options = {
 	{ "grepformat", "%f:%l:%c:%m" },
 	{ "wildmenu", true },
 	{ "wildmode", "longest:full,full" },
-	-- NOTE Make it false, so once a buffer is closed with :q, the LSP message will be removed as well
-	{ "hidden", false },
+	{ "hidden", true },
+	{ "bufhidden", "unload" },
 	{ "cursorline", true },
 	-- NOTE disable cursorline in background as it would be shown in inactive split as well, not really useful when using splits
 	{ "cursorlineopt", "number" },
@@ -483,6 +486,56 @@ vim.keymap.set("x", "<leader>hp", function()
 end, { noremap = true, silent = true, desc = "Paste hunk" })
 _G.accept_change_operator = accept_change_operator
 
+---@param mode "visual"|nil
+local function quickfix_add_entry_operator(mode)
+	local buf_id = vim.api.nvim_get_current_buf()
+	local start_row, _, end_row, _ = select_area_for_operator(mode)
+	start_row = start_row - 1
+	local lines = vim.api.nvim_buf_get_lines(buf_id, start_row, end_row, true)
+	local entries = {}
+	for index, line in ipairs(lines) do
+		table.insert(entries, {
+			text = line,
+			bufnr = buf_id,
+			lnum = start_row + index,
+		})
+	end
+	vim.fn.setqflist(entries, "a")
+end
+vim.keymap.set("n", "<leader>ky", function()
+	vim.o.opfunc = "v:lua.quickfix_add_entry_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Send to Quickfix list", expr = true })
+vim.keymap.set("x", "<leader>ky", function()
+	quickfix_add_entry_operator("visual")
+end, { noremap = true, silent = true, desc = "Send to Quickfix list" })
+_G.quickfix_add_entry_operator = quickfix_add_entry_operator
+
+---@param mode "visual"|nil
+local function quickfix_remove_entry_operator(mode)
+	local start_row, _, end_row, _ = select_area_for_operator(mode)
+	start_row = start_row - 1
+	---@alias QuickFixListEntry {lnum: number, bufnr: number}
+	---@type QuickFixListEntry[]
+	local entries = vim.fn.getqflist()
+	local filtered_entries = vim
+		.iter(entries)
+		---@param entry QuickFixListEntry
+		:filter(function(entry)
+			return not (entry.lnum > start_row and end_row >= entry.lnum)
+		end)
+		:totable()
+	vim.fn.setqflist(filtered_entries, "r")
+end
+vim.keymap.set("n", "<leader>kd", function()
+	vim.o.opfunc = "v:lua.quickfix_remove_entry_operator"
+	return "g@"
+end, { noremap = true, silent = true, desc = "Delete from Quickfix list", expr = true })
+vim.keymap.set("x", "<leader>kd", function()
+	quickfix_remove_entry_operator("visual")
+end, { noremap = true, silent = true, desc = "Delete from Quickfix list" })
+_G.quickfix_remove_entry_operator = quickfix_remove_entry_operator
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -627,8 +680,8 @@ require("lazy").setup({
 			keys = {
 				{ "s", mode = "n" },
 				{ "ss", mode = "n" },
-				{ "cs", mode = "n" },
-				{ "ds", mode = "n" },
+				{ "sc", mode = "n" },
+				{ "sd", mode = "n" },
 				{ "s", mode = "x" },
 			},
 			config = function()
@@ -653,6 +706,7 @@ require("lazy").setup({
 		{
 			"gbprod/substitute.nvim",
 			keys = {
+				-- Use <esc> to cancel an exchange
 				{
 					"x",
 					function()
@@ -682,16 +736,6 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Exchange line",
-				},
-				{
-					"xc",
-					function()
-						require("substitute.exchange").cancel()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Cancel Exchange",
 				},
 			},
 			opts = {},
@@ -1671,8 +1715,10 @@ require("lazy").setup({
 					{ "<leader>w", group = "Windows management" },
 					{ "<leader>b", group = "Buffers management" },
 					{ "<leader>g", group = "Git management" },
-					{ "<leader>q", group = "Quickfix" },
+					{ "<leader>k", group = "Quickfix management" },
 					{ "<leader>p", group = "Picker" },
+					{ "<leader>pg", group = "Search Git" },
+					{ "<leader>ph", group = "Search utils history" },
 					{ "<leader>e", group = "Encoding and decoding" },
 					{ "<leader>ee", group = "Encode" },
 					{ "<leader>ed", group = "Decode" },
@@ -1858,14 +1904,14 @@ require("lazy").setup({
 			cmd = { "Kubectl", "Kubectx", "Kubens" },
 			keys = {
 				{
-					"<leader>k",
+					"<leader>K",
 					function()
 						require("kubectl").toggle({ tab = true })
 					end,
 					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "Open kubectl.nvim panel",
+					desc = "kubectl.nvim panel",
 				},
 			},
 			dependencies = { "folke/snacks.nvim" },
@@ -2179,7 +2225,7 @@ require("lazy").setup({
 			config = function()
 				local pickerKeys = {
 					["<2-LeftMouse>"] = "confirm",
-					["<leader>q"] = { "qflist", mode = { "i", "n" } },
+					["<leader>k"] = { "qflist", mode = { "i", "n" } },
 					["<CR>"] = { "confirm", mode = { "n", "i" } },
 					["<Down>"] = { "list_down", mode = { "i", "n" } },
 					["<Up>"] = { "list_up", mode = { "i", "n" } },
@@ -2276,6 +2322,7 @@ require("lazy").setup({
 			end,
 		},
 		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
+
 		{
 			"numToStr/Comment.nvim",
 			dependencies = { "nvim-treesitter/nvim-treesitter", "JoosepAlviste/nvim-ts-context-commentstring" },
@@ -3110,7 +3157,7 @@ require("lazy").setup({
 			ft = { "qf" },
 			keys = {
 				{
-					"<leader>qq",
+					"<leader>kk",
 					function()
 						require("quicker").toggle()
 					end,
@@ -3121,14 +3168,6 @@ require("lazy").setup({
 				},
 			},
 			config = function()
-				vim.keymap.set({ "n" }, "<leader>qy", function()
-					-- local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-					-- local entries = {}
-					-- for i, line in ipairs(lines) do
-					-- 	table.insert(entries, { lnum = i, text = line })
-					-- end
-					-- vim.fn.setqflist(entries, "r")
-				end, { noremap = true, silent = true, desc = "Send to Quickfix" })
 				require("quicker").setup({
 					keys = {},
 					borders = {
@@ -3645,6 +3684,11 @@ require("lazy").setup({
 		},
 		{ "echasnovski/mini.icons", version = false, event = "VeryLazy" },
 	},
+})
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+	callback = function()
+		vim.diagnostic.setqflist({ open = false })
+	end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
