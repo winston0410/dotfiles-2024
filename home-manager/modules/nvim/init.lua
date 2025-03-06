@@ -432,7 +432,7 @@ local function accept_change_operator(mode)
 	---@type AcceptChangeDiffBuffer[]
 	local diff_buffers = vim.iter(vim.api.nvim_list_wins())
 		:filter(function(win_id)
-			return vim.api.nvim_win_get_option(win_id, "diff")
+			return vim.api.nvim_get_option_value("diff", { win = win_id })
 		end)
 		:map(function(win_id)
 			local buf_id = vim.api.nvim_win_get_buf(win_id)
@@ -490,29 +490,33 @@ vim.keymap.set("x", "<leader>hp", function()
 end, { noremap = true, silent = true, desc = "Paste hunk" })
 _G.accept_change_operator = accept_change_operator
 
+---@alias QuickFixListEntry {lnum: number, col: number, bufnr: number, end_col: number, end_lnum: number}
+
 ---@param mode "visual"|nil
 local function quickfix_add_entry_operator(mode)
+	local NOTE_QUICKFIX_LIST_ID = "note"
 	local buf_id = vim.api.nvim_get_current_buf()
-	local start_row, _, end_row, _ = select_area_for_operator(mode)
+	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
 	start_row = start_row - 1
-
-	local lines = vim.api.nvim_buf_get_lines(buf_id, start_row, end_row, true)
-	local entries = {}
-	for index, line in ipairs(lines) do
-		---@param entry QuickFixListEntry
-		local has_existing_entry = vim.iter(vim.fn.getqflist()):find(function(entry)
-			return entry.lnum == start_row + index
-		end)
-		if has_existing_entry == nil then
-			table.insert(entries, {
-				text = line,
-				bufnr = buf_id,
-				lnum = start_row + index,
-			})
+	vim.ui.input({ prompt = "Message" }, function(input)
+		if input == nil then
+			-- vim.api.nvim_input("<Esc>")
+			return
 		end
-	end
-	vim.fn.setqflist(entries, "a")
-	vim.api.nvim_input("<Esc>")
+		vim.print(start_row, start_col, end_row, end_col)
+		---@type QuickFixListEntry
+		local entry = {
+			bufnr = buf_id,
+			lnum = start_row,
+			col = start_col,
+			end_lnum = end_row,
+			end_col = end_col,
+			text = input,
+			type = "I",
+		}
+		vim.fn.setqflist({}, "a", { id = NOTE_QUICKFIX_LIST_ID, title = "Note", items = { entry } })
+		-- vim.api.nvim_input("<Esc>")
+	end)
 end
 vim.keymap.set("n", "<leader>ky", function()
 	vim.o.opfunc = "v:lua.quickfix_add_entry_operator"
@@ -523,31 +527,30 @@ vim.keymap.set("x", "<leader>ky", function()
 end, { noremap = true, silent = true, desc = "Send to Quickfix list" })
 _G.quickfix_add_entry_operator = quickfix_add_entry_operator
 
----@param mode "visual"|nil
-local function quickfix_remove_entry_operator(mode)
-	local start_row, _, end_row, _ = select_area_for_operator(mode)
-	start_row = start_row - 1
-	---@alias QuickFixListEntry {lnum: number, bufnr: number}
-	---@type QuickFixListEntry[]
-	local entries = vim.fn.getqflist()
-	local filtered_entries = vim
-		.iter(entries)
-		---@param entry QuickFixListEntry
-		:filter(function(entry)
-			return not (entry.lnum > start_row and end_row >= entry.lnum)
-		end)
-		:totable()
-	vim.fn.setqflist(filtered_entries, "r")
-	vim.api.nvim_input("<Esc>")
-end
-vim.keymap.set("n", "<leader>kd", function()
-	vim.o.opfunc = "v:lua.quickfix_remove_entry_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Delete from Quickfix list", expr = true })
-vim.keymap.set("x", "<leader>kd", function()
-	quickfix_remove_entry_operator("visual")
-end, { noremap = true, silent = true, desc = "Delete from Quickfix list" })
-_G.quickfix_remove_entry_operator = quickfix_remove_entry_operator
+-- ---@param mode "visual"|nil
+-- local function quickfix_remove_entry_operator(mode)
+-- 	local start_row, _, end_row, _ = select_area_for_operator(mode)
+-- 	start_row = start_row - 1
+-- 	---@type QuickFixListEntry[]
+-- 	local entries = vim.fn.getqflist()
+-- 	local filtered_entries = vim
+-- 		.iter(entries)
+-- 		---@param entry QuickFixListEntry
+-- 		:filter(function(entry)
+-- 			return not (entry.lnum > start_row and end_row >= entry.lnum)
+-- 		end)
+-- 		:totable()
+-- 	vim.fn.setqflist(filtered_entries, "r")
+-- 	vim.api.nvim_input("<Esc>")
+-- end
+-- vim.keymap.set("n", "<leader>kd", function()
+-- 	vim.o.opfunc = "v:lua.quickfix_remove_entry_operator"
+-- 	return "g@"
+-- end, { noremap = true, silent = true, desc = "Delete from Quickfix list", expr = true })
+-- vim.keymap.set("x", "<leader>kd", function()
+-- 	quickfix_remove_entry_operator("visual")
+-- end, { noremap = true, silent = true, desc = "Delete from Quickfix list" })
+-- _G.quickfix_remove_entry_operator = quickfix_remove_entry_operator
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -586,6 +589,26 @@ require("lazy").setup({
 			end,
 		},
 		{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
+		{
+			dir = "~/.config/nvim/codemark.nvim",
+			enabled = false,
+			keys = {
+				-- {
+				-- 	"<leader>m",
+				-- 	function()
+				-- 		require("codemark").add_mark()
+				-- 	end,
+				-- 	mode = { "n", "v" },
+				-- 	silent = true,
+				-- 	noremap = true,
+				-- 	desc = "Add codemark",
+				-- },
+			},
+			config = function()
+				-- vim.print(vim.inspect(require("codemark")))
+				-- require("codemark").setup()
+			end,
+		},
 		-- comment is too dark when using lackluster
 		{
 			"slugbyte/lackluster.nvim",
@@ -689,7 +712,7 @@ require("lazy").setup({
 		{
 			"kylechui/nvim-surround",
 			version = "*",
-			-- By default, s is a useless synonym of cc
+			-- By default, s is a useless synonym of cc, therefore we remap that
 			keys = {
 				{ "s", mode = "n" },
 				{ "ss", mode = "n" },
@@ -1016,7 +1039,7 @@ require("lazy").setup({
 			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
 			keys = {
 				{
-					"<leader>wf",
+					"<leader>pw",
 					function()
 						require("nvim-window").pick()
 					end,
@@ -1161,7 +1184,7 @@ require("lazy").setup({
 					"snacks_terminal",
 					"oil",
 					"trouble",
-					"qf",
+					-- "qf",
 					"DiffviewFileHistory",
 					"DiffviewFiles",
 					"snacks_dashboard",
@@ -1806,6 +1829,7 @@ require("lazy").setup({
 				exclude_filetypes = {
 					"lazy",
 					"checkhealth",
+					"qf",
 					"snacks_dashboard",
 					"snacks_picker_list",
 					"snacks_picker_input",
@@ -1818,6 +1842,7 @@ require("lazy").setup({
 			version = "0.9.0",
 			event = { "VeryLazy" },
 			keys = {
+				-- TODO how to select local diff hunk?????
 				{
 					"gh",
 					function()
@@ -3699,9 +3724,13 @@ require("lazy").setup({
 		{ "echasnovski/mini.icons", version = false, event = "VeryLazy" },
 	},
 })
+
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	callback = function()
-		vim.diagnostic.setqflist({ open = false, severity = vim.diagnostic.severity.ERROR })
+		local qflist_id = "diagnostics"
+		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
+		local items = vim.diagnostic.toqflist(diagnostics)
+		vim.fn.setqflist({}, " ", { id = qflist_id, title = "Diagnostics", items = items })
 	end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
