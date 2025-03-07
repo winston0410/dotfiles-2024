@@ -18,8 +18,6 @@
     nodejs_22
     tree-sitter
     gcc14
-    # needed for fzf-lua
-    fzf
     fd
     bat
     chafa
@@ -28,6 +26,7 @@
     mermaid-cli
     ghostscript_headless
     tectonic
+    libqalculate
   ];
 
   home.sessionVariables = {

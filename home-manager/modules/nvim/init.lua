@@ -59,6 +59,8 @@ vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
 		http = "http",
+		rest = "http",
+		qalc = "qalc",
 	},
 })
 
@@ -202,7 +204,7 @@ vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_remote_plugins = 1
-vim.g.loaded_shada_plugin = 1
+vim.g.loaded_shada_plugin = 0
 vim.g.loaded_spellfile_plugin = 1
 vim.g.loaded_tarPlugin = 1
 vim.g.loaded_2html_plugin = 1
@@ -706,6 +708,35 @@ require("lazy").setup({
 					"tokyonight-night.lua",
 					"tokyonight-day.lua",
 				})
+			end,
+		},
+		{
+			"Shatur/neovim-session-manager",
+			dependencies = { "nvim-lua/plenary.nvim" },
+			lazy = false,
+			config = function()
+				local config = require("session_manager.config")
+				require("session_manager").setup({
+					autoload_mode = {
+						config.AutoloadMode.GitSession,
+						config.AutoloadMode.CurrentDir,
+						config.AutoloadMode.Disabled,
+					},
+					autosave_last_session = true,
+					autosave_ignore_not_normal = true,
+					autosave_ignore_filetypes = {
+						"gitcommit",
+						"gitrebase",
+					},
+				})
+			end,
+		},
+		{
+			"Apeiros-46B/qalc.nvim",
+			ft = { "qalc" },
+			cmd = { "Qalc" },
+			config = function()
+				require("qalc").setup({})
 			end,
 		},
 		{
@@ -2143,16 +2174,6 @@ require("lazy").setup({
 					desc = "Grep in files",
 				},
 				{
-					"<leader>pf",
-					function()
-						Snacks.picker.files()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Find files",
-				},
-				{
 					"<leader>pt",
 					function()
 						Snacks.picker.treesitter({
@@ -2217,7 +2238,7 @@ require("lazy").setup({
 					desc = "Resume last picker",
 				},
 				{
-					"<leader>pe",
+					"<leader>pf",
 					function()
 						Snacks.picker.explorer({
 							auto_close = false,
@@ -3726,10 +3747,10 @@ require("lazy").setup({
 
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	callback = function()
-		-- local qflist_id = 1
+		local qflist_id = 1
 		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
 		local items = vim.diagnostic.toqflist(diagnostics)
-		vim.fn.setqflist({}, " ", { title = "Diagnostics", items = items })
+		vim.fn.setqflist({}, "r", { id = qflist_id, title = "Diagnostics", items = items })
 	end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
