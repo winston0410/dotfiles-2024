@@ -33,6 +33,15 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+    MANPAGER = "nvim +Man!";
+    MANWIDTH = 999;
+    # Use system default vim as last resort
+    vi = "vim";
+    vim = "nvim";
+    oil = ''nvim -c "Oil"'';
+    neogit = "nvim -c 'lua require(\"neogit\").open()'";
+    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
+    nfd = "nvim -c 'lua Snacks.picker.files()'";
   };
 
   programs.zsh.initExtra = ''
@@ -45,15 +54,7 @@
     }
   '';
 
-  home.shellAliases = {
-    # Use system default vim as last resort
-    vi = "vim";
-    vim = "nvim";
-    oil = ''nvim -c "Oil"'';
-    neogit = "nvim -c 'lua require(\"neogit\").open()'";
-    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
-    nfd = ''nvim -c "lua Snacks.picker.files()"'';
-  };
+  home.shellAliases = { };
 
   xdg.configFile = {
     "nvim/init.lua" = {

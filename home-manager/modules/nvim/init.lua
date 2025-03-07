@@ -198,7 +198,6 @@ vim.keymap.set(
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
 vim.g.loaded_gzip = 1
-vim.g.loaded_man = 1
 vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
 vim.g.loaded_netrwPlugin = 1
@@ -494,7 +493,7 @@ _G.accept_change_operator = accept_change_operator
 
 ---@param mode "visual"|nil
 local function quickfix_add_entry_operator(mode)
-	local NOTE_QUICKFIX_LIST_ID = "note"
+	local NOTE_QUICKFIX_LIST_ID = 9
 	local buf_id = vim.api.nvim_get_current_buf()
 	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
 	start_row = start_row - 1
@@ -509,10 +508,10 @@ local function quickfix_add_entry_operator(mode)
 			bufnr = buf_id,
 			lnum = start_row,
 			col = start_col,
-			end_lnum = end_row,
-			end_col = end_col,
+			-- end_lnum = end_row,
+			-- end_col = end_col,
 			text = input,
-			type = "I",
+			-- type = "I",
 		}
 		vim.fn.setqflist({}, "a", { id = NOTE_QUICKFIX_LIST_ID, title = "Note", items = { entry } })
 		-- vim.api.nvim_input("<Esc>")
@@ -3727,10 +3726,10 @@ require("lazy").setup({
 
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
 	callback = function()
-		local qflist_id = "diagnostics"
+		-- local qflist_id = 1
 		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
 		local items = vim.diagnostic.toqflist(diagnostics)
-		vim.fn.setqflist({}, " ", { id = qflist_id, title = "Diagnostics", items = items })
+		vim.fn.setqflist({}, " ", { title = "Diagnostics", items = items })
 	end,
 })
 vim.api.nvim_create_autocmd("LspAttach", {
