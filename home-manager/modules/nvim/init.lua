@@ -491,68 +491,6 @@ vim.keymap.set("x", "<leader>hp", function()
 end, { noremap = true, silent = true, desc = "Paste hunk" })
 _G.accept_change_operator = accept_change_operator
 
----@alias QuickFixListEntry {lnum: number, col: number, bufnr: number, end_col: number, end_lnum: number}
-
----@param mode "visual"|nil
-local function quickfix_add_entry_operator(mode)
-	local NOTE_QUICKFIX_LIST_ID = 9
-	local buf_id = vim.api.nvim_get_current_buf()
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-	start_row = start_row - 1
-	vim.ui.input({ prompt = "Message" }, function(input)
-		if input == nil then
-			-- vim.api.nvim_input("<Esc>")
-			return
-		end
-		vim.print(start_row, start_col, end_row, end_col)
-		---@type QuickFixListEntry
-		local entry = {
-			bufnr = buf_id,
-			lnum = start_row,
-			col = start_col,
-			-- end_lnum = end_row,
-			-- end_col = end_col,
-			text = input,
-			-- type = "I",
-		}
-		vim.fn.setqflist({}, "a", { id = NOTE_QUICKFIX_LIST_ID, title = "Note", items = { entry } })
-		-- vim.api.nvim_input("<Esc>")
-	end)
-end
-vim.keymap.set("n", "<leader>ky", function()
-	vim.o.opfunc = "v:lua.quickfix_add_entry_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Send to Quickfix list", expr = true })
-vim.keymap.set("x", "<leader>ky", function()
-	quickfix_add_entry_operator("visual")
-end, { noremap = true, silent = true, desc = "Send to Quickfix list" })
-_G.quickfix_add_entry_operator = quickfix_add_entry_operator
-
--- ---@param mode "visual"|nil
--- local function quickfix_remove_entry_operator(mode)
--- 	local start_row, _, end_row, _ = select_area_for_operator(mode)
--- 	start_row = start_row - 1
--- 	---@type QuickFixListEntry[]
--- 	local entries = vim.fn.getqflist()
--- 	local filtered_entries = vim
--- 		.iter(entries)
--- 		---@param entry QuickFixListEntry
--- 		:filter(function(entry)
--- 			return not (entry.lnum > start_row and end_row >= entry.lnum)
--- 		end)
--- 		:totable()
--- 	vim.fn.setqflist(filtered_entries, "r")
--- 	vim.api.nvim_input("<Esc>")
--- end
--- vim.keymap.set("n", "<leader>kd", function()
--- 	vim.o.opfunc = "v:lua.quickfix_remove_entry_operator"
--- 	return "g@"
--- end, { noremap = true, silent = true, desc = "Delete from Quickfix list", expr = true })
--- vim.keymap.set("x", "<leader>kd", function()
--- 	quickfix_remove_entry_operator("visual")
--- end, { noremap = true, silent = true, desc = "Delete from Quickfix list" })
--- _G.quickfix_remove_entry_operator = quickfix_remove_entry_operator
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -711,6 +649,18 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"nvimtools/none-ls.nvim",
+			dependencies = { "nvim-lua/plenary.nvim" },
+			event = { "BufReadPre", "BufNewFile" },
+			config = function()
+				local null_ls = require("null-ls")
+
+				null_ls.setup({
+					sources = {},
+				})
+			end,
+		},
+		{
 			"Shatur/neovim-session-manager",
 			dependencies = { "nvim-lua/plenary.nvim" },
 			lazy = false,
@@ -822,6 +772,67 @@ require("lazy").setup({
 				is_enabled = true,
 				debug = true,
 			},
+		},
+		{
+			"EvWilson/spelunk.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+			},
+			enabled = false,
+			config = function()
+				require("spelunk").setup({
+					base_mappings = {
+						toggle = "<leader>kkk",
+						add = "<leader>kky",
+					},
+					enable_persist = false,
+				})
+			end,
+		},
+		{
+			"winston0410/marlin.nvim",
+			dev = true,
+			opts = {},
+			config = function(_, opts)
+				local marlin = require("marlin")
+				marlin.setup(opts)
+
+				local keymap = vim.keymap.set
+				keymap("n", "<Leader>fa", function()
+					marlin.add()
+				end, { desc = "add file" })
+				keymap("n", "<Leader>fd", function()
+					marlin.remove()
+				end, { desc = "remove file" })
+				keymap("n", "<Leader>fx", function()
+					marlin.remove_all()
+				end, { desc = "remove all for current project" })
+				keymap("n", "<Leader>f]", function()
+					marlin.move_up()
+				end, { desc = "move up" })
+				keymap("n", "<Leader>f[", function()
+					marlin.move_down()
+				end, { desc = "move down" })
+				keymap("n", "<Leader>fs", function()
+					marlin.sort()
+				end, { desc = "sort" })
+				keymap("n", "<Leader>fn", function()
+					marlin.next()
+				end, { desc = "open next index" })
+				keymap("n", "<Leader>fp", function()
+					marlin.prev()
+				end, { desc = "open previous index" })
+				keymap("n", "<Leader><Leader>", function()
+					marlin.toggle()
+				end, { desc = "toggle cur/last open index" })
+
+				for index = 1, 4 do
+					keymap("n", "<Leader>" .. index, function()
+						marlin.open(index)
+					end, { desc = "goto " .. index })
+				end
+			end,
 		},
 		{
 			"olimorris/codecompanion.nvim",
@@ -2407,57 +2418,6 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- {
-		-- 	"petertriho/nvim-scrollbar",
-		-- 	-- FIXME enable once this issue is resolved https://github.com/petertriho/nvim-scrollbar/issues/34
-		-- 	enabled = false,
-		-- 	config = function()
-		-- 		local colors = require("tokyonight.colors").setup()
-		--
-		-- 		require("scrollbar").setup({
-		-- 			show = true,
-		-- 			show_in_active_only = false,
-		-- 			set_highlights = true,
-		-- 			throttle_ms = 100,
-		-- 			handle = {
-		-- 				text = " ",
-		-- 				blend = 30,
-		-- 				color = colors.bg_highlight,
-		-- 				highlight = "CursorColumn",
-		-- 				hide_if_all_visible = false,
-		-- 			},
-		-- 			excluded_filetypes = {
-		-- 				"dropbar_menu",
-		-- 				"dropbar_menu_fzf",
-		-- 				"DressingInput",
-		-- 				"cmp_docs",
-		-- 				"cmp_menu",
-		-- 				"noice",
-		-- 				"prompt",
-		-- 				"TelescopePrompt",
-		-- 				"trouble",
-		-- 			},
-		-- 			marks = {
-		-- 				Search = { color = colors.orange },
-		-- 				Error = { color = colors.error },
-		-- 				Warn = { color = colors.warning },
-		-- 				Info = { color = colors.info },
-		-- 				Hint = { color = colors.hint },
-		-- 				Misc = { color = colors.purple },
-		-- 			},
-		-- 			handlers = {
-		-- 				cursor = true,
-		-- 				diagnostic = true,
-		-- 				gitsigns = true,
-		-- 				handle = true,
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- 	dependencies = {
-		-- 		"folke/tokyonight.nvim",
-		-- 		"lewis6991/gitsigns.nvim",
-		-- 	},
-		-- },
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			event = { "VeryLazy" },
