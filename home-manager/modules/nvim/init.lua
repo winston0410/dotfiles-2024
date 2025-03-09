@@ -19,7 +19,7 @@ vim.g.mapleader = " "
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
-vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,winpos,terminal"
+vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,terminal"
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
@@ -652,13 +652,21 @@ require("lazy").setup({
 		},
 		{
 			"nvimtools/none-ls.nvim",
-			dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action" },
+			dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action", "ThePrimeagen/refactoring.nvim" },
 			event = { "BufReadPre", "BufNewFile" },
 			config = function()
 				local null_ls = require("null-ls")
 
 				null_ls.setup({
 					sources = {
+						null_ls.builtins.diagnostics.checkmake,
+						null_ls.builtins.diagnostics.fish,
+						null_ls.builtins.diagnostics.haml_lint,
+						null_ls.builtins.diagnostics.terraform_validate,
+						null_ls.builtins.diagnostics.tidy,
+						null_ls.builtins.diagnostics.hadolint,
+						null_ls.builtins.diagnostics.golangci_lint,
+						null_ls.builtins.diagnostics.opacheck,
 						null_ls.builtins.code_actions.refactoring,
 						null_ls.builtins.code_actions.ts_node_action,
 					},
