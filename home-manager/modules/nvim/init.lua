@@ -774,65 +774,79 @@ require("lazy").setup({
 			},
 		},
 		{
-			"EvWilson/spelunk.nvim",
+			"cbochs/grapple.nvim",
 			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"nvim-treesitter/nvim-treesitter",
+				{ "nvim-tree/nvim-web-devicons", lazy = true },
 			},
-			enabled = false,
 			config = function()
-				require("spelunk").setup({
-					base_mappings = {
-						toggle = "<leader>kkk",
-						add = "<leader>kky",
-					},
-					enable_persist = false,
+				-- TODO wait for tag_hook to be documented, and we can override it to change keymapping inside tag windows
+				require("grapple").setup({
+					scope = "git_branch",
 				})
 			end,
-		},
-		{
-			"winston0410/marlin.nvim",
-			dev = true,
-			opts = {},
-			config = function(_, opts)
-				local marlin = require("marlin")
-				marlin.setup(opts)
-
-				local keymap = vim.keymap.set
-				keymap("n", "<Leader>fa", function()
-					marlin.add()
-				end, { desc = "add file" })
-				keymap("n", "<Leader>fd", function()
-					marlin.remove()
-				end, { desc = "remove file" })
-				keymap("n", "<Leader>fx", function()
-					marlin.remove_all()
-				end, { desc = "remove all for current project" })
-				keymap("n", "<Leader>f]", function()
-					marlin.move_up()
-				end, { desc = "move up" })
-				keymap("n", "<Leader>f[", function()
-					marlin.move_down()
-				end, { desc = "move down" })
-				keymap("n", "<Leader>fs", function()
-					marlin.sort()
-				end, { desc = "sort" })
-				keymap("n", "<Leader>fn", function()
-					marlin.next()
-				end, { desc = "open next index" })
-				keymap("n", "<Leader>fp", function()
-					marlin.prev()
-				end, { desc = "open previous index" })
-				keymap("n", "<Leader><Leader>", function()
-					marlin.toggle()
-				end, { desc = "toggle cur/last open index" })
-
-				for index = 1, 4 do
-					keymap("n", "<Leader>" .. index, function()
-						marlin.open(index)
-					end, { desc = "goto " .. index })
-				end
-			end,
+			event = { "BufReadPost", "BufNewFile" },
+			cmd = "Grapple",
+			keys = {
+				-- {
+				-- 	"<leader>mm",
+				-- 	function()
+				-- 		require("grapple").toggle({})
+				-- 	end,
+				-- 	desc = "Grapple toggle tag",
+				-- },
+				{
+					"<leader>pm",
+					function()
+						require("grapple").toggle_tags({})
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Grapple toggle tags window",
+				},
+				{
+					"<leader>m<C-i>",
+					function()
+						require("grapple").cycle_tags("next")
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Grapple cycle next tag",
+				},
+				{
+					"<leader>m<C-o>",
+					function()
+						require("grapple").cycle_tags("prev")
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Grapple cycle previous tag",
+				},
+				{
+					"<leader>mv",
+					function()
+						vim.ui.input({ prompt = "Grapple tag name" }, function(input)
+							if input == nil then
+								return
+							end
+							require("grapple").tag({ name = input })
+							vim.notify("Grapple tag created", vim.log.levels.INFO)
+						end)
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Grapple add tag",
+				},
+				{
+					"<leader>md",
+					function()
+						require("grapple").untag()
+						vim.notify("Grapple tag removed", vim.log.levels.INFO)
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Grapple delete tag",
+				},
+			},
 		},
 		{
 			"olimorris/codecompanion.nvim",
@@ -1107,6 +1121,7 @@ require("lazy").setup({
 			"chentoast/marks.nvim",
 			event = "VeryLazy",
 			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
+			enabled = false,
 			keys = {
 				{
 					"m",
@@ -1335,7 +1350,7 @@ require("lazy").setup({
 					},
 					sections = {
 						lualine_a = { "mode" },
-						lualine_b = { "branch" },
+						lualine_b = { "branch", "grapple" },
 						lualine_c = {
 							{
 								"location",
@@ -2080,7 +2095,7 @@ require("lazy").setup({
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
-			dependencies = { "folke/which-key.nvim" },
+			dependencies = {},
 			keys = {
 				{
 					"<leader>phu",
@@ -2948,29 +2963,29 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd("CursorHold", {
 					pattern = "*",
 					callback = function(ev)
-						local treesitter_textobjects_modes = { "n", "x", "o" }
-						local del_desc = "Not available in this language"
-
-						local available_textobjects =
-							require("nvim-treesitter.textobjects.shared").available_textobjects()
-						pcall(function()
-							for node_type, value in pairs(enabled_ts_nodes) do
-								local node_label = node_type:sub(2)
-								if not vim.list_contains(available_textobjects, node_label) then
-									vim.notify(
-										string.format("found non-existent Treesitter node's binding: %s", node_label),
-										vim.log.levels.DEBUG
-									)
-									for _, binding in ipairs(value.move) do
-										vim.keymap.del(
-											treesitter_textobjects_modes,
-											binding.lhs,
-											{ buffer = ev.buf, desc = del_desc }
-										)
-									end
-								end
-							end
-						end)
+						-- local treesitter_textobjects_modes = { "n", "x", "o" }
+						-- local del_desc = "Not available in this language"
+						--
+						-- local available_textobjects =
+						-- 	require("nvim-treesitter.textobjects.shared").available_textobjects()
+						-- pcall(function()
+						-- 	for node_type, value in pairs(enabled_ts_nodes) do
+						-- 		local node_label = node_type:sub(2)
+						-- 		if not vim.list_contains(available_textobjects, node_label) then
+						-- 			vim.notify(
+						-- 				string.format("found non-existent Treesitter node's binding: %s", node_label),
+						-- 				vim.log.levels.DEBUG
+						-- 			)
+						-- 			for _, binding in ipairs(value.move) do
+						-- 				vim.keymap.del(
+						-- 					treesitter_textobjects_modes,
+						-- 					binding.lhs,
+						-- 					{ buffer = ev.buf, desc = del_desc }
+						-- 				)
+						-- 			end
+						-- 		end
+						-- 	end
+						-- end)
 					end,
 				})
 				local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
