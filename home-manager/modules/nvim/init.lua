@@ -19,6 +19,8 @@ vim.g.mapleader = " "
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
+vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,winpos,terminal"
+
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
 	"blue.vim",
@@ -650,13 +652,16 @@ require("lazy").setup({
 		},
 		{
 			"nvimtools/none-ls.nvim",
-			dependencies = { "nvim-lua/plenary.nvim" },
+			dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action" },
 			event = { "BufReadPre", "BufNewFile" },
 			config = function()
 				local null_ls = require("null-ls")
 
 				null_ls.setup({
-					sources = {},
+					sources = {
+						null_ls.builtins.code_actions.refactoring,
+						null_ls.builtins.code_actions.ts_node_action,
+					},
 				})
 			end,
 		},
@@ -804,7 +809,7 @@ require("lazy").setup({
 					desc = "Grapple toggle tags window",
 				},
 				{
-					"<leader>m<C-i>",
+					"<leader>mi",
 					function()
 						require("grapple").cycle_tags("next")
 					end,
@@ -813,7 +818,7 @@ require("lazy").setup({
 					desc = "Grapple cycle next tag",
 				},
 				{
-					"<leader>m<C-o>",
+					"<leader>mo",
 					function()
 						require("grapple").cycle_tags("prev")
 					end,
@@ -837,7 +842,7 @@ require("lazy").setup({
 					desc = "Grapple add tag",
 				},
 				{
-					"<leader>md",
+					"<leader>mq",
 					function()
 						require("grapple").untag()
 						vim.notify("Grapple tag removed", vim.log.levels.INFO)
@@ -1350,7 +1355,17 @@ require("lazy").setup({
 					},
 					sections = {
 						lualine_a = { "mode" },
-						lualine_b = { "branch", "grapple" },
+						lualine_b = {
+							"branch",
+							{
+								function()
+									return require("grapple").name_or_index()
+								end,
+								cond = function()
+									return package.loaded["grapple"] and require("grapple").exists()
+								end,
+							},
+						},
 						lualine_c = {
 							{
 								"location",
@@ -2335,7 +2350,7 @@ require("lazy").setup({
 					-- dim
 					image = { enabled = true },
 					dashboard = {
-						enabled = true,
+						enabled = false,
 						sections = {
 							{
 								section = "terminal",
@@ -2923,20 +2938,20 @@ require("lazy").setup({
 							set_jumps = true,
 							goto_next = {},
 							goto_next_start = {
-								-- ["]cd"] = {
-								-- 	query = "@comment.documentation",
-								-- 	query_group = "highlights",
-								-- 	desc = "Next lua doc comment",
+								-- -- ["]cd"] = {
+								-- -- 	query = "@comment.documentation",
+								-- -- 	query_group = "highlights",
+								-- -- 	desc = "Next lua doc comment",
+								-- -- },
+								-- ["]ct"] = {
+								-- 	query = "@comment.todo",
+								-- 	desc = "Jump to next TODO comment",
 								-- },
-								["]ct"] = {
-									query = "@comment.todo",
-									desc = "Jump to next TODO comment",
-								},
-								-- ["]cn"] = {
-								-- 	query = "@comment.note",
-								-- 	query_group = "injections",
-								-- 	desc = "Jump to next NOTE comment",
-								-- },
+								-- -- ["]cn"] = {
+								-- -- 	query = "@comment.note",
+								-- -- 	query_group = "injections",
+								-- -- 	desc = "Jump to next NOTE comment",
+								-- -- },
 							},
 							goto_next_end = {},
 							goto_previous = {},
