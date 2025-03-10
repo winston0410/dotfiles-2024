@@ -11,6 +11,61 @@
 
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_gzip = 1
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_remote_plugins = 1
+vim.g.loaded_shada_plugin = 0
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
+
+vim.o.encoding = "UTF-8"
+vim.o.fileencoding = "UTF-8"
+vim.opt.termguicolors = true
+vim.o.timeoutlen = 400
+vim.o.ttimeoutlen = 0
+vim.o.updatetime = 300
+vim.o.showmode = false
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.cmdheight = 1
+vim.o.showmatch = true
+vim.o.splitbelow = false
+vim.o.splitright = true
+vim.o.lazyredraw = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.magic = true
+vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
+vim.o.grepformat = "%f:%l:%c:%m"
+vim.o.wildmenu = true
+vim.o.wildmode = "longest:full,full"
+vim.o.hidden = true
+vim.o.bufhidden = "unload"
+vim.o.cursorline = true
+vim.o.cursorlineopt = "number"
+vim.o.wrap = true
+vim.o.linebreak = true
+vim.o.number = true
+vim.opt.relativenumber = true
+vim.o.signcolumn = "auto:2"
+vim.o.scrolloff = 8
+vim.o.fillchars = "diff:╱,eob: "
+vim.o.expandtab = true
+vim.o.autoindent = true
+vim.o.smartindent = true
+vim.o.undofile = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
 
 -- Use space as leader key
 vim.g.mapleader = " "
