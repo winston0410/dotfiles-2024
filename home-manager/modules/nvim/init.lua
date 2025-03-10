@@ -67,6 +67,10 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 
+if vim.wo.diff then
+	-- disable wrap so filler line will always align with changes
+	vim.o.wrap = false
+end
 -- Use space as leader key
 vim.g.mapleader = " "
 -- Need to find plugin to improve mouse experience, to create something like vscode
@@ -252,96 +256,6 @@ vim.keymap.set(
 	"<esc>`^",
 	{ silent = true, noremap = true, desc = "Revert back to previous cursor position" }
 )
-
---Quit default plugin early
-vim.g.loaded_zipPlugin = 1
-vim.g.loaded_zip = 1
-vim.g.loaded_gzip = 1
-vim.g.loaded_matchit = 1
-vim.g.loaded_matchparen = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_remote_plugins = 1
-vim.g.loaded_shada_plugin = 0
-vim.g.loaded_spellfile_plugin = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_2html_plugin = 1
-vim.g.loaded_tutor_mode_plugin = 1
--- silent provider warning
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_node_provider = 0
-
-local global_options = {
-	{ "encoding", "UTF-8" },
-	{ "fileencoding", "UTF-8" },
-	{ "termguicolors", true },
-	{ "timeoutlen", 400 },
-	{ "ttimeoutlen", 0 },
-	{ "updatetime", 300 },
-	{ "showmode", false },
-	{ "backup", false },
-	{ "writebackup", false },
-	{ "cmdheight", 1 },
-	{ "showmatch", true },
-	{ "splitbelow", true },
-	{ "splitright", true },
-	{ "lazyredraw", true },
-	{ "ignorecase", true },
-	{ "smartcase", true },
-	{ "magic", true },
-	{ "grepprg", "rg --vimgrep --no-heading --smart-case" },
-	{ "grepformat", "%f:%l:%c:%m" },
-	{ "wildmenu", true },
-	{ "wildmode", "longest:full,full" },
-	{ "hidden", true },
-	{ "bufhidden", "unload" },
-	{ "cursorline", true },
-	-- NOTE disable cursorline in background as it would be shown in inactive split as well, not really useful when using splits
-	{ "cursorlineopt", "number" },
-}
-
-for _, option in ipairs(global_options) do
-	vim.opt[option[1]] = option[2]
-end
-
-local window_options = {
-	{ "wrap", true },
-	{ "linebreak", true },
-	{ "number", true },
-	{ "relativenumber", true },
-	-- at most 2 columns for left hand signcolumn
-	{ "signcolumn", "auto:2" },
-	{ "scrolloff", 8 },
-	-- Ensure tilde signs are not show at the end of buffer, and use diagonal as filler for diff
-	-- REF https://github.com/sindrets/diffview.nvim/issues/35#issuecomment-871455517
-	{ "fillchars", "diff:╱,eob: " },
-}
-
-for _, option in ipairs(window_options) do
-	vim.o[option[1]] = option[2]
-	vim.wo[option[1]] = option[2]
-end
-
-local buffer_options = {
-	{ "expandtab", true },
-	{ "autoindent", true },
-	{ "smartindent", false },
-	{ "grepprg", "rg --vimgrep --no-heading --smart-case" },
-	{ "undofile", true },
-	{ "shiftwidth", 4 },
-	{ "tabstop", 4 },
-}
-
-for _, option in ipairs(buffer_options) do
-	vim.o[option[1]] = option[2]
-	vim.bo[option[1]] = option[2]
-end
-
-if vim.wo.diff then
-	-- disable wrap so filler line will always align with changes
-	vim.o.wrap = false
-end
 
 vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
 vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
@@ -1106,57 +1020,6 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- {
-		-- 	"folke/persistence.nvim",
-		-- 	version = "3.1.0",
-		-- 	event = "BufReadPre",
-		-- 	keys = {
-		-- 		-- Load the session for the current directory
-		-- 		{
-		-- 			"<leader>qs",
-		-- 			function()
-		-- 				require("persistence").load()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Load session for current directory",
-		-- 		},
-		--
-		-- 		-- Select a session to load
-		-- 		{
-		-- 			"<leader>qS",
-		-- 			function()
-		-- 				require("persistence").select()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Select a session to load",
-		-- 		},
-		--
-		-- 		-- Load the last session
-		-- 		{
-		-- 			"<leader>ql",
-		-- 			function()
-		-- 				require("persistence").load({ last = true })
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Load the last session",
-		-- 		},
-		--
-		-- 		-- Stop Persistence => session won't be saved on exit
-		-- 		{
-		-- 			"<leader>qd",
-		-- 			function()
-		-- 				require("persistence").stop()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			desc = "Stop Persistence (no save on exit)",
-		-- 		},
-		-- 	},
-		-- 	opts = {
-		-- 		dir = vim.fn.stdpath("state") .. "/sessions/",
-		-- 		need = 1,
-		-- 		branch = true,
-		-- 	},
-		-- },
 		{
 			"yorickpeterse/nvim-window",
 			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
@@ -1301,7 +1164,7 @@ require("lazy").setup({
 		{
 			"nvim-lualine/lualine.nvim",
 			event = { "VeryLazy" },
-			dependencies = { "nvim-tree/nvim-web-devicons" },
+			dependencies = { "nvim-tree/nvim-web-devicons", "Bekaboo/dropbar.nvim" },
 			config = function()
 				local utility_filetypes = {
 					"terminal",
@@ -1510,25 +1373,11 @@ require("lazy").setup({
 				})
 			end,
 		},
+		-- TODO set up this colorpicker
 		{
 			"nvzone/minty",
 			enabled = false,
 			cmd = { "Shades", "Huefy" },
-		},
-		-- Doesn't seems to be useful now, as it does not support winbar. bufferline will only work in the first split, when split or vsplit is being used.
-		{
-			"akinsho/bufferline.nvim",
-			commit = "261a72b90d6db4ed8014f7bda976bcdc9dd7ce76",
-			dependencies = { "nvim-tree/nvim-web-devicons" },
-			enabled = false,
-			config = function()
-				require("bufferline").setup({
-					options = {
-						modified_icon = "󰧞",
-						close_icon = "",
-					},
-				})
-			end,
 		},
 		{
 			"sindrets/diffview.nvim",
@@ -2510,14 +2359,11 @@ require("lazy").setup({
 				})
 			end,
 		},
-		{
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			event = { "VeryLazy" },
-			dependencies = { "nvim-treesitter/nvim-treesitter" },
-		},
-		-- replaced this plugin with dropbar.nvim, as it occupies less estate on screen
+
+		-- TODO see if we can turn these into treesitter's dependencies, and config with its setup function
 		{
 			"nvim-treesitter/nvim-treesitter-context",
+			-- replaced this plugin with dropbar.nvim, as it occupies less estate on screen
 			enabled = false,
 			opts = {
 				max_lines = 5,
@@ -2606,11 +2452,12 @@ require("lazy").setup({
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",
+			dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 			build = function()
 				vim.cmd("TSUpdate")
 			end,
 			event = { "VeryLazy" },
-			lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+			lazy = false,
 			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 			config = function()
 				local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -3671,7 +3518,7 @@ require("lazy").setup({
 				lspconfig.lua_ls.setup({
 					diagnostics = {
 						underline = true,
-						update_in_insert = false,
+						update_in_insert = true,
 						severity_sort = true,
 					},
 					capabilities = capabilities,
@@ -3878,7 +3725,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 					[vim.diagnostic.severity.HINT] = "",
 				},
 			},
-			update_in_insert = false,
+			update_in_insert = true,
 		})
 	end,
 })
