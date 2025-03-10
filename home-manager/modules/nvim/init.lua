@@ -411,26 +411,6 @@ require("lazy").setup({
 			end,
 		},
 		{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
-		{
-			dir = "~/.config/nvim/codemark.nvim",
-			enabled = false,
-			keys = {
-				-- {
-				-- 	"<leader>m",
-				-- 	function()
-				-- 		require("codemark").add_mark()
-				-- 	end,
-				-- 	mode = { "n", "v" },
-				-- 	silent = true,
-				-- 	noremap = true,
-				-- 	desc = "Add codemark",
-				-- },
-			},
-			config = function()
-				-- vim.print(vim.inspect(require("codemark")))
-				-- require("codemark").setup()
-			end,
-		},
 		-- comment is too dark when using lackluster
 		{
 			"slugbyte/lackluster.nvim",
