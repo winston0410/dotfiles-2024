@@ -39,7 +39,8 @@ vim.o.backup = false
 vim.o.writebackup = false
 vim.o.cmdheight = 1
 vim.o.showmatch = true
-vim.o.splitbelow = false
+-- FIXME how to split in right?
+vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.lazyredraw = true
 vim.o.ignorecase = true
@@ -307,95 +308,6 @@ local function select_area_for_operator(mode)
 	end
 	return end_row, end_col, start_row, start_col
 end
-
----@param mode "visual"|nil
-local function base64_encode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local encoded = vim.base64.encode(text)
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
-	vim.api.nvim_input("<Esc>")
-end
----@param mode "visual"|nil
-local function base64_decode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local decoded = vim.base64.decode(text)
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
-	vim.api.nvim_input("<Esc>")
-end
----@param mode "visual"|nil
-local function uri_encode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local encoded = vim.uri_encode(text, "rfc3986")
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { encoded })
-	vim.api.nvim_input("<Esc>")
-end
----@param mode "visual"|nil
-local function uri_decode_operator(mode)
-	local start_row, start_col, end_row, end_col = select_area_for_operator(mode)
-
-	local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
-
-	local text = table.concat(lines, "\n")
-
-	local decoded = vim.uri_decode(text)
-
-	vim.api.nvim_buf_set_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, { decoded })
-	vim.api.nvim_input("<Esc>")
-end
-
-vim.keymap.set("n", "<leader>ee1", function()
-	vim.o.opfunc = "v:lua.base64_encode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Base64 encode", expr = true })
-vim.keymap.set("x", "<leader>ee1", function()
-	base64_encode_operator("visual")
-end, { noremap = true, silent = true, desc = "Base64 encode" })
-_G.base64_encode_operator = base64_encode_operator
-
-vim.keymap.set({ "n" }, "<leader>ed1", function()
-	vim.o.opfunc = "v:lua.base64_decode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "Base64 decode", expr = true })
-vim.keymap.set("x", "<leader>ed1", function()
-	base64_decode_operator("visual")
-end, { noremap = true, silent = true, desc = "Base64 decode" })
-_G.base64_decode_operator = base64_decode_operator
-
-vim.keymap.set("n", "<leader>ee2", function()
-	vim.o.opfunc = "v:lua.uri_encode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "URI encode", expr = true })
-vim.keymap.set("x", "<leader>ee2", function()
-	base64_encode_operator("visual")
-end, { noremap = true, silent = true, desc = "URI encode" })
-_G.uri_encode_operator = uri_encode_operator
-
-vim.keymap.set({ "n" }, "<leader>ed2", function()
-	vim.o.opfunc = "v:lua.uri_decode_operator"
-	return "g@"
-end, { noremap = true, silent = true, desc = "URI decode", expr = true })
-vim.keymap.set("x", "<leader>ed2", function()
-	base64_decode_operator("visual")
-end, { noremap = true, silent = true, desc = "URI decode" })
-_G.uri_decode_operator = uri_decode_operator
 
 local function accept_change_operator(mode)
 	local start_row, _, end_row, _ = select_area_for_operator(mode)
@@ -956,6 +868,57 @@ require("lazy").setup({
 			end,
 		},
 		{
+			dir = "~/.local/share/nvim/lazy/encoding.nvim",
+			keys = {
+				{
+					"<leader>ee1",
+					function()
+						require("encoding").base64_encode()
+					end,
+
+					mode = { "n", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Base64 encode",
+				},
+				{
+					"<leader>ee2",
+					function()
+						require("encoding").uri_encode()
+					end,
+
+					mode = { "n", "x" },
+					silent = true,
+					noremap = true,
+					desc = "URI encode",
+				},
+
+				{
+					"<leader>ed1",
+					function()
+						require("encoding").base64_decode()
+					end,
+
+					mode = { "n", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Base64 decode",
+				},
+				{
+					"<leader>ed2",
+					function()
+						require("encoding").uri_decode()
+					end,
+
+					mode = { "n", "x" },
+					silent = true,
+					noremap = true,
+					desc = "URI decode",
+				},
+			},
+			opts = {},
+		},
+		{
 			"saghen/blink.cmp",
 			event = "InsertEnter",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
@@ -975,7 +938,7 @@ require("lazy").setup({
 				},
 
 				appearance = {
-					use_nvim_cmp_as_default = true,
+					use_nvim_cmp_as_default = false,
 					nerd_font_variant = "mono",
 				},
 
@@ -1025,13 +988,14 @@ require("lazy").setup({
 			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
 			keys = {
 				{
-					"<leader>pw",
+					"<leader>p<leader>w",
 					function()
 						require("nvim-window").pick()
 					end,
+					mode = { "n" },
 					silent = true,
 					noremap = true,
-					desc = "Jump to window",
+					desc = "Pick window",
 				},
 			},
 			config = function()
@@ -2456,8 +2420,8 @@ require("lazy").setup({
 			build = function()
 				vim.cmd("TSUpdate")
 			end,
-			event = { "VeryLazy" },
 			lazy = false,
+			event = { "VeryLazy" },
 			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 			config = function()
 				local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -2887,29 +2851,29 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd("CursorHold", {
 					pattern = "*",
 					callback = function(ev)
-						-- local treesitter_textobjects_modes = { "n", "x", "o" }
-						-- local del_desc = "Not available in this language"
-						--
-						-- local available_textobjects =
-						-- 	require("nvim-treesitter.textobjects.shared").available_textobjects()
-						-- pcall(function()
-						-- 	for node_type, value in pairs(enabled_ts_nodes) do
-						-- 		local node_label = node_type:sub(2)
-						-- 		if not vim.list_contains(available_textobjects, node_label) then
-						-- 			vim.notify(
-						-- 				string.format("found non-existent Treesitter node's binding: %s", node_label),
-						-- 				vim.log.levels.DEBUG
-						-- 			)
-						-- 			for _, binding in ipairs(value.move) do
-						-- 				vim.keymap.del(
-						-- 					treesitter_textobjects_modes,
-						-- 					binding.lhs,
-						-- 					{ buffer = ev.buf, desc = del_desc }
-						-- 				)
-						-- 			end
-						-- 		end
-						-- 	end
-						-- end)
+						local treesitter_textobjects_modes = { "n", "x", "o" }
+						local del_desc = "Not available in this language"
+
+						local available_textobjects =
+							require("nvim-treesitter.textobjects.shared").available_textobjects()
+						pcall(function()
+							for node_type, value in pairs(enabled_ts_nodes) do
+								local node_label = node_type:sub(2)
+								if not vim.list_contains(available_textobjects, node_label) then
+									vim.notify(
+										string.format("found non-existent Treesitter node's binding: %s", node_label),
+										vim.log.levels.DEBUG
+									)
+									for _, binding in ipairs(value.move) do
+										vim.keymap.del(
+											treesitter_textobjects_modes,
+											binding.lhs,
+											{ buffer = ev.buf, desc = del_desc }
+										)
+									end
+								end
+							end
+						end)
 					end,
 				})
 				local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
