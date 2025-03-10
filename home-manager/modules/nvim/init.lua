@@ -2093,10 +2093,9 @@ require("lazy").setup({
 		},
 		{
 			"mistweaverco/kulala.nvim",
-			version = "4.11.0",
+			version = "5.x",
 			ft = { "http", "rest" },
 			opts = {
-				curl_path = "curl",
 				display_mode = "split",
 				split_direction = "vertical",
 				debug = false,
