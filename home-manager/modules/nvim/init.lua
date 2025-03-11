@@ -1690,6 +1690,7 @@ require("lazy").setup({
 					{ "<leader>ee", group = "Encode" },
 					{ "<leader>ed", group = "Decode" },
 					{ "x", group = "Exchange" },
+					{ "gh", desc = "Enter Select mode" },
 				})
 			end,
 		},
