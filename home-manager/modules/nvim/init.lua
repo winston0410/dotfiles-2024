@@ -504,6 +504,22 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"ecthelionvi/NeoComposer.nvim",
+			event = { "VeryLazy" },
+			dependencies = { "kkharji/sqlite.lua" },
+			opts = {
+				keymaps = {
+					play_macro = "Q",
+					yank_macro = false,
+					stop_macro = false,
+					toggle_record = "q",
+					cycle_next = false,
+					cycle_prev = false,
+					toggle_macro_menu = "<leader>q",
+				},
+			},
+		},
+		{
 			"nvim-neorg/neorg",
 			ft = { "norg" },
 			dependencies = { "pysan3/pathlib.nvim", "nvim-neorg/lua-utils.nvim", "nvim-neotest/nvim-nio" },
@@ -1297,6 +1313,7 @@ require("lazy").setup({
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {
+							{ require("NeoComposer.ui").status_recording },
 							{
 								"diagnostics",
 								sources = { "nvim_lsp" },
