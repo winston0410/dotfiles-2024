@@ -79,7 +79,7 @@ vim.g.mapleader = " "
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
-vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,terminal"
+vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,winpos,terminal"
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
@@ -141,16 +141,11 @@ local function find_tab_with_filetype(filetype)
 	return -1
 end
 
-local modes = { "n", "v", "c" }
-
 -- REF https://unix.stackexchange.com/a/637223/467987
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
-		-- vim.api.nvim_buf_set_option(ev.buf, "number", false)
-		-- vim.api.nvim_buf_set_option(ev.buf, "relativenumber", false)
-		-- vim.api.nvim_buf_set_option(ev.buf, "filetype", "terminal")
 		vim.api.nvim_set_option_value("number", false, { scope = "local" })
 		vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
 		vim.api.nvim_set_option_value("filetype", "terminal", { scope = "local" })
@@ -183,41 +178,41 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 -- )
 
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
-vim.keymap.set(modes, "Y", "y$", {
+vim.keymap.set({ "n", "x" }, "Y", "y$", {
 	silent = true,
 	noremap = true,
-	desc = "Yanks to the end of the line.",
+	desc = "Yank to EOL",
 })
 
-vim.keymap.set(modes, "<leader>wv", function()
+vim.keymap.set({ "n" }, "<leader>wv", function()
 	vim.cmd("vsplit")
 end, { silent = true, noremap = true, desc = "Create a vertical split" })
-vim.keymap.set(modes, "<leader>ws", function()
+vim.keymap.set({ "n" }, "<leader>ws", function()
 	vim.cmd("split")
 end, { silent = true, noremap = true, desc = "Create a horizontal split" })
-vim.keymap.set(modes, "<leader>wq", function()
+vim.keymap.set({ "n" }, "<leader>wq", function()
 	vim.cmd("quit")
 end, { silent = true, noremap = true, desc = "Close a split" })
-vim.keymap.set(modes, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
-vim.keymap.set(modes, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
-vim.keymap.set(modes, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
-vim.keymap.set(modes, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
+vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
+vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
+vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
+vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
-vim.keymap.set(modes, "<leader>tv", function()
+vim.keymap.set({ "n" }, "<leader>tv", function()
 	vim.cmd("tabnew")
 end, { silent = true, noremap = true, desc = "Create a new tab" })
 vim.keymap.set(
-	modes,
+	{ "n" },
 	"<leader>tl",
 	"gt",
 	{ silent = true, noremap = true, desc = "Go to the next tab page. Wraps around from the last to the first one." }
 )
-vim.keymap.set(modes, "<leader>th", "gT", {
+vim.keymap.set({ "n" }, "<leader>th", "gT", {
 	silent = true,
 	noremap = true,
 	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
 })
-vim.keymap.set(modes, "<leader>tq", function()
+vim.keymap.set({ "n" }, "<leader>tq", function()
 	vim.cmd("tabclose")
 end, { silent = true, noremap = true, desc = "Close a tab" })
 for i = 1, 9 do
@@ -226,13 +221,16 @@ for i = 1, 9 do
 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
 end
 
-vim.keymap.set(modes, "<leader>bq", function()
+vim.keymap.set({ "n" }, "<leader>bc", function()
+	-- TODO
+end, { silent = true, noremap = true, desc = "Unload other buffers" })
+vim.keymap.set({ "n" }, "<leader>bq", function()
 	Snacks.bufdelete.delete()
 end, { silent = true, noremap = true, desc = "Delete current buffer" })
-vim.keymap.set(modes, "<leader>bl", function()
+vim.keymap.set({ "n" }, "<leader>bl", function()
 	vim.cmd("bnext")
 end, { silent = true, noremap = true, desc = "Go to next buffer" })
-vim.keymap.set(modes, "<leader>bh", function()
+vim.keymap.set({ "n" }, "<leader>bh", function()
 	vim.cmd("bprev")
 end, { silent = true, noremap = true, desc = "Go to previous buffer" })
 for i = 1, 9 do
@@ -249,17 +247,10 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
-vim.keymap.set("v", "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
-vim.keymap.set("v", "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
-vim.keymap.set(
-	"i",
-	"<esc>",
-	"<esc>`^",
-	{ silent = true, noremap = true, desc = "Revert back to previous cursor position" }
-)
-
-vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
-vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
+vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
+vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
+vim.keymap.set({ "n" }, "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
+vim.keymap.set({ "n" }, "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then
@@ -538,6 +529,7 @@ require("lazy").setup({
 			"Shatur/neovim-session-manager",
 			dependencies = { "nvim-lua/plenary.nvim" },
 			lazy = false,
+			priority = 998,
 			config = function()
 				local config = require("session_manager.config")
 				require("session_manager").setup({
@@ -669,7 +661,7 @@ require("lazy").setup({
 				-- 	desc = "Grapple toggle tag",
 				-- },
 				{
-					"<leader>pm",
+					"<leader>p<leader>m",
 					function()
 						require("grapple").toggle_tags({})
 					end,
@@ -911,10 +903,19 @@ require("lazy").setup({
 					["<Char-0xAC>"] = { "select_next", "fallback" },
 					["<C-p>"] = { "select_prev", "fallback" },
 					["<Char-0xAB>"] = { "select_prev", "fallback" },
-					["<CR>"] = { "accept", "fallback" },
-					-- NOTE mimick the behavior for vscode
-					["<S-Tab>"] = { "select_prev", "fallback" },
-					["<Tab>"] = { "select_next", "fallback" },
+					["<CR>"] = { "select_and_accept", "fallback" },
+					["<Tab>"] = {
+						function(cmp)
+							if cmp.snippet_active() then
+								return cmp.accept()
+							else
+								return cmp.select_and_accept()
+							end
+						end,
+						"snippet_forward",
+						"fallback",
+					},
+					["<S-Tab>"] = { "snippet_backward", "fallback" },
 				},
 
 				appearance = {
@@ -943,7 +944,9 @@ require("lazy").setup({
 					keyword = { range = "full" },
 					documentation = {
 						auto_show = true,
+						auto_show_delay_ms = 400,
 					},
+					ghost_text = { enabled = true, show_with_menu = false },
 				},
 				signature = { enabled = true },
 				fuzzy = {
@@ -2205,7 +2208,7 @@ require("lazy").setup({
 					-- dim
 					image = { enabled = true },
 					dashboard = {
-						enabled = false,
+						enabled = true,
 						sections = {
 							{
 								section = "terminal",
@@ -2280,7 +2283,7 @@ require("lazy").setup({
 
 		{
 			"numToStr/Comment.nvim",
-			dependencies = { "nvim-treesitter/nvim-treesitter", "JoosepAlviste/nvim-ts-context-commentstring" },
+			dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
 			-- FIXME cant really make custom key binding works, 06-12-2024
 			keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
 			config = function()
@@ -2401,7 +2404,7 @@ require("lazy").setup({
 				vim.cmd("TSUpdate")
 			end,
 			lazy = false,
-			event = { "VeryLazy" },
+			priority = 999,
 			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 			config = function()
 				local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
