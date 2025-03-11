@@ -184,6 +184,7 @@ vim.keymap.set({ "n", "x" }, "Y", "y$", {
 	desc = "Yank to EOL",
 })
 
+vim.keymap.set({ "n" }, "vv", "<C-v>", { silent = true, noremap = true, desc = "Enter Visual block mode" })
 vim.keymap.set({ "n" }, "<leader>wv", function()
 	vim.cmd("vsplit")
 end, { silent = true, noremap = true, desc = "Create a vertical split" })
@@ -840,7 +841,8 @@ require("lazy").setup({
 			end,
 		},
 		{
-			dir = "~/.local/share/nvim/lazy/encoding.nvim",
+			"winston0410/encoding.nvim",
+			-- dir = "~/.local/share/nvim/lazy/encoding.nvim",
 			keys = {
 				{
 					"<leader>ee1",
@@ -919,7 +921,7 @@ require("lazy").setup({
 				},
 
 				appearance = {
-					use_nvim_cmp_as_default = false,
+					use_nvim_cmp_as_default = true,
 					nerd_font_variant = "mono",
 				},
 
@@ -1111,7 +1113,7 @@ require("lazy").setup({
 		{
 			"nvim-lualine/lualine.nvim",
 			event = { "VeryLazy" },
-			dependencies = { "nvim-tree/nvim-web-devicons", "Bekaboo/dropbar.nvim" },
+			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
 				local utility_filetypes = {
 					"terminal",
@@ -1546,10 +1548,8 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- NOTE doesn't seems to be particularly useful. qa ... Q seems to be good enough for me
 		{
 			"chrisgrieser/nvim-recorder",
-			dependencies = { "folke/snacks.nvim" },
 			enabled = false,
 			opts = {},
 		},
