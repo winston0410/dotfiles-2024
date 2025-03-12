@@ -1030,9 +1030,63 @@ require("lazy").setup({
 		},
 		{
 			"mfussenegger/nvim-dap",
+
+			dependencies = {
+				-- TODO revisit this plugin, once we switch to 0.11
+				-- { "igorlfs/nvim-dap-view", opts = {} },
+			},
 			config = function()
 				local dap = require("dap")
+				--             local dv = require("dap-view")
+				-- dap.listeners.before.attach["dap-view-config"] = function()
+				-- 	dv.open()
+				-- end
+				-- dap.listeners.before.launch["dap-view-config"] = function()
+				-- 	dv.open()
+				-- end
+				-- dap.listeners.before.event_terminated["dap-view-config"] = function()
+				-- 	dv.close()
+				-- end
+				-- dap.listeners.before.event_exited["dap-view-config"] = function()
+				-- 	dv.close()
+				-- end
+				-- REF https://www.compart.com/en/unicode/search?q=circle#characters
+				vim.fn.sign_define(
+					"DapBreakpoint",
+					{ text = "●", texthl = "DapUIStop", linehl = "", numhl = "", priority = 90 }
+				)
+				vim.fn.sign_define(
+					"DapBreakpointCondition",
+					{ text = "⊜", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
+				)
+				vim.fn.sign_define(
+					"DapStopped",
+					{ text = "→", texthl = "", linehl = "DapUIPlayPause", numhl = "", priority = 99 }
+				)
 
+				dap.adapters.dart = {
+					type = "executable",
+					command = "dart",
+					args = { "debug_adapter" },
+					options = {
+						detached = true,
+					},
+				}
+				dap.adapters.kotlin = {
+					type = "executable",
+					command = "kotlin-debug-adapter",
+					options = { auto_continue_if_many_stopped = false },
+				}
+				dap.adapters.ocamlearlybird = {
+					type = "executable",
+					command = "ocamlearlybird",
+					args = { "debug" },
+				}
+				dap.adapters.mix_task = {
+					type = "executable",
+					command = "elixir-debug-adapter",
+					args = {},
+				}
 				dap.adapters.coreclr = {
 					type = "executable",
 					command = "netcoredbg",
@@ -1153,12 +1207,6 @@ require("lazy").setup({
 			dependencies = {
 				"mfussenegger/nvim-dap",
 			},
-		},
-
-		{
-			"rcarriga/nvim-dap-ui",
-			version = "4.x",
-			dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		},
 		{
 			"chentoast/marks.nvim",
