@@ -1048,6 +1048,24 @@ require("lazy").setup({
 						end,
 					},
 				}
+				dap.adapters["pwa-node"] = {
+					type = "server",
+					host = "localhost",
+					port = "${port}",
+					executable = {
+						command = "js-debug",
+						args = { "${port}" },
+					},
+				}
+				dap.configurations.javascript = {
+					{
+						type = "pwa-node",
+						request = "launch",
+						name = "Launch file",
+						program = "${file}",
+						cwd = "${workspaceFolder}",
+					},
+				}
 			end,
 			keys = {
 				{
@@ -1114,6 +1132,16 @@ require("lazy").setup({
 			dependencies = {
 				"mfussenegger/nvim-dap",
 			},
+		},
+		{
+			"suketa/nvim-dap-ruby",
+			ft = { "ruby" },
+			dependencies = {
+				"mfussenegger/nvim-dap",
+			},
+			config = function()
+				require("dap-ruby").setup()
+			end,
 		},
 		{
 			"mfussenegger/nvim-dap-python",

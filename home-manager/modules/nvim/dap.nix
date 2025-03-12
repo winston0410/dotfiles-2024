@@ -2,5 +2,6 @@
   home.packages = with pkgs; [
     delve # golang debugger
     netcoredbg # csharp
+    vscode-js-debug
   ];
 }
