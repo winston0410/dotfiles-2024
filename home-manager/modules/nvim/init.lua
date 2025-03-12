@@ -1032,7 +1032,6 @@ require("lazy").setup({
 			"chentoast/marks.nvim",
 			event = "VeryLazy",
 			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
-			enabled = false,
 			keys = {
 				{
 					"m",
@@ -1065,8 +1064,6 @@ require("lazy").setup({
 			opts = {
 				default_mappings = false,
 				builtin_marks = {
-					-- NOTE beginning of last change. This is not reliable, as plugin such as formatter.nvim would reset its location back to line 1
-					-- ".",
 					"[",
 					"]",
 					-- beginning of last insert
@@ -2003,6 +2000,16 @@ require("lazy").setup({
 			lazy = false,
 			dependencies = {},
 			keys = {
+				{
+					"<leader>phj",
+					function()
+						Snacks.picker.jumps()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Search jumplist history",
+				},
 				{
 					"<leader>phu",
 					function()
