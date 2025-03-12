@@ -1087,7 +1087,30 @@ require("lazy").setup({
 		{
 			"leoluz/nvim-dap-go",
 			ft = { "go" },
-			opts = {},
+			config = function()
+				require("dap-go").setup({
+					dap_configurations = {
+						{
+							type = "go",
+							name = "Attach remote",
+							mode = "remote",
+							request = "attach",
+						},
+					},
+					delve = {
+						path = "dlv",
+						initialize_timeout_sec = 20,
+						port = "${port}",
+						args = {},
+						build_flags = {},
+						detached = vim.fn.has("win32") == 0,
+						cwd = nil,
+					},
+					tests = {
+						verbose = false,
+					},
+				})
+			end,
 			dependencies = {
 				"mfussenegger/nvim-dap",
 			},
