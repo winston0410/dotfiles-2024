@@ -1,5 +1,5 @@
 { inputs, unstable, lib, config, pkgs, ... }: {
-  imports = [ ./lsp.nix ./formatter.nix ];
+  imports = [ ./lsp.nix ./formatter.nix ./dap.nix ];
 
   home.packages = with pkgs; [
     figlet

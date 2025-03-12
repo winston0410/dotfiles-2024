@@ -1029,8 +1029,89 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"mfussenegger/nvim-dap",
+			config = function()
+				local dap = require("dap")
+
+				dap.adapters.coreclr = {
+					type = "executable",
+					command = "netcoredbg",
+					args = { "--interpreter=vscode" },
+				}
+				dap.configurations.cs = {
+					{
+						type = "coreclr",
+						name = "launch - netcoredbg",
+						request = "launch",
+						program = function()
+							return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+						end,
+					},
+				}
+			end,
+			keys = {
+				{
+					"<leader>db",
+					function()
+						require("dap").toggle_breakpoint()
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Toggle breakpoint",
+				},
+				{
+					"<leader>dc",
+					function()
+						require("dap").continue()
+					end,
+					desc = "Continue",
+				},
+
+				-- {
+				-- 	"<leader>dC",
+				-- 	function()
+				-- 		require("dap").run_to_cursor()
+				-- 	end,
+				-- 	desc = "Run to Cursor",
+				-- },
+
+				{
+					"<leader>dt",
+					function()
+						require("dap").terminate()
+					end,
+					desc = "Terminate debug session",
+				},
+			},
+		},
+		{
+			"leoluz/nvim-dap-go",
+			ft = { "go" },
+			opts = {},
+			dependencies = {
+				"mfussenegger/nvim-dap",
+			},
+		},
+		{
+			"mfussenegger/nvim-dap-python",
+			ft = { "python" },
+			config = function()
+				-- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#usage
+				require("dap-python").setup("uv")
+			end,
+			dependencies = {
+				"mfussenegger/nvim-dap",
+			},
+		},
+
+		{
+			"rcarriga/nvim-dap-ui",
+			version = "4.x",
+			dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		},
+		{
 			"chentoast/marks.nvim",
-			event = "VeryLazy",
+			event = { "VeryLazy" },
 			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
 			keys = {
 				{
