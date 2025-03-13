@@ -34,12 +34,6 @@
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
     MANWIDTH = 999;
-    vi = "nvim --clean";
-    vim = "nvim --clean";
-    oil = ''nvim -c "Oil"'';
-    neogit = "nvim -c 'lua require(\"neogit\").open()'";
-    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
-    nfd = "nvim -c 'lua Snacks.picker.files()'";
   };
 
   programs.zsh.initExtra = ''
@@ -52,7 +46,14 @@
     }
   '';
 
-  home.shellAliases = { };
+  home.shellAliases = {
+    vi = "nvim --clean";
+    vim = "nvim --clean";
+    oil = ''nvim -c "Oil"'';
+    neogit = "nvim -c 'lua require(\"neogit\").open()'";
+    k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
+    nfd = "nvim -c 'lua Snacks.picker.files()'";
+  };
 
   xdg.configFile = {
     "nvim/init.lua" = {

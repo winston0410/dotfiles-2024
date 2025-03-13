@@ -8,4 +8,12 @@ config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.xcursor_theme = "phinger-cursors-light"
 config.xcursor_size = 48
 
+local wezterm = require("wezterm")
+local mux = wezterm.mux
+
+wezterm.on("gui-startup", function(cmd)
+	local tab, pane, window = mux.spawn_window(cmd or {})
+	window:gui_window():maximize()
+end)
+
 return config

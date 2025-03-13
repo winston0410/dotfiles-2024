@@ -30,6 +30,7 @@ vim.g.loaded_node_provider = 0
 
 vim.o.encoding = "UTF-8"
 vim.o.fileencoding = "UTF-8"
+vim.o.confirm = true
 vim.opt.termguicolors = true
 vim.o.timeoutlen = 400
 vim.o.ttimeoutlen = 0
@@ -756,6 +757,9 @@ require("lazy").setup({
 					adapters = {
 						gemini = function()
 							return require("codecompanion.adapters").extend("gemini", {
+								env = {
+									api_key = "cmd:bw get password GEMINI_API_KEY | xargs",
+								},
 								schema = {
 									model = {
 										default = "gemini-2.0-flash",
@@ -1034,6 +1038,47 @@ require("lazy").setup({
 			dependencies = {
 				-- TODO revisit this plugin, once we switch to 0.11
 				-- { "igorlfs/nvim-dap-view", opts = {} },
+				{
+					"mfussenegger/nvim-dap-python",
+					config = function()
+						-- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#usage
+						require("dap-python").setup("uv")
+					end,
+				},
+				{
+					"suketa/nvim-dap-ruby",
+					config = function()
+						require("dap-ruby").setup()
+					end,
+				},
+
+				{
+					"leoluz/nvim-dap-go",
+					config = function()
+						require("dap-go").setup({
+							dap_configurations = {
+								{
+									type = "go",
+									name = "Attach remote",
+									mode = "remote",
+									request = "attach",
+								},
+							},
+							delve = {
+								path = "dlv",
+								initialize_timeout_sec = 20,
+								port = "${port}",
+								args = {},
+								build_flags = {},
+								detached = vim.fn.has("win32") == 0,
+								cwd = nil,
+							},
+							tests = {
+								verbose = false,
+							},
+						})
+					end,
+				},
 			},
 			config = function()
 				local dap = require("dap")
@@ -1156,58 +1201,7 @@ require("lazy").setup({
 				},
 			},
 		},
-		{
-			"leoluz/nvim-dap-go",
-			ft = { "go" },
-			config = function()
-				require("dap-go").setup({
-					dap_configurations = {
-						{
-							type = "go",
-							name = "Attach remote",
-							mode = "remote",
-							request = "attach",
-						},
-					},
-					delve = {
-						path = "dlv",
-						initialize_timeout_sec = 20,
-						port = "${port}",
-						args = {},
-						build_flags = {},
-						detached = vim.fn.has("win32") == 0,
-						cwd = nil,
-					},
-					tests = {
-						verbose = false,
-					},
-				})
-			end,
-			dependencies = {
-				"mfussenegger/nvim-dap",
-			},
-		},
-		{
-			"suketa/nvim-dap-ruby",
-			ft = { "ruby" },
-			dependencies = {
-				"mfussenegger/nvim-dap",
-			},
-			config = function()
-				require("dap-ruby").setup()
-			end,
-		},
-		{
-			"mfussenegger/nvim-dap-python",
-			ft = { "python" },
-			config = function()
-				-- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#usage
-				require("dap-python").setup("uv")
-			end,
-			dependencies = {
-				"mfussenegger/nvim-dap",
-			},
-		},
+
 		{
 			"chentoast/marks.nvim",
 			event = { "VeryLazy" },
