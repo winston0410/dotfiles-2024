@@ -29,16 +29,22 @@
     lfs = { enable = true; };
 
     merge = {
-      tool = "nvimdiff1";
+      tool = "nvimdiff";
       conflictStyle = "zdiff3";
     };
-    mergetool = { prompt = false; };
+    mergetool = {
+      prompt = false;
+      nvimdiff = { layout = "@LOCAL, REMOTE"; };
+    };
 
     diff = {
-      tool = "nvimdiff1";
+      tool = "nvimdiff";
       conflictStyle = "zdiff3";
     };
-    difftool = { prompt = false; };
+    difftool = {
+      prompt = false;
+      nvimdiff = { layout = "@LOCAL, REMOTE"; };
+    };
   };
   home.packages = with pkgs;
     [
