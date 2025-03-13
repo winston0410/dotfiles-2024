@@ -523,6 +523,7 @@ require("lazy").setup({
 		{
 			"nvim-neorg/neorg",
 			ft = { "norg" },
+			enabled = false,
 			dependencies = { "pysan3/pathlib.nvim", "nvim-neorg/lua-utils.nvim", "nvim-neotest/nvim-nio" },
 			version = "9.2.0",
 			config = function()
@@ -1034,12 +1035,12 @@ require("lazy").setup({
 		},
 		{
 			"mfussenegger/nvim-dap",
-
 			dependencies = {
 				-- TODO revisit this plugin, once we switch to 0.11
 				-- { "igorlfs/nvim-dap-view", opts = {} },
 				{
 					"mfussenegger/nvim-dap-python",
+					ft = { "python" },
 					config = function()
 						-- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#usage
 						require("dap-python").setup("uv")
@@ -1047,6 +1048,7 @@ require("lazy").setup({
 				},
 				{
 					"suketa/nvim-dap-ruby",
+					ft = { "ruby" },
 					config = function()
 						require("dap-ruby").setup()
 					end,
@@ -1054,6 +1056,7 @@ require("lazy").setup({
 
 				{
 					"leoluz/nvim-dap-go",
+					ft = { "go" },
 					config = function()
 						require("dap-go").setup({
 							dap_configurations = {
@@ -3580,7 +3583,6 @@ require("lazy").setup({
 					"serve_d",
 					"gdscript",
 					"scry",
-					"ember",
 					"biome",
 					"eslint",
 					"angularls",

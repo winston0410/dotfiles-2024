@@ -21,7 +21,7 @@
     pkgs.metals
     pkgs.vscode-langservers-extracted
     pkgs.lua-language-server
-    unstable.deno
+    pkgs.deno
     pkgs.jsonnet-language-server
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${system}.default
@@ -33,6 +33,7 @@
     pkgs.ltex-ls
     pkgs.angular-language-server
     pkgs.shellcheck
+    pkgs.lemminx
     # TODO install @astrojs/language-server, https://github.com/withastro/language-tools/tree/main/packages/language-server
     # # # REF https://github.com/NixOS/nixpkgs/issues/245849
     # (pkgs.buildNpmPackage rec {
