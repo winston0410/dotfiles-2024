@@ -878,8 +878,20 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"nacro90/numb.nvim",
+			event = { "CmdlineEnter" },
+			config = function()
+				require("numb").setup()
+			end,
+		},
+		{
+			"winston0410/range-highlight.nvim",
+			branch = "refactor/0.10.x",
+			event = { "CmdlineEnter" },
+			opts = {},
+		},
+		{
 			"winston0410/encoding.nvim",
-			-- dir = "~/.local/share/nvim/lazy/encoding.nvim",
 			keys = {
 				{
 					"<leader>ee1",
