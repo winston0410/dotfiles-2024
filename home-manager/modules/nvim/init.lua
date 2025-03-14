@@ -1333,6 +1333,17 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
+				local should_show_dropbar = function()
+					local ok, is_diff_buf = pcall(function()
+						return vim.api.nvim_buf_get_var(0, "isdiffbuf")
+					end)
+
+					if ok then
+						return not is_diff_buf
+					end
+
+					return true
+				end
 				local utility_filetypes = {
 					"terminal",
 					"snacks_terminal",
@@ -1424,9 +1435,7 @@ require("lazy").setup({
 								function()
 									return _G.dropbar()
 								end,
-								cond = function()
-									return true
-								end,
+								cond = should_show_dropbar,
 							},
 						},
 						lualine_x = {},
@@ -1441,9 +1450,7 @@ require("lazy").setup({
 								function()
 									return _G.dropbar()
 								end,
-								cond = function()
-									return true
-								end,
+								cond = should_show_dropbar,
 							},
 						},
 						lualine_x = {},
@@ -1753,7 +1760,7 @@ require("lazy").setup({
 					},
 				})
 
-				local autocmd_callback = function(_)
+				local autocmd_callback = function(ev)
 					vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
@@ -1765,6 +1772,8 @@ require("lazy").setup({
 						{ noremap = true, silent = true, desc = "Jump to the previous hunk" }
 					)
 					vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
+
+					vim.api.nvim_buf_set_var(ev.buf, "isdiffbuf", true)
 				end
 
 				vim.api.nvim_create_autocmd("User", {
