@@ -1424,6 +1424,9 @@ require("lazy").setup({
 								function()
 									return _G.dropbar()
 								end,
+								cond = function()
+									return true
+								end,
 							},
 						},
 						lualine_x = {},
@@ -1437,6 +1440,9 @@ require("lazy").setup({
 							{
 								function()
 									return _G.dropbar()
+								end,
+								cond = function()
+									return true
 								end,
 							},
 						},
