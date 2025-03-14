@@ -52,10 +52,5 @@
       # difftool = "!nvim -c DiffviewOpen";
     };
   };
-  home.packages = with pkgs;
-    [
-      # NOTE it is trigger every single time when I open a Git repo, cannot fix it at all
-      # git-credential-oauth
-      git-credential-manager
-    ];
+  home.packages = with pkgs; [ git-credential-manager ];
 }

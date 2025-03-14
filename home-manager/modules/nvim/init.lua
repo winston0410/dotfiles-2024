@@ -32,7 +32,7 @@ vim.o.encoding = "UTF-8"
 vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
 vim.opt.termguicolors = true
-vim.o.diffopt = "internal,filler,closeoff,algorithm:histogram"
+vim.o.diffopt = "internal,filler,closeoff,algorithm:histogram,followwrap"
 vim.o.timeoutlen = 400
 vim.o.ttimeoutlen = 0
 vim.o.updatetime = 300
@@ -201,6 +201,7 @@ vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true,
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
+require("modules.buffer").setup()
 vim.keymap.set({ "n" }, "<leader>tv", function()
 	vim.cmd("tabnew")
 end, { silent = true, noremap = true, desc = "Create a new tab" })
@@ -222,24 +223,6 @@ for i = 1, 9 do
 	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
 		vim.cmd(string.format("tabn %s", i))
 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
-end
-
-vim.keymap.set({ "n" }, "<leader>bc", function()
-	-- TODO
-end, { silent = true, noremap = true, desc = "Unload other buffers" })
-vim.keymap.set({ "n" }, "<leader>bq", function()
-	Snacks.bufdelete.delete()
-end, { silent = true, noremap = true, desc = "Delete current buffer" })
-vim.keymap.set({ "n" }, "<leader>bl", function()
-	vim.cmd("bnext")
-end, { silent = true, noremap = true, desc = "Go to next buffer" })
-vim.keymap.set({ "n" }, "<leader>bh", function()
-	vim.cmd("bprev")
-end, { silent = true, noremap = true, desc = "Go to previous buffer" })
-for i = 1, 9 do
-	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
-		vim.cmd(string.format("LualineBuffersJump %s", i))
-	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
 end
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
@@ -655,7 +638,12 @@ require("lazy").setup({
 					desc = "Exchange line",
 				},
 			},
-			opts = {},
+			config = function()
+				require("substitute").setup()
+				vim.api.nvim_set_hl(0, "SubstituteSubstituted", { link = "Visual" })
+				vim.api.nvim_set_hl(0, "SubstituteRange", { link = "Visual" })
+				vim.api.nvim_set_hl(0, "SubstituteExchange", { link = "Visual" })
+			end,
 		},
 		{
 			"Bekaboo/dropbar.nvim",
@@ -788,16 +776,7 @@ require("lazy").setup({
 					display = {
 						diff = {
 							enabled = true,
-							close_chat_at = 240,
 							layout = "vertical",
-							opts = {
-								"internal",
-								"filler",
-								"closeoff",
-								"algorithm:patience",
-								"followwrap",
-								"linematch:120",
-							},
 							provider = "default",
 						},
 					},
@@ -809,14 +788,24 @@ require("lazy").setup({
 			},
 		},
 		{
+			"zeioth/garbage-day.nvim",
+			dependencies = { "neovim/nvim-lspconfig" },
+			event = { "VeryLazy" },
+			opts = {
+				wakeup_delay = 250,
+			},
+		},
+		{
 			"sphamba/smear-cursor.nvim",
+			enabled = false,
+			cmd = { "SmearCursorToggle" },
 			event = { "CursorHold" },
 			opts = {},
 		},
 		{
 			"kevinhwang91/nvim-ufo",
 			version = "1.4.0",
-			dependencies = { "kevinhwang91/promise-async" },
+			dependencies = { { "kevinhwang91/promise-async", lazy = true } },
 			cmd = {
 				"UfoEnable",
 				"UfoDisable",
@@ -1761,6 +1750,8 @@ require("lazy").setup({
 				})
 
 				local autocmd_callback = function(ev)
+					vim.print(vim.inspect(ev))
+					require("modules.buffer").detach(ev.buf)
 					vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
@@ -2694,11 +2685,6 @@ require("lazy").setup({
 					filetype = "make",
 					used_by = { "make" },
 				}
-				-- NOTE not sure why we need to do that
-				pcall(function()
-					vim.keymap.del({ "n", "v" }, "x")
-				end)
-
 				local select_around_node = function()
 					local ts_utils = require("nvim-treesitter.ts_utils")
 					local node = ts_utils.get_node_at_cursor()
