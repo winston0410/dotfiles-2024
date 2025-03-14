@@ -32,6 +32,7 @@ vim.o.encoding = "UTF-8"
 vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
 vim.opt.termguicolors = true
+vim.o.diffopt = "internal,filler,closeoff,algorithm:histogram"
 vim.o.timeoutlen = 400
 vim.o.ttimeoutlen = 0
 vim.o.updatetime = 300
@@ -1408,7 +1409,9 @@ require("lazy").setup({
 						lualine_b = {},
 						lualine_c = {
 							{
-								"%{%v:lua.dropbar()%}",
+								function()
+									return _G.dropbar()
+								end,
 							},
 						},
 						lualine_x = {},
@@ -1418,9 +1421,13 @@ require("lazy").setup({
 					inactive_winbar = {
 						lualine_a = {},
 						lualine_b = {},
-						lualine_c = { {
-							"%{%v:lua.dropbar()%}",
-						} },
+						lualine_c = {
+							{
+								function()
+									return _G.dropbar()
+								end,
+							},
+						},
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {},
@@ -1560,6 +1567,17 @@ require("lazy").setup({
 						fold_open = "",
 						done = "✓",
 					},
+					view = {
+						default = {
+							layout = "diff2_horizontal",
+						},
+						merge_tool = {
+							layout = "diff3_mixed",
+						},
+						file_history = {
+							layout = "diff2_horizontal",
+						},
+					},
 					file_panel = {
 						listing_style = "tree",
 						tree_options = {
@@ -1623,15 +1641,15 @@ require("lazy").setup({
 								{ desc = "Open the diff for the previous file" },
 							},
 							-- TODO decide the right bindings, and apply it to all views
+							-- {
+							-- 	"n",
+							-- 	"<leader>ed",
+							-- 	actions.cycle_layout,
+							-- 	{ desc = "Cycle through available layouts." },
+							-- },
 							{
 								"n",
-								"<leader>ed",
-								actions.cycle_layout,
-								{ desc = "Cycle through available layouts." },
-							},
-							{
-								"n",
-								"<leader>ee",
+								"<leader>pf",
 								actions.toggle_files,
 								{ desc = "Toggle the file panel." },
 							},
@@ -1718,6 +1736,7 @@ require("lazy").setup({
 				})
 
 				local autocmd_callback = function(_)
+					vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
 

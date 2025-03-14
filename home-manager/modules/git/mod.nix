@@ -45,6 +45,12 @@
       prompt = false;
       nvimdiff = { layout = "@LOCAL, REMOTE"; };
     };
+
+    alias = {
+      diffview = "!nvim -c DiffviewOpen";
+      # mergetool = "!nvim -c DiffviewOpen";
+      # difftool = "!nvim -c DiffviewOpen";
+    };
   };
   home.packages = with pkgs;
     [
