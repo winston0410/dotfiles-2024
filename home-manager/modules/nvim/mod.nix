@@ -66,7 +66,6 @@
     "nvim/ftplugin" = {
       source = config.lib.file.mkOutOfStoreSymlink ./ftplugin;
     };
-    "nvim/lua/modules" = { source = ./modules; };
     "nvim/after" = { source = ./after; };
     "nvim/assets" = { source = ./assets; };
   };

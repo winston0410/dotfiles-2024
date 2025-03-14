@@ -201,7 +201,52 @@ vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true,
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
-require("modules.buffer").setup()
+local clear_buffer_keybinding = "<leader>bc"
+local delete_buffer_keybinding = "<leader>bq"
+local next_buffer_keybinding = "<leader>bl"
+local prev_buffer_keybinding = "<leader>bh"
+vim.keymap.set({ "n" }, clear_buffer_keybinding, function()
+	-- TODO
+end, { silent = true, noremap = true, desc = "Unload other buffers" })
+vim.keymap.set({ "n" }, delete_buffer_keybinding, function()
+	Snacks.bufdelete.delete()
+end, { silent = true, noremap = true, desc = "Delete current buffer" })
+vim.keymap.set({ "n" }, next_buffer_keybinding, function()
+	vim.cmd("bnext")
+end, { silent = true, noremap = true, desc = "Go to next buffer" })
+vim.keymap.set({ "n" }, prev_buffer_keybinding, function()
+	vim.cmd("bprev")
+end, { silent = true, noremap = true, desc = "Go to previous buffer" })
+for i = 1, 9 do
+	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
+		vim.cmd(string.format("LualineBuffersJump %s", i))
+	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	callback = function(ev)
+		local ok, bufferlocked = pcall(function()
+			return vim.api.nvim_buf_get_var(0, "lockbuffer")
+		end)
+
+		if not ok then
+			return
+		end
+
+		if not bufferlocked then
+			return
+		end
+		vim.keymap.set({ "n" }, clear_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+		vim.keymap.set({ "n" }, delete_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+		vim.keymap.set({ "n" }, next_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+		vim.keymap.set({ "n" }, prev_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+		for i = 1, 9 do
+			vim.keymap.set({ "n" }, "<leader>b" .. i, "<Nop>", { buffer = ev.buf })
+		end
+	end,
+})
+
 vim.keymap.set({ "n" }, "<leader>tv", function()
 	vim.cmd("tabnew")
 end, { silent = true, noremap = true, desc = "Create a new tab" })
@@ -1322,6 +1367,18 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 			config = function()
+				local should_show_buffers = function()
+					local tab_id = vim.api.nvim_get_current_tabpage()
+					local ok, lockbuffer = pcall(function()
+						return vim.api.nvim_tabpage_get_var(tab_id, "lockbuffer")
+					end)
+
+					if ok then
+						return not lockbuffer
+					end
+
+					return true
+				end
 				local should_show_dropbar = function()
 					local ok, is_diff_buf = pcall(function()
 						return vim.api.nvim_buf_get_var(0, "isdiffbuf")
@@ -1384,6 +1441,7 @@ require("lazy").setup({
 									modified = "[+]",
 									alternate_file = "",
 								},
+								cond = should_show_buffers,
 							},
 						},
 						lualine_x = {
@@ -1750,8 +1808,6 @@ require("lazy").setup({
 				})
 
 				local autocmd_callback = function(ev)
-					vim.print(vim.inspect(ev))
-					require("modules.buffer").detach(ev.buf)
 					vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
 					vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
 					vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
@@ -1765,6 +1821,7 @@ require("lazy").setup({
 					vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 
 					vim.api.nvim_buf_set_var(ev.buf, "isdiffbuf", true)
+					vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
 				end
 
 				vim.api.nvim_create_autocmd("User", {
@@ -1777,16 +1834,20 @@ require("lazy").setup({
 				})
 				vim.api.nvim_create_autocmd("FileType", {
 					pattern = "DiffviewFileHistory",
-					callback = function()
+					callback = function(ev)
 						local tab_id = vim.api.nvim_get_current_tabpage()
 						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFileHistory")
+						vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
+						vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
 					end,
 				})
 				vim.api.nvim_create_autocmd("FileType", {
 					pattern = "DiffviewFiles",
-					callback = function()
+					callback = function(ev)
 						local tab_id = vim.api.nvim_get_current_tabpage()
 						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFiles")
+						vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
+						vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
 					end,
 				})
 			end,
