@@ -2472,6 +2472,7 @@ require("lazy").setup({
 										["p"] = "explorer_paste",
 										-- Use copy here, until there is a new action allows creating a new empty files or dir
 										["o"] = "explorer_copy",
+										["gx"] = "explorer_open",
 										["<a-i>"] = "toggle_ignored",
 										["<a-h>"] = "toggle_hidden",
 										["]gh"] = "explorer_git_next",
@@ -2482,7 +2483,6 @@ require("lazy").setup({
 										-- ["<leader>/"] = "picker_grep",
 										["<leader>~"] = "tcd",
 										-- TODO not sure how to deal with these actions yet
-										-- ["a"] = "explorer_add",
 										-- ["m"] = "explorer_move",
 									},
 								},
@@ -3327,6 +3327,7 @@ require("lazy").setup({
 							mode = "n",
 							desc = "Quit Oil.nvim panel",
 						},
+						["gx"] = { "actions.open_external", mode = "n", desc = "Open in external application" },
 					},
 					use_default_keymaps = false,
 					win_options = {
