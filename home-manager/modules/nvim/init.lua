@@ -838,6 +838,7 @@ require("lazy").setup({
 			event = { "VeryLazy" },
 			opts = {
 				wakeup_delay = 250,
+				grace_period = 60 * 10,
 			},
 		},
 		{
