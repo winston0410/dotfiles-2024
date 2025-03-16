@@ -14,6 +14,9 @@
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
+
+    vaultwarden_password="$(security find-internet-password -s 'vaultwarden.28281428.xyz' -w)"
+    export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
   '');
 
   home = {
@@ -28,10 +31,4 @@
   nix.settings.use-xdg-base-directories = lib.mkForce false;
   programs.firefox.package = lib.mkForce pkgs.firefox-bin;
   programs.firefox.nativeMessagingHosts = lib.mkForce [ ];
-  # # FIX for this bug that prevents installing firefox on darwin https://github.com/nix-community/home-manager/issues/5717
-  # # REF https://github.com/booxter/home-manager/commit/c200ff63c0f99c57fac96aac667fd50b5057aec7
-  # home.sessionVariables = lib.mkIf isDarwin {
-  #   MOZ_LEGACY_PROFILES = 1;
-  #   MOZ_ALLOW_DOWNGRADE = 1;
-  # };
 }
