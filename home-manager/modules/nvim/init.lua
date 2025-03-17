@@ -625,8 +625,8 @@ require("lazy").setup({
 			keys = {
 				{ "s", mode = "n" },
 				{ "ss", mode = "n" },
-				{ "sc", mode = "n" },
-				{ "sd", mode = "n" },
+				{ "cs", mode = "n" },
+				{ "ds", mode = "n" },
 				{ "s", mode = "x" },
 			},
 			config = function()
@@ -921,7 +921,6 @@ require("lazy").setup({
 		},
 		{
 			"winston0410/range-highlight.nvim",
-			branch = "refactor/0.10.x",
 			event = { "CmdlineEnter" },
 			opts = {},
 		},
