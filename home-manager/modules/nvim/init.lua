@@ -786,6 +786,7 @@ require("lazy").setup({
 			"olimorris/codecompanion.nvim",
 			cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
 			event = { "VeryLazy" },
+			version = "14.x",
 			config = function()
 				require("codecompanion").setup({
 					-- https://codecompanion.olimorris.dev/configuration/adapters.html#changing-a-model
@@ -804,6 +805,9 @@ require("lazy").setup({
 						end,
 					},
 					strategies = {
+						chat = {
+							adapter = "gemini",
+						},
 						inline = {
 							adapter = "gemini",
 						},
@@ -914,6 +918,7 @@ require("lazy").setup({
 		},
 		{
 			"nacro90/numb.nvim",
+			enabled = true,
 			event = { "CmdlineEnter" },
 			config = function()
 				require("numb").setup()
@@ -984,10 +989,9 @@ require("lazy").setup({
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
 					["<Down>"] = { "select_next", "fallback" },
+					-- FIXME <C-n> and <C-p> for navigating Down and Up in commandline is overriden by blink-cmp, need to prevent that from happening
 					["<C-n>"] = { "select_next", "fallback" },
-					["<Char-0xAC>"] = { "select_next", "fallback" },
 					["<C-p>"] = { "select_prev", "fallback" },
-					["<Char-0xAB>"] = { "select_prev", "fallback" },
 					["<CR>"] = { "select_and_accept", "fallback" },
 					["<Tab>"] = {
 						function(cmp)
