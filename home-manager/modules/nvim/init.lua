@@ -692,7 +692,7 @@ require("lazy").setup({
 		},
 		{
 			"Bekaboo/dropbar.nvim",
-			version = "12.0.1",
+			version = "12.x",
 			event = { "VeryLazy" },
 			dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 			config = function()
@@ -813,11 +813,11 @@ require("lazy").setup({
 						},
 						keymaps = {
 							accept_change = {
-								modes = { n = "ga" },
+								modes = { n = "do" },
 								description = "Accept the suggested change",
 							},
 							reject_change = {
-								modes = { n = "gr" },
+								modes = { n = "dp" },
 								description = "Reject the suggested change",
 							},
 						},
@@ -854,7 +854,7 @@ require("lazy").setup({
 		},
 		{
 			"kevinhwang91/nvim-ufo",
-			version = "1.4.0",
+			version = "1.x",
 			dependencies = { { "kevinhwang91/promise-async", lazy = true } },
 			cmd = {
 				"UfoEnable",
