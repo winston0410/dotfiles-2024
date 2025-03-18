@@ -48,8 +48,8 @@
   '';
 
   home.shellAliases = {
-    vi = "nvim --clean";
-    vim = "nvim --clean";
+    vi = "nvim -u $XDG_CONFIG_HOME/nvim/minimal.lua";
+    vim = "nvim -u $XDG_CONFIG_HOME/nvim/minimal.lua";
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
     k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
@@ -60,6 +60,7 @@
     "nvim/init.lua" = {
       source = config.lib.file.mkOutOfStoreSymlink ./init.lua;
     };
+    "nvim/minimal.lua" = { source = ./minimal.lua; };
     "nvim/.luarc.jsonc" = {
       source = config.lib.file.mkOutOfStoreSymlink ./.luarc.jsonc;
     };
@@ -68,5 +69,6 @@
     };
     "nvim/after" = { source = ./after; };
     "nvim/assets" = { source = ./assets; };
+    "nvim/lua" = { source = ./lua; };
   };
 }
