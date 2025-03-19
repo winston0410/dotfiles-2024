@@ -2989,10 +2989,14 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
+						local buf_id = vim.api.nvim_get_current_buf()
+						local buf_name = vim.api.nvim_buf_get_name(buf_id)
+						local buf_dir = vim.fn.fnamemodify(buf_name, ":h")
+
 						local tab_idx = find_tab_with_filetype("oil")
 						if tab_idx == -1 then
 							vim.cmd("tabnew | Oil .")
-							vim.cmd("leftabove vsplit | Oil .")
+							vim.cmd(string.format("vsplit | Oil %s", buf_dir))
 							return
 						end
 						vim.api.nvim_set_current_tabpage(tab_idx)
@@ -3691,13 +3695,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			Snacks.picker.lsp_references()
 		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to references", nowait = true })
 		vim.keymap.set(
-			supported_modes,
+			{ "n", "x" },
 			"<leader>s5",
 			vim.lsp.buf.rename,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
 		)
 		vim.keymap.set(
-			supported_modes,
+			{ "n", "x" },
 			"<leader>s6",
 			vim.lsp.buf.code_action,
 			{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
