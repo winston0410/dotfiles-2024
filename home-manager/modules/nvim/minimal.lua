@@ -1,5 +1,4 @@
-local essential = require("custom.essential")
-essential.setup()
+require("custom.essential")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -32,6 +31,244 @@ require("lazy").setup({
 					"rose-pine-dawn.lua",
 				})
 				vim.cmd.colorscheme("rose-pine-moon")
+			end,
+		},
+		{
+			"folke/snacks.nvim",
+			priority = 1000,
+			lazy = false,
+			dependencies = {},
+			keys = {
+				{
+					"<leader>pw",
+					function()
+						Snacks.picker.grep()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Grep in files",
+				},
+
+				{
+					"<leader>pr",
+					function()
+						Snacks.picker.resume()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Resume last picker",
+				},
+				{
+					"<leader>pf",
+					function()
+						Snacks.picker.explorer({
+							auto_close = false,
+							jump = { close = false },
+							win = {
+								list = {
+									keys = {
+										["-"] = "explorer_up",
+										["+"] = "explorer_focus",
+										["<cr>"] = "confirm",
+										["zc"] = "explorer_close",
+										["zC"] = "explorer_close_all",
+										-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
+										["d"] = "explorer_del",
+										["c"] = "explorer_rename",
+										["y"] = { "explorer_yank", mode = { "n", "x" } },
+										["p"] = "explorer_paste",
+										-- Use copy here, until there is a new action allows creating a new empty files or dir
+										["o"] = "explorer_copy",
+										["gx"] = "explorer_open",
+										["<a-i>"] = "toggle_ignored",
+										["<a-h>"] = "toggle_hidden",
+										["]gh"] = "explorer_git_next",
+										["[gh"] = "explorer_git_prev",
+										["]d"] = "explorer_diagnostic_next",
+										["[d"] = "explorer_diagnostic_prev",
+										-- NOTE / is searching for files, not sure if we need grep at specific dir
+										-- ["<leader>/"] = "picker_grep",
+										["<leader>~"] = "tcd",
+										-- TODO not sure how to deal with these actions yet
+										-- ["m"] = "explorer_move",
+									},
+								},
+							},
+						})
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Explore files",
+				},
+			},
+			config = function()
+				local picker_keys = {
+					["<2-LeftMouse>"] = "confirm",
+					["<leader>k"] = { "qflist", mode = { "i", "n" } },
+					["<CR>"] = { "confirm", mode = { "n", "i" } },
+					["<Down>"] = { "list_down", mode = { "i", "n" } },
+					["<Up>"] = { "list_up", mode = { "i", "n" } },
+					["<Esc>"] = "close",
+					["<S-Tab>"] = { "select_and_prev", mode = { "i", "n" } },
+					["<Tab>"] = { "select_and_next", mode = { "i", "n" } },
+					["G"] = "list_bottom",
+					["gg"] = "list_top",
+					["j"] = "list_down",
+					["k"] = "list_up",
+					["q"] = "close",
+					["?"] = function()
+						require("which-key").show({ global = false, loop = true })
+					end,
+				}
+				require("snacks").setup({
+					gitbrowse = { enabled = true },
+					image = { enabled = true },
+					picker = {
+						enabled = true,
+						ui_select = true,
+						layout = {
+							cycle = true,
+							preset = function()
+								return vim.o.columns >= 120 and "default" or "vertical"
+							end,
+						},
+						win = {
+							input = {
+								keys = picker_keys,
+							},
+							list = {
+								keys = picker_keys,
+							},
+						},
+					},
+					scroll = {
+						enabled = true,
+					},
+					input = {
+						enabled = true,
+					},
+					notifier = {
+						enabled = true,
+						style = "fancy",
+						level = vim.log.levels.INFO,
+					},
+					indent = {
+						enabled = true,
+					},
+					styles = {
+						notification = {
+							wo = {
+								wrap = true,
+							},
+						},
+					},
+				})
+			end,
+		},
+		{
+			"nvim-treesitter/nvim-treesitter",
+			dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+			build = function()
+				vim.cmd("TSUpdate")
+			end,
+			lazy = false,
+			priority = 999,
+			cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+			config = function()
+				local installer = require("nvim-treesitter.install")
+				installer.prefer_git = true
+
+				local config = {
+					ensure_installed = "all",
+					auto_install = false,
+					sync_install = false,
+					ignore_install = {},
+					incremental_selection = {
+						enable = true,
+						keymaps = {
+							init_selection = false,
+							node_incremental = "+",
+							node_decremental = "-",
+							scope_incremental = false,
+						},
+					},
+					highlight = {
+						enable = true,
+						additional_vim_regex_highlighting = false,
+						priority = {
+							["@comment.error"] = 999,
+							["@comment.warning"] = 999,
+							["@comment.note"] = 999,
+							["@comment.todo"] = 999,
+							-- ["@comment.info"] = 999,
+							-- ["@comment.hint"] = 999,
+						},
+					},
+					indent = { enable = true },
+					query_linter = {
+						enable = true,
+						use_virtual_text = true,
+						lint_events = { "BufWrite", "CursorHold" },
+					},
+					textobjects = {
+						select = {
+							enable = true,
+							lookahead = true,
+						},
+						move = {
+							enable = true,
+							set_jumps = true,
+						},
+					},
+				}
+				require("nvim-treesitter.configs").setup(config)
+			end,
+		},
+		{
+			"folke/which-key.nvim",
+			event = "VeryLazy",
+			version = "3.14.1",
+			keys = {
+				{
+					"?",
+					function()
+						require("which-key").show({ global = true, loop = true })
+					end,
+					silent = true,
+					noremap = true,
+					desc = "Show local keymaps",
+				},
+			},
+			config = function()
+				local wk = require("which-key")
+
+				wk.setup({
+					preset = "helix",
+					plugins = {
+						marks = true,
+						registers = true,
+						spelling = {
+							enabled = false,
+							suggestions = 20,
+						},
+						presets = {
+							operators = true,
+							motions = true,
+							text_objects = true,
+							windows = true,
+							nav = true,
+							z = true,
+							g = true,
+						},
+					},
+					keys = {
+						scroll_down = "<c-n>",
+						scroll_up = "<c-p>",
+					},
+				})
 			end,
 		},
 		{
@@ -190,199 +427,5 @@ require("lazy").setup({
 				})
 			end,
 		},
-	},
-	{
-		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-		build = function()
-			vim.cmd("TSUpdate")
-		end,
-		lazy = false,
-		priority = 999,
-		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-		config = function()
-			local installer = require("nvim-treesitter.install")
-			installer.prefer_git = true
-
-			local config = {
-				ensure_installed = "all",
-				auto_install = false,
-				sync_install = false,
-				ignore_install = {},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = false,
-						node_incremental = "+",
-						node_decremental = "-",
-						scope_incremental = false,
-					},
-				},
-				highlight = {
-					enable = true,
-					additional_vim_regex_highlighting = false,
-					priority = {
-						["@comment.error"] = 999,
-						["@comment.warning"] = 999,
-						["@comment.note"] = 999,
-						["@comment.todo"] = 999,
-						-- ["@comment.info"] = 999,
-						-- ["@comment.hint"] = 999,
-					},
-				},
-				indent = { enable = true },
-				query_linter = {
-					enable = true,
-					use_virtual_text = true,
-					lint_events = { "BufWrite", "CursorHold" },
-				},
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true,
-					},
-					move = {
-						enable = true,
-						set_jumps = true,
-					},
-				},
-			}
-			require("nvim-treesitter.configs").setup(config)
-		end,
-	},
-	{
-		"folke/snacks.nvim",
-		priority = 1000,
-		lazy = false,
-		dependencies = {},
-		keys = {
-			{
-				"<leader>pw",
-				function()
-					Snacks.picker.grep()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Grep in files",
-			},
-
-			{
-				"<leader>pr",
-				function()
-					Snacks.picker.resume()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Resume last picker",
-			},
-			{
-				"<leader>pf",
-				function()
-					Snacks.picker.explorer({
-						auto_close = false,
-						jump = { close = false },
-						win = {
-							list = {
-								keys = {
-									["-"] = "explorer_up",
-									["+"] = "explorer_focus",
-									["<cr>"] = "confirm",
-									["zc"] = "explorer_close",
-									["zC"] = "explorer_close_all",
-									-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
-									["d"] = "explorer_del",
-									["c"] = "explorer_rename",
-									["y"] = { "explorer_yank", mode = { "n", "x" } },
-									["p"] = "explorer_paste",
-									-- Use copy here, until there is a new action allows creating a new empty files or dir
-									["o"] = "explorer_copy",
-									["gx"] = "explorer_open",
-									["<a-i>"] = "toggle_ignored",
-									["<a-h>"] = "toggle_hidden",
-									["]gh"] = "explorer_git_next",
-									["[gh"] = "explorer_git_prev",
-									["]d"] = "explorer_diagnostic_next",
-									["[d"] = "explorer_diagnostic_prev",
-									-- NOTE / is searching for files, not sure if we need grep at specific dir
-									-- ["<leader>/"] = "picker_grep",
-									["<leader>~"] = "tcd",
-									-- TODO not sure how to deal with these actions yet
-									-- ["m"] = "explorer_move",
-								},
-							},
-						},
-					})
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Explore files",
-			},
-		},
-		config = function()
-			local pickerKeys = {
-				["<2-LeftMouse>"] = "confirm",
-				["<leader>k"] = { "qflist", mode = { "i", "n" } },
-				["<CR>"] = { "confirm", mode = { "n", "i" } },
-				["<Down>"] = { "list_down", mode = { "i", "n" } },
-				["<Up>"] = { "list_up", mode = { "i", "n" } },
-				["<Esc>"] = "close",
-				["<S-Tab>"] = { "select_and_prev", mode = { "i", "n" } },
-				["<Tab>"] = { "select_and_next", mode = { "i", "n" } },
-				["G"] = "list_bottom",
-				["gg"] = "list_top",
-				["j"] = "list_down",
-				["k"] = "list_up",
-				["q"] = "close",
-				["?"] = function()
-					require("which-key").show({ global = false, loop = true })
-				end,
-			}
-			require("snacks").setup({
-				gitbrowse = { enabled = true },
-				image = { enabled = true },
-				picker = {
-					enabled = true,
-					ui_select = true,
-					layout = {
-						cycle = true,
-						preset = function()
-							return vim.o.columns >= 120 and "default" or "vertical"
-						end,
-					},
-					win = {
-						input = {
-							keys = pickerKeys,
-						},
-						list = {
-							keys = pickerKeys,
-						},
-					},
-				},
-				scroll = {
-					enabled = true,
-				},
-				input = {
-					enabled = true,
-				},
-				notifier = {
-					enabled = true,
-					style = "fancy",
-					level = vim.log.levels.INFO,
-				},
-				indent = {
-					enabled = true,
-				},
-				styles = {
-					notification = {
-						wo = {
-							wrap = true,
-						},
-					},
-				},
-			})
-		end,
 	},
 })

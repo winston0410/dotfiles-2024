@@ -11,8 +11,7 @@
 
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
-local essential = require("custom.essential")
-essential.setup()
+require("custom.essential")
 local ERROR_ICON = " "
 local WARNING_ICON = " "
 local INFO_ICON = " "
@@ -2241,7 +2240,7 @@ require("lazy").setup({
 				},
 			},
 			config = function()
-				local pickerKeys = {
+				local picker_keys = {
 					["<2-LeftMouse>"] = "confirm",
 					["<leader>k"] = { "qflist", mode = { "i", "n" } },
 					["<CR>"] = { "confirm", mode = { "n", "i" } },
@@ -2305,10 +2304,10 @@ require("lazy").setup({
 						},
 						win = {
 							input = {
-								keys = pickerKeys,
+								keys = picker_keys,
 							},
 							list = {
-								keys = pickerKeys,
+								keys = picker_keys,
 							},
 						},
 					},
