@@ -56,7 +56,6 @@ require("lazy").setup({
 					"snacks_terminal",
 					"oil",
 					"trouble",
-					-- "qf",
 					"DiffviewFileHistory",
 					"DiffviewFiles",
 					"snacks_dashboard",
@@ -249,6 +248,141 @@ require("lazy").setup({
 				},
 			}
 			require("nvim-treesitter.configs").setup(config)
+		end,
+	},
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		dependencies = {},
+		keys = {
+			{
+				"<leader>pw",
+				function()
+					Snacks.picker.grep()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Grep in files",
+			},
+
+			{
+				"<leader>pr",
+				function()
+					Snacks.picker.resume()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Resume last picker",
+			},
+			{
+				"<leader>pf",
+				function()
+					Snacks.picker.explorer({
+						auto_close = false,
+						jump = { close = false },
+						win = {
+							list = {
+								keys = {
+									["-"] = "explorer_up",
+									["+"] = "explorer_focus",
+									["<cr>"] = "confirm",
+									["zc"] = "explorer_close",
+									["zC"] = "explorer_close_all",
+									-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
+									["d"] = "explorer_del",
+									["c"] = "explorer_rename",
+									["y"] = { "explorer_yank", mode = { "n", "x" } },
+									["p"] = "explorer_paste",
+									-- Use copy here, until there is a new action allows creating a new empty files or dir
+									["o"] = "explorer_copy",
+									["gx"] = "explorer_open",
+									["<a-i>"] = "toggle_ignored",
+									["<a-h>"] = "toggle_hidden",
+									["]gh"] = "explorer_git_next",
+									["[gh"] = "explorer_git_prev",
+									["]d"] = "explorer_diagnostic_next",
+									["[d"] = "explorer_diagnostic_prev",
+									-- NOTE / is searching for files, not sure if we need grep at specific dir
+									-- ["<leader>/"] = "picker_grep",
+									["<leader>~"] = "tcd",
+									-- TODO not sure how to deal with these actions yet
+									-- ["m"] = "explorer_move",
+								},
+							},
+						},
+					})
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Explore files",
+			},
+		},
+		config = function()
+			local pickerKeys = {
+				["<2-LeftMouse>"] = "confirm",
+				["<leader>k"] = { "qflist", mode = { "i", "n" } },
+				["<CR>"] = { "confirm", mode = { "n", "i" } },
+				["<Down>"] = { "list_down", mode = { "i", "n" } },
+				["<Up>"] = { "list_up", mode = { "i", "n" } },
+				["<Esc>"] = "close",
+				["<S-Tab>"] = { "select_and_prev", mode = { "i", "n" } },
+				["<Tab>"] = { "select_and_next", mode = { "i", "n" } },
+				["G"] = "list_bottom",
+				["gg"] = "list_top",
+				["j"] = "list_down",
+				["k"] = "list_up",
+				["q"] = "close",
+				["?"] = function()
+					require("which-key").show({ global = false, loop = true })
+				end,
+			}
+			require("snacks").setup({
+				gitbrowse = { enabled = true },
+				image = { enabled = true },
+				picker = {
+					enabled = true,
+					ui_select = true,
+					layout = {
+						cycle = true,
+						preset = function()
+							return vim.o.columns >= 120 and "default" or "vertical"
+						end,
+					},
+					win = {
+						input = {
+							keys = pickerKeys,
+						},
+						list = {
+							keys = pickerKeys,
+						},
+					},
+				},
+				scroll = {
+					enabled = true,
+				},
+				input = {
+					enabled = true,
+				},
+				notifier = {
+					enabled = true,
+					style = "fancy",
+					level = vim.log.levels.INFO,
+				},
+				indent = {
+					enabled = true,
+				},
+				styles = {
+					notification = {
+						wo = {
+							wrap = true,
+						},
+					},
+				},
+			})
 		end,
 	},
 })
