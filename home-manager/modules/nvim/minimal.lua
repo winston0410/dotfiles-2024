@@ -38,6 +38,7 @@ require("lazy").setup({
 			priority = 1000,
 			lazy = false,
 			dependencies = {},
+			version = "2.22.0",
 			keys = {
 				{
 					"<leader>pw",
@@ -167,6 +168,71 @@ require("lazy").setup({
 					},
 				})
 			end,
+		},
+		{
+			"chrisgrieser/nvim-spider",
+			keys = {
+				{
+					"W",
+					function()
+						require("spider").motion("w")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to word",
+				},
+				{
+					"w",
+					function()
+						require("spider").motion("w")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to word",
+				},
+				{
+					"e",
+					function()
+						require("spider").motion("e")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to end of word",
+				},
+				{
+					"E",
+					function()
+						require("spider").motion("e")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump forward to end of word",
+				},
+				{
+					"b",
+					function()
+						require("spider").motion("b")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump backward to word",
+				},
+				{
+					"B",
+					function()
+						require("spider").motion("b")
+					end,
+					mode = { "n", "o", "x" },
+					silent = true,
+					noremap = true,
+					desc = "Jump backward to word",
+				},
+			},
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",
