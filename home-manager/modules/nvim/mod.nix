@@ -28,6 +28,9 @@
     ghostscript_headless
     tectonic
     libqalculate
+    # lilypond-suite
+    fluidsynth
+    soundfont-fluid
   ];
 
   home.sessionVariables = {

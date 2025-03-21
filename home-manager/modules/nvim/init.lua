@@ -225,6 +225,13 @@ require("lazy").setup({
 			},
 		},
 		{
+			"martineausimon/nvim-lilypond-suite",
+			cmd = { "LilyPlayer", "LilyCmp", "LilyDebug" },
+			config = function()
+				require("nvls").setup({})
+			end,
+		},
+		{
 			"nvim-neorg/neorg",
 			ft = { "norg" },
 			enabled = false,
