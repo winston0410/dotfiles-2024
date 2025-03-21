@@ -666,12 +666,11 @@ require("lazy").setup({
 			"saghen/blink.cmp",
 			event = "InsertEnter",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "0.13.0",
+			version = "0.14.0",
 			opts = {
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
 					["<Down>"] = { "select_next", "fallback" },
-					-- FIXME <C-n> and <C-p> for navigating Down and Up in commandline is overriden by blink-cmp, need to prevent that from happening
 					["<C-n>"] = { "select_next", "fallback" },
 					["<C-p>"] = { "select_prev", "fallback" },
 					["<CR>"] = { "select_and_accept", "fallback" },
@@ -720,9 +719,6 @@ require("lazy").setup({
 					ghost_text = { enabled = true, show_with_menu = false },
 				},
 				signature = { enabled = true },
-				fuzzy = {
-					prebuilt_binaries = {},
-				},
 			},
 		},
 		{
