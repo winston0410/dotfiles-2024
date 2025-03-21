@@ -23,8 +23,7 @@
   nix.enable = true;
   nix.settings.trusted-users = [ "@wheel" ];
   nix.settings.use-xdg-base-directories = true;
-  nix.settings.experimental-features =
-    [ "nix-command" "flakes" "pipe-operators" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.auto-optimise-store = true;
 
   nixpkgs = {

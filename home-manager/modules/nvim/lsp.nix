@@ -4,6 +4,7 @@
     pkgs.csharp-ls
     pkgs.rust-analyzer
     unstable.gopls
+    pkgs.vue-language-server
     pkgs.ccls
     pkgs.haskell-language-server
     pkgs.elixir_ls

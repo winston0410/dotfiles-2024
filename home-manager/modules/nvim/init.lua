@@ -3397,6 +3397,8 @@ require("lazy").setup({
 					"bitbake_ls",
 					"ltex",
 					"csharp_ls",
+					"volar",
+					"tsp_server",
 				}
 
 				for _, server in ipairs(servers) do
@@ -3432,23 +3434,50 @@ require("lazy").setup({
 					},
 				})
 
+				local ok, vue_language_server_path = pcall(function()
+					local res = vim.system({ "which", "vue-language-server" }, { text = true }):wait()
+					if res.code ~= 0 then
+						return error(res.stdout)
+					end
+					res.stdout = res.stdout:gsub("\n", "")
+					res = vim.system({ "nix", "path-info", res.stdout }, { text = true }):wait()
+
+					if res.code ~= 0 then
+						return error(res.stdout)
+					end
+					return res.stdout:gsub("\n", "")
+				end)
+
+				local ts_ls_plugins = {}
+
+				if ok then
+					table.insert(ts_ls_plugins, {
+						name = "@vue/typescript-plugin",
+						location = vim.fs.joinpath(
+							vue_language_server_path,
+							"node_modules",
+							"@vue",
+							"typescript-plugin"
+						),
+						languages = { "javascript", "typescript", "vue" },
+					})
+				else
+					vim.notify(
+						string.format("Failed to set up @vue/typescript-plugin: %s", vue_language_server_path),
+						vim.log.levels.WARN
+					)
+				end
+
 				lspconfig.ts_ls.setup({
 					init_options = {
-						--   plugins = {
-						-- 	{
-						-- 	  name = "@vue/typescript-plugin",
-						-- 	  location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-						-- 	  languages = {"javascript", "typescript", "vue"},
-						-- 	},
-						--   },
+						plugins = ts_ls_plugins,
 					},
 					filetypes = {
 						"javascript",
 						"typescript",
-						--   "vue",
+						"vue",
 					},
 				})
-
 				-- it only works if deno.json is at the root level
 				lspconfig.denols.setup({
 					capabilities = capabilities,

@@ -239,8 +239,7 @@
 
   documentation.nixos.enable = false;
   nix.settings.trusted-users = [ "@wheel" ];
-  nix.settings.experimental-features =
-    [ "nix-command" "flakes" "pipe-operators" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # REF https://nixos-and-flakes.thiscute.world/best-practices/nix-path-and-flake-registry
   nix.channel.enable = false;
