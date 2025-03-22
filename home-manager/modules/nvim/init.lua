@@ -39,37 +39,6 @@ end
 
 -- TODO how can I always open helpfiles in a tab?
 
----@param mode "visual" | nil
-local function select_area_for_operator(mode)
-	local start_pos, end_pos
-
-	if mode == "visual" then
-		start_pos = vim.fn.getpos(".")
-		end_pos = vim.fn.getpos("v")
-	else
-		start_pos = vim.fn.getpos("'[")
-		end_pos = vim.fn.getpos("']")
-	end
-
-	local start_row = start_pos[2]
-	local start_col = start_pos[3]
-	local end_row = end_pos[2]
-	local end_col = end_pos[3]
-
-	if end_row > start_row then
-		return start_row, start_col, end_row, end_col
-	end
-
-	if start_row > end_row then
-		return end_row, end_col, start_row, start_col
-	end
-
-	if end_col > start_col then
-		return start_row, start_col, end_row, end_col
-	end
-	return end_row, end_col, start_row, start_col
-end
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -375,10 +344,125 @@ require("lazy").setup({
 		{
 			"Bekaboo/dropbar.nvim",
 			version = "12.x",
-			event = { "VeryLazy" },
+			-- NOTE dropbar pick does not work, after recovering from a session
+			lazy = false,
 			dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
+			keys = {
+				{
+					"<leader>ps",
+					function()
+						require("dropbar.api").pick()
+						vim.cmd.redraw()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					expr = true,
+					desc = "Search symobls",
+				},
+			},
+			init = function()
+				vim.o.mousemoveevent = true
+			end,
 			config = function()
-				require("dropbar").setup({})
+				require("dropbar").setup({
+					sources = {
+						lsp = {
+							valid_symbols = {
+								"File",
+								"Module",
+								"Namespace",
+								"Package",
+								"Class",
+								"Method",
+								"Property",
+								"Field",
+								"Constructor",
+								"Enum",
+								"Interface",
+								"Function",
+								"Object",
+								"Keyword",
+								"EnumMember",
+								"Struct",
+								"Event",
+								"Operator",
+								"TypeParameter",
+								-- NOTE exclude all primitive variables
+								-- "Variable",
+								-- "Constant",
+								-- "String",
+								-- "Number",
+								-- "Boolean",
+								-- "Array",
+								-- "Null",
+							},
+						},
+						treesitter = {
+							valid_types = {
+								"block_mapping_pair",
+								"array",
+								"break_statement",
+								"call",
+								"case_statement",
+								"class",
+								"constant",
+								"constructor",
+								"continue_statement",
+								"delete",
+								"do_statement",
+								"element",
+								"enum",
+								"enum_member",
+								"event",
+								"for_statement",
+								"function",
+								"goto_statement",
+								"h1_marker",
+								"h2_marker",
+								"h3_marker",
+								"h4_marker",
+								"h5_marker",
+								"h6_marker",
+								"if_statement",
+								"interface",
+								"keyword",
+								"macro",
+								"method",
+								"module",
+								"namespace",
+								"operator",
+								"package",
+								"pair",
+								"property",
+								"reference",
+								"repeat",
+								"return_statement",
+								"rule_set",
+								"scope",
+								"specifier",
+								"struct",
+								"switch_statement",
+								"table",
+								"type",
+								"type_parameter",
+								"unit",
+								"while_statement",
+								"declaration",
+								"field",
+								"identifier",
+								"object",
+								"statement",
+								-- NOTE exclude all primitive variables
+								-- "value",
+								-- "variable",
+								-- "null",
+								-- "boolean",
+								-- "number",
+							},
+						},
+					},
+				})
 			end,
 		},
 		{
@@ -1991,7 +2075,7 @@ require("lazy").setup({
 					desc = "Toggle Scratch Buffer",
 				},
 				{
-					"<leader>pn",
+					"<leader>p<leader>n",
 					function()
 						Snacks.scratch.select()
 					end,
@@ -2112,30 +2196,7 @@ require("lazy").setup({
 					noremap = true,
 					desc = "Grep in files",
 				},
-				{
-					"<leader>pt",
-					function()
-						Snacks.picker.treesitter({
-							filter = {
-								-- default = true,
-							},
-						})
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Find Treesitter nodes",
-				},
-				{
-					"<leader>ps",
-					function()
-						Snacks.picker.lsp_workspace_symbols()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Find LSP workspace symbols",
-				},
+
 				{
 					"<leader>pgb",
 					function()
@@ -3673,19 +3734,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
 		local supported_modes = { "n" }
-		vim.keymap.set(supported_modes, "]de", function()
-			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to next error" })
-		vim.keymap.set(supported_modes, "[de", function()
-			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to previous error" })
-
-		vim.keymap.set(supported_modes, "]dw", function()
-			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
-		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to next warning" })
-		vim.keymap.set(supported_modes, "[dw", function()
-			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
-		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to previous warning" })
+		-- vim.keymap.set(supported_modes, "]de", function()
+		-- 	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+		-- end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to next error" })
+		-- vim.keymap.set(supported_modes, "[de", function()
+		-- 	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+		-- end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to previous error" })
+		--
+		-- vim.keymap.set(supported_modes, "]dw", function()
+		-- 	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
+		-- end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to next warning" })
+		-- vim.keymap.set(supported_modes, "[dw", function()
+		-- 	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
+		-- end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to previous warning" })
 		vim.keymap.set(supported_modes, "<leader>ss", function()
 			-- if we call twice, we will enter the hover windows immediately after running the keybinding
 			vim.lsp.buf.hover()
