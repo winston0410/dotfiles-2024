@@ -344,6 +344,7 @@ require("lazy").setup({
 		{
 			"Bekaboo/dropbar.nvim",
 			version = "12.x",
+			-- FIXME still not working
 			-- NOTE dropbar pick does not work, after recovering from a session
 			lazy = false,
 			dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
@@ -352,7 +353,6 @@ require("lazy").setup({
 					"<leader>ps",
 					function()
 						require("dropbar.api").pick()
-						vim.cmd.redraw()
 					end,
 					mode = { "n" },
 					silent = true,
