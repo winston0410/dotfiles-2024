@@ -1857,6 +1857,7 @@ require("lazy").setup({
 		},
 		{
 			"ramilito/kubectl.nvim",
+			version = "1.x",
 			cmd = { "Kubectl", "Kubectx", "Kubens" },
 			keys = {
 				{
@@ -1930,6 +1931,27 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"ravitemer/mcphub.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+			},
+			version = "3.x",
+			cmd = { "MCPHub" },
+			build = false,
+			config = function()
+				require("mcphub").setup({
+					port = 3000,
+					config = vim.fn.expand("~/mcpservers.json"),
+					log = {
+						level = vim.log.levels.WARN,
+						to_file = false,
+						file_path = nil,
+						prefix = "MCPHub",
+					},
+				})
+			end,
+		},
+		{
 			"mistweaverco/kulala.nvim",
 			version = "5.x",
 			ft = { "http", "rest" },
@@ -1957,6 +1979,27 @@ require("lazy").setup({
 			lazy = false,
 			dependencies = {},
 			keys = {
+				{
+					-- mnemonic of note
+					"<leader>n",
+					function()
+						Snacks.scratch()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Toggle Scratch Buffer",
+				},
+				{
+					"<leader>pn",
+					function()
+						Snacks.scratch.select()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Select Scratch Buffer",
+				},
 				{
 					"<leader>phj",
 					function()
@@ -2201,8 +2244,8 @@ require("lazy").setup({
 				require("snacks").setup({
 					toggle = { enabled = true },
 					gitbrowse = { enabled = true },
-					bigfile = { enabled = false },
-					-- dim
+					bigfile = { enabled = true },
+					scratch = { enabled = true },
 					image = { enabled = true },
 					dashboard = {
 						enabled = true,
@@ -2262,8 +2305,6 @@ require("lazy").setup({
 					},
 					indent = {
 						enabled = true,
-						char = "│",
-						hl = "SnacksIndent",
 					},
 					words = { enabled = false },
 					styles = {
