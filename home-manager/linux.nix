@@ -14,6 +14,7 @@
     homeDirectory = "/home/kghugo";
   };
 
+  # secret-tool store --label="vaultwarden master password" service "vaultwarden.28281428.xyz"
   programs.zsh.initExtra = lib.mkBefore (''
     vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
     export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
