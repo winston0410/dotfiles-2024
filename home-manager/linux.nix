@@ -21,6 +21,7 @@
 
   home.packages = with pkgs; [
     dconf-editor
+    libsecret
     signal-desktop
     element-desktop
     telegram-desktop
