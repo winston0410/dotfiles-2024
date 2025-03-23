@@ -9,6 +9,9 @@
     ./modules/steam/mod.nix
   ];
 
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ sqlite ];
+
   home = {
     username = "kghugo";
     homeDirectory = "/home/kghugo";
