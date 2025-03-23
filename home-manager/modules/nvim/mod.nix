@@ -6,7 +6,15 @@
     figlet
     fastfetch
     (unstable.neovim.override {
-      extraLuaPackages = (ps: with ps; [ luafilesystem jsregexp luassert ]);
+      extraLuaPackages = (ps:
+        with ps; [
+          luafilesystem
+          jsregexp
+          luassert
+          # for sqlite.lua
+          sqlite
+          luv
+        ]);
       withRuby = false;
       withPython3 = false;
       withNodeJs = false;
