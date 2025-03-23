@@ -803,6 +803,9 @@ require("lazy").setup({
 					ghost_text = { enabled = true, show_with_menu = false },
 				},
 				signature = { enabled = true },
+                fuzzy = {
+
+                }
 			},
 		},
 		{

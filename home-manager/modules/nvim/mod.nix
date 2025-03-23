@@ -59,7 +59,7 @@
   '';
 
   home.shellAliases = {
-    vi = "nvim -u $XDG_CONFIG_HOME/nvim/minimal.lua";
+    vi = "nvim --clean";
     vim = "nvim -u $XDG_CONFIG_HOME/nvim/minimal.lua";
     oil = ''nvim -c "Oil"'';
     neogit = "nvim -c 'lua require(\"neogit\").open()'";
@@ -69,14 +69,14 @@
 
   xdg.configFile = {
     "nvim/init.lua" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./init.lua;
+      source =  ./init.lua;
     };
     "nvim/minimal.lua" = { source = ./minimal.lua; };
     "nvim/.luarc.jsonc" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./.luarc.jsonc;
+      source =  ./.luarc.jsonc;
     };
     "nvim/ftplugin" = {
-      source = config.lib.file.mkOutOfStoreSymlink ./ftplugin;
+      source =  ./ftplugin;
     };
     "nvim/after" = { source = ./after; };
     "nvim/assets" = { source = ./assets; };
