@@ -750,7 +750,7 @@ require("lazy").setup({
 			"saghen/blink.cmp",
 			event = "InsertEnter",
 			dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
-			version = "0.14.0",
+			version = "1.x",
 			opts = {
 				keymap = {
 					["<Up>"] = { "select_prev", "fallback" },
@@ -803,9 +803,7 @@ require("lazy").setup({
 					ghost_text = { enabled = true, show_with_menu = false },
 				},
 				signature = { enabled = true },
-                fuzzy = {
-
-                }
+				fuzzy = {},
 			},
 		},
 		{
