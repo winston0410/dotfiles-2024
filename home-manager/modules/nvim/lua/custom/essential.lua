@@ -57,10 +57,18 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 
-if vim.wo.diff then
-	-- disable wrap so filler line will always align with changes
-	vim.o.wrap = false
-end
+vim.api.nvim_create_autocmd("WinEnter", {
+	callback = function()
+		if vim.wo.diff then
+			local windows = vim.api.nvim_tabpage_list_wins(0)
+			for _, win_id in ipairs(windows) do
+				vim.api.nvim_win_set_option(win_id, "winfixbuf", true)
+				vim.api.nvim_win_set_option(win_id, "wrap", false)
+			end
+		end
+	end,
+})
+
 -- Use space as leader key
 vim.g.mapleader = " "
 -- Need to find plugin to improve mouse experience, to create something like vscode

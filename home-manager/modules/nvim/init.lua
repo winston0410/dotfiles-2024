@@ -2249,7 +2249,7 @@ require("lazy").setup({
 									keys = {
 										["-"] = "explorer_up",
 										["+"] = "explorer_focus",
-										["<cr>"] = "confirm",
+										["<CR>"] = { { "pick_win", "jump" } },
 										["zc"] = "explorer_close",
 										["zC"] = "explorer_close_all",
 										-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
