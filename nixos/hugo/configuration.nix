@@ -247,6 +247,8 @@
   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
   nix.settings.nix-path = lib.mkForce "nixpkgs=/etc/nix/inputs/nixpkgs";
 
-  system.stateVersion = "24.11"; # Did you read the comment?
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ sqlite ];
 
+  system.stateVersion = "24.11"; # Did you read the comment?
 }
