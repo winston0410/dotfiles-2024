@@ -619,70 +619,6 @@ require("lazy").setup({
 			opts = {},
 		},
 		{
-			"kevinhwang91/nvim-ufo",
-			version = "1.x",
-			dependencies = { { "kevinhwang91/promise-async", lazy = true } },
-			cmd = {
-				"UfoEnable",
-				"UfoDisable",
-				"UfoInspect",
-				"UfoAttach",
-				"UfoDetach",
-				"UfoEnableFold",
-				"UfoDisableFold",
-			},
-			keys = {
-				{
-					"zR",
-					function()
-						require("ufo").openAllFolds()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Open all folds",
-				},
-				{
-					"zM",
-					function()
-						require("ufo").closeAllFolds()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Close all folds",
-				},
-			},
-			event = "VeryLazy",
-			init = function()
-				vim.o.foldcolumn = "0"
-				vim.o.foldlevel = 99
-				vim.o.foldlevelstart = 99
-				vim.o.foldenable = true
-			end,
-			config = function()
-				require("ufo").setup({
-					open_fold_hl_timeout = 500,
-					close_fold_kinds_for_ft = { default = {} },
-					enable_get_fold_virt_text = false,
-					provider_selector = function()
-						return { "treesitter", "indent" }
-					end,
-					preview = {
-						win_config = {
-							border = "rounded",
-							winblend = 12,
-							winhighlight = "Normal:Normal",
-							maxheight = 20,
-						},
-						mappings = {
-							close = "q",
-						},
-					},
-				})
-			end,
-		},
-		{
 			"nacro90/numb.nvim",
 			enabled = true,
 			event = { "CmdlineEnter" },
@@ -3789,7 +3725,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.diagnostic.config({
 			underline = true,
 			virtual_text = false,
-			-- NOTE only available after 0.11.0
 			virtual_lines = { current_line = true },
 			signs = {
 				text = {
