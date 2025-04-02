@@ -604,7 +604,7 @@ require("lazy").setup({
 		},
 		{
 			"zeioth/garbage-day.nvim",
-			dependencies = { "neovim/nvim-lspconfig" },
+			dependencies = {},
 			event = { "VeryLazy" },
 			opts = {
 				wakeup_delay = 250,
@@ -3353,6 +3353,7 @@ require("lazy").setup({
 		},
 		{
 			"neovim/nvim-lspconfig",
+			-- FIXME once stable move to new 0.11 lspconfig
 			version = "1.7.0",
 			-- Reference the lazyload event from LazyVim
 			-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
