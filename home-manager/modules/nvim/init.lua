@@ -3353,6 +3353,7 @@ require("lazy").setup({
 		},
 		{
 			"neovim/nvim-lspconfig",
+			enabled = false,
 			-- FIXME once stable move to new 0.11 lspconfig
 			version = "1.7.0",
 			-- Reference the lazyload event from LazyVim

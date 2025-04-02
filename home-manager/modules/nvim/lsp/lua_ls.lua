@@ -49,4 +49,6 @@ return {
 	document_highlight = {
 		enabled = true,
 	},
+	cmd = { "lua-language-server" },
+	filetypes = { "lua" },
 }

@@ -68,18 +68,13 @@
   };
 
   xdg.configFile = {
-    "nvim/init.lua" = {
-      source =  ./init.lua;
-    };
+    "nvim/init.lua" = { source = ./init.lua; };
     "nvim/minimal.lua" = { source = ./minimal.lua; };
-    "nvim/.luarc.jsonc" = {
-      source =  ./.luarc.jsonc;
-    };
-    "nvim/ftplugin" = {
-      source =  ./ftplugin;
-    };
+    "nvim/.luarc.jsonc" = { source = ./.luarc.jsonc; };
+    "nvim/ftplugin" = { source = ./ftplugin; };
     "nvim/after" = { source = ./after; };
     "nvim/assets" = { source = ./assets; };
     "nvim/lua" = { source = ./lua; };
+    "nvim/lsp" = { source = ./lsp; };
   };
 }
