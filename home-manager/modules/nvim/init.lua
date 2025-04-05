@@ -739,7 +739,7 @@ require("lazy").setup({
 					ghost_text = { enabled = true, show_with_menu = false },
 				},
 				signature = { enabled = true },
-				fuzzy = {},
+				fuzzy = { implementation = "prefer_rust_with_warning" },
 			},
 		},
 		{
