@@ -84,12 +84,12 @@ vim.api.nvim_create_autocmd("WinEnter", {
 
 -- Use space as leader key
 vim.g.mapleader = " "
--- Need to find plugin to improve mouse experience, to create something like vscode
--- FIXME vim.opt is overriding value in vim.o. This is likely a bug in Neovim
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
-vim.o.sessionoptions = "buffers,curdir,folds,help,resize,tabpages,winsize,winpos,terminal"
+-- FIXME do not set folds here as it cannot reload the session correctly
+-- https://github.com/neovim/neovim/issues/28692
+vim.o.sessionoptions = "buffers,curdir,help,resize,tabpages,winsize,winpos,terminal"
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
