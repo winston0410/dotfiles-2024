@@ -17,6 +17,8 @@ local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 
+local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+
 ---@param filetype string A Nvim filetype
 ---@return number
 local function find_tab_with_filetype(filetype)
@@ -1285,21 +1287,14 @@ require("lazy").setup({
 								end,
 							},
 							{
-								function()
-									local active_clients = vim.lsp.get_clients()
-									local client_count = #active_clients
-									if #active_clients <= 0 then
-										return " LSP:" .. client_count
-									else
-										local client_names = {}
-										for _, client in ipairs(active_clients) do
-											if client and client.name ~= "" then
-												table.insert(client_names, "[" .. client.name .. "]")
-											end
-										end
-										return " LSP:" .. client_count .. " " .. table.concat(client_names, " ")
-									end
-								end,
+								"lsp_status",
+								icon = "",
+								symbols = {
+									spinner = spinner,
+									done = "",
+									separator = " ",
+								},
+								ignore_lsp = {},
 								cond = function()
 									return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 								end,
@@ -3748,14 +3743,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("LspProgress", {
 	---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
 	callback = function(ev)
-		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-		vim.notify(vim.lsp.status(), "info", {
-			id = "lsp_progress",
-			title = "LSP Progress",
-			opts = function(notif)
-				notif.icon = ev.data.params.value.kind == "end" and " "
-					or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-			end,
-		})
+		-- TODO only allow notification after an explicit command to enable it
+		-- vim.notify(vim.lsp.status(), "info", {
+		-- 	id = "lsp_progress",
+		-- 	title = "LSP Progress",
+		-- 	opts = function(notif)
+		-- 		notif.icon = ev.data.params.value.kind == "end" and " "
+		-- 			or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+		-- 	end,
+		-- })
 	end,
 })
