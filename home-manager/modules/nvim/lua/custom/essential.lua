@@ -93,6 +93,7 @@ vim.o.sessionoptions = "buffers,curdir,help,resize,tabpages,winsize,winpos,termi
 
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
+	"unokai.vim",
 	"blue.vim",
 	"darkblue.vim",
 	"delek.vim",
