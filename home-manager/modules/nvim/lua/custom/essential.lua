@@ -72,8 +72,8 @@ vim.api.nvim_create_autocmd("WinEnter", {
 			vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
 			local windows = vim.api.nvim_tabpage_list_wins(0)
 			for _, win_id in ipairs(windows) do
-				vim.api.nvim_win_set_option(win_id, "winfixbuf", true)
-				vim.api.nvim_win_set_option(win_id, "wrap", false)
+				vim.wo[win_id].winfixbuf = true
+				vim.wo[win_id].wrap = false
 
 				local buf_id = vim.api.nvim_win_get_buf(win_id)
 				vim.api.nvim_buf_set_var(buf_id, "lockbuffer", true)
