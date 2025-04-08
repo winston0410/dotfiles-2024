@@ -578,15 +578,15 @@ require("lazy").setup({
 						},
 						inline = {
 							adapter = "gemini",
-						},
-						keymaps = {
-							accept_change = {
-								modes = { n = "do" },
-								description = "Accept the suggested change",
-							},
-							reject_change = {
-								modes = { n = "dp" },
-								description = "Reject the suggested change",
+							keymaps = {
+								accept_change = {
+									modes = { n = "do" },
+									description = "Accept the suggested change",
+								},
+								reject_change = {
+									modes = { n = "dp" },
+									description = "Reject the suggested change",
+								},
 							},
 						},
 					},
