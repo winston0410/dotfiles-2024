@@ -54,6 +54,8 @@ vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.undofile = true
+vim.o.winborder = "rounded"
+vim.o.showcmd = false
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 -- fold specific config
