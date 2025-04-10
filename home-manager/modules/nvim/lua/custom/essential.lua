@@ -31,6 +31,7 @@ vim.o.showmatch = true
 -- FIXME how to split in right?
 vim.o.splitbelow = true
 vim.o.splitright = true
+vim.opt.splitkeep = "screen"
 vim.o.lazyredraw = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -49,6 +50,7 @@ vim.o.number = true
 vim.opt.relativenumber = true
 vim.o.signcolumn = "auto:2"
 vim.o.scrolloff = 8
+vim.opt.sidescrolloff = 16
 vim.o.fillchars = "diff:╱,eob: "
 vim.o.expandtab = true
 vim.o.autoindent = true
