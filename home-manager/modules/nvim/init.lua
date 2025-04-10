@@ -183,6 +183,9 @@ require("lazy").setup({
 			"ecthelionvi/NeoComposer.nvim",
 			event = { "VeryLazy" },
 			dependencies = { "kkharji/sqlite.lua" },
+			init = function()
+				vim.opt.shortmess:append("q")
+			end,
 			opts = {
 				keymaps = {
 					play_macro = "Q",
