@@ -3365,8 +3365,7 @@ require("lazy").setup({
 		{
 			"neovim/nvim-lspconfig",
 			enabled = true,
-			-- FIXME once stable move to new 0.11 lspconfig
-			version = "1.7.0",
+			version = "1.x",
 			-- Reference the lazyload event from LazyVim
 			-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 			event = { "BufReadPre", "BufNewFile" },
@@ -3378,11 +3377,6 @@ require("lazy").setup({
 				-- REF https://github.com/hrsh7th/nvim-cmp/issues/373
 				-- capabilities.textDocument.completion.completionItem.snippetSupport = false
 				capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-				-- REF https://github.com/neovim/nvim-lspconfig/blob/d0467b9574b48429debf83f8248d8cee79562586/doc/server_configurations.md#denols
-				vim.g.markdown_fenced_languages = {
-					"ts=typescript",
-				}
 
 				local servers = {
 					"rust_analyzer",
@@ -3438,8 +3432,6 @@ require("lazy").setup({
 					"pasls",
 					"yamlls",
 					"postgres_lsp",
-					-- use postgres_lsp for now
-					-- "sqlls",
 					"vimls",
 					"nixd",
 					"r_language_server",
@@ -3450,8 +3442,6 @@ require("lazy").setup({
 					"cucumber_language_server",
 					"slint_lsp",
 					"regal",
-					-- nix does not provide this package yet
-					-- "snyk-ls",
 					"ballerina",
 					"bitbake_ls",
 					"ltex",
@@ -3537,10 +3527,62 @@ require("lazy").setup({
 						"vue",
 					},
 				})
-				-- it only works if deno.json is at the root level
 				lspconfig.denols.setup({
 					capabilities = capabilities,
 					root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+				})
+				lspconfig.lua_ls.setup({
+					diagnostics = {
+						underline = true,
+						update_in_insert = true,
+						severity_sort = true,
+					},
+					capabilities = capabilities,
+					on_init = function(client)
+						-- FIXME seems to be able to prevent LSP from highlighting
+						client.server_capabilities.semanticTokensProvider = nil
+
+						if client.workspace_folders then
+							local path = client.workspace_folders[1].name
+							if
+								path ~= vim.fn.stdpath("config")
+								and (
+									vim.loop.fs_stat(path .. "/.luarc.json")
+									or vim.loop.fs_stat(path .. "/.luarc.jsonc")
+								)
+							then
+								return
+							end
+						end
+					end,
+					settings = {
+						Lua = {
+							runtime = {
+								version = "LuaJIT",
+							},
+							workspace = {
+								checkThirdParty = false,
+								library = {},
+							},
+							diagnostics = {
+								globals = {},
+							},
+							telemetry = {
+								enable = false,
+							},
+							hint = { enable = true },
+						},
+					},
+					inlay_hints = {
+						enabled = true,
+						exclude = {},
+					},
+					codelens = {
+						enabled = true,
+					},
+					document_highlight = {
+						enabled = true,
+					},
 				})
 			end,
 		},

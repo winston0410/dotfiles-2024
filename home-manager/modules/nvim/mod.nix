@@ -75,6 +75,7 @@
     "nvim/after" = { source = ./after; };
     "nvim/assets" = { source = ./assets; };
     "nvim/lua" = { source = ./lua; };
-    "nvim/lsp" = { source = ./lsp; };
+    # Disable until we really need custom LSP config
+    # "nvim/lsp" = { source = ./lsp; };
   };
 }

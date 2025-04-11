@@ -1,3 +1,4 @@
+-- Just to try Neovim 0.11.0 LSP settings
 return {
 	root_markers = { ".luarc.json", ".luarc.jsonc" },
 	settings = {

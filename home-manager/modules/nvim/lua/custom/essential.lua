@@ -278,6 +278,7 @@ if vim.fn.has("wsl") == 1 then
 	}
 end
 
-vim.lsp.enable({
-	"lua_ls",
-})
+-- Just to experiment the new LSP settings API in 0.11.0
+-- vim.lsp.enable({
+-- 	"lua_ls",
+-- })
