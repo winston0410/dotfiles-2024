@@ -349,8 +349,7 @@ require("lazy").setup({
 		{
 			"Bekaboo/dropbar.nvim",
 			version = "12.x",
-			-- FIXME still not working
-			-- NOTE dropbar pick does not work, after recovering from a session
+			-- FIXME dropbar pick does not work, after recovering from a session
 			lazy = false,
 			dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 			keys = {
@@ -1583,7 +1582,7 @@ require("lazy").setup({
 				},
 			},
 			opts = {
-				-- FIXME range diffing is not working correctly, cannot select to
+				-- FIXME range diffing is not working correctly, cannot select the target of "to"
 				disable_hint = true,
 				disable_commit_confirmation = true,
 				graph_style = "unicode",
@@ -3365,7 +3364,7 @@ require("lazy").setup({
 		{
 			"neovim/nvim-lspconfig",
 			enabled = true,
-			version = "1.x",
+			version = "2.x",
 			-- Reference the lazyload event from LazyVim
 			-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 			event = { "BufReadPre", "BufNewFile" },
@@ -3374,9 +3373,8 @@ require("lazy").setup({
 				local util = require("lspconfig.util")
 
 				local capabilities = vim.lsp.protocol.make_client_capabilities()
-				-- REF https://github.com/hrsh7th/nvim-cmp/issues/373
-				-- capabilities.textDocument.completion.completionItem.snippetSupport = false
 				capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+				capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
 				local servers = {
 					"rust_analyzer",
@@ -3453,7 +3451,7 @@ require("lazy").setup({
 				for _, server in ipairs(servers) do
 					lspconfig[server].setup({
 						on_init = function(client)
-							-- FIXME seems to be able to prevent LSP from highlighting
+							-- NOTE use only Treesitter for syntax highlight
 							client.server_capabilities.semanticTokensProvider = nil
 						end,
 						capabilities = capabilities,
@@ -3539,9 +3537,6 @@ require("lazy").setup({
 					},
 					capabilities = capabilities,
 					on_init = function(client)
-						-- FIXME seems to be able to prevent LSP from highlighting
-						client.server_capabilities.semanticTokensProvider = nil
-
 						if client.workspace_folders then
 							local path = client.workspace_folders[1].name
 							if
