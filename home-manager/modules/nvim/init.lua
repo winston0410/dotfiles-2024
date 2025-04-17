@@ -1953,7 +1953,7 @@ require("lazy").setup({
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 			},
-			version = "3.x",
+			version = "4.x",
 			cmd = { "MCPHub" },
 			build = false,
 			config = function()
