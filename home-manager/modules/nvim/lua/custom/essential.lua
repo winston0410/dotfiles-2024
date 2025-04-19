@@ -209,6 +209,12 @@ end, { silent = true, noremap = true, desc = "Create a horizontal split" })
 vim.keymap.set({ "n" }, "<leader>wq", function()
 	vim.cmd("quit")
 end, { silent = true, noremap = true, desc = "Close a split" })
+vim.keymap.set(
+	{ "n" },
+	"<leader>w=",
+	"<C-w>=",
+	{ silent = true, noremap = true, desc = "Reset all split size to be identical" }
+)
 vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
 vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })

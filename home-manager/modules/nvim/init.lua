@@ -210,7 +210,7 @@ require("lazy").setup({
 			ft = { "norg" },
 			enabled = false,
 			dependencies = { "pysan3/pathlib.nvim", "nvim-neorg/lua-utils.nvim", "nvim-neotest/nvim-nio" },
-			version = "9.2.0",
+			version = "9.x",
 			config = function()
 				-- NOTE https://github.com/nvim-neorg/neorg/blob/53714b1783d4bb5fa154e2a5428b086fb5f3d8a5/res/wiki/static/Setup-Guide.md
 				require("neorg").setup({
@@ -1600,7 +1600,7 @@ require("lazy").setup({
 		{
 			"folke/which-key.nvim",
 			event = "VeryLazy",
-			version = "3.14.1",
+			version = "3.x",
 			keys = {
 				{
 					"?",
@@ -1708,14 +1708,12 @@ require("lazy").setup({
 				delete_check_events = "TextChanged",
 			},
 		},
-		-- NOTE not sure if we need this
 		{
 			"mrjones2014/smart-splits.nvim",
-			version = "1.7.0",
-			enabled = false,
+			version = "1.x",
 			keys = {
 				{
-					"<leader>wL",
+					"<leader>w>",
 					function()
 						require("smart-splits").resize_right()
 					end,
@@ -1724,7 +1722,16 @@ require("lazy").setup({
 					desc = "Resize split to right",
 				},
 				{
-					"<leader>wH",
+					"<C-w>>",
+					function()
+						require("smart-splits").resize_right()
+					end,
+					mode = "n",
+					silent = true,
+					desc = "Resize split to right",
+				},
+				{
+					"<C-w><",
 					function()
 						require("smart-splits").resize_left()
 					end,
@@ -1733,7 +1740,16 @@ require("lazy").setup({
 					desc = "Resize split to left",
 				},
 				{
-					"<leader>wK",
+					"<leader>w<",
+					function()
+						require("smart-splits").resize_left()
+					end,
+					mode = "n",
+					silent = true,
+					desc = "Resize split to left",
+				},
+				{
+					"<leader>w+",
 					function()
 						require("smart-splits").resize_up()
 					end,
@@ -1742,7 +1758,25 @@ require("lazy").setup({
 					desc = "Resize split to top",
 				},
 				{
-					"<leader>wJ",
+					"<C-w>+",
+					function()
+						require("smart-splits").resize_up()
+					end,
+					mode = "n",
+					silent = true,
+					desc = "Resize split to top",
+				},
+				{
+					"<leader>w-",
+					function()
+						require("smart-splits").resize_down()
+					end,
+					mode = "n",
+					silent = true,
+					desc = "Resize split to bottom",
+				},
+				{
+					"<C-w>-",
 					function()
 						require("smart-splits").resize_down()
 					end,
@@ -3144,7 +3178,7 @@ require("lazy").setup({
 		},
 		{
 			"folke/edgy.nvim",
-			version = "1.10.2",
+			version = "1.x",
 			event = "VeryLazy",
 			enabled = false,
 			opts = {
@@ -3208,7 +3242,7 @@ require("lazy").setup({
 		},
 		{
 			"stevearc/conform.nvim",
-			version = "9.0.0",
+			version = "9.x",
 			event = { "BufWritePre" },
 			cmd = { "ConformInfo" },
 			config = function()
@@ -3603,7 +3637,7 @@ require("lazy").setup({
 		},
 		{
 			"folke/trouble.nvim",
-			version = "3.7.0",
+			version = "3.x",
 			event = { "BufReadPre", "BufNewFile" },
 			enabled = false,
 			dependencies = { "nvim-tree/nvim-web-devicons" },
