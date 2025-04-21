@@ -2031,15 +2031,11 @@ require("lazy").setup({
 			version = "*",
 			config = function()
 				require("screenkey").setup({})
-				vim.api.nvim_create_autocmd("VimEnter", {
-					callback = function()
-						vim.cmd("Screenkey")
-					end,
-				})
 			end,
 		},
 		{
 			"folke/snacks.nvim",
+			version = "2.x",
 			priority = 1000,
 			lazy = false,
 			dependencies = {},

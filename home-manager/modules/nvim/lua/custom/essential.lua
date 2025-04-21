@@ -26,7 +26,7 @@ vim.o.updatetime = 300
 vim.o.showmode = false
 vim.o.backup = false
 vim.o.writebackup = false
-vim.o.cmdheight = 1
+vim.o.cmdheight = 0
 vim.o.showmatch = true
 -- FIXME how to split in right?
 vim.o.splitbelow = true
