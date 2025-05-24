@@ -559,6 +559,7 @@ require("lazy").setup({
 			version = "14.x",
 			config = function()
 				require("codecompanion").setup({
+					auto_approve = true,
 					-- https://codecompanion.olimorris.dev/configuration/adapters.html#changing-a-model
 					adapters = {
 						gemini = function()
@@ -573,6 +574,16 @@ require("lazy").setup({
 								},
 							})
 						end,
+					},
+					extensions = {
+						mcphub = {
+							callback = "mcphub.extensions.codecompanion",
+							opts = {
+								show_result_in_chat = true,
+								make_vars = true,
+								make_slash_commands = true,
+							},
+						},
 					},
 					strategies = {
 						chat = {
@@ -1987,13 +1998,15 @@ require("lazy").setup({
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 			},
-			version = "4.x",
+			version = "5.x",
 			cmd = { "MCPHub" },
-			build = false,
+			build = "bundled_build.lua",
 			config = function()
 				require("mcphub").setup({
+					auto_approve = true,
+					use_bundled_binary = true,
 					port = 3000,
-					config = vim.fn.expand("~/mcpservers.json"),
+					config = vim.fn.expand("~/.config/mcphub/servers.json"),
 					log = {
 						level = vim.log.levels.WARN,
 						to_file = false,
