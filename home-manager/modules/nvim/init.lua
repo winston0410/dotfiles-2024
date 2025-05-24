@@ -556,7 +556,7 @@ require("lazy").setup({
 			"olimorris/codecompanion.nvim",
 			cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
 			event = { "VeryLazy" },
-			version = "14.x",
+			version = "15.x",
 			config = function()
 				require("codecompanion").setup({
 					auto_approve = true,
