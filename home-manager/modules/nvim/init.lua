@@ -554,6 +554,58 @@ require("lazy").setup({
 		},
 		{
 			"olimorris/codecompanion.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+				{
+					"ravitemer/mcphub.nvim",
+					dependencies = {
+						"nvim-lua/plenary.nvim",
+					},
+					version = "5.x",
+					cmd = { "MCPHub" },
+					build = "bundled_build.lua",
+					config = function()
+						require("mcphub").setup({
+							auto_approve = true,
+							use_bundled_binary = true,
+							port = 3000,
+							config = vim.fn.expand("~/.config/mcphub/servers.json"),
+							log = {
+								level = vim.log.levels.WARN,
+								to_file = false,
+								file_path = nil,
+								prefix = "MCPHub",
+							},
+						})
+					end,
+				},
+				{
+					"OXY2DEV/markview.nvim",
+					version = "25.x",
+					lazy = false,
+					opts = {
+						preview = {
+							filetypes = { "markdown", "codecompanion" },
+							ignore_buftypes = {},
+						},
+					},
+				},
+				{
+					"HakonHarnes/img-clip.nvim",
+					version = "0.x",
+					event = "VeryLazy",
+					opts = {
+						filetypes = {
+							codecompanion = {
+								prompt_for_file_name = false,
+								template = "[Image]($FILE_PATH)",
+								use_absolute_path = true,
+							},
+						},
+					},
+				},
+			},
 			cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
 			event = { "VeryLazy" },
 			version = "15.x",
@@ -612,10 +664,6 @@ require("lazy").setup({
 					},
 				})
 			end,
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"nvim-treesitter/nvim-treesitter",
-			},
 		},
 		{
 			"zeioth/garbage-day.nvim",
@@ -732,6 +780,9 @@ require("lazy").setup({
 
 				sources = {
 					default = { "lsp", "path", "snippets", "buffer", "omni" },
+					per_filetype = {
+						codecompanion = { inherit_defaults = false, "codecompanion" },
+					},
 					min_keyword_length = function(ctx)
 						-- only applies when typing a command, doesn't apply to arguments
 						if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
@@ -1990,29 +2041,6 @@ require("lazy").setup({
 						local tab_id = vim.api.nvim_get_current_tabpage()
 						vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "Kubectl")
 					end,
-				})
-			end,
-		},
-		{
-			"ravitemer/mcphub.nvim",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-			},
-			version = "5.x",
-			cmd = { "MCPHub" },
-			build = "bundled_build.lua",
-			config = function()
-				require("mcphub").setup({
-					auto_approve = true,
-					use_bundled_binary = true,
-					port = 3000,
-					config = vim.fn.expand("~/.config/mcphub/servers.json"),
-					log = {
-						level = vim.log.levels.WARN,
-						to_file = false,
-						file_path = nil,
-						prefix = "MCPHub",
-					},
 				})
 			end,
 		},
