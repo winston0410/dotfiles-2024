@@ -581,15 +581,9 @@ require("lazy").setup({
 					end,
 				},
 				{
-					"OXY2DEV/markview.nvim",
-					version = "25.x",
-					lazy = false,
-					opts = {
-						preview = {
-							filetypes = { "markdown", "codecompanion" },
-							ignore_buftypes = {},
-						},
-					},
+					"MeanderingProgrammer/render-markdown.nvim",
+					version = "8.x",
+					ft = { "markdown", "codecompanion" },
 				},
 				{
 					"HakonHarnes/img-clip.nvim",
