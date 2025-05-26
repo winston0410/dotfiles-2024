@@ -1154,6 +1154,7 @@ require("lazy").setup({
 					return true
 				end
 				local utility_filetypes = {
+					"codecompanion",
 					"terminal",
 					"snacks_terminal",
 					"oil",
