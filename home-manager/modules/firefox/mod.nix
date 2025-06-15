@@ -1,9 +1,9 @@
 { inputs, lib, config, pkgs, system, ... }: {
   programs.firefox = {
     enable = true;
-    # package = (pkgs.firefox.override {
-    #   nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
-    # });
+    package = (pkgs.firefox.override {
+      nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
+    });
     nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
     languagePacks = [ "en-GB" ];
     policies = {
@@ -68,12 +68,10 @@
             };
           };
         };
-        extensions = {
-          packages = with pkgs; [
-            nur.repos.rycee.firefox-addons.bitwarden
-            nur.repos.rycee.firefox-addons.ublock-origin
-          ];
-        };
+        extensions = with pkgs; [
+          nur.repos.rycee.firefox-addons.bitwarden
+          nur.repos.rycee.firefox-addons.ublock-origin
+        ];
       };
     };
   };

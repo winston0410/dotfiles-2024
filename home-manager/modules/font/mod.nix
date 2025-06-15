@@ -1,6 +1,12 @@
 { inputs, lib, config, pkgs, ... }: {
   home.packages = with pkgs; [
-    nerd-fonts._0xproto
+    (nerdfonts.override {
+      fonts = [
+        "0xProto"
+        # "Iosevka" 
+      ];
+    })
+
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
   ];

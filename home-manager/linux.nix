@@ -16,7 +16,7 @@
   };
 
   # secret-tool store --label="vaultwarden master password" service "vaultwarden.28281428.xyz"
-  programs.zsh.initContent = lib.mkBefore (''
+  programs.zsh.initExtra = lib.mkBefore (''
     vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
     export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
   '');

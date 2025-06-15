@@ -1,8 +1,5 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  imports = [
-    ./common.nix
-    # ./modules/firefox/mod.nix 
-  ];
+  imports = [ ./common.nix ./modules/firefox/mod.nix ];
 
   nix.settings = {
     extra-trusted-users = "hugosum";
@@ -13,7 +10,7 @@
       source = lib.mkForce ./modules/wezterm/darwin.lua;
     };
   };
-  programs.zsh.initContent = lib.mkBefore (''
+  programs.zsh.initExtra = lib.mkBefore (''
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;

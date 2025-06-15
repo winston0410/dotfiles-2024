@@ -48,7 +48,7 @@
     MANWIDTH = 999;
   };
 
-  programs.zsh.initContent = ''
+  programs.zsh.initExtra = ''
     nrg() {
         if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
             nvim -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -

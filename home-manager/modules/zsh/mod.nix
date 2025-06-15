@@ -25,7 +25,7 @@
         }
       ];
     };
-    initContent = ''
+    initExtra = ''
       source "$HOME/.config/fzf/fzf-color.sh"
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
