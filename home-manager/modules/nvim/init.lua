@@ -3510,7 +3510,6 @@ require("lazy").setup({
 					"bitbake_ls",
 					"ltex",
 					"csharp_ls",
-					"vue_ls",
 					"tsp_server",
 				}
 
