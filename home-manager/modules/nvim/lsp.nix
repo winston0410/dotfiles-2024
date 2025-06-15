@@ -12,7 +12,6 @@
     pkgs.nodePackages.bash-language-server
     pkgs.nodePackages.dockerfile-language-server-nodejs
     pkgs.nodePackages.yaml-language-server
-    pkgs.nodePackages.vls
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
     pkgs.pyright

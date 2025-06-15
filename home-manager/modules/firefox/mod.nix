@@ -68,10 +68,12 @@
             };
           };
         };
-        extensions = with pkgs; [
-          nur.repos.rycee.firefox-addons.bitwarden
-          nur.repos.rycee.firefox-addons.ublock-origin
-        ];
+        extensions = {
+            packages = with pkgs; [
+              nur.repos.rycee.firefox-addons.bitwarden
+              nur.repos.rycee.firefox-addons.ublock-origin
+            ];
+        };
       };
     };
   };
