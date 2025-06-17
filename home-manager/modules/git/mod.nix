@@ -15,7 +15,7 @@
     };
     credential = {
       # REF https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md#credentialcredentialstore
-      credentialStore = "gpg";
+      credentialStore = "cache";
       cacheOptions = 86400;
       "https://forgejo.28281428.xyz" = { provider = "auto"; };
       "https://dev.azure.com" = { provider = "auto"; useHttpPath = true; };
