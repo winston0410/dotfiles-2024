@@ -14,9 +14,11 @@
       name = "nobody";
     };
     credential = {
-      "https://forgejo.28281428.xyz" = { provider = "generic"; };
       # REF https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md#credentialcredentialstore
-      credentialStore = "cache";
+      credentialStore = "gpg";
+      cacheOptions = 86400;
+      "https://forgejo.28281428.xyz" = { provider = "auto"; };
+      "https://dev.azure.com" = { provider = "auto"; useHttpPath = true; };
       helper = [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ];
     };
     core = { editor = "nvim"; };
