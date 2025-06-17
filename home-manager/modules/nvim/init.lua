@@ -1331,7 +1331,7 @@ require("lazy").setup({
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {
-							{ require("NeoComposer.ui").status_recording },
+							-- { require("NeoComposer.ui").status_recording },
 							{
 								"diagnostics",
 								sources = { "nvim_lsp" },
