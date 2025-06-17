@@ -181,6 +181,7 @@ require("lazy").setup({
 
 		{
 			"ecthelionvi/NeoComposer.nvim",
+			enabled = false,
 			event = { "VeryLazy" },
 			dependencies = { "kkharji/sqlite.lua" },
 			init = function()
@@ -2775,7 +2776,7 @@ require("lazy").setup({
 					ensure_installed = "all",
 					auto_install = false,
 					sync_install = false,
-					ignore_install = {},
+					ignore_install = { "ipkg" },
 					incremental_selection = {
 						enable = true,
 						keymaps = {

@@ -36,10 +36,10 @@
   news = { display = "show"; };
   home.packages = with pkgs;
     [
-      # FIXME wait for this to resolve https://github.com/NixOS/nixpkgs/issues/339576
-      # bitwarden-cli
       sqlite
-    ];
+    ] ++
+    # FIXME wait for this to resolve https://github.com/NixOS/nixpkgs/issues/339576
+    (lib.lists.optionals pkgs.stdenv.isLinux [ pkgs.bitwarden-cli ]);
   home.preferXdgDirectories = true;
   programs.man.enable = false;
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
