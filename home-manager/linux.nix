@@ -9,7 +9,6 @@
     ./modules/steam/mod.nix
   ];
 
-
   home = {
     username = "kghugo";
     homeDirectory = "/home/kghugo";
@@ -32,4 +31,7 @@
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
   ];
+
+  # REF https://github.com/nix-community/home-manager/issues/1213
+  xdg.configFile."mimeapps.list".force = true;
 }

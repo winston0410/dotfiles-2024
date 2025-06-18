@@ -1,8 +1,5 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  imports = [
-    ./common.nix
-    # ./modules/firefox/mod.nix 
-  ];
+  imports = [ ./common.nix ./modules/firefox/mod.nix ];
 
   nix.settings = {
     extra-trusted-users = "hugosum";
@@ -32,6 +29,6 @@
   xdg.desktopEntries = lib.mkForce { };
 
   nix.settings.use-xdg-base-directories = lib.mkForce false;
-  programs.firefox.package = lib.mkForce pkgs.firefox-bin;
-  programs.firefox.nativeMessagingHosts = lib.mkForce [ ];
+  programs.firefox.package = lib.mkForce (pkgs.firefox-bin.overrideAttrs
+    (_: rec { override = _: pkgs.firefox-bin; }));
 }

@@ -79,7 +79,7 @@
   programs.ssh.enableAskPassword = false;
   services.gnome.gnome-keyring.enable = true;
   services.gnome.games.enable = false;
-  services.gnome.core-utilities.enable = false;
+  services.gnome.core-apps.enable = false;
   services.gnome.gnome-browser-connector.enable = true;
   environment.gnome.excludePackages =
     (with pkgs; [ gnome-tour gnome-shell-extensions ]);
@@ -113,7 +113,7 @@
       userServices = true;
     };
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.sudo-rs.enable = true;
   security.pam.services.gdm-password.enableGnomeKeyring = true;
@@ -238,6 +238,7 @@
   xdg.portal = { enable = true; };
 
   documentation.nixos.enable = false;
+  nix.settings.download-buffer-size = 524288000;
   nix.settings.trusted-users = [ "@wheel" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
