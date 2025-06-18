@@ -2396,31 +2396,12 @@ require("lazy").setup({
 			end,
 		},
 		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
-
 		{
-			"numToStr/Comment.nvim",
-			dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-			-- FIXME cant really make custom key binding works, 06-12-2024
-			keys = { { "<leader>c" }, { "<leader>b" }, { "<leader>c", mode = "v" }, { "<leader>b", mode = "v" } },
-			config = function()
-				require("Comment").setup({
-					padding = true,
-					sticky = true,
-					post_hook = function() end,
-					pre_hook = function()
-						---@diagnostic disable-next-line: missing-return
-						require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
-					end,
-					toggler = {
-						line = "<leader>cc",
-						block = "<leader>bc",
-					},
-					opleader = {
-						line = "<leader>c",
-						block = "<leader>b",
-					},
-				})
-			end,
+			"folke/ts-comments.nvim",
+			opts = {},
+			event = "VeryLazy",
+			enabled = vim.fn.has("nvim-0.10.0") == 1,
+			config = function() end,
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",

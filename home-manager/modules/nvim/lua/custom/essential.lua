@@ -135,8 +135,10 @@ vim.filetype.add({
 	},
 })
 
--- NOTE no longer need these bindings, just use register correctly with "+
--- vim.keymap.set(modes, "<leader>y", '"+y', { silent = true, noremap = true, desc = "Yank text to system clipboard" })
+-- Native Neovim commenting. Block commenting is not available in Neovim yet
+vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
+vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })
+
 local clear_buffer_keybinding = "<leader>bc"
 local delete_buffer_keybinding = "<leader>bq"
 local next_buffer_keybinding = "<leader>bl"
