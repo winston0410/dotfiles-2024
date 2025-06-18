@@ -1,14 +1,7 @@
 { inputs, lib, config, pkgs, system, ... }: {
   programs.firefox = {
     enable = true;
-    package = if pkgs.stdenv.isLinux then
-      pkgs.firefox
-      # (pkgs.firefox.override {
-      #   nativeMessagingHosts = [ pkgs.gnome-browser-connector ];
-      # })
-    else
-      pkgs.firefox-bin.overrideAttrs
-      (_: rec { override = _: pkgs.firefox-bin; });
+    package = pkgs.firefox;
     nativeMessagingHosts = [ ] ++ (lib.lists.optionals pkgs.stdenv.isLinux
       [ pkgs.gnome-browser-connector ]);
     languagePacks = [ "en-GB" ];
