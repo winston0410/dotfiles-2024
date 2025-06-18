@@ -16,8 +16,7 @@
 
     darwin.url = "github:lnl7/nix-darwin";
 
-    rust-overlay.url =
-      "github:oxalica/rust-overlay?rev=16ab5af8f23b63f34dd7a48a68ab3b50dc3dd2b6";
+    rust-overlay.url = "github:oxalica/rust-overlay?tag=snapshot/2025-01-11";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home manager
