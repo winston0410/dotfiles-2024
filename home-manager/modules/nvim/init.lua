@@ -561,7 +561,12 @@ require("lazy").setup({
 			event = "VeryLazy",
 			version = "2.x",
 			---@type Flash.Config
-			opts = {},
+			opts = {
+				highlight = {
+					backdrop = false,
+					matches = true,
+				},
+			},
 			keys = {
 				{
 					"<leader>f",
@@ -574,6 +579,7 @@ require("lazy").setup({
 							},
 						})
 					end,
+					noremap = true,
 					desc = "Flash",
 				},
 			},

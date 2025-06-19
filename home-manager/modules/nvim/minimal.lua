@@ -34,6 +34,34 @@ require("lazy").setup({
 			end,
 		},
 		{
+			"folke/flash.nvim",
+			event = "VeryLazy",
+			version = "2.x",
+			---@type Flash.Config
+			opts = {
+				highlight = {
+					backdrop = false,
+					matches = true,
+				},
+			},
+			keys = {
+				{
+					"<leader>f",
+					mode = { "n", "x", "o" },
+					function()
+						require("flash").jump({
+							remote_op = {
+								restore = true,
+								motion = true,
+							},
+						})
+					end,
+					noremap = true,
+					desc = "Flash",
+				},
+			},
+		},
+		{
 			"folke/snacks.nvim",
 			priority = 1000,
 			lazy = false,
