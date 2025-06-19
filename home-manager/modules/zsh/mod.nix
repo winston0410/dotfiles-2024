@@ -11,36 +11,6 @@
     };
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
-    # zplug = {
-    #   enable = true;
-    #   zplugHome = "${config.xdg.dataHome}/zplug";
-    #   plugins = [
-    #     {
-    #       name = "plugins/kubectl";
-    #       tags = [ "from:oh-my-zsh" ];
-    #     }
-    #     {
-    #       name = "plugins/git";
-    #       tags = [ "from:oh-my-zsh" ];
-    #     }
-    #     {
-    #       name = "plugins/deno";
-    #       tags = [ "from:oh-my-zsh" ];
-    #     }
-    #     {
-    #       name = "plugins/bun";
-    #       tags = [ "from:oh-my-zsh" ];
-    #     }
-    #     {
-    #       name = "mafredri/zsh-async";
-    #       tags = [ "from:github" ];
-    #     }
-    #     {
-    #       name = "sindresorhus/pure";
-    #       tags = [ "use:pure.zsh" "from:github" "as:theme" ];
-    #     }
-    #   ];
-    # };
     initExtra = ''
       ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
       [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
