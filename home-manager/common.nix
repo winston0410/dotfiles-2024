@@ -8,7 +8,6 @@
     ./modules/ripgrep/mod.nix
     ./modules/bottom/mod.nix
     ./modules/zsh/mod.nix
-    ./modules/fzf/mod.nix
     ./modules/du/mod.nix
     ./modules/tree/mod.nix
     ./modules/font/mod.nix
