@@ -22,6 +22,9 @@
 
       zinit ice wait lucid
       zinit light zsh-users/zsh-completions
+      zinit light Aloxaf/fzf-tab
+
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
       zi snippet OMZP::git
       zi snippet OMZP::kubectl
@@ -64,14 +67,15 @@
 
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
-  # REF https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_storm.sh
   programs.fzf.defaultOptions = [
-    "--preview 'bat --style=numbers --color=always {}'"
+    # seems to be not needed at the moment
+    # "--preview 'bat --style=numbers --color=always {}'"
     "--highlight-line"
     "--info=inline-right"
     "--ansi"
     "--layout=reverse"
     "--border=none"
+    # REF https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_storm.sh
     "--color=bg+:#2e3c64"
     "--color=bg:#1f2335"
     "--color=border:#29a4bd"
