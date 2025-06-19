@@ -2,42 +2,44 @@
 
   imports = [ ./lsp.nix ./formatter.nix ./dap.nix ];
 
-  home.packages = with pkgs; [
-    figlet
-    fastfetch
-    (unstable.neovim.override {
-      extraLuaPackages = (ps:
-        with ps; [
-          luafilesystem
-          jsregexp
-          luassert
-          # for sqlite.lua
-          sqlite
-          luv
-        ]);
-      withRuby = false;
-      withPython3 = false;
-      withNodeJs = false;
-    })
-    lua5_1
-    luarocks
-    # needed for treesitter
-    nodejs_22
-    tree-sitter
-    gcc14
-    fd
-    bat
-    chafa
-    # needed for snacks.nvim
-    imagemagick
-    mermaid-cli
-    ghostscript_headless
-    tectonic
-    libqalculate
-    # lilypond-suite
-    fluidsynth
-    soundfont-fluid
-  ];
+  home.packages = with pkgs;
+    [
+      figlet
+      fastfetch
+      (unstable.neovim.override {
+        extraLuaPackages = (ps:
+          with ps; [
+            luafilesystem
+            jsregexp
+            luassert
+            # for sqlite.lua
+            sqlite
+            luv
+          ]);
+        withRuby = false;
+        withPython3 = false;
+        withNodeJs = false;
+      })
+      lua5_1
+      luarocks
+      # needed for snacks.nvim
+      imagemagick
+      mermaid-cli
+      ghostscript_headless
+      tectonic
+      libqalculate
+      # lilypond-suite
+      fluidsynth
+      soundfont-fluid
+    ] ++ [
+      # needed for treesitter
+      nodejs_22
+      tree-sitter
+      gcc14
+      fd
+      bat
+      chafa
+    ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -47,23 +49,25 @@
     MANWIDTH = 999;
   };
 
-  # programs.zsh.initExtra = ''
-  #   nrg() {
-  #       if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
-  #           nvim -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -
-  #       else
-  #           nvim -c "lua Snacks.picker.grep()"
-  #       fi
-  #   }
-  # '';
+  programs.zsh.initExtra = ''
+    nrg() {
+        if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
+            nvim --cmd 'let g:enable_session = v:false' -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -
+        else
+            nvim --cmd 'let g:enable_session = v:false' -c "lua Snacks.picker.grep()"
+        fi
+    }
+  '';
 
   home.shellAliases = {
     vi = "nvim --clean";
-    vim = "nvim -u $XDG_CONFIG_HOME/nvim/minimal.lua";
-    # oil = ''nvim -c "Oil"'';
-    # neogit = "nvim -c 'lua require(\"neogit\").open()'";
-    # k8s = "nvim -c 'lua require(\"kubectl\").toggle({ tab = false })'";
-    # nfd = "nvim -c 'lua Snacks.picker.files()'";
+    vim =
+      "nvim --cmd 'let g:enable_session = v:false' -u $XDG_CONFIG_HOME/nvim/minimal.lua";
+    oil = ''nvim --cmd 'let g:enable_session = v:false' -c "Oil"'';
+    neogit =
+      "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"neogit\").open()'";
+    k8s =
+      "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
   };
 
   xdg.configFile = {

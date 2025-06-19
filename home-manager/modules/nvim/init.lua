@@ -12,6 +12,9 @@
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
 require("custom.essential")
+if vim.g.enable_session == nil then
+	vim.g.enable_session = true
+end
 local ERROR_ICON = " "
 local WARNING_ICON = " "
 local INFO_ICON = " "
@@ -249,6 +252,7 @@ require("lazy").setup({
 			dependencies = { "nvim-lua/plenary.nvim" },
 			lazy = false,
 			priority = 998,
+			enabled = vim.g.enable_session,
 			config = function()
 				local config = require("session_manager.config")
 				require("session_manager").setup({
@@ -549,6 +553,28 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Grapple delete tag",
+				},
+			},
+		},
+		{
+			"folke/flash.nvim",
+			event = "VeryLazy",
+			version = "2.x",
+			---@type Flash.Config
+			opts = {},
+			keys = {
+				{
+					"<leader>f",
+					mode = { "n", "x", "o" },
+					function()
+						require("flash").jump({
+							remote_op = {
+								restore = true,
+								motion = true,
+							},
+						})
+					end,
+					desc = "Flash",
 				},
 			},
 		},
@@ -3382,11 +3408,6 @@ require("lazy").setup({
 				end, {
 					desc = "Re-enable autoformat-on-save",
 				})
-
-				-- NOTE seems to be meaningness to create a new function, when gq is an operator to format code?
-				-- vim.keymap.set({ "n" }, "<leader>f", function()
-				-- 	require("conform")
-				-- end, { silent = true, noremap = true, desc = "Format code" })
 			end,
 			init = function()
 				vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
