@@ -164,6 +164,8 @@
 
   nixpkgs.config.allowUnfree = true;
   programs.nano.enable = false;
+  # REF https://nix-community.github.io/home-manager/options.xhtml#opt-programs.zsh.enableCompletion
+  environment.pathsToLink = [ "/share/zsh" ];
   environment.systemPackages = with pkgs; [
     vim
     git-credential-manager

@@ -11,21 +11,56 @@
     };
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
-    zplug = {
-      enable = true;
-      zplugHome = "${config.xdg.dataHome}/zplug";
-      plugins = [
-        {
-          name = "mafredri/zsh-async";
-          tags = [ "from:github" ];
-        }
-        {
-          name = "sindresorhus/pure";
-          tags = [ "use:pure.zsh" "from:github" "as:theme" ];
-        }
-      ];
-    };
+    # zplug = {
+    #   enable = true;
+    #   zplugHome = "${config.xdg.dataHome}/zplug";
+    #   plugins = [
+    #     {
+    #       name = "plugins/kubectl";
+    #       tags = [ "from:oh-my-zsh" ];
+    #     }
+    #     {
+    #       name = "plugins/git";
+    #       tags = [ "from:oh-my-zsh" ];
+    #     }
+    #     {
+    #       name = "plugins/deno";
+    #       tags = [ "from:oh-my-zsh" ];
+    #     }
+    #     {
+    #       name = "plugins/bun";
+    #       tags = [ "from:oh-my-zsh" ];
+    #     }
+    #     {
+    #       name = "mafredri/zsh-async";
+    #       tags = [ "from:github" ];
+    #     }
+    #     {
+    #       name = "sindresorhus/pure";
+    #       tags = [ "use:pure.zsh" "from:github" "as:theme" ];
+    #     }
+    #   ];
+    # };
     initExtra = ''
+      ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
+      [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+      [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+      source "''${ZINIT_HOME}/zinit.zsh"
+
+      zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
+      zinit light sindresorhus/pure
+
+      zinit ice wait lucid
+      zinit light zsh-users/zsh-completions
+
+      zi snippet OMZP::git
+      zi snippet OMZP::kubectl
+      zi snippet OMZP::dotnet
+      zi snippet OMZP::docker
+      zi snippet OMZP::docker-compose
+      zi snippet OMZP::deno
+      zi snippet OMZP::bun
+    '' + ''
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
 

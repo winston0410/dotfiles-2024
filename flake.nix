@@ -118,6 +118,9 @@
         "darwin" = darwin.lib.darwinSystem {
           system = darwinArmSystem;
           modules = [{
+            # REF https://nix-community.github.io/home-manager/options.xhtml#opt-programs.zsh.enableCompletion
+            environment.pathsToLink = [ "/share/zsh" ];
+
             nix.distributedBuilds = true;
             nix.buildMachines = [{
               hostName = "localhost";
