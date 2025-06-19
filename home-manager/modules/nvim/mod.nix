@@ -45,6 +45,7 @@
     EDITOR = "nvim";
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
+    FCEDIT = "nvim --clean";
     MANWIDTH = 999;
   };
 

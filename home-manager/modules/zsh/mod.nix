@@ -70,7 +70,9 @@
       bindkey -v '^?' backward-delete-char
 
       KEYTIMEOUT=1;
-      unsetopt share_history;
+    '' + ''
+      setopt HIST_REDUCE_BLANKS;
+      setopt INC_APPEND_HISTORY;
     '';
   };
   home.sessionVariables = {
