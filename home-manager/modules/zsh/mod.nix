@@ -60,6 +60,7 @@
       zi snippet OMZP::docker-compose
       zi snippet OMZP::deno
       zi snippet OMZP::bun
+      zi snippet OMZP::rbw
     '' + ''
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
@@ -93,6 +94,7 @@
   programs.fzf.enableZshIntegration = true;
   # REF https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_storm.sh
   programs.fzf.defaultOptions = [
+    "--preview 'bat --style=numbers --color=always {}'"
     "--highlight-line"
     "--info=inline-right"
     "--ansi"

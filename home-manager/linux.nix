@@ -7,8 +7,8 @@
     ./modules/firefox/mod.nix
     ./modules/email/mod.nix
     ./modules/steam/mod.nix
+    ./modules/rbw/mod.nix
   ];
-
 
   home = {
     username = "kghugo";
