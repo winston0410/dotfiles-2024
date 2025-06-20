@@ -544,13 +544,27 @@ require("lazy").setup({
 			"folke/flash.nvim",
 			event = "VeryLazy",
 			version = "2.x",
-			---@type Flash.Config
-			opts = {
-				highlight = {
-					backdrop = false,
-					matches = true,
-				},
-			},
+			config = function()
+				---@type Flash.Config
+				require("flash").setup({
+					highlight = {
+						backdrop = false,
+						matches = true,
+					},
+					---@type table<string, Flash.Config>
+					modes = {
+						search = {
+							enabled = false,
+						},
+						char = {
+							enabled = true,
+							highlight = {
+								backdrop = false,
+							},
+						},
+					},
+				})
+			end,
 			keys = {
 				{
 					"<leader>f",
