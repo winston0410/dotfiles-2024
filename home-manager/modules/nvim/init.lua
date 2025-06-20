@@ -12,6 +12,7 @@
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
 require("custom.essential")
+local utils = require("custom.utils")
 if vim.g.enable_session == nil then
 	vim.g.enable_session = true
 end
@@ -3043,18 +3044,11 @@ require("lazy").setup({
 				{
 					"<leader>o",
 					function()
-						local bufnr = vim.api.nvim_get_current_buf()
-						local filetype = vim.bo[bufnr].filetype
-						if filetype == "oil" then
-							vim.cmd("vsplit | Oil")
-						elseif filetype ~= "" then
-							local total_lines = vim.o.lines
-							local split_height = math.floor(total_lines * 0.3)
-
-							vim.cmd(split_height .. "split | Oil")
-						else
+						utils.smart_open(function()
 							vim.cmd("Oil")
-						end
+						end, {
+							filetype = "oil",
+						})
 					end,
 					mode = { "n" },
 					noremap = true,

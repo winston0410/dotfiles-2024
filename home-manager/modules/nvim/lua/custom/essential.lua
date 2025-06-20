@@ -27,7 +27,6 @@ vim.o.backup = false
 vim.o.writebackup = false
 vim.o.cmdheight = 0
 vim.o.showmatch = true
--- FIXME how to split in right?
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.opt.splitkeep = "screen"
