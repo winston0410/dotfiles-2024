@@ -22,21 +22,6 @@ local HINT_ICON = "󰌶 "
 
 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
 
----@param filetype string A Nvim filetype
----@return number
-local function find_tab_with_filetype(filetype)
-	for i, tab_id in ipairs(vim.api.nvim_list_tabpages()) do
-		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab_id)) do
-			local buf = vim.api.nvim_win_get_buf(win)
-			local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-			if buf_ft == filetype then
-				return i
-			end
-		end
-	end
-	return -1
-end
-
 -- REF https://unix.stackexchange.com/a/637223/467987
 
 -- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
@@ -87,7 +72,6 @@ require("lazy").setup({
 			enabled = false,
 			lazy = true,
 		},
-		-- a warmer Nord variant
 		{
 			"AlexvZyl/nordic.nvim",
 			lazy = true,
@@ -112,7 +96,6 @@ require("lazy").setup({
 			end,
 		},
 		{
-			-- single accent color customizable theme, better than darkvoid
 			"wnkz/monoglow.nvim",
 			init = function()
 				vim.opt.wildignore:append({
@@ -281,7 +264,7 @@ require("lazy").setup({
 		{
 			"kylechui/nvim-surround",
 			version = "*",
-			-- By default, s is a useless synonym of cc, therefore we remap that
+			-- NOTE By default, s is a useless synonym of cc, therefore we remap that
 			keys = {
 				{ "s", mode = "n" },
 				{ "ss", mode = "n" },

@@ -63,7 +63,6 @@
     vi = "nvim --clean";
     vim =
       "nvim --cmd 'let g:enable_session = v:false' -u $XDG_CONFIG_HOME/nvim/minimal.lua";
-    oil = ''nvim --cmd 'let g:enable_session = v:false' -c "Oil"'';
     neogit =
       "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"neogit\").open()'";
     k8s =
