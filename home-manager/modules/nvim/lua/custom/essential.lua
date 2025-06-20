@@ -1,3 +1,5 @@
+local utils = require("custom.utils")
+
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
 vim.g.loaded_gzip = 1
@@ -136,6 +138,13 @@ vim.filetype.add({
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
 vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })
+vim.keymap.set({ "n" }, "<leader>T", function()
+	utils.smart_open(function()
+		vim.cmd("term")
+	end, {
+		filetype = "terminal",
+	})
+end, { remap = true, silent = true, desc = "Open terminal" })
 
 local clear_buffer_keybinding = "<leader>bc"
 local delete_buffer_keybinding = "<leader>bq"
