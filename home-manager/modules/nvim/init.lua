@@ -3054,22 +3054,24 @@ require("lazy").setup({
 		{
 			"stevearc/oil.nvim",
 			version = "2.x",
+			lazy = false,
 			cmd = { "Oil" },
 			keys = {
 				{
 					"<leader>o",
 					function()
-						local buf_id = vim.api.nvim_get_current_buf()
-						local buf_name = vim.api.nvim_buf_get_name(buf_id)
-						local buf_dir = vim.fn.fnamemodify(buf_name, ":h")
+						local bufnr = vim.api.nvim_get_current_buf()
+						local filetype = vim.bo[bufnr].filetype
+						if filetype == "oil" then
+							vim.cmd("vsplit | Oil")
+						elseif filetype ~= "" then
+							local total_lines = vim.o.lines
+							local split_height = math.floor(total_lines * 0.3)
 
-						local tab_idx = find_tab_with_filetype("oil")
-						if tab_idx == -1 then
-							vim.cmd("tabnew | Oil .")
-							vim.cmd(string.format("vsplit | Oil %s", buf_dir))
-							return
+							vim.cmd(split_height .. "split | Oil")
+						else
+							vim.cmd("Oil")
 						end
-						vim.api.nvim_set_current_tabpage(tab_idx)
 					end,
 					mode = { "n" },
 					noremap = true,
@@ -3089,31 +3091,30 @@ require("lazy").setup({
 					constrain_cursor = "editable",
 					watch_for_changes = true,
 					keymaps = {
-						-- NOTE disable these bindings for now, so we force ourselves to go back to the original tab to open those files, and only use oil.nvim for manipulating files
 						["<CR>"] = {
 							"actions.select",
 							mode = "n",
 							opts = { close = false },
 							desc = "Select a file",
 						},
-						-- ["<leader>t<CR>"] = {
-						-- 	"actions.select",
-						-- 	mode = "n",
-						-- 	opts = { close = false, tab = true },
-						-- 	desc = "Select a file and open in a new tab",
-						-- },
-						-- ["<leader>wv<CR>"] = {
-						-- 	"actions.select",
-						-- 	mode = "n",
-						-- 	opts = { close = false, vertical = true },
-						-- 	desc = "Select a file and open in a vertical split",
-						-- },
-						-- ["<leader>ws<CR>"] = {
-						-- 	"actions.select",
-						-- 	mode = "n",
-						-- 	opts = { close = false, horizontal = true },
-						-- 	desc = "Select a file and open in a horizontal split",
-						-- },
+						["<leader>t<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, tab = true },
+							desc = "Select a file and open in a new tab",
+						},
+						["<leader>wv<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, vertical = true },
+							desc = "Select a file and open in a vertical split",
+						},
+						["<leader>ws<CR>"] = {
+							"actions.select",
+							mode = "n",
+							opts = { close = false, horizontal = true },
+							desc = "Select a file and open in a horizontal split",
+						},
 						["~"] = { "actions.cd", mode = "n", desc = "Change current directory of NeoVim" },
 						["<a-m>"] = {
 							callback = function()
@@ -3134,17 +3135,6 @@ require("lazy").setup({
 						},
 						["<a-s>"] = { "actions.change_sort", mode = "n" },
 						["-"] = { "actions.parent", mode = "n", desc = "Go to parent directory" },
-						["q"] = {
-							callback = function()
-								local tab_idx = find_tab_with_filetype("oil")
-								if tab_idx == -1 then
-									return
-								end
-								vim.cmd(string.format("tabclose %s", tab_idx))
-							end,
-							mode = "n",
-							desc = "Quit Oil.nvim panel",
-						},
 						["gx"] = { "actions.open_external", mode = "n", desc = "Open in external application" },
 					},
 					use_default_keymaps = false,
@@ -3155,9 +3145,6 @@ require("lazy").setup({
 						show_hidden = true,
 					},
 					skip_confirm_for_simple_edits = true,
-					float = {
-						border = "none",
-					},
 				})
 				-- REF https://github.com/folke/snacks.nvim/blob/main/docs/rename.md
 				vim.api.nvim_create_autocmd("User", {
