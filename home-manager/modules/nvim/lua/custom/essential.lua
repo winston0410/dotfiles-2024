@@ -264,7 +264,9 @@ vim.keymap.set({ "n" }, "<leader>th", "gT", {
 	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
 })
 vim.keymap.set({ "n" }, "<leader>tq", function()
-	vim.cmd("tabclose")
+	pcall(function()
+		vim.cmd("tabclose")
+	end)
 end, { silent = true, noremap = true, desc = "Close a tab" })
 for i = 1, 9 do
 	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
