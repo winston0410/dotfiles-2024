@@ -99,18 +99,18 @@
           ];
         };
 
-        # "linux-arm" = home-manager.lib.homeManagerConfiguration {
-        #   pkgs = linuxArmPkgs;
-        #   extraSpecialArgs = {
-        #     inherit inputs outputs;
-        #     system = linuxArmSystem;
-        #     unstable = unstable.legacyPackages.aarch64-linux;
-        #   };
-        #   modules = [
-        #     inputs.sops-nix.homeManagerModules.sops
-        #     ./home-manager/linux.nix
-        #   ];
-        # };
+        "devcontainer-arm" = home-manager.lib.homeManagerConfiguration {
+          pkgs = linuxArmPkgs;
+          extraSpecialArgs = {
+            inherit inputs outputs;
+            system = linuxArmSystem;
+            unstable = unstable.legacyPackages.aarch64-linux;
+          };
+          modules = [
+            inputs.sops-nix.homeManagerModules.sops
+            ./home-manager/devcontainer.nix
+          ];
+        };
 
         "wsl" = home-manager.lib.homeManagerConfiguration {
           pkgs = linuxAmdPkgs;
