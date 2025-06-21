@@ -1,11 +1,1 @@
-{
-	"image": "mcr.microsoft.com/devcontainers/base:alpine-3.21",
-	"features": {
-		"ghcr.io/devcontainers/features/nix:1": {},
-		"ghcr.io/duduribeiro/devcontainer-features/neovim:1": {
-			"version": "0.11.0"
-		}
-        "ghcr.io/devcontainers-extra/features/ripgrep:1": {}
-        "ghcr.io/devcontainers-extra/features/fd:1": {}
-	}
-}
+{"image":"mcr.microsoft.com/devcontainers/base:ubuntu"}

@@ -56,6 +56,11 @@
         overlays = [ nur.overlays.default ];
       };
 
+      linuxArmPkgs = import nixpkgs {
+        system = linuxArmSystem;
+        overlays = [ nur.overlays.default ];
+      };
+
       darwin-builder = nixpkgs.lib.nixosSystem {
         system = linuxArmSystem;
         modules = [
@@ -93,6 +98,20 @@
             ./home-manager/linux.nix
           ];
         };
+
+        # "linux-arm" = home-manager.lib.homeManagerConfiguration {
+        #   pkgs = linuxArmPkgs;
+        #   extraSpecialArgs = {
+        #     inherit inputs outputs;
+        #     system = linuxArmSystem;
+        #     unstable = unstable.legacyPackages.aarch64-linux;
+        #   };
+        #   modules = [
+        #     inputs.sops-nix.homeManagerModules.sops
+        #     ./home-manager/linux.nix
+        #   ];
+        # };
+
         "wsl" = home-manager.lib.homeManagerConfiguration {
           pkgs = linuxAmdPkgs;
           extraSpecialArgs = {

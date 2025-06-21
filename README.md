@@ -20,6 +20,7 @@ Once we made changes to our setup, we need to run the `switch` command to apply 
 # For example, if we are building the configuration, with home-manager/release-23.05
 # nix run home-manager/release-23.05 -- --flake .#linux switch
 nix run home-manager/release-24.11 -- --flake .#linux switch
+nix run --extra-experimental-features "nix-command flakes" home-manager/release-24.11 -- --flake .#linux-arm switch
 # if we wnat to build for darwin platform
 nix run home-manager/release-24.11 -- --flake .#darwin switch
 ```
