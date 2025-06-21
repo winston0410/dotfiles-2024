@@ -4,8 +4,6 @@
 
   home.packages = with pkgs;
     [
-      figlet
-      fastfetch
       (unstable.neovim.override {
         extraLuaPackages = (ps:
           with ps; [
