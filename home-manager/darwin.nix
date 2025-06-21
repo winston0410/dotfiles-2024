@@ -15,6 +15,7 @@
     ./modules/android/mod.nix
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
+    ./modules/nix/mod.nix
     ./modules/firefox/mod.nix
   ];
 

@@ -16,6 +16,7 @@
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
     ./modules/font/mod.nix
+    ./modules/nix/mod.nix
   ];
 
   home.packages = with pkgs; [ wslu ];

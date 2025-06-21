@@ -22,6 +22,7 @@
     ./modules/email/mod.nix
     ./modules/steam/mod.nix
     ./modules/rbw/mod.nix
+    ./modules/nix/mod.nix
   ];
 
   home = {
