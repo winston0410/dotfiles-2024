@@ -165,26 +165,6 @@ require("lazy").setup({
 				})
 			end,
 		},
-
-		{
-			"ecthelionvi/NeoComposer.nvim",
-			event = { "VeryLazy" },
-			dependencies = { "kkharji/sqlite.lua" },
-			init = function()
-				vim.opt.shortmess:append("q")
-			end,
-			opts = {
-				keymaps = {
-					play_macro = "Q",
-					yank_macro = false,
-					stop_macro = false,
-					toggle_record = "q",
-					cycle_next = false,
-					cycle_prev = false,
-					toggle_macro_menu = "<leader>q",
-				},
-			},
-		},
 		{
 			"martineausimon/nvim-lilypond-suite",
 			cmd = { "LilyPlayer", "LilyCmp", "LilyDebug" },
@@ -867,6 +847,7 @@ require("lazy").setup({
 			},
 			config = function()
 				require("window-picker").setup({
+					show_prompt = false,
 					hint = "floating-big-letter",
 				})
 			end,
