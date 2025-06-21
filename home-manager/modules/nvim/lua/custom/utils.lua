@@ -12,6 +12,12 @@ function M.smart_open(cmd, opts)
 	opts = vim.tbl_deep_extend("force", {
 		height = split_height,
 	}, opts)
+	local picked_window_id = require("window-picker").pick_window()
+	if picked_window_id ~= nil then
+		vim.api.nvim_set_current_win(picked_window_id)
+		cmd()
+		return
+	end
 
 	local bufnr = vim.api.nvim_get_current_buf()
 	local filetype = vim.bo[bufnr].filetype

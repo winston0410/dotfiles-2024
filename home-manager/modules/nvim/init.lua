@@ -845,13 +845,19 @@ require("lazy").setup({
 			end,
 		},
 		{
-			"yorickpeterse/nvim-window",
-			commit = "93af78311e53919a0b13d1bf6d857880bb0b975d",
+			"s1n7ax/nvim-window-picker",
+			name = "window-picker",
+			event = "VeryLazy",
+			version = "2.*",
 			keys = {
 				{
 					"<leader>p<leader>w",
 					function()
-						require("nvim-window").pick()
+						local picked_window_id = require("window-picker").pick_window()
+						if picked_window_id == nil then
+							return
+						end
+						vim.api.nvim_set_current_win(picked_window_id)
 					end,
 					mode = { "n" },
 					silent = true,
@@ -860,16 +866,8 @@ require("lazy").setup({
 				},
 			},
 			config = function()
-				local chars = {} -- a list from a-z
-				for i = 97, 122 do
-					table.insert(chars, string.char(i))
-				end
-				require("nvim-window").setup({
-					chars = chars,
-					normal_hl = "Normal",
-					hint_hl = "Bold",
-					border = "single",
-					render = "float",
+				require("window-picker").setup({
+					hint = "floating-big-letter",
 				})
 			end,
 		},
