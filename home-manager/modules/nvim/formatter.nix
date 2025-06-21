@@ -16,7 +16,7 @@
     nginx-config-formatter
     rufo
     hclfmt
-    elmPackages.elm-format
+    # elmPackages.elm-format
     haskellPackages.hindent
     pgformatter
   ];

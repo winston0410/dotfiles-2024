@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, ... }: {
   programs.git.enable = true;
-  # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
   programs.git.extraConfig = {
     pull = { ff = true; };
@@ -14,9 +13,14 @@
       name = "nobody";
     };
     credential = {
-      "https://forgejo.28281428.xyz" = { provider = "generic"; };
       # REF https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md#credentialcredentialstore
       credentialStore = "cache";
+      cacheOptions = "--timeout 86400";
+      "https://forgejo.28281428.xyz" = { provider = "auto"; };
+      "https://dev.azure.com" = {
+        provider = "auto";
+        useHttpPath = true;
+      };
       helper = [ "${pkgs.git-credential-manager}/bin/git-credential-manager" ];
     };
     core = { editor = "nvim"; };

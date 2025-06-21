@@ -392,6 +392,7 @@ require("lazy").setup({
 
 				local config = {
 					ensure_installed = "all",
+                    ignore_install = { "ipkg" },
 					auto_install = false,
 					sync_install = false,
 					ignore_install = {},

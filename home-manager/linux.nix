@@ -16,7 +16,7 @@
   };
 
   # secret-tool store --label="vaultwarden master password" service "vaultwarden.28281428.xyz"
-  programs.zsh.initExtra = lib.mkBefore (''
+  programs.zsh.initContent = lib.mkBefore (''
     vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
     export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
   '');
@@ -32,4 +32,7 @@
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
   ];
+
+  # REF https://github.com/nix-community/home-manager/issues/1213
+  xdg.configFile."mimeapps.list".force = true;
 }

@@ -10,7 +10,7 @@
       source = lib.mkForce ./modules/wezterm/darwin.lua;
     };
   };
-  programs.zsh.initExtra = lib.mkBefore (''
+  programs.zsh.initContent = lib.mkBefore (''
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
@@ -29,6 +29,6 @@
   xdg.desktopEntries = lib.mkForce { };
 
   nix.settings.use-xdg-base-directories = lib.mkForce false;
-  programs.firefox.package = lib.mkForce pkgs.firefox-bin;
-  programs.firefox.nativeMessagingHosts = lib.mkForce [ ];
+  programs.firefox.package = lib.mkForce (pkgs.firefox-bin.overrideAttrs
+    (_: rec { override = _: pkgs.firefox-bin; }));
 }

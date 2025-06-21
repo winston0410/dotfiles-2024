@@ -168,6 +168,7 @@ require("lazy").setup({
 
 		{
 			"ecthelionvi/NeoComposer.nvim",
+			enabled = false,
 			event = { "VeryLazy" },
 			dependencies = { "kkharji/sqlite.lua" },
 			init = function()
@@ -1360,7 +1361,7 @@ require("lazy").setup({
 						lualine_x = {},
 						lualine_y = {},
 						lualine_z = {
-							{ require("NeoComposer.ui").status_recording },
+							-- { require("NeoComposer.ui").status_recording },
 							{
 								"diagnostics",
 								sources = { "nvim_lsp" },
@@ -2786,7 +2787,7 @@ require("lazy").setup({
 					ensure_installed = "all",
 					auto_install = false,
 					sync_install = false,
-					ignore_install = {},
+					ignore_install = { "ipkg" },
 					incremental_selection = {
 						enable = true,
 						keymaps = {
@@ -3496,7 +3497,6 @@ require("lazy").setup({
 					"bitbake_ls",
 					"ltex",
 					"csharp_ls",
-					"vue_ls",
 					"tsp_server",
 				}
 
