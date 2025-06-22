@@ -1167,8 +1167,8 @@ require("lazy").setup({
 					"terminal",
 					"snacks_terminal",
 					"oil",
-					"trouble",
 					-- "qf",
+					"trouble",
 					"DiffviewFileHistory",
 					"DiffviewFiles",
 					"snacks_dashboard",
@@ -3474,7 +3474,6 @@ require("lazy").setup({
 					"bitbake_ls",
 					"ltex",
 					"csharp_ls",
-					"vue_ls",
 					"tsp_server",
 				}
 

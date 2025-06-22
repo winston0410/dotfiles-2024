@@ -21,7 +21,6 @@ function M.smart_open(cmd, opts)
 
 	local next_win_id
 	local placeholder_buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_option(placeholder_buf, "bufhidden", "wipe")
 
 	if cur_buf_ft == opts.filetype then
 		next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
