@@ -40,6 +40,7 @@ require("lazy").setup({
 		{ import = "plugins.treesitter" },
 		{ import = "plugins.snacks" },
 		{ import = "plugins.which-key" },
+		{ import = "plugins.highlight" },
 		{ import = "plugins.nvim-lspconfig" },
 		{
 			"nvim-lualine/lualine.nvim",
