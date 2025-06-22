@@ -33,6 +33,7 @@ require("lazy").setup({
 				vim.cmd.colorscheme("rose-pine-moon")
 			end,
 		},
+		{ import = "plugins.cord" },
 		{ import = "plugins.operators" },
 		{ import = "plugins.flash" },
 		{ import = "plugins.oil" },

@@ -1738,6 +1738,7 @@ require("lazy").setup({
 		},
 
 		{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
+		{ import = "plugins.cord" },
 		{ import = "plugins.operators" },
 		{ import = "plugins.themes" },
 		{ import = "plugins.nvim-lspconfig" },
@@ -1871,22 +1872,6 @@ require("lazy").setup({
 			init = function()
 				vim.opt.splitkeep = "screen"
 			end,
-		},
-		{
-			"vyfor/cord.nvim",
-			event = "VeryLazy",
-			build = ":Cord update",
-			opts = {
-				timestamp = {
-					enabled = true,
-					reset_on_idle = false,
-					reset_on_change = false,
-				},
-				editor = {
-					client = "neovim",
-					tooltip = "Hugo's ultimate editor",
-				},
-			},
 		},
 		{
 			"m00qek/baleia.nvim",
