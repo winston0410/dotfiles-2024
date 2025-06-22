@@ -4,7 +4,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/nix:1": {
 			"version": "2.29.0",
-			"extraNixConfig": "extra-experimental-features = nix-command flakes"
+			"extraNixConfig": "extra-experimental-features = nix-command flakes,download-buffer-size = 524288000"
 		}
 	},
 	"postCreateCommand": {
