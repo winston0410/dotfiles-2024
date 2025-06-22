@@ -2282,6 +2282,16 @@ require("lazy").setup({
 					desc = "Browse files in remote Git server",
 				},
 				{
+					"<leader>pf",
+					function()
+						Snacks.picker.files()
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Explore files",
+				},
+				{
 					"<leader>pr",
 					function()
 						Snacks.picker.resume()
@@ -2290,49 +2300,6 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Resume last picker",
-				},
-				{
-					"<leader>pf",
-					function()
-						Snacks.picker.explorer({
-							auto_close = false,
-							jump = { close = false },
-							win = {
-								list = {
-									keys = {
-										["-"] = "explorer_up",
-										["+"] = "explorer_focus",
-										["<CR>"] = "confirm",
-										["zc"] = "explorer_close",
-										["zC"] = "explorer_close_all",
-										-- NOTE Missing action that would open all directories, and we should assign zo and zO to it
-										["d"] = "explorer_del",
-										["c"] = "explorer_rename",
-										["y"] = { "explorer_yank", mode = { "n", "x" } },
-										["p"] = "explorer_paste",
-										-- Use copy here, until there is a new action allows creating a new empty files or dir
-										["o"] = "explorer_copy",
-										["gx"] = "explorer_open",
-										["<a-i>"] = "toggle_ignored",
-										["<a-h>"] = "toggle_hidden",
-										["]gh"] = "explorer_git_next",
-										["[gh"] = "explorer_git_prev",
-										["]d"] = "explorer_diagnostic_next",
-										["[d"] = "explorer_diagnostic_prev",
-										-- NOTE / is searching for files, not sure if we need grep at specific dir
-										-- ["<leader>/"] = "picker_grep",
-										["<leader>~"] = "tcd",
-										-- TODO not sure how to deal with these actions yet
-										-- ["m"] = "explorer_move",
-									},
-								},
-							},
-						})
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Explore files",
 				},
 			},
 			config = function()
