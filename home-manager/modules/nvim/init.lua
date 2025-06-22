@@ -275,7 +275,6 @@ require("lazy").setup({
 		{
 			"gbprod/substitute.nvim",
 			keys = {
-				-- Use <esc> to cancel an exchange
 				{
 					"x",
 					function()
@@ -843,6 +842,40 @@ require("lazy").setup({
 					silent = true,
 					noremap = true,
 					desc = "Pick window",
+				},
+				{
+					"x<leader>w",
+					function()
+						local to_win_id = require("window-picker").pick_window()
+						if to_win_id == nil then
+							return
+						end
+
+						local from_win_id = vim.api.nvim_get_current_win()
+						if from_win_id == to_win_id then
+							return
+						end
+
+						local from_buf = vim.api.nvim_win_get_buf(from_win_id)
+						local to_buf = vim.api.nvim_win_get_buf(to_win_id)
+
+						local original_cursor_pos = vim.api.nvim_win_get_cursor(from_win_id)
+
+						vim.api.nvim_win_set_buf(from_win_id, to_buf)
+						vim.api.nvim_win_set_buf(to_win_id, from_buf)
+
+						local cur_buf_after_swap = vim.api.nvim_get_current_buf()
+						if cur_buf_after_swap == from_buf then
+							return
+						end
+
+						vim.api.nvim_win_set_cursor(to_win_id, original_cursor_pos)
+						vim.api.nvim_set_current_win(to_win_id)
+					end,
+					mode = { "n" },
+					silent = true,
+					noremap = true,
+					desc = "Swap buffer between windows",
 				},
 			},
 			config = function()
@@ -3061,28 +3094,14 @@ require("lazy").setup({
 					watch_for_changes = true,
 					keymaps = {
 						["<CR>"] = {
-							"actions.select",
+							callback = function()
+								local oil = require("oil")
+								local entry = oil.get_cursor_entry()
+								print("check entry", vim.inspect(entry))
+								-- require("oil").select({ close = false })
+							end,
 							mode = "n",
-							opts = { close = false },
-							desc = "Select a file",
-						},
-						["<leader>t<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, tab = true },
-							desc = "Select a file and open in a new tab",
-						},
-						["<leader>wv<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, vertical = true },
-							desc = "Select a file and open in a vertical split",
-						},
-						["<leader>ws<CR>"] = {
-							"actions.select",
-							mode = "n",
-							opts = { close = false, horizontal = true },
-							desc = "Select a file and open in a horizontal split",
+							desc = "Select a file or directory",
 						},
 						["~"] = { "actions.cd", mode = "n", desc = "Change current directory of NeoVim" },
 						["<a-m>"] = {
