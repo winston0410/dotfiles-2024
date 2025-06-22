@@ -1,7 +1,7 @@
 return {
 	{
 		"sphamba/smear-cursor.nvim",
-		enabled = true,
+		enabled = false,
 		cmd = { "SmearCursorToggle" },
 		event = { "CursorHold" },
 		opts = {},
