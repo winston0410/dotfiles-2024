@@ -1,7 +1,6 @@
 { inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
   in [
-    pkgs.csharp-ls
     pkgs.rust-analyzer
     unstable.gopls
     pkgs.vue-language-server
@@ -12,7 +11,6 @@
     pkgs.nodePackages.bash-language-server
     pkgs.nodePackages.dockerfile-language-server-nodejs
     pkgs.nodePackages.yaml-language-server
-    pkgs.nodePackages.vls
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
     pkgs.pyright
@@ -81,5 +79,7 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
+  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ]
+  ++ lib.optionals pkgs.stdenv.isLinux [ pkgs.csharp-ls ];
+
 }

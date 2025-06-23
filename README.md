@@ -19,10 +19,10 @@ Once we made changes to our setup, we need to run the `switch` command to apply 
 # The version of home-manager in run here, has to match the version of home-manager being used in flake.nix
 # For example, if we are building the configuration, with home-manager/release-23.05
 # nix run home-manager/release-23.05 -- --flake .#linux switch
-nix run home-manager/release-24.11 -- --flake .#linux switch
-nix run home-manager/release-24.11 -- --flake .#linux-arm switch
+nix run home-manager/release-25.05 -- --flake .#linux switch
+nix run home-manager/release-25.05 -- --flake .#linux-arm switch
 # if we wnat to build for darwin platform
-nix run home-manager/release-24.11 -- --flake .#darwin switch
+nix run home-manager/release-25.05 -- --flake .#darwin switch
 ```
 
 And to run in WSL layer:
@@ -31,7 +31,7 @@ And to run in WSL layer:
 sudo mkdir -p /etc/nix
 sudo touch /etc/nix/nix.conf
 sudo echo 'extra-experimental-features = nix-command flakes' > /etc/nix/nix.conf
-nix run home-manager/release-24.11 -- --flake .#wsl switch
+nix run home-manager/release-25.05 -- --flake .#wsl switch
 ```
 
 ## Switch nixos system
@@ -67,5 +67,5 @@ Somehow home-manager's generations are not automatically cleaned by NixOS GC at 
 
 ```sh
 # it will retain only the latest generation
-nix run home-manager/release-24.11 -- --flake .#linux expire-generations "-1 days"
+nix run home-manager/release-25.05 -- --flake .#linux expire-generations "-1 days"
 ```

@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, ... }: {
+{ inputs, lib, config, pkgs, system, unstable, ... }: {
   home.packages = with pkgs; [ wezterm ];
 
   xdg.configFile = {

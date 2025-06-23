@@ -16,7 +16,7 @@
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
     ./modules/nix/mod.nix
-    ./modules/firefox/mod.nix
+    # ./modules/firefox/mod.nix
   ];
 
   nix.settings = {
@@ -28,7 +28,7 @@
       source = lib.mkForce ./modules/wezterm/darwin.lua;
     };
   };
-  programs.zsh.initExtra = lib.mkBefore (''
+  programs.zsh.initContent = lib.mkBefore (''
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
@@ -50,5 +50,5 @@
   programs.firefox.package = lib.mkForce pkgs.firefox-bin;
   programs.firefox.nativeMessagingHosts = lib.mkForce [ ];
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

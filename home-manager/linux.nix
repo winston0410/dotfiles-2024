@@ -31,7 +31,7 @@
   };
 
   # secret-tool store --label="vaultwarden master password" service "vaultwarden.28281428.xyz"
-  programs.zsh.initExtra = lib.mkBefore (''
+  programs.zsh.initContent = lib.mkBefore (''
     vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
     export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
   '');
@@ -49,5 +49,5 @@
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

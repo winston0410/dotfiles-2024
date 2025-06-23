@@ -1,26 +1,25 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  home.packages = with pkgs; [
-    dockfmt
-    gotools
-    stylua
-    nixfmt-classic
-    just
-    kulala-fmt
-    ruff
-    rustfmt
-    biome
-    prettierd
-    yamlfmt
-    taplo
-    shfmt
-    nginx-config-formatter
-    rufo
-    hclfmt
-    elmPackages.elm-format
-    haskellPackages.hindent
-    pgformatter
-  ];
-
+  home.packages = with pkgs;
+    [
+      dockfmt
+      gotools
+      stylua
+      nixfmt-classic
+      just
+      kulala-fmt
+      ruff
+      rustfmt
+      biome
+      prettierd
+      yamlfmt
+      taplo
+      shfmt
+      nginx-config-formatter
+      rufo
+      hclfmt
+      haskellPackages.hindent
+      pgformatter
+    ] ++ lib.optionals pkgs.stdenv.isLinux [ pkgs.elmPackages.elm-format ];
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };
 
   home.file =
