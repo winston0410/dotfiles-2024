@@ -16,7 +16,8 @@
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
     ./modules/nix/mod.nix
-    ./modules/firefox/mod.nix
+    # Firefox just won't start
+    # ./modules/firefox/mod.nix
   ];
 
   nix.settings = {

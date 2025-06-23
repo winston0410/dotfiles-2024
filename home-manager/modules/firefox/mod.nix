@@ -1,4 +1,8 @@
 { inputs, lib, config, pkgs, system, ... }: {
+  home.sessionVariables = {
+    MOZ_LEGACY_PROFILES = 1;
+    MOZ_ALLOW_DOWNGRADE = 1;
+  };
   programs.firefox = {
     enable = true;
     package = (pkgs.firefox.override {
@@ -31,6 +35,7 @@
       };
       SSLVersionMin = "tls1.2";
     };
+    profileVersion = null;
     profiles = {
       kghugo = {
         id = 0;
