@@ -1,5 +1,56 @@
 return {
 	{
+		"winston0410/encoding.nvim",
+		keys = {
+			{
+				"<leader>ee1",
+				function()
+					require("encoding").base64_encode()
+				end,
+
+				mode = { "n", "x" },
+				silent = true,
+				noremap = true,
+				desc = "Base64 encode",
+			},
+			{
+				"<leader>ee2",
+				function()
+					require("encoding").uri_encode()
+				end,
+
+				mode = { "n", "x" },
+				silent = true,
+				noremap = true,
+				desc = "URI encode",
+			},
+
+			{
+				"<leader>ed1",
+				function()
+					require("encoding").base64_decode()
+				end,
+
+				mode = { "n", "x" },
+				silent = true,
+				noremap = true,
+				desc = "Base64 decode",
+			},
+			{
+				"<leader>ed2",
+				function()
+					require("encoding").uri_decode()
+				end,
+
+				mode = { "n", "x" },
+				silent = true,
+				noremap = true,
+				desc = "URI decode",
+			},
+		},
+		opts = {},
+	},
+	{
 		"chrisgrieser/nvim-spider",
 		keys = {
 			{
