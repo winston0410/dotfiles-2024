@@ -1,6 +1,7 @@
 return {
 	{
 		"mfussenegger/nvim-dap",
+		version = "0.10.0",
 		dependencies = {
 			-- TODO revisit this plugin, once we switch to 0.11
 			-- { "igorlfs/nvim-dap-view", opts = {} },
@@ -100,6 +101,19 @@ return {
 				type = "executable",
 				command = "elixir-debug-adapter",
 				args = {},
+			}
+			dap.adapters.php = {
+				type = "executable",
+				command = "node",
+				args = { "/path/to/vscode-php-debug/out/phpDebug.js" },
+			}
+			dap.configurations.php = {
+				{
+					type = "php",
+					request = "launch",
+					name = "Listen for Xdebug",
+					port = 9003,
+				},
 			}
 			dap.adapters.coreclr = {
 				type = "executable",

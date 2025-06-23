@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, ... }: {
   programs.git.enable = true;
-  # programs.git.package = pkgs.git.override { withLibsecret = !isDarwin; };
 
   programs.git.extraConfig = {
     pull = { ff = true; };

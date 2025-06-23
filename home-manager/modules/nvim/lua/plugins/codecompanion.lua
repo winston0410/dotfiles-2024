@@ -1,3 +1,4 @@
+local render_markdown_ft = { "markdown", "codecompanion" }
 return {
 	{
 		"olimorris/codecompanion.nvim",
@@ -30,7 +31,11 @@ return {
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
 				version = "8.x",
-				ft = { "markdown", "codecompanion" },
+				ft = render_markdown_ft,
+				opts = {
+					completions = { blink = { enabled = true } },
+					file_types = render_markdown_ft,
+				},
 			},
 			{
 				"HakonHarnes/img-clip.nvim",
@@ -81,6 +86,9 @@ return {
 				strategies = {
 					chat = {
 						adapter = "gemini",
+						opts = {
+							completion_provider = "blink",
+						},
 					},
 					inline = {
 						adapter = "gemini",

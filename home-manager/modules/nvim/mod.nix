@@ -29,6 +29,8 @@
       # lilypond-suite
       fluidsynth
       soundfont-fluid
+    ] ++ [ # mcphub.nvim
+      uv
     ] ++ [
       # needed for treesitter
       nodejs_22
@@ -37,6 +39,11 @@
       fd
       bat
       chafa
+      # render-markdown.nvim
+      python312Packages.pylatexenc
+    ] ++ lib.optionals pkgs.stdenv.isDarwin [
+      # img-clip.nvim
+      pkgs.pngpaste
     ];
 
   home.sessionVariables = {
