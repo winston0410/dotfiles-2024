@@ -1,9 +1,11 @@
 return {
 	{
 		"sphamba/smear-cursor.nvim",
-		enabled = false,
 		cmd = { "SmearCursorToggle" },
 		event = { "CursorHold" },
-		opts = {},
+		config = function()
+			require("smear_cursor").setup({})
+			require("smear_cursor").enabled = false
+		end,
 	},
 }
