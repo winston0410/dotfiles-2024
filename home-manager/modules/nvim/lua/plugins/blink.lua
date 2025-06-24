@@ -1,22 +1,24 @@
 return {
 	{
-		"L3MON4D3/LuaSnip",
-		event = "InsertEnter",
-		version = "v2.*",
-		build = "make install_jsregexp",
-		opts = {
-			history = true,
-			delete_check_events = "TextChanged",
-		},
-	},
-	{
 		"saghen/blink.cmp",
 		event = "InsertEnter",
 		dependencies = {
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 			{ "disrupted/blink-cmp-conventional-commits" },
-			{ "Kaiser-Yang/blink-cmp-git", version = "3.x" },
+			-- { "Kaiser-Yang/blink-cmp-git", version = "3.x" },
+			-- FIXME this module is exposing the value of an env. Reconsider if we need this
+			{ "bydlw98/blink-cmp-env" },
 			{ "archie-judd/blink-cmp-words" },
+			{
+				"L3MON4D3/LuaSnip",
+				event = "InsertEnter",
+				version = "v2.*",
+				build = "make install_jsregexp",
+				opts = {
+					history = true,
+					delete_check_events = "TextChanged",
+				},
+			},
 		},
 		version = "1.x",
 		opts = {
@@ -48,7 +50,7 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "thesaurus", "git", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits" },
+				default = { "thesaurus", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits" },
 				providers = {
 					thesaurus = {
 						name = "blink-cmp-words",
@@ -57,16 +59,16 @@ return {
 							score_offset = 0,
 						},
 					},
-					git = {
-						module = "blink-cmp-git",
-						name = "Git",
-						enabled = function()
-							return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype)
-						end,
-						--- @module 'blink-cmp-git'
-						--- @type blink-cmp-git.Options
-						opts = {},
-					},
+					-- git = {
+					-- 	module = "blink-cmp-git",
+					-- 	name = "Git",
+					-- 	enabled = function()
+					-- 		return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype)
+					-- 	end,
+					-- 	--- @module 'blink-cmp-git'
+					-- 	--- @type blink-cmp-git.Options
+					-- 	opts = {},
+					-- },
 					conventional_commits = {
 						name = "Conventional Commits",
 						module = "blink-cmp-conventional-commits",
@@ -91,6 +93,38 @@ return {
 			},
 			completion = {
 				menu = {
+					draw = {
+						components = {
+							kind_icon = {
+								text = function(ctx)
+									local icon = ctx.kind_icon
+									if vim.tbl_contains({ "Path" }, ctx.source_name) then
+										local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+										if dev_icon then
+											icon = dev_icon
+										end
+									else
+										icon = require("lspkind").symbolic(ctx.kind, {
+											mode = "symbol",
+										})
+									end
+
+									return icon .. ctx.icon_gap
+								end,
+
+								highlight = function(ctx)
+									local hl = ctx.kind_hl
+									if vim.tbl_contains({ "Path" }, ctx.source_name) then
+										local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+										if dev_icon then
+											hl = dev_hl
+										end
+									end
+									return hl
+								end,
+							},
+						},
+					},
 					auto_show = function(ctx)
 						return ctx.mode ~= "cmdline" or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
 					end,
@@ -103,7 +137,7 @@ return {
 				ghost_text = { enabled = true, show_with_menu = false },
 			},
 			signature = { enabled = true },
-			fuzzy = { implementation = "prefer_rust_with_warning" },
+			fuzzy = { implementation = "prefer_rust" },
 		},
 	},
 }

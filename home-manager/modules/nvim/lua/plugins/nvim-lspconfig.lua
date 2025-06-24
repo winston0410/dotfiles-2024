@@ -17,6 +17,7 @@ return {
 
 			null_ls.setup({
 				sources = {
+					null_ls.builtins.diagnostics.commitlint,
 					null_ls.builtins.diagnostics.checkmake,
 					null_ls.builtins.diagnostics.fish,
 					null_ls.builtins.diagnostics.haml_lint,
