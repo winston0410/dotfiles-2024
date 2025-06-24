@@ -12,7 +12,12 @@ return {
 	{
 		"saghen/blink.cmp",
 		event = "InsertEnter",
-		dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+		dependencies = {
+			{ "L3MON4D3/LuaSnip", version = "v2.*" },
+			{ "disrupted/blink-cmp-conventional-commits" },
+			{ "Kaiser-Yang/blink-cmp-git", version = "3.x" },
+			{ "archie-judd/blink-cmp-words" },
+		},
 		version = "1.x",
 		opts = {
 			keymap = {
@@ -43,7 +48,36 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "omni" },
+				default = { "thesaurus", "git", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits" },
+				providers = {
+					thesaurus = {
+						name = "blink-cmp-words",
+						module = "blink-cmp-words.thesaurus",
+						opts = {
+							score_offset = 0,
+						},
+					},
+					git = {
+						module = "blink-cmp-git",
+						name = "Git",
+						enabled = function()
+							return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype)
+						end,
+						--- @module 'blink-cmp-git'
+						--- @type blink-cmp-git.Options
+						opts = {},
+					},
+					conventional_commits = {
+						name = "Conventional Commits",
+						module = "blink-cmp-conventional-commits",
+						enabled = function()
+							return vim.bo.filetype == "gitcommit"
+						end,
+						---@module 'blink-cmp-conventional-commits'
+						---@type blink-cmp-conventional-commits.Options
+						opts = {}, -- none so far
+					},
+				},
 				per_filetype = {
 					codecompanion = { inherit_defaults = false, "codecompanion" },
 				},
