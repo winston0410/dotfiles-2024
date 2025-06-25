@@ -48,7 +48,12 @@ return {
 			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
 			local servers = {
+				"azure_pipelines_ls",
+				"pest_ls",
+				"nxls",
+				"nushell",
 				"rust_analyzer",
+				"nginx_language_server",
 				"astro",
 				"beancount",
 				"solang",

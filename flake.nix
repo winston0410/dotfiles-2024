@@ -14,13 +14,11 @@
 
     nixd.url =
       # unstable
-      "github:nix-community/nixd?rev=29904e121cc775e7caaf4fffa6bc7da09376a43b";
+      "github:nix-community/nixd";
 
-    darwin.url =
-      "github:lnl7/nix-darwin?rev=e67f2bf515343da378c3f82f098df8ca01bccc5f";
+    darwin.url = "github:lnl7/nix-darwin";
 
-    rust-overlay.url =
-      "github:oxalica/rust-overlay?rev=16ab5af8f23b63f34dd7a48a68ab3b50dc3dd2b6";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home manager

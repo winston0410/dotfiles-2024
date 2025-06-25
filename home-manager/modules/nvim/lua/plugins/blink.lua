@@ -3,6 +3,7 @@ return {
 		"saghen/blink.cmp",
 		event = "InsertEnter",
 		dependencies = {
+			"moyiz/blink-emoji.nvim",
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 			{ "disrupted/blink-cmp-conventional-commits" },
 			-- { "Kaiser-Yang/blink-cmp-git", version = "3.x" },
@@ -50,8 +51,23 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "thesaurus", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits" },
+				default = { "thesaurus", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits", "emoji" },
 				providers = {
+					emoji = {
+						module = "blink-emoji",
+						name = "Emoji",
+						score_offset = 15,
+						opts = {
+							insert = true,
+							---@type string|table|fun():table
+							trigger = function()
+								return { ":" }
+							end,
+						},
+						should_show_items = function()
+							return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+						end,
+					},
 					thesaurus = {
 						name = "blink-cmp-words",
 						module = "blink-cmp-words.thesaurus",
