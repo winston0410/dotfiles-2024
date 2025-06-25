@@ -1,6 +1,7 @@
 { inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
   in [
+    pkgs.docker-compose-language-service
     pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools
@@ -57,19 +58,6 @@
     #
     #   npmDepsHash = "sha256-26U2qlyz0VolgKLSeFvKWYC9yae86vNHlTwJPy8HZxQ=";
     # })
-    (pkgs.buildNpmPackage rec {
-      pname = "@microsoft/compose-language-service";
-      version = "0.2.0";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "microsoft";
-        repo = "compose-language-service";
-        rev = "v${version}";
-        hash = "sha256-UBnABi7DMKrAFkRA8H6us/Oq4yM0mJ+kwOm0Rt8XnGw=";
-      };
-
-      npmDepsHash = "sha256-G1X9WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
-    })
     # NOTE this package does not use package-lock.json, need to fix that
     # (pkgs.buildNpmPackage rec {
     #   pname = "@vue/typescript-plugin";
