@@ -1,6 +1,7 @@
 { inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
   in [
+    pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools
     pkgs.csharp-ls
