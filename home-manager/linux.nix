@@ -21,7 +21,6 @@
     ./modules/firefox/mod.nix
     ./modules/email/mod.nix
     ./modules/steam/mod.nix
-    ./modules/rbw/mod.nix
     ./modules/nix/mod.nix
   ];
 
@@ -30,10 +29,16 @@
     homeDirectory = "/home/kghugo";
   };
 
-  # secret-tool store --label="vaultwarden master password" service "vaultwarden.28281428.xyz"
   programs.zsh.initExtra = lib.mkBefore (''
     vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
-    export BW_SESSION="$(bw unlock $vaultwarden_password --raw)"
+    BW_SESSION_OUTPUT=$(bw unlock "$vaultwarden_password" --raw)
+    if [ $? -eq 0 ]; then
+        echo "Successfully unlocked Bitwarden vault"
+    else 
+        echo "Error: Failed to unlock Bitwarden vault"
+    fi
+
+    export BW_SESSION="$BW_SESSION_OUTPUT"
   '');
 
   home.packages = with pkgs; [
