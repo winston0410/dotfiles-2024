@@ -107,7 +107,6 @@ return {
 				"rescriptls",
 				"racket_langserver",
 				"pasls",
-				"yamlls",
 				"postgres_lsp",
 				"vimls",
 				"nixd",
@@ -135,6 +134,16 @@ return {
 					capabilities = capabilities,
 				})
 			end
+
+			vim.lsp.config("yamlls", {
+				settings = {
+					redhat = {
+						telemetry = {
+							enabled = false,
+						},
+					},
+				},
+			})
 
 			lspconfig.elixirls.setup({
 				cmd = { "elixir-ls" },
