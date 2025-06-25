@@ -34,6 +34,9 @@
       zi snippet OMZP::deno
       zi snippet OMZP::bun
       zi snippet OMZP::rbw
+
+      bw completion --shell zsh > ~/.local/share/zsh/completions/_bw
+      zinit creinstall ~/.local/share/zsh/completions
     '' + ''
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
