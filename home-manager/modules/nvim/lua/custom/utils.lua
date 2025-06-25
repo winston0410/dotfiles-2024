@@ -1,9 +1,9 @@
 local M = {}
 
 ---@class SmartOpenOpts
----@field height number | nil
+---@field height? number
 ---@field filetype string
----@field ignored_filetypes string[] | nil
+---@field ignored_filetypes? string[]
 
 ---@param cmd fun()
 ---@param opts SmartOpenOpts

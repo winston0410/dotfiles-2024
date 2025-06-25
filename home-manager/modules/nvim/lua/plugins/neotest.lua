@@ -2,7 +2,6 @@ return {
 	{
 		"nvim-neotest/neotest",
 		cmd = { "Neotest" },
-		event = "VeryLazy",
 		dependencies = {
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
@@ -13,6 +12,8 @@ return {
 			"nvim-neotest/neotest-python",
 			"nvim-neotest/neotest-go",
 			"nvim-neotest/neotest-jest",
+			"nsidorenco/neotest-vstest",
+			"jfpedroza/neotest-elixir",
 		},
 		config = function()
 			require("neotest").setup({
@@ -25,6 +26,8 @@ return {
 							return vim.fn.getcwd()
 						end,
 					}),
+					require("neotest-elixir"),
+					require("neotest-vstest"),
 					require("neotest-python"),
 					require("neotest-go"),
 					require("neotest-playwright").adapter({

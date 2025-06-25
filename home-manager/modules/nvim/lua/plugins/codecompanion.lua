@@ -40,7 +40,7 @@ return {
 			{
 				"HakonHarnes/img-clip.nvim",
 				version = "0.x",
-				event = "VeryLazy",
+				cmd = { "PasteImage" },
 				opts = {
 					filetypes = {
 						codecompanion = {
@@ -53,7 +53,6 @@ return {
 			},
 		},
 		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
-		event = { "VeryLazy" },
 		version = "15.x",
 		config = function()
 			require("codecompanion").setup({

@@ -1,8 +1,9 @@
 local utils = require("custom.utils")
 return {
 	{
-		"stevearc/oil.nvim",
-		version = "2.x",
+		-- "stevearc/oil.nvim",
+		-- version = "2.x",
+		"winston0410/oil.nvim",
 		lazy = false,
 		cmd = { "Oil" },
 		keys = {
@@ -35,9 +36,12 @@ return {
 				keymaps = {
 					["<CR>"] = {
 						callback = function()
-							local oil = require("oil")
-							-- local entry = oil.get_cursor_entry()
-							require("oil").select({ close = false })
+							require("oil").select({
+								close = false,
+								handle_buffer_callback = function(buf_id)
+									print("buffer id", buf_id)
+								end,
+							})
 						end,
 						mode = "n",
 						desc = "Select a file or directory",
