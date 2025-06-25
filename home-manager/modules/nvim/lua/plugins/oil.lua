@@ -1,5 +1,11 @@
 local utils = require("custom.utils")
 return {
+	-- NOTE not ready yet but looks like a really good alternative
+	-- {
+	-- 	"A7Lavinraj/fyler.nvim",
+	-- 	dependencies = { "echasnovski/mini.icons" },
+	-- 	opts = {}, -- check the default options in the README.md
+	-- },
 	{
 		-- "stevearc/oil.nvim",
 		-- version = "2.x",
@@ -40,6 +46,17 @@ return {
 								close = false,
 								handle_buffer_callback = function(buf_id)
 									print("buffer id", buf_id)
+									local picked_window_id = require("window-picker").pick_window({
+										filter_rules = {
+											autoselect_one = false,
+											include_current_win = true,
+										},
+									})
+									if picked_window_id == nil then
+										return
+									end
+									vim.api.nvim_win_set_buf(picked_window_id, buf_id)
+									vim.api.nvim_set_current_win(picked_window_id)
 								end,
 							})
 						end,
