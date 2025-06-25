@@ -91,6 +91,7 @@ require("lazy").setup({
 			},
 		},
 
+		{ import = "plugins.neotest" },
 		{ import = "plugins.icons" },
 		{ import = "plugins.git" },
 		{ import = "plugins.splits-management" },
