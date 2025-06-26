@@ -1,7 +1,8 @@
-{ inputs, lib, config, pkgs, system, ... }: {
+{ inputs, lib, unstable, config, pkgs, system, ... }: {
   home.packages = with pkgs; [ ];
   programs.zsh = {
     enable = true;
+    package = unstable.zsh;
     # NOTE somehow this path is relative
     dotDir = ".config/zsh";
     history = { path = "${config.xdg.stateHome}/zsh/history"; };
@@ -12,6 +13,7 @@
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
     initExtra = ''
+      module_path=("${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}/${pkgs.zsh.pname}" $module_path)
       ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
       [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -26,6 +28,8 @@
 
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
+      zinit light sunlei/zsh-ssh
+
       zi snippet OMZP::git
       zi snippet OMZP::kubectl
       zi snippet OMZP::dotnet
@@ -34,9 +38,6 @@
       zi snippet OMZP::deno
       zi snippet OMZP::bun
       zi snippet OMZP::rbw
-
-      bw completion --shell zsh > ~/.local/share/zsh/completions/_bw
-      zinit creinstall ~/.local/share/zsh/completions
     '' + ''
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;

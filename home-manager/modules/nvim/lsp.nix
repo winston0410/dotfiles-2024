@@ -39,6 +39,26 @@
     pkgs.shellcheck
     # pkgs.commitlint
     pkgs.lemminx
+    (pkgs.rustPlatform.buildRustPackage rec {
+      pname = "systemd-lsp";
+      version = "0.1.0";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "JFryy";
+        repo = "systemd-lsp";
+        rev = "dabbed8e5323a379002ad41e51e4066e979eedd6";
+        sha256 = "sha256-Q4Q07f0v+yH/qUQiv7hIWEwVC9te9lfv3nXIFY7l6hw=";
+      };
+
+      cargoSha256 = "sha256-LgkSJsp2MxrmRmM+FC/Yrp/RzYSY4FesEC4NstV47So=";
+
+      meta = with pkgs.lib; {
+        description = "systemd language server for systemd unit files";
+        homepage = "https://github.com/JFryy/systemd-lsp";
+        license = licenses.mit;
+        platforms = platforms.unix;
+      };
+    })
     # TODO install @astrojs/language-server, https://github.com/withastro/language-tools/tree/main/packages/language-server
     # # # REF https://github.com/NixOS/nixpkgs/issues/245849
     # (pkgs.buildNpmPackage rec {
