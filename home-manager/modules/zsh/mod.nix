@@ -53,7 +53,7 @@
       bw completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_bw"
       uv generate-shell-completion zsh > "$ZINIT[COMPLETIONS_DIR]/_uv"
       wezterm shell-completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_wezterm"
-      cp -f "${pkgs.fd}/share/zsh/site-functions/_fd" > "$ZINIT[COMPLETIONS_DIR]/_fd"
+      cp -f "${pkgs.fd}/share/zsh/site-functions/_fd" "$ZINIT[COMPLETIONS_DIR]/_fd"
       rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
 
       # zinit snippet https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh
