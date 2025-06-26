@@ -13,32 +13,6 @@
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
     initExtra = ''
-      module_path=("${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}/${pkgs.zsh.pname}" $module_path)
-      ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
-      [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-      [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-      source "''${ZINIT_HOME}/zinit.zsh"
-
-      zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
-      zinit light sindresorhus/pure
-
-      zinit ice wait lucid
-      zinit light zsh-users/zsh-completions
-      zinit light Aloxaf/fzf-tab
-
-      zstyle ':fzf-tab:*' use-fzf-default-opts yes
-
-      zinit light sunlei/zsh-ssh
-
-      zi snippet OMZP::git
-      zi snippet OMZP::kubectl
-      zi snippet OMZP::dotnet
-      zi snippet OMZP::docker
-      zi snippet OMZP::docker-compose
-      zi snippet OMZP::deno
-      zi snippet OMZP::bun
-      zi snippet OMZP::rbw
-    '' + ''
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
 
@@ -50,8 +24,44 @@
     '' + ''
       setopt HIST_REDUCE_BLANKS;
       setopt INC_APPEND_HISTORY;
+    '' + ''
+      # module_path=("${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}/${pkgs.zsh.pname}" $module_path)
+      ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
+      [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+      [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+      source "''${ZINIT_HOME}/zinit.zsh"
+
+      zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
+      zinit light sindresorhus/pure
+
+      zinit light nix-community/nix-zsh-completions
+      zinit light zsh-users/zsh-completions
+      zinit light sunlei/zsh-ssh
+      zinit light Aloxaf/fzf-tab
+
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
+      zinit snippet OMZP::git
+      zinit snippet OMZP::kubectl
+      zinit snippet OMZP::dotnet
+      zinit snippet OMZP::docker
+      zinit snippet OMZP::docker-compose
+      zinit snippet OMZP::deno
+      zinit snippet OMZP::bun
+      zinit snippet OMZP::rbw
+
+      bw completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_bw"
+      uv generate-shell-completion zsh > "$ZINIT[COMPLETIONS_DIR]/_uv"
+      wezterm shell-completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_wezterm"
+      cp -f "${pkgs.fd}/share/zsh/site-functions/_fd" > "$ZINIT[COMPLETIONS_DIR]/_fd"
+      rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
+
+      # zinit snippet https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh
+      # To complete completions installation
+      zicompinit
     '';
   };
+
   home.sessionVariables = {
     ZPLUG_HOME = config.programs.zsh.zplug.zplugHome;
     HISTFILE = config.programs.zsh.history.path;
