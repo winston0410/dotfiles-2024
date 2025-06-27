@@ -1,14 +1,5 @@
 return {
 	{
-		"zeioth/garbage-day.nvim",
-		dependencies = {},
-		event = { "VeryLazy" },
-		opts = {
-			wakeup_delay = 250,
-			grace_period = 60 * 10,
-		},
-	},
-	{
 		"nvimtools/none-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action", "ThePrimeagen/refactoring.nvim" },
 		event = { "BufReadPre", "BufNewFile" },

@@ -13,6 +13,9 @@
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
     initExtra = ''
+      # Set module path, so zsh can load *.so from /nix/store correctly
+      module_path="${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}"
+
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
 
@@ -25,7 +28,6 @@
       setopt HIST_REDUCE_BLANKS;
       setopt INC_APPEND_HISTORY;
     '' + ''
-      # module_path=("${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}/${pkgs.zsh.pname}" $module_path)
       ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
       [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
@@ -34,6 +36,9 @@
       zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
       zinit light sindresorhus/pure
 
+      zinit ice lucid wait
+      zinit light Aloxaf/fzf-tab
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
       zinit lucid wait for \
         nix-community/nix-zsh-completions \
@@ -54,11 +59,10 @@
       cp -f "${pkgs.fd}/share/zsh/site-functions/_fd" "$ZINIT[COMPLETIONS_DIR]/_fd"
       rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
 
-      # zinit snippet https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh
-
-      zinit ice lucid wait
-      zinit light Aloxaf/fzf-tab
-      zstyle ':fzf-tab:*' use-fzf-default-opts yes
+      # no idea why chafa completion does not work
+      zinit as"completion" lucid wait for \
+        https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh \
+        https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
 
       # To complete completions installation, run zicompinit
       zinit for \

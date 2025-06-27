@@ -47,6 +47,7 @@ require("lazy").setup({
 
 		{
 			"chentoast/marks.nvim",
+			enabled = false,
 			event = { "VeryLazy" },
 			commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
 			keys = {
