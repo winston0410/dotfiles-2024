@@ -34,21 +34,19 @@
       zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
       zinit light sindresorhus/pure
 
-      zinit light nix-community/nix-zsh-completions
-      zinit light zsh-users/zsh-completions
-      zinit light sunlei/zsh-ssh
-      zinit light Aloxaf/fzf-tab
 
-      zstyle ':fzf-tab:*' use-fzf-default-opts yes
-
-      zinit snippet OMZP::git
-      zinit snippet OMZP::kubectl
-      zinit snippet OMZP::dotnet
-      zinit snippet OMZP::docker
-      zinit snippet OMZP::docker-compose
-      zinit snippet OMZP::deno
-      zinit snippet OMZP::bun
-      zinit snippet OMZP::rbw
+      zinit lucid wait for \
+        nix-community/nix-zsh-completions \
+        zsh-users/zsh-completions \
+        sunlei/zsh-ssh \
+        OMZP::kubectl \
+        OMZP::rbw \
+        OMZP::bun \
+        OMZP::deno \
+        OMZP::docker \
+        OMZP::docker-compose \
+        OMZP::dotnet \
+        OMZP::git
 
       bw completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_bw"
       uv generate-shell-completion zsh > "$ZINIT[COMPLETIONS_DIR]/_uv"
@@ -57,8 +55,14 @@
       rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
 
       # zinit snippet https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh
-      # To complete completions installation
-      zicompinit
+
+      zinit ice lucid wait
+      zinit light Aloxaf/fzf-tab
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
+      # To complete completions installation, run zicompinit
+      zinit for \
+        lucid wait"1" atload"zicompinit; zicdreplay" OMZP::rbw
     '';
   };
 

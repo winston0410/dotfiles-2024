@@ -50,7 +50,7 @@
         sha256 = "sha256-Q4Q07f0v+yH/qUQiv7hIWEwVC9te9lfv3nXIFY7l6hw=";
       };
 
-      cargoSha256 = "sha256-LgkSJsp2MxrmRmM+FC/Yrp/RzYSY4FesEC4NstV47So=";
+      cargoHash = "sha256-LgkSJsp2MxrmRmM+FC/Yrp/RzYSY4FesEC4NstV47So=";
 
       meta = with pkgs.lib; {
         description = "systemd language server for systemd unit files";
