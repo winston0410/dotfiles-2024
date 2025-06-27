@@ -135,6 +135,20 @@ return {
 					},
 				},
 			})
+			vim.lsp.config("config_lsp", {
+				capabilities = capabilities,
+				cmd = { "config-lsp" },
+				filetypes = {
+					"sshconfig",
+					"sshdconfig",
+					"fstab",
+					"aliases",
+					"mailaliases",
+					-- Matches wireguard configs and /etc/hosts
+					"conf",
+				},
+			})
+			vim.lsp.enable("config_lsp")
 
 			lspconfig.elixirls.setup({
 				cmd = { "elixir-ls" },

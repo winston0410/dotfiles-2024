@@ -10,6 +10,8 @@
     flake-parts.follows = "proxy-flake/flake-parts";
     sops-nix.follows = "proxy-flake/sops-nix";
 
+    config-lsp.url = "github:Myzel394/config-lsp";
+
     unstable.url = "github:nixos/nixpkgs";
 
     nixd.url =
@@ -30,7 +32,7 @@
     nixpkgs-firefox-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, rust-overlay
+  outputs = { self, nixpkgs, unstable, home-manager, darwin, rust-overlay
     , sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
 
     let
