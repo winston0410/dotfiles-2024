@@ -40,10 +40,12 @@
       zinit light Aloxaf/fzf-tab
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
+      # This will break completions for other ssh related utilities
+      # sunlei/zsh-ssh \
+
       zinit lucid wait for \
         nix-community/nix-zsh-completions \
         zsh-users/zsh-completions \
-        sunlei/zsh-ssh \
         OMZP::kubectl \
         OMZP::rbw \
         OMZP::bun \
