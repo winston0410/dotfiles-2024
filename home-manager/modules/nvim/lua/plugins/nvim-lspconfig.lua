@@ -24,6 +24,20 @@ return {
 		end,
 	},
 	{
+		"rachartier/tiny-code-action.nvim",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
+			{
+				"folke/snacks.nvim",
+			},
+		},
+		event = "LspAttach",
+		opts = {
+			backend = "vim",
+			picker = "snacks",
+		},
+	},
+	{
 		"neovim/nvim-lspconfig",
 		enabled = true,
 		version = "2.x",
@@ -299,12 +313,9 @@ return {
 						vim.lsp.buf.rename,
 						{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
 					)
-					vim.keymap.set(
-						{ "n", "x" },
-						"<leader>s6",
-						vim.lsp.buf.code_action,
-						{ silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" }
-					)
+					vim.keymap.set({ "n", "x" }, "<leader>s6", function()
+						require("tiny-code-action").code_action({})
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" })
 					pcall(function()
 						-- Remove default keybinding added by lspconfig
 						-- REF https://neovim.io/doc/user/lsp.html#lsp-config
