@@ -1,4 +1,73 @@
 local render_markdown_ft = { "markdown", "codecompanion" }
+
+local get_api_key = function(key)
+	if vim.env.BW_SESSION == nil then
+		local uname = vim.loop.os_uname()
+		local master_pwd
+
+		if uname.sysname == "Linux" then
+			local res = vim.system({
+				"secret-tool",
+				"lookup",
+				"service",
+				"vaultwarden.28281428.xyz",
+			}, { text = true }):wait()
+
+			if res.code ~= 0 then
+				vim.notify(
+					string.format("Failed to get master password for Bitwarden: %s", res.stderr),
+					vim.log.levels.ERROR
+				)
+				return
+			end
+			master_pwd = vim.trim(res.stdout)
+		elseif uname.sysname == "Darwin" then
+			local res = vim.system({
+				"security",
+				"find-internet-password",
+				"-s",
+				"vaultwarden.28281428.xyz",
+				"-w",
+			}, { text = true }):wait()
+
+			if res.code ~= 0 then
+				vim.notify(
+					string.format("Failed to get master password for Bitwarden: %s", res.stderr),
+					vim.log.levels.ERROR
+				)
+				return
+			end
+			master_pwd = vim.trim(res.stdout)
+		else
+			vim.notify(
+				"Unknown OS detected when getting API key for CodeCompanion: " .. uname.sysname,
+				vim.log.levels.ERROR
+			)
+			return
+		end
+
+		local unlock_res = vim.system({
+			"bw",
+			"unlock",
+			master_pwd,
+			"--raw",
+		}, { text = true }):wait()
+
+		local session_key = vim.trim(unlock_res.stdout)
+		vim.env.BW_SESSION = session_key
+	end
+
+	local pwd_res = vim.system({
+		"bw",
+		"get",
+		"password",
+		key,
+	}, {
+		text = true,
+	}):wait()
+
+	return pwd_res.stdout
+end
 return {
 	{
 		"olimorris/codecompanion.nvim",
@@ -62,7 +131,7 @@ return {
 					gemini = function()
 						return require("codecompanion.adapters").extend("gemini", {
 							env = {
-								api_key = "cmd:bw get password GEMINI_API_KEY | xargs",
+								api_key = get_api_key("GEMINI_API_KEY"),
 							},
 							schema = {
 								model = {

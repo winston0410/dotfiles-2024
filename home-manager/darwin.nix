@@ -33,16 +33,6 @@
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
-
-    vaultwarden_password="$(security find-internet-password -s 'vaultwarden.28281428.xyz' -w)"
-    BW_SESSION_OUTPUT=$(bw unlock "$vaultwarden_password" --raw)
-    if [ $? -eq 0 ]; then
-        echo "Successfully unlocked Bitwarden vault"
-    else 
-        echo "Error: Failed to unlock Bitwarden vault"
-    fi
-
-    export BW_SESSION="$BW_SESSION_OUTPUT"
   '');
 
   home = {

@@ -29,17 +29,7 @@
     homeDirectory = "/home/kghugo";
   };
 
-  programs.zsh.initExtra = lib.mkBefore (''
-    vaultwarden_password="$(secret-tool lookup service 'vaultwarden.28281428.xyz')"
-    BW_SESSION_OUTPUT=$(bw unlock "$vaultwarden_password" --raw)
-    if [ $? -eq 0 ]; then
-        echo "Successfully unlocked Bitwarden vault"
-    else 
-        echo "Error: Failed to unlock Bitwarden vault"
-    fi
-
-    export BW_SESSION="$BW_SESSION_OUTPUT"
-  '');
+  programs.zsh.initExtra = lib.mkBefore "";
 
   home.packages = with pkgs; [
     dconf-editor
