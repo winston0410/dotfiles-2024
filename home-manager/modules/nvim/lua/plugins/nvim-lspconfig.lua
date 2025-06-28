@@ -112,6 +112,19 @@ return {
 				)
 			end
 
+			vim.lsp.config("config_lsp", {
+				cmd = { "config-lsp" },
+				filetypes = {
+					"sshconfig",
+					"sshdconfig",
+					"fstab",
+					"aliases",
+					"mailaliases",
+					-- Matches wireguard configs and /etc/hosts
+					"conf",
+				},
+			})
+
 			vim.lsp.config("ts_ls", {
 				init_options = {
 					plugins = ts_ls_plugins,
@@ -252,6 +265,7 @@ return {
 				"elixirls",
 				"dockerls",
 				"lua_ls",
+				"config_lsp",
 			}
 			vim.lsp.enable(servers, true)
 
