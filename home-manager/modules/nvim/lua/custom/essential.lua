@@ -295,11 +295,6 @@ if vim.fn.has("wsl") == 1 then
 	}
 end
 
--- Just to experiment the new LSP settings API in 0.11.0
--- vim.lsp.enable({
--- 	"lua_ls",
--- })
-
 -- REF https://neovim.io/doc/user/lsp.html#lsp-semantic-highlight
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
