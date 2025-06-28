@@ -107,7 +107,12 @@ return {
 				},
 				per_filetype = {
 					gitcommit = { inherit_defaults = true, "conventional_commits" },
-					markdown = { inherit_defaults = true, "thesaurus", "dictionary" },
+					markdown = {
+						inherit_defaults = true,
+						"thesaurus",
+						-- disable this now, as it makes the UI laggy
+						-- "dictionary"
+					},
 					codecompanion = { inherit_defaults = false, "codecompanion" },
 				},
 				min_keyword_length = function(ctx)
