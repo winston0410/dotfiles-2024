@@ -34,6 +34,13 @@ sudo echo 'extra-experimental-features = nix-command flakes' > /etc/nix/nix.conf
 nix run home-manager/release-24.11 -- --flake .#wsl switch
 ```
 
+### Using `nh` 
+
+```sh 
+nh home build . -c darwin
+```
+
+
 ## Switch nixos system
 
 ```sh
