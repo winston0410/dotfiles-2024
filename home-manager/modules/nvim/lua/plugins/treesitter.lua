@@ -21,16 +21,6 @@ return {
 			installer.prefer_git = true
 
 			---@diagnostic disable-next-line: inject-field
-			parser_config.ejs = {
-				install_info = {
-					branch = "master",
-					url = "https://github.com/tree-sitter/tree-sitter-embedded-template",
-					files = { "src/parser.c" },
-				},
-				filetype = "ejs",
-				used_by = { "erb" },
-			}
-			---@diagnostic disable-next-line: inject-field
 			parser_config.make = {
 				install_info = {
 					branch = "main",
