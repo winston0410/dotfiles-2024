@@ -111,6 +111,10 @@ return {
 					vim.log.levels.WARN
 				)
 			end
+			vim.lsp.config("systemd_lsp", {
+				cmd = { "systemd-lsp" },
+				filetypes = { "systemd" },
+			})
 
 			vim.lsp.config("config_lsp", {
 				cmd = { "config-lsp" },
@@ -266,6 +270,7 @@ return {
 				"dockerls",
 				"lua_ls",
 				"config_lsp",
+				"systemd_lsp",
 			}
 			vim.lsp.enable(servers, true)
 

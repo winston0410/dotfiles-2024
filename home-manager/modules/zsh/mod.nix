@@ -15,6 +15,8 @@
     initExtra = ''
       # Set module path, so zsh can load *.so from /nix/store correctly
       module_path="${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}"
+      # Add nix generated shell completions to fpath
+      fpath+=("$HOME/.nix-profile/share/zsh/site-functions")
 
       bindkey '^P' up-line-or-history;
       bindkey '^N' down-line-or-history;
@@ -44,22 +46,16 @@
       # sunlei/zsh-ssh \
 
       zinit lucid wait for \
-        nix-community/nix-zsh-completions \
         zsh-users/zsh-completions \
         OMZP::kubectl \
         OMZP::rbw \
         OMZP::bun \
-        OMZP::deno \
         OMZP::docker \
         OMZP::docker-compose \
         OMZP::dotnet \
         OMZP::git
 
       bw completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_bw"
-      uv generate-shell-completion zsh > "$ZINIT[COMPLETIONS_DIR]/_uv"
-      wezterm shell-completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_wezterm"
-      cp -f "${pkgs.fd}/share/zsh/site-functions/_fd" "$ZINIT[COMPLETIONS_DIR]/_fd"
-      rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
 
       # no idea why chafa completion does not work
       zinit as"completion" lucid wait for \
