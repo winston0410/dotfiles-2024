@@ -13,7 +13,7 @@ return {
 			vim.cmd("TSUpdate")
 		end,
 		lazy = false,
-		priority = 999,
+		priority = 98,
 		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		config = function()
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()

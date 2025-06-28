@@ -3,7 +3,7 @@ return {
 		"Shatur/neovim-session-manager",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		lazy = false,
-		priority = 998,
+		priority = 89,
 		enabled = vim.g.enable_session,
 		config = function()
 			local config = require("session_manager.config")

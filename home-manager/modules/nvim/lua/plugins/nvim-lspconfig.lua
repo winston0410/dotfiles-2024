@@ -41,18 +41,136 @@ return {
 		"neovim/nvim-lspconfig",
 		enabled = true,
 		version = "2.x",
+		lazy = false,
 		-- Reference the lazyload event from LazyVim
 		-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
-		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			local lspconfig = require("lspconfig")
-			local util = require("lspconfig.util")
-
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+			})
+
+			vim.lsp.config("yamlls", {
+				settings = {
+					redhat = {
+						telemetry = {
+							enabled = false,
+						},
+					},
+				},
+			})
+
+			vim.lsp.config("elixirls", {
+				cmd = { "elixir-ls" },
+			})
+
+			vim.lsp.config("kulala_ls", {
+				filetypes = { "http", "rest" },
+			})
+
+			vim.lsp.config("dockerls", {
+				settings = {
+					docker = {
+						languageserver = {
+							formatter = {
+								ignoreMultilineInstructions = true,
+							},
+						},
+					},
+				},
+			})
+
+			local ok, vue_language_server_path = pcall(function()
+				local res = vim.system({ "which", "vue-language-server" }, { text = true }):wait()
+				if res.code ~= 0 then
+					return error(res.stdout)
+				end
+				res.stdout = res.stdout:gsub("\n", "")
+				res = vim.system({ "nix", "path-info", res.stdout }, { text = true }):wait()
+
+				if res.code ~= 0 then
+					return error(res.stdout)
+				end
+				return res.stdout:gsub("\n", "")
+			end)
+
+			local ts_ls_plugins = {}
+
+			if ok then
+				table.insert(ts_ls_plugins, {
+					name = "@vue/typescript-plugin",
+					location = vim.fs.joinpath(vue_language_server_path, "node_modules", "@vue", "typescript-plugin"),
+					languages = { "javascript", "typescript", "vue" },
+				})
+			else
+				vim.notify(
+					string.format("Failed to set up @vue/typescript-plugin: %s", vue_language_server_path),
+					vim.log.levels.WARN
+				)
+			end
+
+			vim.lsp.config("ts_ls", {
+				init_options = {
+					plugins = ts_ls_plugins,
+				},
+				filetypes = {
+					"javascript",
+					"typescript",
+					"vue",
+				},
+			})
+			vim.lsp.config("lua_ls", {
+				diagnostics = {
+					underline = true,
+					update_in_insert = true,
+					severity_sort = true,
+				},
+				on_init = function(client)
+					if client.workspace_folders then
+						local path = client.workspace_folders[1].name
+						if
+							path ~= vim.fn.stdpath("config")
+							and (vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc"))
+						then
+							return
+						end
+					end
+				end,
+				settings = {
+					Lua = {
+						runtime = {
+							version = "LuaJIT",
+						},
+						workspace = {
+							checkThirdParty = false,
+							library = {},
+						},
+						diagnostics = {
+							globals = {},
+						},
+						telemetry = {
+							enable = false,
+						},
+						hint = { enable = true },
+					},
+				},
+				inlay_hints = {
+					enabled = true,
+					exclude = {},
+				},
+				codelens = {
+					enabled = true,
+				},
+				document_highlight = {
+					enabled = true,
+				},
+			})
+
 			local servers = {
+				"denols",
 				"azure_pipelines_ls",
 				"pest_ls",
 				"nxls",
@@ -128,141 +246,14 @@ return {
 				"ltex",
 				"csharp_ls",
 				"tsp_server",
+				"yamlls",
+				"kulala_ls",
+				"ts_ls",
+				"elixirls",
+				"dockerls",
+				"lua_ls",
 			}
-
-			for _, server in ipairs(servers) do
-				lspconfig[server].setup({
-					on_init = function(client)
-						-- NOTE use only Treesitter for syntax highlight
-						client.server_capabilities.semanticTokensProvider = nil
-					end,
-					capabilities = capabilities,
-				})
-			end
-
-			vim.lsp.config("yamlls", {
-				settings = {
-					redhat = {
-						telemetry = {
-							enabled = false,
-						},
-					},
-				},
-			})
-
-			lspconfig.elixirls.setup({
-				cmd = { "elixir-ls" },
-				capabilities = capabilities,
-			})
-
-			lspconfig.kulala_ls.setup({
-				capabilities = capabilities,
-				filetypes = { "http", "rest" },
-			})
-
-			lspconfig.dockerls.setup({
-				capabilities = capabilities,
-				settings = {
-					docker = {
-						languageserver = {
-							formatter = {
-								ignoreMultilineInstructions = true,
-							},
-						},
-					},
-				},
-			})
-
-			local ok, vue_language_server_path = pcall(function()
-				local res = vim.system({ "which", "vue-language-server" }, { text = true }):wait()
-				if res.code ~= 0 then
-					return error(res.stdout)
-				end
-				res.stdout = res.stdout:gsub("\n", "")
-				res = vim.system({ "nix", "path-info", res.stdout }, { text = true }):wait()
-
-				if res.code ~= 0 then
-					return error(res.stdout)
-				end
-				return res.stdout:gsub("\n", "")
-			end)
-
-			local ts_ls_plugins = {}
-
-			if ok then
-				table.insert(ts_ls_plugins, {
-					name = "@vue/typescript-plugin",
-					location = vim.fs.joinpath(vue_language_server_path, "node_modules", "@vue", "typescript-plugin"),
-					languages = { "javascript", "typescript", "vue" },
-				})
-			else
-				vim.notify(
-					string.format("Failed to set up @vue/typescript-plugin: %s", vue_language_server_path),
-					vim.log.levels.WARN
-				)
-			end
-
-			lspconfig.ts_ls.setup({
-				init_options = {
-					plugins = ts_ls_plugins,
-				},
-				filetypes = {
-					"javascript",
-					"typescript",
-					"vue",
-				},
-			})
-			lspconfig.denols.setup({
-				capabilities = capabilities,
-				root_dir = util.root_pattern("deno.json", "deno.jsonc"),
-			})
-			lspconfig.lua_ls.setup({
-				diagnostics = {
-					underline = true,
-					update_in_insert = true,
-					severity_sort = true,
-				},
-				capabilities = capabilities,
-				on_init = function(client)
-					if client.workspace_folders then
-						local path = client.workspace_folders[1].name
-						if
-							path ~= vim.fn.stdpath("config")
-							and (vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc"))
-						then
-							return
-						end
-					end
-				end,
-				settings = {
-					Lua = {
-						runtime = {
-							version = "LuaJIT",
-						},
-						workspace = {
-							checkThirdParty = false,
-							library = {},
-						},
-						diagnostics = {
-							globals = {},
-						},
-						telemetry = {
-							enable = false,
-						},
-						hint = { enable = true },
-					},
-				},
-				inlay_hints = {
-					enabled = true,
-					exclude = {},
-				},
-				codelens = {
-					enabled = true,
-				},
-				document_highlight = {
-					enabled = true,
-				},
-			})
+			vim.lsp.enable(servers, true)
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),

@@ -299,3 +299,12 @@ end
 -- vim.lsp.enable({
 -- 	"lua_ls",
 -- })
+
+-- REF https://neovim.io/doc/user/lsp.html#lsp-semantic-highlight
+vim.api.nvim_create_autocmd("ColorScheme", {
+	callback = function()
+		for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+			vim.api.nvim_set_hl(0, group, {})
+		end
+	end,
+})
