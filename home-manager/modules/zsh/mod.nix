@@ -47,8 +47,6 @@
 
       zinit lucid wait for \
         zsh-users/zsh-completions \
-        OMZP::kubectl \
-        OMZP::rbw \
         OMZP::bun \
         OMZP::docker \
         OMZP::docker-compose \
