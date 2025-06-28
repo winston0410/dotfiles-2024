@@ -74,6 +74,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			"ravitemer/codecompanion-history.nvim",
 			{
 				"ravitemer/mcphub.nvim",
 				dependencies = {
@@ -122,7 +123,7 @@ return {
 			},
 		},
 		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
-		version = "15.x",
+		version = "17.x",
 		config = function()
 			require("codecompanion").setup({
 				auto_approve = true,
@@ -148,6 +149,12 @@ return {
 							show_result_in_chat = true,
 							make_vars = true,
 							make_slash_commands = true,
+						},
+					},
+					history = {
+						enabled = true,
+						opts = {
+							picker = "snacks",
 						},
 					},
 				},
