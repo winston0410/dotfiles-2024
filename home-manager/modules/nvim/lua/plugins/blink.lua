@@ -51,7 +51,7 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "thesaurus", "lsp", "path", "snippets", "buffer", "omni", "conventional_commits", "emoji" },
+				default = { "lsp", "path", "snippets", "buffer", "omni", "emoji" },
 				providers = {
 					emoji = {
 						module = "blink-emoji",
@@ -67,6 +67,15 @@ return {
 						should_show_items = function()
 							return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
 						end,
+					},
+					dictionary = {
+						name = "blink-cmp-words",
+						module = "blink-cmp-words.dictionary",
+						opts = {
+							dictionary_search_threshold = 3,
+							score_offset = 0,
+							pointer_symbols = { "!", "&", "^" },
+						},
 					},
 					thesaurus = {
 						name = "blink-cmp-words",
@@ -89,14 +98,16 @@ return {
 						name = "Conventional Commits",
 						module = "blink-cmp-conventional-commits",
 						enabled = function()
-							return vim.bo.filetype == "gitcommit"
+							return true
 						end,
 						---@module 'blink-cmp-conventional-commits'
 						---@type blink-cmp-conventional-commits.Options
-						opts = {}, -- none so far
+						opts = {},
 					},
 				},
 				per_filetype = {
+					gitcommit = { inherit_defaults = true, "conventional_commits" },
+					markdown = { inherit_defaults = true, "thesaurus", "dictionary" },
 					codecompanion = { inherit_defaults = false, "codecompanion" },
 				},
 				min_keyword_length = function(ctx)

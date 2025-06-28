@@ -4,7 +4,7 @@
   # REF https://github.com/Mic92/sops-nix
   # investigate later
   inputs = {
-    proxy-flake.url = "github:winston0410/proxy-flake?main";
+    proxy-flake.url = "github:winston0410/proxy-flake/release-24.11";
     nixpkgs.follows = "proxy-flake/nixpkgs";
     nur.follows = "proxy-flake/nur";
     flake-parts.follows = "proxy-flake/flake-parts";
@@ -15,6 +15,8 @@
     nixd.url =
       # unstable
       "github:nix-community/nixd";
+    config-lsp.url = "github:Myzel394/config-lsp";
+    config-lsp.inputs.nixpkgs.follows = "nixpkgs";
 
     darwin.url = "github:lnl7/nix-darwin";
 

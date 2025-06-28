@@ -29,6 +29,7 @@
     pkgs.jsonnet-language-server
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${system}.default
+    inputs.config-lsp.packages.${system}.default
     pkgs.ansible-language-server
     pkgs.beancount-language-server
     pkgs.texlab
