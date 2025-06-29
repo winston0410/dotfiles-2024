@@ -85,7 +85,7 @@ return {
 				build = "bundled_build.lua",
 				config = function()
 					require("mcphub").setup({
-						auto_approve = true,
+						auto_approve = false,
 						use_bundled_binary = true,
 						port = 3000,
 						config = vim.fn.expand("~/.config/mcphub/servers.json"),
@@ -129,6 +129,13 @@ return {
 				auto_approve = true,
 				-- https://codecompanion.olimorris.dev/configuration/adapters.html#changing-a-model
 				adapters = {
+					-- copilot = function()
+					-- 	return require("codecompanion.adapters").extend("copilot", {
+					-- 		env = {
+					-- 			api_key = get_api_key("COPILOT_API_KEY"),
+					-- 		},
+					-- 	})
+					-- end,
 					gemini = function()
 						return require("codecompanion.adapters").extend("gemini", {
 							env = {

@@ -16,6 +16,7 @@
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
     ./modules/nix/mod.nix
+    ./modules/mcphub/mod.nix
     # Firefox just won't start
     # ./modules/firefox/mod.nix
   ];
