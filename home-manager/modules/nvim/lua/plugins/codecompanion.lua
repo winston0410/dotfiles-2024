@@ -1,6 +1,10 @@
 local render_markdown_ft = { "markdown", "codecompanion" }
 
 local get_api_key = function(key)
+	if vim.env[key] ~= nil then
+		return vim.env[key]
+	end
+
 	if vim.env.BW_SESSION == nil then
 		local uname = vim.loop.os_uname()
 		local master_pwd
@@ -66,7 +70,10 @@ local get_api_key = function(key)
 		text = true,
 	}):wait()
 
-	return pwd_res.stdout
+	local pwd = pwd_res.stdout
+	vim.env[key] = pwd
+
+	return pwd
 end
 return {
 	{
