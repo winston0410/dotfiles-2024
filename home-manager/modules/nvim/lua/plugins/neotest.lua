@@ -15,7 +15,6 @@ return {
 			"nvim-neotest/neotest-plenary",
 			"nsidorenco/neotest-vstest",
 			"jfpedroza/neotest-elixir",
-			"mrcjkb/neotest-haskell",
 			"olimorris/neotest-rspec",
 			"rcasia/neotest-bash",
 			"olimorris/neotest-phpunit",
@@ -32,7 +31,6 @@ return {
 					require("neotest-plenary"),
 					require("neotest-bash"),
 					require("neotest-rspec"),
-					require("neotest-haskell"),
 					require("neotest-jest")({
 						jestCommand = "npm test --",
 						jestConfigFile = "custom.jest.config.ts",
