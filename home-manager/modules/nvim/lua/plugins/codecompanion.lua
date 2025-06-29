@@ -136,6 +136,18 @@ return {
 					-- 		},
 					-- 	})
 					-- end,
+					tavily = function()
+						return require("codecompanion.adapters").extend("gemini", {
+							env = {
+								api_key = get_api_key("TAVILY_API_KEY"),
+							},
+							schema = {
+								model = {
+									default = "gemini-2.5-flash",
+								},
+							},
+						})
+					end,
 					gemini = function()
 						return require("codecompanion.adapters").extend("gemini", {
 							env = {
@@ -162,6 +174,7 @@ return {
 						enabled = true,
 						opts = {
 							picker = "snacks",
+							expiration_days = 30,
 						},
 					},
 				},

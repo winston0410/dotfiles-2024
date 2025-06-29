@@ -12,6 +12,7 @@ return {
 		"winston0410/oil.nvim",
 		lazy = false,
 		cmd = { "Oil" },
+		branch = "feat/handle-buffer-callback",
 		keys = {
 			{
 				"<leader>o",
