@@ -68,9 +68,11 @@ return {
 			})
 
 			vim.lsp.config("denols", {
+				workspace_required = true,
 				root_markers = { "deno.json", "deno.jsonc" },
 			})
 			vim.lsp.config("angularls", {
+				workspace_required = true,
 				root_markers = { "angular.json" },
 			})
 
