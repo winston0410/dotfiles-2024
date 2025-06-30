@@ -221,6 +221,7 @@ return {
 				"lemminx",
 				"html",
 				"cssls",
+				"tailwindcss",
 				"jsonls",
 				"jsonnet_ls",
 				"leanls",
