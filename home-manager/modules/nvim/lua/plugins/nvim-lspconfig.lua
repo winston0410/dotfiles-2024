@@ -67,6 +67,13 @@ return {
 				cmd = { "elixir-ls" },
 			})
 
+			vim.lsp.config("denols", {
+				root_markers = { "deno.json", "deno.jsonc" },
+			})
+			vim.lsp.config("angularls", {
+				root_markers = { "angular.json" },
+			})
+
 			vim.lsp.config("kulala_ls", {
 				filetypes = { "http", "rest" },
 			})
