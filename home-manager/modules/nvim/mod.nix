@@ -44,6 +44,9 @@
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       # img-clip.nvim
       pkgs.pngpaste
+    ] ++ lib.optionals pkgs.stdenv.isLinux [
+      # vectorcode, cannot build on Darwin yet
+      unstable.vectorcode
     ];
 
   home.sessionVariables = {

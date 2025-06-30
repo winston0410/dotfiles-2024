@@ -213,6 +213,7 @@ return {
 				"vacuum",
 				"unocss",
 				"mint",
+				"roslyn_ls",
 				"bicep",
 				"ansiblels",
 				"vala_ls",
@@ -271,7 +272,6 @@ return {
 				"ballerina",
 				"bitbake_ls",
 				"ltex",
-				"csharp_ls",
 				"tsp_server",
 				"yamlls",
 				"kulala_ls",
@@ -281,6 +281,9 @@ return {
 				"lua_ls",
 				"config_lsp",
 				"systemd_lsp",
+				"openscad_lsp",
+				"ziggy_schema",
+				"ziggy",
 			}
 			vim.lsp.enable(servers, true)
 

@@ -81,6 +81,12 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
+			{
+				"Davidyz/VectorCode",
+				version = "*",
+				dependencies = { "nvim-lua/plenary.nvim" },
+				cmd = "VectorCode",
+			},
 			"ravitemer/codecompanion-history.nvim",
 			{
 				"ravitemer/mcphub.nvim",
@@ -184,6 +190,7 @@ return {
 							expiration_days = 30,
 						},
 					},
+					vectorcode = {},
 				},
 				strategies = {
 					chat = {

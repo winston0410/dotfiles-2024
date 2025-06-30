@@ -101,7 +101,7 @@ return {
 				desc = "Pick window",
 			},
 			{
-				"x<leader>w",
+				"<leader>wx",
 				function()
 					local to_win_id = require("window-picker").pick_window()
 					if to_win_id == nil then

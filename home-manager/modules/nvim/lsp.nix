@@ -5,8 +5,8 @@
     pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools
-    pkgs.csharp-ls
     pkgs.rust-analyzer
+    pkgs.roslyn-ls
     unstable.gopls
     pkgs.vue-language-server
     pkgs.ccls
