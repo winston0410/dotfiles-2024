@@ -5,6 +5,7 @@ return {
 		dependencies = {
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
+			"Issafalcon/neotest-dotnet",
 			"nvim-treesitter/nvim-treesitter",
 			-- neotest integration
 			"thenbe/neotest-playwright",
@@ -27,6 +28,7 @@ return {
 				floating = {},
 				default_strategy = "integrated",
 				adapters = {
+					require("neotest-dotnet"),
 					require("neotest-phpunit"),
 					require("neotest-plenary"),
 					require("neotest-bash"),
