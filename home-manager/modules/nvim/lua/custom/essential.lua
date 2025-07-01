@@ -148,8 +148,8 @@ end, { remap = true, silent = true, desc = "Open terminal" })
 
 local clear_buffer_keybinding = "<leader>bc"
 local delete_buffer_keybinding = "<leader>bq"
-local next_buffer_keybinding = "<leader>bi"
-local prev_buffer_keybinding = "<leader>bo"
+local next_buffer_keybinding = "<leader>bo"
+local prev_buffer_keybinding = "<leader>bi"
 vim.keymap.set({ "n" }, clear_buffer_keybinding, function()
 	-- TODO
 end, { silent = true, noremap = true, desc = "Unload other buffers" })
@@ -224,6 +224,9 @@ vim.keymap.set(
 	"<C-w>=",
 	{ silent = true, noremap = true, desc = "Reset all split size to be identical" }
 )
+vim.keymap.set({ "n" }, "<C-o>", "<C-i>", { silent = true, noremap = true, desc = "Jump forward" })
+vim.keymap.set({ "n" }, "<C-i>", "<C-o>", { silent = true, noremap = true, desc = "Jump backward" })
+
 vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to left split" })
 vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
@@ -253,12 +256,12 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<leader>tv", function()
 	vim.cmd("tabnew")
 end, { silent = true, noremap = true, desc = "Create a new tab" })
-vim.keymap.set({ "n" }, "<leader>ti", "gt", {
+vim.keymap.set({ "n" }, "<leader>to", "gt", {
 	silent = true,
 	noremap = true,
 	desc = "Go to the next tab page",
 })
-vim.keymap.set({ "n" }, "<leader>to", "gT", {
+vim.keymap.set({ "n" }, "<leader>ti", "gT", {
 	silent = true,
 	noremap = true,
 	desc = "Go to the previous tab page",
