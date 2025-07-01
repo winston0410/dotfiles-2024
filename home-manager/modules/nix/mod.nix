@@ -16,12 +16,7 @@
   };
 
   news = { display = "show"; };
-  home.packages = with pkgs;
-    [
-      # FIXME wait for this to resolve https://github.com/NixOS/nixpkgs/issues/339576
-      # bitwarden-cli
-      sqlite
-    ];
+  home.packages = with pkgs; [ sqlite ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;
 }
