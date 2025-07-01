@@ -1,6 +1,7 @@
 return {
 	{
 		"cbochs/grapple.nvim",
+		version = "0.30.x",
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons", lazy = true },
 		},
@@ -30,7 +31,7 @@ return {
 				desc = "Grapple toggle tags window",
 			},
 			{
-				"<leader>mi",
+				"<leader>mo",
 				function()
 					require("grapple").cycle_tags("next")
 				end,
@@ -39,7 +40,7 @@ return {
 				desc = "Grapple cycle next tag",
 			},
 			{
-				"<leader>mo",
+				"<leader>mi",
 				function()
 					require("grapple").cycle_tags("prev")
 				end,
