@@ -148,7 +148,7 @@ end, { remap = true, silent = true, desc = "Open terminal" })
 
 local clear_buffer_keybinding = "<leader>bc"
 local delete_buffer_keybinding = "<leader>bq"
-local next_buffer_keybinding = "<leader>bp"
+local next_buffer_keybinding = "<leader>bi"
 local prev_buffer_keybinding = "<leader>bo"
 vim.keymap.set({ "n" }, clear_buffer_keybinding, function()
 	-- TODO
@@ -253,15 +253,15 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<leader>tv", function()
 	vim.cmd("tabnew")
 end, { silent = true, noremap = true, desc = "Create a new tab" })
-vim.keymap.set({ "n" }, "<leader>tp", "gt", {
+vim.keymap.set({ "n" }, "<leader>ti", "gt", {
 	silent = true,
 	noremap = true,
-	desc = "Go to the next tab page. Wraps around from the last to the first one.",
+	desc = "Go to the next tab page",
 })
 vim.keymap.set({ "n" }, "<leader>to", "gT", {
 	silent = true,
 	noremap = true,
-	desc = "Go to the previous tab page. Wraps around from the first one to the last one.",
+	desc = "Go to the previous tab page",
 })
 vim.keymap.set({ "n" }, "<leader>tq", function()
 	pcall(function()

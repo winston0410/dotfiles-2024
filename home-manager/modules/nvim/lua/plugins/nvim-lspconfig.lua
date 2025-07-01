@@ -196,6 +196,7 @@ return {
 			})
 
 			local servers = {
+				"codeqlls",
 				"denols",
 				"azure_pipelines_ls",
 				"pest_ls",

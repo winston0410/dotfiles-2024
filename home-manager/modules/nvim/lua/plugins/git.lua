@@ -345,6 +345,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"sindrets/diffview.nvim",
+			"folke/snacks.nvim",
 		},
 		keys = {
 			{
@@ -366,6 +367,7 @@ return {
 			kind = "tab",
 			integrations = {
 				diffview = true,
+				snacks = true,
 			},
 			mappings = {
 				status = {
