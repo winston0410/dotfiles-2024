@@ -148,6 +148,13 @@ return {
 					"vue",
 				},
 			})
+			vim.lsp.config("ltex_plus", {
+				settings = {
+					ltex = {
+						language = "en-GB",
+					},
+				},
+			})
 			vim.lsp.config("lua_ls", {
 				diagnostics = {
 					underline = true,
@@ -272,7 +279,7 @@ return {
 				"regal",
 				"ballerina",
 				"bitbake_ls",
-				"ltex",
+				"ltex_plus",
 				"tsp_server",
 				"yamlls",
 				"kulala_ls",

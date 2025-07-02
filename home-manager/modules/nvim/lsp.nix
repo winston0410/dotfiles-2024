@@ -35,7 +35,7 @@
     pkgs.texlab
     pkgs.tilt
     pkgs.slint-lsp
-    pkgs.ltex-ls
+    unstable.ltex-ls-plus
     pkgs.angular-language-server
     pkgs.shellcheck
     # pkgs.commitlint
