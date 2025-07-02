@@ -33,9 +33,8 @@ return {
 			local show_detail = false
 			local default_columns = {
 				"icon",
-				"permissions",
 			}
-			local detail_columns = vim.list_extend(vim.list_slice(default_columns), { "size", "mtime" })
+			local detail_columns = vim.list_extend(vim.list_slice(default_columns), { "size", "mtime", "permissions" })
 			require("oil").setup({
 				columns = default_columns,
 				constrain_cursor = "editable",
@@ -46,7 +45,16 @@ return {
 							require("oil").select({
 								close = false,
 								handle_buffer_callback = function(buf_id)
-									print("buffer id", buf_id)
+									local oil = require("oil")
+									local entry = oil.get_cursor_entry()
+									if entry == nil then
+										return
+									end
+									if entry.type == "directory" then
+										oil.select()
+										return
+									end
+
 									local picked_window_id = require("window-picker").pick_window({
 										filter_rules = {
 											autoselect_one = false,

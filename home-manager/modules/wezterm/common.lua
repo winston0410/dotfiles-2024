@@ -4,7 +4,7 @@ local M = {}
 
 M.config = {
 	native_macos_fullscreen_mode = true,
-	initial_rows = 36,
+	initial_rows = 32,
 	initial_cols = 120,
 	default_prog = { "zsh" },
 	default_cursor_style = "SteadyBlock",
@@ -16,7 +16,7 @@ M.config = {
 		-- "Mononoki Nerd Font Mono",
 		"Noto Sans Mono CJK HK",
 	}),
-	font_size = 15.5,
+	font_size = 15,
 	enable_tab_bar = true,
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",

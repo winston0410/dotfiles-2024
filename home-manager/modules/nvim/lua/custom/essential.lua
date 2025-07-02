@@ -51,7 +51,7 @@ vim.opt.relativenumber = true
 vim.o.signcolumn = "auto:2"
 vim.o.scrolloff = 8
 vim.opt.sidescrolloff = 16
-vim.o.fillchars = "diff:╱,eob: "
+vim.opt.fillchars:append({ eob = " ", diff = "╱", lastline = " " })
 vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
