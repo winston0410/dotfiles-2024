@@ -97,6 +97,7 @@ return {
 				use_default_keymaps = false,
 				win_options = {
 					wrap = true,
+					signcolumn = "auto:2",
 				},
 				view_options = {
 					show_hidden = true,

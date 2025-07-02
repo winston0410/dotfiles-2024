@@ -113,5 +113,6 @@
   programs.oh-my-posh.enableBashIntegration = true;
   programs.oh-my-posh.enableFishIntegration = true;
   programs.oh-my-posh.enableNushellIntegration = true;
-  programs.oh-my-posh.useTheme = "uew";
+  programs.oh-my-posh.settings =
+    builtins.fromJSON (builtins.readFile ./oh-my-posh-theme.json);
 }

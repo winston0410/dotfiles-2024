@@ -1,7 +1,7 @@
 return {
 	{
 		"lewis6991/gitsigns.nvim",
-		version = "0.9.0",
+		version = "1.x",
 		event = { "VeryLazy" },
 		keys = {
 			-- TODO how to select local diff hunk?????
