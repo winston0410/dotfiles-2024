@@ -36,7 +36,7 @@ return {
 				"terminal",
 				"snacks_terminal",
 				"oil",
-				-- "qf",
+				"qf",
 				"trouble",
 				"DiffviewFileHistory",
 				"DiffviewFiles",
@@ -120,12 +120,12 @@ return {
 					lualine_a = {},
 					lualine_b = {},
 					lualine_c = {
-						{
-							function()
-								return _G.dropbar()
-							end,
-							cond = should_show_dropbar,
-						},
+						-- {
+						-- 	function()
+						-- 		return _G.dropbar()
+						-- 	end,
+						-- 	cond = should_show_dropbar,
+						-- },
 					},
 					lualine_x = {},
 					lualine_y = {},

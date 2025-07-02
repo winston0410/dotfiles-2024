@@ -2,6 +2,7 @@ return {
 	{
 		"mrjones2014/smart-splits.nvim",
 		version = "1.x",
+		enabled = false,
 		keys = {
 			{
 				"<leader>w>",

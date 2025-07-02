@@ -4,6 +4,8 @@ return {
 		version = "12.x",
 		-- FIXME dropbar pick does not work, after recovering from a session
 		lazy = false,
+		-- NOTE disable this now, as without variable font size, it is not really that helpful
+		enabled = false,
 		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 		keys = {
 			{

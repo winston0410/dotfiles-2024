@@ -16,50 +16,37 @@ function has_filetype_in_tab(target_ft)
 end
 
 ---@class SmartOpenOpts
----@field height? number
+---@field desired_height? number
+---@field desired_width? number
 ---@field filetype string
 ---@field ignored_filetypes? string[]
 
 ---@param cmd fun()
 ---@param opts SmartOpenOpts
 function M.smart_open(cmd, opts)
-	local total_lines = vim.o.lines
-	local split_height = math.floor(total_lines * 0.3)
+	---@type SmartOpenOpts
 	opts = vim.tbl_deep_extend("force", {
-		height = split_height,
+		desired_height = math.floor(vim.o.lines * 0.3),
+		desired_width = math.floor(vim.o.columns * 0.2),
 		ignored_filetypes = { "NvimTree", "neo-tree", "notify", "snacks_notif" },
 	}, opts)
 	table.insert(opts.ignored_filetypes, opts.filetype)
 
-	local cur_buf = vim.api.nvim_get_current_buf()
-	local cur_buf_ft = vim.bo[cur_buf].filetype
-
-	local next_win_id
 	local placeholder_buf = vim.api.nvim_create_buf(false, true)
+	local next_vsplit_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
+		split = "left",
+		width = opts.desired_width,
+	})
+	vim.api.nvim_set_option_value("winfixwidth", true, { win = next_vsplit_win_id, scope = "local" })
+	vim.api.nvim_set_option_value("winfixheight", true, { win = next_vsplit_win_id, scope = "local" })
 
-	if opts.filetype == "oil" then
-		if cur_buf_ft == opts.filetype then
-			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
-				split = "below",
-			})
-		else
-			vim.cmd("topleft vnew")
-			next_win_id = vim.api.nvim_get_current_win()
-			vim.api.nvim_win_set_width(next_win_id, math.floor(vim.o.columns * 0.2))
-			vim.api.nvim_set_option_value("winfixwidth", true, { scope = "local", win = next_win_id })
-		end
-	else
-		if cur_buf_ft == opts.filetype then
-			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
-				split = "right",
-			})
-		else
-			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
-				height = opts.height,
-				split = "below",
-			})
-		end
-	end
+	local next_split_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
+		height = opts.desired_height,
+		split = "below",
+	})
+	vim.api.nvim_set_option_value("winfixwidth", true, { win = next_split_win_id, scope = "local" })
+	vim.api.nvim_set_option_value("winfixheight", true, { win = next_split_win_id, scope = "local" })
+
 	local picked_window_id = require("window-picker").pick_window({
 		filter_rules = {
 			autoselect_one = false,
@@ -71,11 +58,15 @@ function M.smart_open(cmd, opts)
 	})
 
 	if picked_window_id == nil then
-		vim.api.nvim_win_close(next_win_id, false)
+		vim.api.nvim_win_close(next_split_win_id, false)
+		vim.api.nvim_win_close(next_vsplit_win_id, false)
 		return
 	end
-	if picked_window_id ~= next_win_id then
-		vim.api.nvim_win_close(next_win_id, false)
+	if picked_window_id ~= next_split_win_id then
+		vim.api.nvim_win_close(next_split_win_id, false)
+	end
+	if picked_window_id ~= next_vsplit_win_id then
+		vim.api.nvim_win_close(next_vsplit_win_id, false)
 	end
 	vim.api.nvim_set_current_win(picked_window_id)
 	cmd()

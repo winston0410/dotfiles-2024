@@ -16,6 +16,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
+vim.o.equalalways = false
 vim.o.encoding = "UTF-8"
 vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
@@ -231,6 +233,11 @@ vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { silent = true, noremap = true,
 vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to right split" })
 vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
+
+vim.keymap.set({ "n" }, "<leader>w>", "10<C-w>>", { noremap = true, silent = true, desc = "Increase split width" })
+vim.keymap.set({ "n" }, "<leader>w<", "10<C-w><", { noremap = true, silent = true, desc = "Decrease split width" })
+vim.keymap.set({ "n" }, "<leader>w+", "10<C-w>+", { noremap = true, silent = true, desc = "Increase split height" })
+vim.keymap.set({ "n" }, "<leader>w-", "10<C-w>-", { noremap = true, silent = true, desc = "Decrease split height" })
 
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
