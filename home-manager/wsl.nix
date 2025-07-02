@@ -9,7 +9,6 @@
     ./modules/bottom/mod.nix
     ./modules/zsh/mod.nix
     ./modules/du/mod.nix
-    ./modules/tree/mod.nix
     ./modules/font/mod.nix
     ./modules/k9s/mod.nix
     ./modules/android/mod.nix

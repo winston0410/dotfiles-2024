@@ -113,5 +113,5 @@
   programs.oh-my-posh.enableBashIntegration = true;
   programs.oh-my-posh.enableFishIntegration = true;
   programs.oh-my-posh.enableNushellIntegration = true;
-  programs.oh-my-posh.useTheme = "spaceship";
+  programs.oh-my-posh.useTheme = "uew";
 }

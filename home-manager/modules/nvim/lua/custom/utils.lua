@@ -1,5 +1,20 @@
 local M = {}
 
+---@param target_ft string
+function has_filetype_in_tab(target_ft)
+	local tab_id = vim.api.nvim_get_current_tabpage()
+	local wins = vim.api.nvim_tabpage_list_wins(tab_id)
+	for _, win in ipairs(wins) do
+		local buf_id = vim.api.nvim_win_get_buf(win)
+		local ft = vim.bo[buf_id].filetype
+		if ft == target_ft then
+			return true
+		end
+	end
+
+	return false
+end
+
 ---@class SmartOpenOpts
 ---@field height? number
 ---@field filetype string
