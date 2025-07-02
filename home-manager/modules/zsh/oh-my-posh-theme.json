@@ -7,7 +7,7 @@
 			"segments": [
 				{
 					"foreground": "#BBC4B9",
-					"leading_diamond": "",
+					"leading_diamond": " ",
 					"properties": {
 						"display_host": true
 					},
@@ -66,7 +66,7 @@
 			"segments": [
 				{
 					"foreground": "#B6D6F2",
-					"leading_diamond": "",
+					"leading_diamond": " ",
 					"properties": {
 						"folder_icon": "\u002F",
 						"folder_separator_icon": " \u002F ",
@@ -96,7 +96,7 @@
 	"transient_prompt": {
 		"background": "transparent",
 		"foreground": "#FEF5ED",
-		"template": "\ue285 "
+		"template": "> "
 	},
 	"version": 3
 }
