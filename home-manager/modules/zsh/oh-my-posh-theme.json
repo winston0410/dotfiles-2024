@@ -25,7 +25,7 @@
 						"fetch_worktree_count": true
 					},
 					"style": "diamond",
-					"template": "<#fff>{{ .UpstreamIcon }}</>{{ .HEAD }}",
+					"template": "<#fff>{{ .UpstreamIcon }}</>{{ .HEAD }}{{ if .Working.Changed }} <red>*{{ end }}{{ if gt .Behind 0 }} <cyan>⇣{{ .Behind }}</cyan>{{ end }}{{ if gt .Ahead 0 }} <cyan>⇡{{ .Ahead }}</cyan>{{ end }}",
 					"type": "git"
 				}
 			],
