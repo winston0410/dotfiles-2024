@@ -35,9 +35,6 @@
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
       source "''${ZINIT_HOME}/zinit.zsh"
 
-      zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
-      zinit light sindresorhus/pure
-
       zinit ice lucid wait
       zinit light Aloxaf/fzf-tab
       zstyle ':fzf-tab:*' use-fzf-default-opts yes
@@ -57,7 +54,6 @@
 
       # no idea why chafa completion does not work
       zinit as"completion" lucid wait for \
-        https://github.com/neovim/neovim/blob/master/contrib/zsh-completion.zsh \
         https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
 
       # To complete completions installation, run zicompinit
@@ -111,4 +107,11 @@
     "--color=separator:#ff9e64"
     "--color=spinner:#ff007c"
   ];
+
+  programs.oh-my-posh.enable = true;
+  programs.oh-my-posh.enableZshIntegration = true;
+  programs.oh-my-posh.enableBashIntegration = true;
+  programs.oh-my-posh.enableFishIntegration = true;
+  programs.oh-my-posh.enableNushellIntegration = true;
+  programs.oh-my-posh.useTheme = "spaceship";
 }

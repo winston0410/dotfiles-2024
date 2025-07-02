@@ -22,15 +22,28 @@ function M.smart_open(cmd, opts)
 	local next_win_id
 	local placeholder_buf = vim.api.nvim_create_buf(false, true)
 
-	if cur_buf_ft == opts.filetype then
-		next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
-			split = "right",
-		})
+	if opts.filetype == "oil" then
+		if cur_buf_ft == opts.filetype then
+			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
+				split = "below",
+			})
+		else
+			vim.cmd("topleft vnew")
+			next_win_id = vim.api.nvim_get_current_win()
+			vim.api.nvim_win_set_width(next_win_id, math.floor(vim.o.columns * 0.2))
+			vim.api.nvim_set_option_value("winfixwidth", true, { scope = "local", win = next_win_id })
+		end
 	else
-		next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
-			height = opts.height,
-			split = "below",
-		})
+		if cur_buf_ft == opts.filetype then
+			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
+				split = "right",
+			})
+		else
+			next_win_id = vim.api.nvim_open_win(placeholder_buf, false, {
+				height = opts.height,
+				split = "below",
+			})
+		end
 	end
 	local picked_window_id = require("window-picker").pick_window({
 		filter_rules = {
