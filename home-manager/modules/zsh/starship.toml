@@ -1,26 +1,35 @@
+# Wait for transiant prompt in Zsh
+# REF https://github.com/starship/starship/issues/888#issuecomment-580127661
 format = """
 $username\
 $hostname\
 $directory\
 $git_branch\
+$git_commit\
 $git_state\
 $git_status\
+$git_metrics\
+$fill\
+$status\
 $cmd_duration\
+$kubernetes\
 $line_break\
+$container\
 $python\
 $character"""
 
 [directory]
 style = "blue"
+truncate_to_repo = false
 
 [character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](green)"
+success_symbol = "[󰘧](purple)"
+error_symbol = "[󰘧](red)"
+vimcmd_symbol = "[󰘧](green)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bright-black"
+style = "dimmed white"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
@@ -31,16 +40,44 @@ modified = "​"
 staged = "​"
 renamed = "​"
 deleted = "​"
-stashed = "≡"
+stashed = "​"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
+style = "dimmed white"
 
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"
 
+[status]
+format = '[$status]($style) '
+disabled = false
+
+[fill]
+symbol = ' '
+
+[git_metrics]
+disabled = true
+
+[kubernetes]
+style = "cyan"
+format = '[$symbol$context( \($namespace\))]($style)'
+disabled = false
+
+[container]
+style = "cyan"
+format = '[$symbol \[$name\]]($style) '
+
 [python]
 format = "[$virtualenv]($style) "
-style = "bright-black"
+style = "dimmed white"
+
+[username]
+format = '[$user]($style)'
+disabled = false
+aliases = {}
+
+[hostname]
+format = '@[$hostname]($style) '
+disabled = false
