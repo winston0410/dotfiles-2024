@@ -6,26 +6,35 @@
 			"newline": true,
 			"segments": [
 				{
-					"foreground": "#BBC4B9",
-					"leading_diamond": " ",
-					"properties": {
-						"display_host": true
-					},
-					"style": "diamond",
-					"template": "{{ .UserName }} ",
+					"foreground": "blue",
+					"foreground_templates": ["{{ if .Root }}red{{ end }}"],
+					"style": "plain",
+					"template": "{{ if .SSHSession }}{{ .UserName }}@{{ .HostName }}{{ else }}{{ .UserName }}{{ end }} ",
 					"type": "session"
 				},
 				{
-					"foreground": "#BFA8BF",
+					"foreground": "cyan",
 					"properties": {
-						"branch_icon": "\ue725 ",
+						"folder_icon": "\u002F",
+						"folder_separator_icon": "\u002F",
+						"home_icon": "~",
+						"style": "agnoster_full"
+					},
+					"style": "plain",
+					"template": "{{.Path}}",
+					"type": "path"
+				},
+				{
+					"foreground": "white",
+					"properties": {
+						"branch_icon": "",
 						"fetch_stash_count": true,
 						"fetch_status": true,
 						"fetch_upstream_icon": true,
 						"fetch_worktree_count": true
 					},
-					"style": "diamond",
-					"template": "<gray>{{ .HEAD }}</gray>{{ if .Working.Changed }} <magenta>*</magenta>{{ end }}",
+					"style": "plain",
+					"template": "<d><white>{{ .HEAD }}</></d>{{ if .Working.Changed }}<magenta>*</>{{ end }}",
 					"type": "git"
 				}
 			],
@@ -35,32 +44,23 @@
 			"alignment": "right",
 			"segments": [
 				{
-					"foreground": "#FFF",
-					"foreground_templates": ["{{ if gt .Code 0 }}red{{ end }}"],
 					"properties": {
 						"always_enabled": false
 					},
 					"style": "plain",
-					"template": "{{.Code}}",
+					"template": "{{ if gt .Code 0 }}<red>{{.Code}}</>{{ end }}",
 					"type": "status"
 				},
 				{
-					"foreground": "#fff",
+					"foreground": "darkGray",
+					"foreground_templates": ["{{ if gt .Ms 5000 }}yellow{{ end }}"],
 					"properties": {
 						"style": "austin",
 						"threshold": 0
 					},
-					"style": "diamond",
-					"template": " <#BBC4B9>{{ .FormattedMs }}s</> <#fff>\udb80\udddd</>",
+					"style": "plain",
+					"template": " {{ .FormattedMs }}",
 					"type": "executiontime"
-				},
-				{
-					"properties": {
-						"root_icon": "\uf292 "
-					},
-					"style": "diamond",
-					"template": " \uf0e7",
-					"type": "root"
 				}
 			],
 			"type": "prompt"
@@ -70,27 +70,13 @@
 			"newline": true,
 			"segments": [
 				{
-					"foreground": "cyan",
-					"leading_diamond": "",
-					"properties": {
-						"folder_icon": "\u002F",
-						"folder_separator_icon": "\u002F",
-						"home_icon": "~",
-						"style": "agnoster_full"
-					},
-					"style": "diamond",
-					"template": "{{ .Path }}",
-					"trailing_diamond": "",
-					"type": "path"
-				},
-				{
-					"foreground": "#FFF",
+					"foreground": "green",
 					"foreground_templates": ["{{ if gt .Code 0 }}red{{ end }}"],
 					"properties": {
 						"always_enabled": true
 					},
 					"style": "plain",
-					"template": " \udb81\ude27 ",
+					"template": "\u276f ",
 					"type": "status"
 				}
 			],

@@ -110,8 +110,16 @@
     "--color=separator:#ff9e64"
     "--color=spinner:#ff007c"
   ];
+  programs.starship.enable = true;
+  programs.starship.enableBashIntegration = true;
+  programs.starship.enableFishIntegration = true;
+  programs.starship.enableZshIntegration = true;
+  programs.starship.package = unstable.starship;
+  programs.starship.settings =
+    builtins.fromTOML (builtins.readFile ./starship.toml);
 
-  programs.oh-my-posh.enable = true;
+  programs.oh-my-posh.enable = false;
+  programs.oh-my-posh.package = unstable.oh-my-posh;
   programs.oh-my-posh.enableZshIntegration = true;
   programs.oh-my-posh.enableBashIntegration = true;
   programs.oh-my-posh.enableFishIntegration = true;
