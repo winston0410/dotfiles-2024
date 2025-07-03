@@ -25,7 +25,7 @@
 						"fetch_worktree_count": true
 					},
 					"style": "diamond",
-					"template": "<#fff>{{ .UpstreamIcon }}</>{{ .HEAD }}{{ if .Working.Changed }} <magenta>*</magenta>{{ end }}",
+					"template": "<gray>{{ .HEAD }}</gray>{{ if .Working.Changed }} <magenta>*</magenta>{{ end }}",
 					"type": "git"
 				}
 			],
@@ -35,14 +35,19 @@
 			"alignment": "right",
 			"segments": [
 				{
-					"foreground": "#fff",
+					"foreground": "#FFF",
+					"foreground_templates": ["{{ if gt .Code 0 }}red{{ end }}"],
+					"properties": {
+						"always_enabled": false
+					},
 					"style": "plain",
-					"type": "text"
+					"template": "{{.Code}}",
+					"type": "status"
 				},
 				{
 					"foreground": "#fff",
 					"properties": {
-						"style": "dallas",
+						"style": "austin",
 						"threshold": 0
 					},
 					"style": "diamond",
@@ -65,7 +70,7 @@
 			"newline": true,
 			"segments": [
 				{
-					"foreground": "#B6D6F2",
+					"foreground": "cyan",
 					"leading_diamond": "",
 					"properties": {
 						"folder_icon": "\u002F",
@@ -92,6 +97,6 @@
 			"type": "prompt"
 		}
 	],
-	"console_title_template": "{{ .Folder }}",
+	"console_title_template": "{{ .PWD }}",
 	"version": 3
 }
