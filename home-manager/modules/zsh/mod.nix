@@ -35,6 +35,9 @@
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
       source "''${ZINIT_HOME}/zinit.zsh"
 
+      # zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
+      # zinit light sindresorhus/pure
+
       zinit ice lucid wait
       zinit light Aloxaf/fzf-tab
       zstyle ':fzf-tab:*' use-fzf-default-opts yes

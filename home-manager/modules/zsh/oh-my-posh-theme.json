@@ -74,18 +74,18 @@
 						"style": "agnoster_full"
 					},
 					"style": "diamond",
-					"template": " {{ .Path }}",
+					"template": "{{ .Path }}",
 					"trailing_diamond": "",
 					"type": "path"
 				},
 				{
-					"foreground": "#BFA8BF",
-					"foreground_templates": ["{{ if gt .Code 0 }}#fff{{ end }}"],
+					"foreground": "#FFF",
+					"foreground_templates": ["{{ if gt .Code 0 }}red{{ end }}"],
 					"properties": {
 						"always_enabled": true
 					},
 					"style": "plain",
-					"template": " \u007E ",
+					"template": " \udb81\ude27 ",
 					"type": "status"
 				}
 			],
@@ -93,10 +93,5 @@
 		}
 	],
 	"console_title_template": "{{ .Folder }}",
-	"transient_prompt": {
-		"background": "transparent",
-		"foreground": "#FEF5ED",
-		"template": "> "
-	},
 	"version": 3
 }
