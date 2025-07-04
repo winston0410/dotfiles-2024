@@ -12,11 +12,14 @@ $git_metrics\
 $fill\
 $status\
 $cmd_duration\
+$package\
 $kubernetes\
 $line_break\
 $container\
 $python\
 $character"""
+
+continuation_prompt = '[> ](dimmed white)'
 
 [directory]
 style = "blue"
@@ -25,7 +28,7 @@ truncate_to_repo = false
 [character]
 success_symbol = "[󰘧](purple)"
 error_symbol = "[󰘧](red)"
-vimcmd_symbol = "[󰘧](green)"
+vimcmd_symbol = "[󰘧](dimmed green)"
 
 [git_branch]
 format = "[$branch]($style)"
@@ -34,13 +37,13 @@ style = "dimmed white"
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
 style = "cyan"
-conflicted = "​"
-untracked = "​"
-modified = "​"
-staged = "​"
-renamed = "​"
-deleted = "​"
-stashed = "​"
+conflicted = ""
+untracked = ""
+modified = ""
+staged = ""
+renamed = ""
+deleted = ""
+stashed = ""
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
@@ -81,3 +84,8 @@ aliases = {}
 [hostname]
 format = '@[$hostname]($style) '
 disabled = false
+
+[package]
+disabled = false
+display_private = true
+format = '[$symbol$version]($style) '

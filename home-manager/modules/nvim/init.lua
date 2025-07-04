@@ -12,9 +12,6 @@
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
 require("custom.essential")
-if vim.g.enable_session == nil then
-	vim.g.enable_session = true
-end
 
 -- REF https://unix.stackexchange.com/a/637223/467987
 

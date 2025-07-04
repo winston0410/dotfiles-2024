@@ -1,3 +1,7 @@
+if vim.g.enable_session == nil then
+	vim.g.enable_session = true
+end
+
 return {
 	{
 		"Shatur/neovim-session-manager",
