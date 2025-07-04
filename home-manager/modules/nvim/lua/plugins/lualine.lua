@@ -69,22 +69,36 @@ return {
 					lualine_b = {},
 					lualine_c = {
 						{
-							"buffers",
-							mode = 0,
-							icons_enabled = true,
-							max_length = function()
-								return vim.o.columns / 2
+							function()
+								local current_tab = vim.api.nvim_get_current_tabpage()
+
+								local tab_number = vim.api.nvim_tabpage_get_number(current_tab)
+								local cwd = vim.fn.getcwd(-1, tab_number)
+								local home = os.getenv("HOME")
+								if home then
+									cwd = cwd:gsub("^" .. home, "~")
+								end
+								return cwd
 							end,
-							filetype_names = {
-								checkhealth = "Healthcheck",
-								qf = "Quickfix",
-							},
-							symbols = {
-								modified = "[+]",
-								alternate_file = "",
-							},
-							cond = should_show_buffers,
 						},
+						--
+						-- {
+						-- 	"buffers",
+						-- 	mode = 0,
+						-- 	icons_enabled = true,
+						-- 	max_length = function()
+						-- 		return vim.o.columns / 2
+						-- 	end,
+						-- 	filetype_names = {
+						-- 		checkhealth = "Healthcheck",
+						-- 		qf = "Quickfix",
+						-- 	},
+						-- 	symbols = {
+						-- 		modified = "[+]",
+						-- 		alternate_file = "",
+						-- 	},
+						-- 	cond = should_show_buffers,
+						-- },
 					},
 					lualine_x = {
 						{
@@ -120,12 +134,12 @@ return {
 					lualine_a = {},
 					lualine_b = {},
 					lualine_c = {
-						-- {
-						-- 	function()
-						-- 		return _G.dropbar()
-						-- 	end,
-						-- 	cond = should_show_dropbar,
-						-- },
+						{
+							function()
+								return _G.dropbar()
+							end,
+							cond = should_show_dropbar,
+						},
 					},
 					lualine_x = {},
 					lualine_y = {},
@@ -189,25 +203,15 @@ return {
 							end,
 							padding = { left = 1, right = 1 },
 						},
-						"%=",
-						{
-							function()
-								local current_tab = vim.api.nvim_get_current_tabpage()
-
-								local tab_number = vim.api.nvim_tabpage_get_number(current_tab)
-								local cwd = vim.fn.getcwd(-1, tab_number)
-								local home = os.getenv("HOME")
-								if home then
-									cwd = cwd:gsub("^" .. home, "~")
-								end
-								return cwd
-							end,
-						},
-						"%=",
 					},
 					lualine_x = {},
 					lualine_y = {},
 					lualine_z = {
+						{
+							"searchcount",
+							maxcount = 999,
+							timeout = 500,
+						},
 						{
 							"diagnostics",
 							sources = { "nvim_lsp" },
@@ -222,20 +226,20 @@ return {
 								return not vim.list_contains(utility_filetypes, vim.bo.filetype)
 							end,
 						},
-						{
-							"lsp_status",
-							icon = "",
-							symbols = {
-								spinner = spinner,
-								done = "",
-								separator = " ",
-							},
-							ignore_lsp = {},
-							cond = function()
-								return not vim.list_contains(utility_filetypes, vim.bo.filetype)
-							end,
-							color = "lualine_c_normal",
-						},
+						-- {
+						-- 	"lsp_status",
+						-- 	icon = "",
+						-- 	symbols = {
+						-- 		spinner = spinner,
+						-- 		done = "",
+						-- 		separator = " ",
+						-- 	},
+						-- 	ignore_lsp = {},
+						-- 	cond = function()
+						-- 		return not vim.list_contains(utility_filetypes, vim.bo.filetype)
+						-- 	end,
+						-- 	color = "lualine_c_normal",
+						-- },
 					},
 				},
 			})

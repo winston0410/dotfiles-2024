@@ -12,9 +12,13 @@
 
     unstable.url = "github:nixos/nixpkgs";
 
-    nixd.url =
-      # unstable
-      "github:nix-community/nixd";
+    emmylua-analyzer-rust.url = "github:EmmyLuaLs/emmylua-analyzer-rust";
+    emmylua-analyzer-rust.inputs.nixpkgs.follows = "nixpkgs";
+    emmylua-analyzer-rust.inputs.rust-overlay.follows = "rust-overlay";
+
+    # unstable
+    nixd.url = "github:nix-community/nixd";
+
     config-lsp.url = "github:Myzel394/config-lsp";
     config-lsp.inputs.nixpkgs.follows = "nixpkgs";
 

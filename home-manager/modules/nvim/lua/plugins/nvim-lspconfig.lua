@@ -8,9 +8,7 @@ return {
 
 			null_ls.setup({
 				sources = {
-					null_ls.builtins.diagnostics.commitlint,
 					null_ls.builtins.diagnostics.checkmake,
-					null_ls.builtins.diagnostics.fish,
 					null_ls.builtins.diagnostics.haml_lint,
 					null_ls.builtins.diagnostics.terraform_validate,
 					null_ls.builtins.diagnostics.tidy,
@@ -284,9 +282,12 @@ return {
 				"yamlls",
 				"kulala_ls",
 				"ts_ls",
+				"earthlyls",
 				"elixirls",
 				"dockerls",
 				"lua_ls",
+				-- TODO check if this server is more mature now.This is fast but does not provide enough configuration
+				-- "emmylua_ls",
 				"config_lsp",
 				"systemd_lsp",
 				"openscad_lsp",

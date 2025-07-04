@@ -4,8 +4,7 @@ return {
 		version = "12.x",
 		-- FIXME dropbar pick does not work, after recovering from a session
 		lazy = false,
-		-- NOTE disable this now, as without variable font size, it is not really that helpful
-		enabled = false,
+		enabled = true,
 		dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 		keys = {
 			{
@@ -25,6 +24,21 @@ return {
 		end,
 		config = function()
 			require("dropbar").setup({
+				bar = {
+					---@type dropbar_source_t[]|fun(buf: integer, win: integer): dropbar_source_t[]
+					sources = function(buf, _)
+						local sources = require("dropbar.sources")
+						if vim.bo[buf].buftype == "terminal" then
+							return {
+								sources.terminal,
+							}
+						end
+
+						return {
+							sources.path,
+						}
+					end,
+				},
 				sources = {
 					lsp = {
 						valid_symbols = {

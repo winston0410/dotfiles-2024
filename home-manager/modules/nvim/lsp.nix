@@ -25,6 +25,7 @@
     pkgs.metals
     pkgs.vscode-langservers-extracted
     pkgs.lua-language-server
+    # inputs.emmylua-analyzer-rust.packages.${system}.default
     pkgs.deno
     pkgs.jsonnet-language-server
     pkgs.nodePackages.graphql-language-service-cli
@@ -38,7 +39,6 @@
     unstable.ltex-ls-plus
     pkgs.angular-language-server
     pkgs.shellcheck
-    # pkgs.commitlint
     pkgs.lemminx
     (pkgs.rustPlatform.buildRustPackage rec {
       pname = "systemd-lsp";
