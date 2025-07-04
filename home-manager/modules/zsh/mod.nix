@@ -1,5 +1,6 @@
 { inputs, lib, unstable, config, pkgs, system, ... }: {
-  home.packages = with pkgs; [ ];
+  # home.shell.enableShellIntegration = true;
+
   programs.zsh = {
     enable = true;
     package = unstable.zsh;
@@ -15,51 +16,7 @@
     initExtra = ''
       # Set module path, so zsh can load *.so from /nix/store correctly
       module_path="${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}"
-      # Add nix generated shell completions to fpath
-      fpath+=("$HOME/.nix-profile/share/zsh/site-functions")
-
-      bindkey '^P' up-line-or-history;
-      bindkey '^N' down-line-or-history;
-
-      # Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
-      # REF https://unix.stackexchange.com/a/290403
-      bindkey -v '^?' backward-delete-char
-
-      KEYTIMEOUT=1;
-    '' + ''
-      setopt HIST_REDUCE_BLANKS;
-      setopt INC_APPEND_HISTORY;
-    '' + ''
-      ZINIT_HOME="''${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
-      [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-      [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-      source "''${ZINIT_HOME}/zinit.zsh"
-
-      zinit ice lucid wait
-      zinit light Aloxaf/fzf-tab
-      zstyle ':fzf-tab:*' use-fzf-default-opts yes
-
-      # This will break completions for other ssh related utilities
-      # sunlei/zsh-ssh \
-
-      zinit lucid wait for \
-        zsh-users/zsh-completions \
-        OMZP::bun \
-        OMZP::docker \
-        OMZP::docker-compose \
-        OMZP::dotnet \
-        OMZP::git
-
-      bw completion --shell zsh > "$ZINIT[COMPLETIONS_DIR]/_bw"
-
-      # no idea why chafa completion does not work
-      zinit as"completion" lucid wait for \
-        https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
-
-      # To complete completions installation, run zicompinit
-      zinit for \
-        lucid wait"1" atload"zicompinit; zicdreplay" OMZP::rbw
-    '';
+    '' + (builtins.readFile ./init.sh);
   };
 
   home.sessionVariables = {
@@ -70,6 +27,7 @@
 
   programs.direnv.enable = true;
   programs.direnv.enableZshIntegration = true;
+  programs.direnv.enableNushellIntegration = true;
   programs.direnv.nix-direnv.enable = true;
 
   programs.zoxide = {
@@ -123,4 +81,7 @@
   programs.oh-my-posh.enableNushellIntegration = true;
   programs.oh-my-posh.settings =
     builtins.fromJSON (builtins.readFile ./oh-my-posh-theme.json);
+
+  programs.nushell.enable = false;
+  programs.nushell.package = unstable.nushell;
 }
