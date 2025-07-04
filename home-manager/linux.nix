@@ -7,7 +7,7 @@
     ./modules/wezterm/mod.nix
     ./modules/ripgrep/mod.nix
     ./modules/bottom/mod.nix
-    ./modules/zsh/mod.nix
+    ./modules/shell/mod.nix
     ./modules/du/mod.nix
     ./modules/font/mod.nix
     ./modules/k9s/mod.nix

@@ -82,6 +82,11 @@
   programs.oh-my-posh.settings =
     builtins.fromJSON (builtins.readFile ./oh-my-posh-theme.json);
 
-  programs.nushell.enable = false;
+  programs.carapace.enable = config.programs.nushell.enable;
+  programs.carapace.enableNushellIntegration = true;
+  programs.carapace.package = unstable.carapace;
+
+  programs.nushell.enable = true;
   programs.nushell.package = unstable.nushell;
+  programs.nushell.configFile.source = ./config.nu;
 }
