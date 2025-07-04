@@ -31,13 +31,13 @@
   programs.direnv.nix-direnv.enable = true;
 
   programs.zoxide = {
-    enable = true;
+    enable = config.programs.zsh.enable;
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableZshIntegration = true;
   };
 
-  programs.fzf.enable = true;
+  programs.fzf.enable = config.programs.zsh.enable;
   programs.fzf.enableZshIntegration = true;
   programs.fzf.defaultOptions = [
     # seems to be not needed at the moment
@@ -89,4 +89,10 @@
   programs.nushell.enable = true;
   programs.nushell.package = unstable.nushell;
   programs.nushell.configFile.source = ./config.nu;
+
+  # Wait for the Nushell Integration for television. Manually add the integration line by ourselves now
+  # programs.television.enable = true;
+  # programs.television.package = unstable.television;
+  # programs.television.settings =
+  #   builtins.fromTOML (builtins.readFile ./starship.toml);
 }
