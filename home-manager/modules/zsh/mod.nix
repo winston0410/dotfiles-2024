@@ -35,9 +35,6 @@
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
       source "''${ZINIT_HOME}/zinit.zsh"
 
-      zinit ice depth=1
-      zinit light jeffreytse/zsh-vi-mode
-
       zinit ice lucid wait
       zinit light Aloxaf/fzf-tab
       zstyle ':fzf-tab:*' use-fzf-default-opts yes

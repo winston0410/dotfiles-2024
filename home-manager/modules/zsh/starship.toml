@@ -1,6 +1,7 @@
 # Wait for transiant prompt in Zsh
 # REF https://github.com/starship/starship/issues/888#issuecomment-580127661
 format = """
+$sudo\
 $username\
 $hostname\
 $directory\
@@ -89,3 +90,8 @@ disabled = false
 disabled = false
 display_private = true
 format = '[$symbol$version]($style) '
+
+[sudo]
+format = '[\[sudo\]]($style) '
+style = "bold red"
+disabled = false
