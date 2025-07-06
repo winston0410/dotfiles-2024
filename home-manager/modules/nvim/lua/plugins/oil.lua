@@ -57,7 +57,7 @@ return {
 
 									local picked_window_id = require("window-picker").pick_window({
 										filter_rules = {
-											autoselect_one = false,
+											autoselect_one = true,
 											include_current_win = true,
 										},
 									})
