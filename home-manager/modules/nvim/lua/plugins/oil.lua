@@ -17,11 +17,7 @@ return {
 			{
 				"<leader>o",
 				function()
-					utils.smart_open(function()
-						vim.cmd("Oil")
-					end, {
-						filetype = "oil",
-					})
+					vim.cmd("Oil")
 				end,
 				mode = { "n" },
 				noremap = true,

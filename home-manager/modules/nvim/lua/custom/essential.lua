@@ -146,11 +146,7 @@ vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Se
 vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
 vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })
 vim.keymap.set({ "n" }, "<leader>T", function()
-	utils.smart_open(function()
-		vim.cmd("term")
-	end, {
-		filetype = "terminal",
-	})
+	vim.cmd("term")
 end, { remap = true, silent = true, desc = "Open terminal" })
 
 local clear_buffer_keybinding = "<leader>bc"
