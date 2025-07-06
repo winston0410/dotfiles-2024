@@ -29,6 +29,7 @@ return {
 				["<C-n>"] = { "select_next", "fallback" },
 				["<C-p>"] = { "select_prev", "fallback" },
 				["<CR>"] = { "select_and_accept", "fallback" },
+				-- NOTE Remember, gh bring us back to select mode again. Use this after the first edit
 				["<Tab>"] = {
 					function(cmp)
 						if cmp.snippet_active() then

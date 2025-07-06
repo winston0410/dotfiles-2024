@@ -3,6 +3,7 @@ local common = require("common")
 
 local config = common.config
 config.native_macos_fullscreen_mode = true
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 local darwinOnlyMapping = {
 	{ key = "c", mods = "CMD", action = wezterm.action({ CopyTo = "Clipboard" }) },

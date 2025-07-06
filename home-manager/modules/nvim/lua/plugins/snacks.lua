@@ -1,3 +1,4 @@
+local utils = require("custom.utils")
 return {
 	{
 		"folke/snacks.nvim",
@@ -102,7 +103,51 @@ return {
 			{
 				"<leader>pl",
 				function()
-					Snacks.picker.lines()
+					-- Snacks.picker.lines()
+					local items = {
+						{
+							text = "Sidebar layout",
+							---@type LayoutRuleOpts[]
+							value = {
+								{
+									width = 0.2,
+									height = 1,
+									allowed = {
+										ft = { "oil" },
+									},
+								},
+								{ width = 0.8, height = 1 },
+							},
+							preview = {
+								text = "foo",
+							},
+						},
+						-- {
+						-- 	text = "Bar",
+						-- 	preview = {
+						-- 		text = "hello",
+						-- 	},
+						-- },
+						-- {
+						-- 	text = "Hello",
+						-- 	preview = {
+						-- 		text = "hello",
+						-- 	},
+						-- },
+					}
+
+					-- Create and show the picker
+					require("snacks").picker({
+						title = "Pick a Greeting",
+						items = items,
+						format = "text",
+						preview = "preview",
+						---@param item { value: LayoutRuleOpts[]}
+						confirm = function(picker, item)
+							utils.open_layout(item.value)
+							picker:close()
+						end,
+					})
 				end,
 				mode = { "n" },
 				silent = true,
