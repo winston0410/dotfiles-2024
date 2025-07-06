@@ -122,18 +122,6 @@ return {
 								text = "foo",
 							},
 						},
-						-- {
-						-- 	text = "Bar",
-						-- 	preview = {
-						-- 		text = "hello",
-						-- 	},
-						-- },
-						-- {
-						-- 	text = "Hello",
-						-- 	preview = {
-						-- 		text = "hello",
-						-- 	},
-						-- },
 					}
 
 					-- Create and show the picker

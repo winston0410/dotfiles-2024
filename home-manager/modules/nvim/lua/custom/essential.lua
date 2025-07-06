@@ -16,6 +16,10 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+vim.o.title = true
+vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
+vim.o.titleold = "zsh"
+
 -- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
 vim.o.equalalways = false
 vim.o.encoding = "UTF-8"
@@ -137,6 +141,7 @@ vim.filetype.add({
 	},
 })
 
+vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
 vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })

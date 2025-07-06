@@ -3,7 +3,7 @@ return {
 		"winston0410/encoding.nvim",
 		keys = {
 			{
-				"<leader>ee1",
+				"g?1e",
 				function()
 					require("encoding").base64_encode()
 				end,
@@ -14,19 +14,7 @@ return {
 				desc = "Base64 encode",
 			},
 			{
-				"<leader>ee2",
-				function()
-					require("encoding").uri_encode()
-				end,
-
-				mode = { "n", "x" },
-				silent = true,
-				noremap = true,
-				desc = "URI encode",
-			},
-
-			{
-				"<leader>ed1",
+				"g?1d",
 				function()
 					require("encoding").base64_decode()
 				end,
@@ -37,15 +25,23 @@ return {
 				desc = "Base64 decode",
 			},
 			{
-				"<leader>ed2",
+				"g?2",
 				function()
-					require("encoding").uri_decode()
+					require("encoding").uri_encode_or_decode()
 				end,
 
 				mode = { "n", "x" },
 				silent = true,
 				noremap = true,
-				desc = "URI decode",
+				desc = "URI encode or decode",
+			},
+			{
+				"g?3",
+				"g?",
+				mode = { "n", "x" },
+				silent = true,
+				remap = true,
+				desc = "ROT13 encode or decode",
 			},
 		},
 		opts = {},
