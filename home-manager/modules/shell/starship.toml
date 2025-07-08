@@ -16,10 +16,10 @@ $cmd_duration\
 $package\
 $kubernetes\
 $line_break\
+$container\
+$python\
 $character"""
 
-# $container\
-# $python\
 continuation_prompt = '[> ](dimmed white)'
 
 [directory]
@@ -76,10 +76,10 @@ disabled = false
 
 [container]
 style = "cyan"
-format = '[$symbol \[$name\]]($style) '
+format = '[$symbol \[$name\]]($style)'
 
 [python]
-format = "[$virtualenv]($style) "
+format = "[$virtualenv]($style)"
 style = "dimmed white"
 
 [username]

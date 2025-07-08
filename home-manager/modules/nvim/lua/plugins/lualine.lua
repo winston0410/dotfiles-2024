@@ -51,9 +51,9 @@ return {
 				end,
 				hl = function(self)
 					if not self.is_active then
-						return "lualine_x_tabs_inactive"
+						return "TabLine"
 					else
-						return "lualine_x_tabs_active"
+						return "TabLineFill"
 					end
 				end,
 			}
