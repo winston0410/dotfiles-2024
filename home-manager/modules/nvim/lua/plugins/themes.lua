@@ -43,6 +43,7 @@ return {
 				"tokyonight-day.lua",
 			})
 		end,
+		opts = {},
 	},
 	{
 		"wnkz/monoglow.nvim",

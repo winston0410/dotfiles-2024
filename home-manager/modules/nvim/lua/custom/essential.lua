@@ -16,6 +16,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+vim.o.incsearch = false
+
 vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
 vim.o.titleold = "zsh"
@@ -54,7 +56,8 @@ vim.o.wrap = true
 vim.o.linebreak = true
 vim.o.number = true
 vim.opt.relativenumber = true
-vim.o.signcolumn = "auto:2"
+-- vim.o.signcolumn = "auto:2"
+vim.o.signcolumn = "no"
 vim.o.scrolloff = 8
 vim.opt.sidescrolloff = 16
 vim.opt.fillchars:append({ eob = " ", diff = "╱", lastline = " " })

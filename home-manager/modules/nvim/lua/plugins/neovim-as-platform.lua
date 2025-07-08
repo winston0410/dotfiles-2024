@@ -28,7 +28,7 @@ return {
 	},
 	{
 		"ramilito/kubectl.nvim",
-		version = "1.x",
+		version = "2.x",
 		cmd = { "Kubectl", "Kubectx", "Kubens" },
 		keys = {
 			{
@@ -87,7 +87,9 @@ return {
 					enabled = true,
 					log_level = vim.log.levels.INFO,
 				},
-				headers = true,
+				headers = {
+					enabled = false,
+				},
 				completion = { follow_cursor = true },
 			})
 			local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = true })

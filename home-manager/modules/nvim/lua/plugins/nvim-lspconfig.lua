@@ -1,3 +1,7 @@
+local ERROR_ICON = " "
+local WARNING_ICON = " "
+local INFO_ICON = " "
+local HINT_ICON = "󰌶 "
 return {
 	{
 		"nvimtools/none-ls.nvim",
@@ -286,6 +290,7 @@ return {
 				"elixirls",
 				"dockerls",
 				"lua_ls",
+				"v-analyzer",
 				-- TODO check if this server is more mature now.This is fast but does not provide enough configuration
 				-- "emmylua_ls",
 				"config_lsp",

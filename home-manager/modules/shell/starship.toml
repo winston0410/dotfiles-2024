@@ -16,10 +16,10 @@ $cmd_duration\
 $package\
 $kubernetes\
 $line_break\
-$container\
-$python\
 $character"""
 
+# $container\
+# $python\
 continuation_prompt = '[> ](dimmed white)'
 
 [directory]
