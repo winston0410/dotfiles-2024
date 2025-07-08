@@ -16,7 +16,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
-vim.o.incsearch = false
+vim.o.incsearch = true
+vim.o.wrapscan = true
 
 vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
