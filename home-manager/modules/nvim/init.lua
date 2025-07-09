@@ -89,6 +89,7 @@ require("lazy").setup({
 			},
 		},
 
+		{ import = "plugins.misc" },
 		{ import = "plugins.neotest" },
 		{ import = "plugins.icons" },
 		{ import = "plugins.git" },
