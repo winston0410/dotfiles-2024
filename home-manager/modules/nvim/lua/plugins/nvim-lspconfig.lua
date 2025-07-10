@@ -55,6 +55,13 @@ return {
 				capabilities = capabilities,
 			})
 
+			-- REF https://github.com/AkisArou/npm-workspaces-lsp package this with Nix
+			vim.lsp.config("npmls", {
+				cmd = { "npm-workspaces-language-server", "--stdio" },
+				filetypes = { "json" },
+				root_markers = { "package.json" },
+				workspace_required = true,
+			})
 			vim.lsp.config("yamlls", {
 				settings = {
 					redhat = {
@@ -298,6 +305,8 @@ return {
 				"openscad_lsp",
 				"ziggy_schema",
 				"ziggy",
+				"cypher_ls",
+				"npmls",
 			}
 			vim.lsp.enable(servers, true)
 
