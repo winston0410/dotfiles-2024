@@ -57,7 +57,7 @@ return {
 
 			-- REF https://github.com/AkisArou/npm-workspaces-lsp package this with Nix
 			vim.lsp.config("npmls", {
-				cmd = { "npm-workspaces-language-server", "--stdio" },
+				cmd = { "npm-workspaces-lsp", "--stdio" },
 				filetypes = { "json" },
 				root_markers = { "package.json" },
 				workspace_required = true,
