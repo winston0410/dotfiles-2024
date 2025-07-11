@@ -23,6 +23,8 @@ vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
 vim.o.titleold = "zsh"
 
+vim.opt.spelllang = "en_gb"
+
 -- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
 vim.o.equalalways = false
 vim.o.encoding = "UTF-8"

@@ -17,7 +17,7 @@ return {
 			{
 				"<leader>o",
 				function()
-					vim.cmd("Oil")
+					require("oil").open(nil)
 				end,
 				mode = { "n" },
 				noremap = true,
