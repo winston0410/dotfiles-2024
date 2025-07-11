@@ -37,6 +37,8 @@
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
     };
   };
+  xdg.configFile."mimeapps.list" =
+    lib.mkIf config.xdg.mimeApps.enable { force = true; };
   xdg.userDirs = {
     enable = true;
     desktop = "${config.home.homeDirectory}/Desktop";

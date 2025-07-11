@@ -38,6 +38,7 @@
     telegram-desktop
     discord
     devpod-desktop
+    podman-compose
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
