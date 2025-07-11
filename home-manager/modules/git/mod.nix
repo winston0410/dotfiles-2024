@@ -15,11 +15,11 @@
     credential = {
       "https://forgejo.28281428.xyz" = { provider = "generic"; };
       # REF https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/configuration.md#credentialcredentialstore
-      # credentialStore = "cache";
+      credentialStore = "cache";
       helper = [
-        "cache"
+        "${pkgs.git-credential-manager}/bin/git-credential-manager"
+        # fallback auth method
         "store"
-        # "${pkgs.git-credential-manager}/bin/git-credential-manager"
       ];
     };
     core = { editor = "nvim"; };

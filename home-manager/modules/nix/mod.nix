@@ -15,7 +15,7 @@
     };
   };
 
-  news = { display = "show"; };
+  news = { display = "notify"; };
   home.packages = with pkgs; [ sqlite ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;
