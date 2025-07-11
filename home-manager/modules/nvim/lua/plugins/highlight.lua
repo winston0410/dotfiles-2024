@@ -1,7 +1,8 @@
 return {
 	{
 		"tzachar/highlight-undo.nvim",
-		enabled = true,
+		-- Using u and <C-r> seems to be enough for me
+		enabled = false,
 		event = "VeryLazy",
 		opts = {
 			hlgroup = "Visual",
