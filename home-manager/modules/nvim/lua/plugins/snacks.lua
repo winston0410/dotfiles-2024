@@ -252,7 +252,7 @@ return {
 				scratch = { enabled = true },
 				image = { enabled = true },
 				dashboard = {
-					enabled = true,
+					enabled = false,
 					sections = {
 						{
 							section = "terminal",

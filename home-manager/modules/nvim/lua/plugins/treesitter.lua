@@ -346,7 +346,6 @@ return {
 				},
 			}
 			local config = {
-				ensure_installed = "all",
 				auto_install = false,
 				sync_install = false,
 				ignore_install = {},
