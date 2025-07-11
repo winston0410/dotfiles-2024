@@ -8,8 +8,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # limit max generations to 5
-  boot.loader.systemd-boot.configurationLimit = 5;
+  boot.loader.systemd-boot.configurationLimit = 3;
 
   boot.plymouth.enable = true;
   # boot.plymouth.themePackages = with pkgs; [ nixos-bgrt-plymouth ];
@@ -168,7 +167,6 @@
   environment.pathsToLink = [ "/share/zsh" ];
   environment.systemPackages = with pkgs; [
     vim
-    git-credential-manager
     # NOTE to allow all console applications to use system Xserver clipboard
     xclip
   ];
@@ -190,20 +188,6 @@
     }];
   };
   networking.nftables.enable = true;
-  programs.git = {
-    enable = true;
-    config = {
-      core = { editor = "${pkgs.vim}/bin/vim"; };
-      user = {
-        name = "nobody";
-        email = "johndoe@example.com";
-      };
-      credential = {
-        credentialStore = "cache";
-        helper = [ "manager" ];
-      };
-    };
-  };
   # NOTE cannot move this to home-manager layer. Revisit this later
   programs.kdeconnect = {
     enable = true;
@@ -251,6 +235,8 @@
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [ sqlite ];
+
+  # IMPORTANT do not define anything git related here, somehow it conflicted with the user's git config
 
   system.stateVersion = "24.11"; # Did you read the comment?
 }
