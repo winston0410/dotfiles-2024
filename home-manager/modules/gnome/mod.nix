@@ -1,4 +1,12 @@
 { inputs, lib, config, pkgs, ... }: {
+  home.pointerCursor = {
+    package = pkgs.phinger-cursors;
+    name = "phinger-cursors-light";
+     # REF https://linux-tips.com/t/setting-cursor-size-in-gnome/835
+    size = 48;
+    gtk.enable = config.gtk.enable;
+    x11.enable = true;
+  };
   gtk = {
     enable = true;
     gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
@@ -22,15 +30,6 @@
         boldPanelIcons = true;
         themeVariants = [ "default" ];
       });
-    };
-    cursorTheme = {
-      # name = "MacOS-cursor";
-      # package = pkgs.apple-cursor;
-      name = "phinger-cursors-light";
-      package = pkgs.phinger-cursors;
-      # only a set of size can be used
-      # REF https://linux-tips.com/t/setting-cursor-size-in-gnome/835
-      size = 48;
     };
   };
   dconf.settings = {
