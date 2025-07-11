@@ -31,15 +31,13 @@
   programs.zsh.initExtra = lib.mkBefore "";
 
   home.packages = with pkgs; [
+    bitwarden-cli
     dconf-editor
-    libsecret
     signal-desktop
     element-desktop
     telegram-desktop
-    spotube
     discord
-    # REF https://github.com/NixOS/nixpkgs/pull/385105
-    # kulala-ls
+    devpod-desktop
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

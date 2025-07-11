@@ -1,6 +1,8 @@
 { inputs, unstable, lib, config, pkgs, system, ... }: {
   home.packages = let
   in [
+    # REF https://github.com/NixOS/nixpkgs/pull/385105
+    # kulala-ls
     pkgs.docker-compose-language-service
     pkgs.vacuum-go
     pkgs.nginx-language-server

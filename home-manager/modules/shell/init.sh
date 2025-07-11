@@ -21,23 +21,24 @@ zinit ice lucid wait
 zinit light Aloxaf/fzf-tab
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
+### We don't need to install completions with zinit, as nix provides those completion in packages
 # This will break completions for other ssh related utilities
 # sunlei/zsh-ssh \
 
-zinit lucid wait for \
-    zsh-users/zsh-completions \
-    OMZP::bun \
-    OMZP::docker \
-    OMZP::docker-compose \
-    OMZP::dotnet \
-    OMZP::git
-
-bw completion --shell zsh >"$ZINIT[COMPLETIONS_DIR]/_bw"
-
-# no idea why chafa completion does not work
-zinit as"completion" lucid wait for \
-    https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
-
-# To complete completions installation, run zicompinit
-zinit for \
-    lucid wait"1" atload"zicompinit; zicdreplay" OMZP::rbw
+# zinit lucid wait for \
+#     zsh-users/zsh-completions \
+#     OMZP::bun \
+#     OMZP::docker \
+#     OMZP::docker-compose \
+#     OMZP::dotnet \
+#     OMZP::git
+#
+# bw completion --shell zsh >"$ZINIT[COMPLETIONS_DIR]/_bw"
+#
+# # no idea why chafa completion does not work
+# zinit as"completion" lucid wait for \
+#     https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
+#
+# # To complete completions installation, run zicompinit
+# zinit for \
+#     lucid wait"1" atload"zicompinit; zicdreplay" OMZP::rbw
