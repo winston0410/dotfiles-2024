@@ -73,6 +73,11 @@
   programs.starship.settings =
     builtins.fromTOML (builtins.readFile ./starship.toml);
 
+  home.packages = [
+    # For starship git_status module
+    unstable.gitoxide
+  ];
+
   programs.oh-my-posh.enable = false;
   programs.oh-my-posh.package = unstable.oh-my-posh;
   programs.oh-my-posh.enableZshIntegration = true;
