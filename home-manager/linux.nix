@@ -18,6 +18,7 @@
     ./modules/vscode/mod.nix
     ./modules/gnome/mod.nix
     ./modules/firefox/mod.nix
+    ./modules/chromium/mod.nix
     ./modules/email/mod.nix
     ./modules/steam/mod.nix
     ./modules/nix/mod.nix
