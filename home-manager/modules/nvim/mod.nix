@@ -20,6 +20,20 @@
       })
       lua5_1
       luarocks
+      (pkgs.rustPlatform.buildRustPackage rec {
+        pname = "sniprun";
+        version = "1.3.18";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "michaelb";
+          repo = "sniprun";
+          rev = "v${version}";
+          sha256 = "sha256-2Q7Jnt7pVCuNne442KPh2cSjA6V6WSZkgUj99UpmnOM=";
+        };
+
+        cargoHash = "sha256-saipf9HZkw1HdGpdhtHddBsKeSvb6jS7QbhOxjXvRzY=";
+        doCheck = false;
+      })
       # needed for snacks.nvim
       imagemagick
       mermaid-cli
