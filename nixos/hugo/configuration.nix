@@ -148,7 +148,7 @@
   users.users.kghugo = {
     isNormalUser = true;
     description = "kghugo";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "dialout" ];
     packages = with pkgs; [ ];
   };
 
