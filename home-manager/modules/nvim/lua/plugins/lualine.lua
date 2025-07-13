@@ -62,7 +62,15 @@ return {
 								}
 							end,
 						},
+
 						sources = {
+							path = {
+								modified = function(sym)
+									return sym:merge({
+										name = sym.name .. "[+]",
+									})
+								end,
+							},
 							lsp = {
 								valid_symbols = {
 									"File",
