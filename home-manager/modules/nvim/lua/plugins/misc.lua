@@ -1,4 +1,11 @@
 return {
+	-- NOTE interesting plugin, but not very useful
+	{
+		"mawkler/hml.nvim",
+		enabled = false,
+		event = { "VeryLazy" },
+		opts = {},
+	},
 	{
 		"trixnz/sops.nvim",
 		lazy = false,

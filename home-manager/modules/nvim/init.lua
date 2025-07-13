@@ -96,7 +96,6 @@ require("lazy").setup({
 		{ import = "plugins.splits-management" },
 		{ import = "plugins.screenkey" },
 		{ import = "plugins.neovim-as-platform" },
-		{ import = "plugins.dropbar" },
 		{ import = "plugins.lualine" },
 		{ import = "plugins.grapple" },
 		{ import = "plugins.dap" },
