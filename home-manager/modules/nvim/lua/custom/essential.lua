@@ -1,5 +1,3 @@
-local utils = require("custom.utils")
-
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
 vim.g.loaded_gzip = 1
@@ -63,11 +61,18 @@ vim.o.wrap = true
 vim.o.linebreak = true
 vim.o.number = true
 vim.opt.relativenumber = true
--- vim.o.signcolumn = "auto:2"
-vim.o.signcolumn = "no"
+vim.o.signcolumn = "auto"
 vim.o.scrolloff = 8
 vim.opt.sidescrolloff = 16
-vim.opt.fillchars:append({ eob = " ", diff = "╱", lastline = " " })
+vim.opt.fillchars:append({
+	eob = " ",
+	diff = "╱",
+	lastline = " ",
+	foldopen = "",
+	foldclose = "",
+	-- foldsep = " ",
+	-- fold = " ",
+})
 vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
