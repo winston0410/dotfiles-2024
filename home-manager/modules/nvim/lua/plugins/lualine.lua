@@ -263,6 +263,7 @@ return {
 						return require("heirline.conditions").buffer_matches({
 							buftype = { "nofile", "help", "quickfix" },
 							filetype = {
+								"OverseerForm",
 								"dashboard",
 								"^k8s_*",
 								"terminal",
