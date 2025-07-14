@@ -242,16 +242,7 @@ return {
 					},
 				},
 				statuscolumn = {
-					heirline_components.component.numbercolumn({
-						on_click = {
-							name = "line_click",
-							callback = function()
-								pcall(function()
-									require("dap").toggle_breakpoint()
-								end)
-							end,
-						},
-					}),
+					heirline_components.component.numbercolumn(),
 					heirline_components.component.signcolumn(),
 					{
 						provider = "%C",

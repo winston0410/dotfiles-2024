@@ -76,28 +76,31 @@ return {
 				desc = "Jump to previous hunk",
 			},
 		},
-		opts = {
-			on_attach = function(bufnr)
-				local function startsWith(str, prefix)
-					return string.sub(str, 1, #prefix) == prefix
-				end
-
-				local ft = vim.bo[bufnr].filetype
-				if startsWith(ft, "Neogit") or startsWith(ft, "k8s") or ft == "trouble" or ft == "gitcommit" then
-					return false
-				end
-			end,
-			signcolumn = false,
-			linehl = false,
-			current_line_blame = true,
-			preview_config = {
-				border = "rounded",
-				style = "minimal",
-				relative = "cursor",
-				row = 0,
-				col = 1,
-			},
-		},
+		config = function()
+			local pipe_icon = "┃"
+			local signs_icons = {
+				add = { text = pipe_icon },
+				change = { text = pipe_icon },
+				delete = { text = pipe_icon },
+				topdelete = { text = pipe_icon },
+				changedelete = { text = pipe_icon },
+				untracked = { text = pipe_icon },
+			}
+			require("gitsigns").setup({
+				signs = signs_icons,
+				signs_staged = signs_icons,
+				signcolumn = true,
+				linehl = false,
+				current_line_blame = true,
+				preview_config = {
+					border = "rounded",
+					style = "minimal",
+					relative = "cursor",
+					row = 0,
+					col = 1,
+				},
+			})
+		end,
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 	{
@@ -143,7 +146,7 @@ return {
 						flatten_dirs = true,
 						folder_statuses = "never",
 					},
-					win_config = {
+					win_gitsigconfig = {
 						position = "left",
 						width = 25,
 						win_opts = {

@@ -250,17 +250,8 @@ return {
 ` ` `diff
 %s
 ` ` `
-
-When unsure about the module names to use in the commit message, you can refer to the last 20 commit messages in this repository:
-
-` ` `
-%s
-` ` `
-
-Output only the commit message without any explanations and follow-up suggestions.
 ]],
-										vim.fn.system("git diff --no-ext-diff --staged"),
-										vim.fn.system('git log --pretty=format:"%s" -n 20')
+										vim.fn.system("git diff --no-ext-diff --staged")
 									)
 								end,
 								opts = {
