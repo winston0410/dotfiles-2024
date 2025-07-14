@@ -4,7 +4,35 @@ return {
 		event = "InsertEnter",
 		dependencies = {
 			"moyiz/blink-emoji.nvim",
-			{ "L3MON4D3/LuaSnip", version = "v2.*" },
+			{
+				"L3MON4D3/LuaSnip",
+				version = "v2.*",
+				config = function()
+					local ls = require("luasnip")
+					local s, sn = ls.snippet, ls.snippet_node
+					local t, i, d = ls.text_node, ls.insert_node, ls.dynamic_node
+					ls.add_snippets("all", {
+						s({
+							trig = "uuid-v4",
+							name = "uuid-v4",
+							desc = "Generate UUID V4",
+						}, {
+							d(1, function()
+								return sn(nil, i(1, "hello"))
+							end),
+						}),
+						s({
+							trig = "uuid-v7",
+							name = "uuid-v7",
+							desc = "Generate UUID V7",
+						}, {
+							d(1, function()
+								return sn(nil, i(1, "world"))
+							end),
+						}),
+					})
+				end,
+			},
 			{ "disrupted/blink-cmp-conventional-commits" },
 			-- { "Kaiser-Yang/blink-cmp-git", version = "3.x" },
 			-- FIXME this module is exposing the value of an env. Reconsider if we need this
