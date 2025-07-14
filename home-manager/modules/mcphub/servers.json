@@ -1,6 +1,31 @@
 {
 	"nativeMCPServers": [],
 	"mcpServers": {
+		"memory": {
+			"autoApprove": true,
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"-v",
+				"claude-memory:/app/dist",
+				"--rm",
+				"mcp/memory"
+			]
+		},
+		"sequentialthinking": {
+			"autoApprove": true,
+			"command": "docker",
+			"args": ["run", "--rm", "-i", "mcp/sequentialthinking"]
+		},
+		"Сontext7": {
+			"autoApprove": true,
+			"disabled": false,
+			"timeout": 60,
+			"command": "docker",
+			"args": ["run", "-i", "--rm", "context7-mcp"],
+			"transportType": "stdio"
+		},
 		"filesystem": {
 			"disabled": false,
 			"command": "docker",
