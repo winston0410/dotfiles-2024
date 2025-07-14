@@ -135,20 +135,30 @@ return {
 				},
 			},
 		},
+		keys = {
+			{
+				"<leader>p<leader>a",
+				function()
+					vim.cmd("CodeCompanionActions")
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Pick CodeCompanion actions",
+			},
+		},
 		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
 		version = "17.x",
 		config = function()
 			require("codecompanion").setup({
 				auto_approve = true,
-				-- https://codecompanion.olimorris.dev/configuration/adapters.html#changing-a-model
 				adapters = {
-					-- copilot = function()
-					-- 	return require("codecompanion.adapters").extend("copilot", {
-					-- 		env = {
-					-- 			api_key = get_api_key("COPILOT_API_KEY"),
-					-- 		},
-					-- 	})
-					-- end,
+					copilot = function()
+						return require("codecompanion.adapters").extend("copilot", {
+							env = {
+								api_key = get_api_key("COPILOT_API_KEY"),
+							},
+						})
+					end,
 					tavily = function()
 						return require("codecompanion.adapters").extend("gemini", {
 							env = {
