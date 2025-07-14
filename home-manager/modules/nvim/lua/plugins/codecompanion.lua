@@ -233,10 +233,16 @@ return {
 					},
 				},
 				prompt_library = {
-					["Generate a Commit Message"] = {
+					-- TODO complete remove this default prompt
+					-- REF https://github.com/olimorris/codecompanion.nvim/blob/4bec50da26b411e52accdabd358e7c00ff94d2d3/lua/codecompanion/config.lua#L624C7-L624C32
+					-- ["Generate a Commit Message"] = {
+					--                    opts = {}
+					--                },
+					["Commit Message"] = {
 						strategy = "inline",
-						description = "Generate a commit message inline in the current buffer",
+						description = "Generate a commit message",
 						opts = {
+							index = 1,
 							short_name = "commit_message",
 							auto_submit = true,
 							placement = "before",
