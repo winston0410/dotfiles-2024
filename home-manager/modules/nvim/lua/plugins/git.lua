@@ -87,7 +87,7 @@ return {
 					return false
 				end
 			end,
-			signcolumn = true,
+			signcolumn = false,
 			linehl = false,
 			current_line_blame = true,
 			preview_config = {
