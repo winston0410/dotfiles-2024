@@ -34,6 +34,22 @@
         cargoHash = "sha256-saipf9HZkw1HdGpdhtHddBsKeSvb6jS7QbhOxjXvRzY=";
         doCheck = false;
       })
+      (pkgs.buildNpmPackage rec {
+        pname = "uuid";
+        version = "11.1.0";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "uuidjs";
+          repo = "uuid";
+          rev = "v${version}";
+          hash = "sha256-WbltvUZphfdvnagVDrCxMvUavj1EKXQEoAXzQwvK88U=";
+        };
+
+        # don't understand why it worked
+        dontNpmBuild = true;
+
+        npmDepsHash = "sha256-iWTuG/ExpAmz16g5wbhO7fiYH9TULTz8BRcjUwVM6r0=";
+      })
       # needed for snacks.nvim
       imagemagick
       mermaid-cli

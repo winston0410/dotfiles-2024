@@ -11,26 +11,49 @@ return {
 					local ls = require("luasnip")
 					local s, sn = ls.snippet, ls.snippet_node
 					local t, i, d = ls.text_node, ls.insert_node, ls.dynamic_node
-					ls.add_snippets("all", {
-						s({
-							trig = "uuid-v4",
-							name = "uuid-v4",
-							desc = "Generate UUID V4",
-						}, {
-							d(1, function()
-								return sn(nil, i(1, "hello"))
-							end),
-						}),
-						s({
-							trig = "uuid-v7",
-							name = "uuid-v7",
-							desc = "Generate UUID V7",
-						}, {
-							d(1, function()
-								return sn(nil, i(1, "world"))
-							end),
-						}),
-					})
+
+					local uuid_configs = {
+						-- Exclude v3 and v5, as they requires a namespace
+						-- "v3",
+						-- "v5",
+						"v1",
+						"v4",
+						"v6",
+						"v7",
+					}
+
+					local snippets = {}
+
+					for _, uuid_version in ipairs(uuid_configs) do
+						local trig_name = "UUID" .. uuid_version
+						local full_desc = "Generate UUID " .. uuid_version
+
+						table.insert(
+							snippets,
+							s({
+								trig = trig_name,
+								name = trig_name,
+								desc = full_desc,
+							}, {
+								d(1, function()
+									local res = vim.system({
+										"uuid",
+										uuid_version,
+									}, { text = true }):wait()
+									if res.code ~= 0 then
+										vim.notify(
+											string.format("Failed to generate %s: %s", trig_name, vim.trim(res.stderr)),
+											vim.log.levels.ERROR
+										)
+										return nil
+									end
+									return sn(nil, i(1, vim.trim(res.stdout)))
+								end),
+							})
+						)
+					end
+
+					ls.add_snippets("all", snippets)
 				end,
 			},
 			{ "disrupted/blink-cmp-conventional-commits" },
