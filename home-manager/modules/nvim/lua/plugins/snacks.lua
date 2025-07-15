@@ -163,6 +163,16 @@ return {
 				desc = "Search Git Hunks",
 			},
 			{
+				"<leader>pgl",
+				function()
+					Snacks.picker.git_log({})
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search Git log",
+			},
+			{
 				"<leader>pw",
 				function()
 					Snacks.picker.grep()
@@ -182,16 +192,6 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Search Git branches",
-			},
-			{
-				"<leader>pgl",
-				function()
-					Snacks.picker.git_log()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Search Git log",
 			},
 			{
 				"<leader>go",
@@ -279,6 +279,7 @@ return {
 					},
 				},
 				picker = {
+					sources = {},
 					enabled = true,
 					ui_select = true,
 					layout = {

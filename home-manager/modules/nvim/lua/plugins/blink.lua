@@ -10,7 +10,7 @@ return {
 				config = function()
 					local ls = require("luasnip")
 					local s, sn = ls.snippet, ls.snippet_node
-					local t, i, d = ls.text_node, ls.insert_node, ls.dynamic_node
+					local t, i, d, c = ls.text_node, ls.insert_node, ls.dynamic_node, ls.choice_node
 
 					local uuid_configs = {
 						-- Exclude v3 and v5, as they requires a namespace
@@ -23,6 +23,40 @@ return {
 					}
 
 					local snippets = {}
+					local rand_formats = { "base64", "hex" }
+					if vim.fn.executable("openssl") == 1 then
+						for _, format in ipairs(rand_formats) do
+							local name = string.format("rand_%s", format)
+							table.insert(
+								snippets,
+								s({
+									trig = name,
+									name = name,
+									desc = string.format("Generate 32 random bytes in %s", format),
+								}, {
+									d(1, function()
+										local res = vim.system({
+											"openssl",
+											"rand",
+											"-base64",
+											"32",
+										}, { text = true }):wait()
+										if res.code ~= 0 then
+											vim.notify(
+												string.format(
+													"Failed to generate random bytes: %s",
+													vim.trim(res.stderr)
+												),
+												vim.log.levels.ERROR
+											)
+											return nil
+										end
+										return sn(nil, t(vim.trim(res.stdout)))
+									end),
+								})
+							)
+						end
+					end
 
 					for _, uuid_version in ipairs(uuid_configs) do
 						local trig_name = "UUID" .. uuid_version
@@ -47,7 +81,7 @@ return {
 										)
 										return nil
 									end
-									return sn(nil, i(1, vim.trim(res.stdout)))
+									return sn(nil, t(vim.trim(res.stdout)))
 								end),
 							})
 						)
