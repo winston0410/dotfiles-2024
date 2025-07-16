@@ -3,6 +3,8 @@
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
+    unstable.protols
+    unstable.codebook
     pkgs.docker-compose-language-service
     pkgs.vacuum-go
     pkgs.nginx-language-server

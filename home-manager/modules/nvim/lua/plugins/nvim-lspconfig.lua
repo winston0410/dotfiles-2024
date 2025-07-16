@@ -307,6 +307,9 @@ return {
 				"ziggy",
 				"cypher_ls",
 				"npmls",
+				"codebook",
+				"powershell_es",
+				"protols",
 			}
 			vim.lsp.enable(servers, true)
 
