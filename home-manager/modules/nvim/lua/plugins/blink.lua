@@ -23,6 +23,20 @@ return {
 					}
 
 					local snippets = {}
+
+					local now_utc_name = "now_iso8601_utc"
+					table.insert(
+						snippets,
+						s({
+							trig = now_utc_name,
+							name = now_utc_name,
+							desc = "Generate current datetime in ISO8601 format in UTC",
+						}, {
+							d(1, function()
+								return sn(nil, t(os.date("!%Y-%m-%dT%H:%M:%SZ")))
+							end),
+						})
+					)
 					local rand_formats = { "base64", "hex" }
 					if vim.fn.executable("openssl") == 1 then
 						for _, format in ipairs(rand_formats) do
@@ -59,7 +73,7 @@ return {
 					end
 
 					for _, uuid_version in ipairs(uuid_configs) do
-						local trig_name = "UUID" .. uuid_version
+						local trig_name = "uuid_" .. uuid_version
 						local full_desc = "Generate UUID " .. uuid_version
 
 						table.insert(
