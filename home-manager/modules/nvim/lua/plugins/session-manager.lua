@@ -40,8 +40,9 @@ return {
 				load_order = "modification_time",
 				extensions = {
 					quickfix = {},
-					colorscheme = {},
-					overseer = {},
+					overseer = {
+						unique = true,
+					},
 					oil = {},
 				},
 			})

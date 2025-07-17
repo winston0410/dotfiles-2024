@@ -240,7 +240,7 @@ return {
 								role = "user",
 								content = function()
 									return string.format(
-										[[You are an expert at following the Conventional Commit specification. Please generate a commit message for me:
+										[[You are an expert at following the Conventional Commit specification. Please generate a commit message for me.
 
 ` ` `diff
 %s

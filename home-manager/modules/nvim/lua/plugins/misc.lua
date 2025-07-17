@@ -75,6 +75,10 @@ return {
 			},
 		},
 		version = "1.x",
-		opts = {},
+		opts = {
+			bundles = {
+				autostart_on_load = false,
+			},
+		},
 	},
 }
