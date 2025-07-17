@@ -8,7 +8,7 @@ return {
 	},
 	{
 		"mcauley-penney/visual-whitespace.nvim",
-		event = "VeryLazy",
+		event = { "VeryLazy" },
 		config = function()
 			local comment_hl = vim.api.nvim_get_hl(0, { name = "@comment", link = false })
 			local visual_hl = vim.api.nvim_get_hl(0, { name = "Visual", link = false })
