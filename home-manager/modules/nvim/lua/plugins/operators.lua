@@ -144,8 +144,9 @@ return {
 	{
 		"gbprod/substitute.nvim",
 		keys = {
+			-- do not use x and X default binding, as it is just a d alias (dl or dh)
 			{
-				"<leader>x",
+				"x",
 				function()
 					require("substitute.exchange").operator()
 				end,
@@ -155,7 +156,7 @@ return {
 				desc = "Exchange",
 			},
 			{
-				"<leader>x",
+				"x",
 				function()
 					require("substitute.exchange").visual()
 				end,
@@ -165,7 +166,7 @@ return {
 				desc = "Exchange",
 			},
 			{
-				"<leader>xx",
+				"xx",
 				function()
 					require("substitute.exchange").line()
 				end,

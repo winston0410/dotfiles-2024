@@ -152,6 +152,8 @@ vim.filetype.add({
 	},
 })
 
+vim.keymap.set("i", "<BS>", "<Nop>", { noremap = true })
+
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
