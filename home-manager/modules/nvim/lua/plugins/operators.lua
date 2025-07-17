@@ -145,7 +145,7 @@ return {
 		"gbprod/substitute.nvim",
 		keys = {
 			{
-				"x",
+				"<leader>x",
 				function()
 					require("substitute.exchange").operator()
 				end,
@@ -155,7 +155,7 @@ return {
 				desc = "Exchange",
 			},
 			{
-				"x",
+				"<leader>x",
 				function()
 					require("substitute.exchange").visual()
 				end,
@@ -165,7 +165,7 @@ return {
 				desc = "Exchange",
 			},
 			{
-				"xx",
+				"<leader>xx",
 				function()
 					require("substitute.exchange").line()
 				end,

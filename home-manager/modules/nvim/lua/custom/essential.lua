@@ -112,10 +112,6 @@ vim.g.mapleader = " "
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 
--- FIXME do not set folds here as it cannot reload the session correctly
--- https://github.com/neovim/neovim/issues/28692
-vim.o.sessionoptions = "buffers,curdir,help,resize,tabpages,winsize,winpos,terminal"
-
 -- NOTE hide colorscheme provided by Neovim in colorscheme picker
 vim.opt.wildignore:append({
 	"unokai.vim",
