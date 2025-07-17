@@ -6,6 +6,7 @@
     unstable.protols
     unstable.codebook
     pkgs.docker-compose-language-service
+    unstable.docker-language-server
     pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools

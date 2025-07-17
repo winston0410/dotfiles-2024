@@ -16,7 +16,6 @@ return {
 					null_ls.builtins.diagnostics.haml_lint,
 					null_ls.builtins.diagnostics.terraform_validate,
 					null_ls.builtins.diagnostics.tidy,
-					null_ls.builtins.diagnostics.hadolint,
 					null_ls.builtins.diagnostics.golangci_lint,
 					null_ls.builtins.diagnostics.opacheck,
 					null_ls.builtins.code_actions.refactoring,
@@ -89,18 +88,6 @@ return {
 				filetypes = { "http", "rest" },
 			})
 
-			vim.lsp.config("dockerls", {
-				settings = {
-					docker = {
-						languageserver = {
-							formatter = {
-								ignoreMultilineInstructions = true,
-							},
-						},
-					},
-				},
-			})
-
 			local ok, vue_language_server_path = pcall(function()
 				local res = vim.system({ "which", "vue-language-server" }, { text = true }):wait()
 				if res.code ~= 0 then
@@ -129,6 +116,11 @@ return {
 					vim.log.levels.WARN
 				)
 			end
+			vim.lsp.config("docker_language_server", {
+				cmd = { "docker-language-server", "start", "--stdio" },
+				filetypes = { "yaml.docker-compose", "dockerfile" },
+			})
+
 			vim.lsp.config("systemd_lsp", {
 				cmd = { "systemd-lsp" },
 				filetypes = { "systemd" },
@@ -265,7 +257,9 @@ return {
 				"hhvm",
 				"prismals",
 				"gopls",
-				"docker_compose_language_service",
+				-- "docker_compose_language_service",
+				-- "dockerls",
+				"docker_language_server",
 				"glsl_analyzer",
 				"gradle_ls",
 				"nimls",
@@ -295,7 +289,6 @@ return {
 				"ts_ls",
 				"earthlyls",
 				"elixirls",
-				"dockerls",
 				"lua_ls",
 				"v-analyzer",
 				-- TODO check if this server is more mature now.This is fast but does not provide enough configuration

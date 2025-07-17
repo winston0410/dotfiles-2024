@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "nh home switch . -c darwin",
+			"type": "shell",
+			"command": "nh home switch . -c darwin",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "nh home switch . -c linux",
+			"type": "shell",
+			"command": "nh home switch . -c linux",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		}
+	]
+}
