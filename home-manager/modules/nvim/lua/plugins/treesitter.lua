@@ -20,16 +20,17 @@ return {
 			local installer = require("nvim-treesitter.install")
 			installer.prefer_git = true
 
-			---@diagnostic disable-next-line: inject-field
-			parser_config.kbd = {
-				install_info = {
-					branch = "master",
-					url = "https://github.com/postsolar/tree-sitter-kanata",
-					files = { "src/parser.c" },
-				},
-				filetype = "kbd",
-				used_by = { "kbd" },
-			}
+			-- FIXME Failed to load parser: uv_dlsym. Seems like neovim or the grammar's issue
+			-- ---@diagnostic disable-next-line: inject-field
+			-- parser_config.kbd = {
+			-- 	install_info = {
+			-- 		branch = "master",
+			-- 		url = "https://github.com/postsolar/tree-sitter-kanata",
+			-- 		files = { "src/parser.c" },
+			-- 	},
+			-- 	filetype = "kbd",
+			-- 	used_by = { "kbd" },
+			-- }
 			---@diagnostic disable-next-line: inject-field
 			parser_config.make = {
 				install_info = {
