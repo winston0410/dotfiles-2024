@@ -5,27 +5,51 @@
   chords-v2-min-idle 5
 )
 
-(defvar
-      tap-time 200
-      hold-time 250
-)
-
 (defsrc
-  a s d k l ; 
+  a   s   d   f   j   k   l   ;
 )
+(defvar
+  ;; Note: consider using different time values for your different fingers.
+  ;; For example, your pinkies might be slower to release keys and index
+  ;; fingers faster.
+  tap-time 200
+  hold-time 150
 
+  left-hand-keys (
+    1 2 3 4 5
+    q w e r t
+    a s d f g
+    z x c v b
+  )
+  right-hand-keys (
+    6 7 8 9 0 - =
+    y u i o p [ ] \
+    h j k l ; '
+    n m , . /
+  )
+)
 (deflayer base
-  @a @s @d @k @l @; 
+  @a  @s  @d  @f  @j  @k  @l  @;
 )
 
-;; Home row modification
+(deflayer nomods
+  a   s   d   f   j   k   l   ;
+)
+(deffakekeys
+  to-base (layer-switch base)
+)
 (defalias
-  a (tap-hold $tap-time $hold-time a lctl)
-  s (tap-hold $tap-time $hold-time s lalt)
-  d (tap-hold $tap-time $hold-time d lsft)
+  tap (multi
+    (layer-switch nomods)
+    (on-idle-fakekey to-base tap 20)
+  )
 
-  k (tap-hold $tap-time $hold-time k rsft)
-  l (tap-hold $tap-time $hold-time l lalt)
-  ; (tap-hold $tap-time $hold-time ; rctl)
+  a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
+  s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lctl $left-hand-keys)
+  d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lalt $left-hand-keys)
+  f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lsft $left-hand-keys)
+  j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rsft $right-hand-keys)
+  k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) ralt $right-hand-keys)
+  l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) rctl $right-hand-keys)
+  ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rmet $right-hand-keys)
 )
-
