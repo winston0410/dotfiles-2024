@@ -21,6 +21,16 @@ return {
 			installer.prefer_git = true
 
 			---@diagnostic disable-next-line: inject-field
+			parser_config.kbd = {
+				install_info = {
+					branch = "master",
+					url = "https://github.com/postsolar/tree-sitter-kanata",
+					files = { "src/parser.c" },
+				},
+				filetype = "kbd",
+				used_by = { "kbd" },
+			}
+			---@diagnostic disable-next-line: inject-field
 			parser_config.make = {
 				install_info = {
 					branch = "main",

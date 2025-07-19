@@ -149,6 +149,7 @@ vim.filetype.add({
 		http = "http",
 		rest = "http",
 		qalc = "qalc",
+		kbd = "kbd",
 	},
 })
 

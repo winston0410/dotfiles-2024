@@ -1,0 +1,31 @@
+(defcfg
+  process-unmapped-keys yes 
+  log-layer-changes yes
+  concurrent-tap-hold yes
+  chords-v2-min-idle 5
+)
+
+(defvar
+      tap-time 200
+      hold-time 250
+)
+
+(defsrc
+  a s d k l ; 
+)
+
+(deflayer base
+  @a @s @d @k @l @; 
+)
+
+;; Home row modification
+(defalias
+  a (tap-hold $tap-time $hold-time a lctl)
+  s (tap-hold $tap-time $hold-time s lalt)
+  d (tap-hold $tap-time $hold-time d lsft)
+
+  k (tap-hold $tap-time $hold-time k rsft)
+  l (tap-hold $tap-time $hold-time l lalt)
+  ; (tap-hold $tap-time $hold-time ; rctl)
+)
+

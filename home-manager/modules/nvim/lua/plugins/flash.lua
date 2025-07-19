@@ -16,7 +16,7 @@ return {
 						enabled = false,
 					},
 					char = {
-						enabled = true,
+						enabled = false,
 						highlight = {
 							backdrop = false,
 						},
