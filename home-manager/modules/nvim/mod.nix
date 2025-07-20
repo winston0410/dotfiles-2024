@@ -47,6 +47,7 @@
 
         preBuild = ''
           ${pkgs.dos2unix}/bin/dos2unix ./scripts/build.sh
+          # REF https://discourse.nixos.org/t/shebang-locations/28992/4
           # remove the shebang of the original script, as it is wrong and wouldn't work on NixOS
           ${pkgs.gnused}/bin/sed -i '1{/^#!/d;}' ./scripts/build.sh
         '';
