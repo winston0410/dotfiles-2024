@@ -41,7 +41,11 @@
     username = "hugosum";
     homeDirectory = "/Users/hugosum";
   };
-  home.packages = with pkgs; [ kubectl ];
+  home.packages = with pkgs; [
+    kubectl
+    inputs.oxeylyzer.packages.${system}.default
+
+  ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
   xdg.userDirs.enable = lib.mkForce false;
