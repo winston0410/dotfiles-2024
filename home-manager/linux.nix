@@ -40,6 +40,10 @@
     discord
     devpod-desktop
     podman-compose
+
+    openscad
+    inkscape
+    kicad
   ];
 
   home.shellAliases = { docker-compose = "podman-compose"; };

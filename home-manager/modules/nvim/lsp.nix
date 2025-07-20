@@ -3,6 +3,7 @@
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
+    pkgs.openscad-lsp
     unstable.protols
     unstable.codebook
     pkgs.docker-compose-language-service
