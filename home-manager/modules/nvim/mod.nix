@@ -34,7 +34,6 @@
         cargoHash = "sha256-saipf9HZkw1HdGpdhtHddBsKeSvb6jS7QbhOxjXvRzY=";
         doCheck = false;
       })
-      # FIXME somehow does not work
       (pkgs.buildNpmPackage rec {
         pname = "uuid";
         version = "11.1.0";
@@ -48,11 +47,12 @@
 
         preBuild = ''
           ${pkgs.dos2unix}/bin/dos2unix ./scripts/build.sh
+          # REF https://discourse.nixos.org/t/shebang-locations/28992/4
+          # remove the shebang of the original script, as it is wrong and wouldn't work on NixOS
+          ${pkgs.gnused}/bin/sed -i '1{/^#!/d;}' ./scripts/build.sh
         '';
 
         npmBuildFlags = [ "--" "--no-pack" ];
-
-        nativeBuildInputs = [ pkgs.bash ];
 
         npmDepsHash = "sha256-iWTuG/ExpAmz16g5wbhO7fiYH9TULTz8BRcjUwVM6r0=";
       })
