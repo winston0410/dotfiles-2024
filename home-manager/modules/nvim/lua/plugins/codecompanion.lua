@@ -76,6 +76,7 @@ local get_api_key = function(key)
 	return pwd
 end
 return {
+	{ "github/copilot.vim", version = "1.x", cmd = { "Copilot" } },
 	{
 		"olimorris/codecompanion.nvim",
 		dependencies = {
@@ -152,13 +153,6 @@ return {
 			require("codecompanion").setup({
 				auto_approve = true,
 				adapters = {
-					copilot = function()
-						return require("codecompanion.adapters").extend("copilot", {
-							env = {
-								api_key = get_api_key("COPILOT_API_KEY"),
-							},
-						})
-					end,
 					tavily = function()
 						return require("codecompanion.adapters").extend("tavily", {
 							env = {
