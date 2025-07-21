@@ -1,11 +1,22 @@
 local utils = require("custom.utils")
 return {
-	-- NOTE not ready yet but looks like a really good alternative
-	-- {
-	-- 	"A7Lavinraj/fyler.nvim",
-	-- 	dependencies = { "echasnovski/mini.icons" },
-	-- 	opts = {}, -- check the default options in the README.md
-	-- },
+	{
+		"A7Lavinraj/fyler.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		cmd = { "Fyler" },
+
+		branch = "stable",
+		config = function()
+			require("fyler").setup({
+				-- enable this once oil.nvim is removed
+				default_explorer = false,
+				icon_provider = "nvim-web-devicons",
+				views = {
+					explorer = {},
+				},
+			})
+		end,
+	},
 	{
 		-- "stevearc/oil.nvim",
 		-- version = "2.x",
