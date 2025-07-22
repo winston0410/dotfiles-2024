@@ -153,6 +153,13 @@ return {
 			require("codecompanion").setup({
 				auto_approve = true,
 				adapters = {
+					jina = function()
+						return require("codecompanion.adapters").extend("jina", {
+							env = {
+								api_key = get_api_key("JINA_API_KEY"),
+							},
+						})
+					end,
 					tavily = function()
 						return require("codecompanion.adapters").extend("tavily", {
 							env = {
@@ -203,7 +210,7 @@ return {
 						},
 						tools = {
 							opts = {
-								default_tools = { "mcp", "files" },
+								default_tools = { "mcp", "files", "fetch_webpage" },
 							},
 						},
 					},
