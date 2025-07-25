@@ -1,4 +1,10 @@
 return {
+	{
+		"mistricky/codesnap.nvim",
+		build = "make",
+		version = "1.x",
+		cmd = { "CodeSnapHighlight", "CodeSnapSaveHighlight", "CodeSnapASCII", "CodeSnap", "CodeSnapSave" },
+	},
 	-- NOTE interesting plugin, but not very useful
 	{
 		"mawkler/hml.nvim",

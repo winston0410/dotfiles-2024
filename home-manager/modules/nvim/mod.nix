@@ -20,6 +20,7 @@
       })
       lua5_1
       luarocks
+      unstable.codesnap
       (pkgs.rustPlatform.buildRustPackage rec {
         pname = "sniprun";
         version = "1.3.18";
