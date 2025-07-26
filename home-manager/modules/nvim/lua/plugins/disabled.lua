@@ -27,30 +27,6 @@ return {
 		opts = {},
 	},
 	{
-		"jackplus-xyz/player-one.nvim",
-		enabled = false,
-		opts = {
-			is_enabled = true,
-			debug = true,
-		},
-	},
-	{
-		"nvim-neorg/neorg",
-		ft = { "norg" },
-		enabled = false,
-		dependencies = { "pysan3/pathlib.nvim", "nvim-neorg/lua-utils.nvim", "nvim-neotest/nvim-nio" },
-		version = "9.x",
-		config = function()
-			-- NOTE https://github.com/nvim-neorg/neorg/blob/53714b1783d4bb5fa154e2a5428b086fb5f3d8a5/res/wiki/static/Setup-Guide.md
-			require("neorg").setup({
-				load = {
-					["core.defaults"] = {},
-					["core.concealer"] = {},
-				},
-			})
-		end,
-	},
-	{
 		"folke/trouble.nvim",
 		version = "3.x",
 		event = { "BufReadPre", "BufNewFile" },

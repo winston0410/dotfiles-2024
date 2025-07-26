@@ -3,7 +3,7 @@ return {
 	{
 		"folke/snacks.nvim",
 		version = "2.x",
-		priority = 79,
+		priority = 1000,
 		lazy = false,
 		dependencies = {},
 		keys = {

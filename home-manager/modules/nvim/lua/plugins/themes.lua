@@ -32,7 +32,7 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		lazy = false,
-		priority = 99,
+		priority = 9999,
 		requires = { "nvim-tree/nvim-web-devicons" },
 		init = function()
 			vim.g.tokyonight_style = "moon"

@@ -18,7 +18,7 @@
         withPython3 = false;
         withNodeJs = false;
       })
-      lua5_1
+      luajit
       luarocks
       unstable.codesnap
       (pkgs.rustPlatform.buildRustPackage rec {
