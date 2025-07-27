@@ -276,7 +276,10 @@ return {
 				"r_language_server",
 				"kotlin_language_server",
 				"cmake",
-				"pyright",
+				"basedpyright",
+				-- TODO switch over from pyright to tv, once it is more stable
+				-- "tv",
+				"ruff-lsp",
 				"taplo",
 				"cucumber_language_server",
 				"slint_lsp",

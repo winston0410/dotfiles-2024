@@ -24,7 +24,7 @@
     pkgs.nodePackages.yaml-language-server
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
-    pkgs.pyright
+    unstable.basedpyright
     pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph
