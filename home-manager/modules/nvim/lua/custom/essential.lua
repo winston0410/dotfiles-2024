@@ -224,38 +224,39 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
-vim.keymap.set({ "n" }, "<leader>wv", function()
+-- Use redundant keymapping for now, we might use <leader>w again in the future
+vim.keymap.set({ "n" }, "<C-w>v", function()
 	vim.cmd("vsplit")
 end, { silent = true, noremap = true, desc = "Create a vertical split" })
-vim.keymap.set({ "n" }, "<leader>ws", function()
+vim.keymap.set({ "n" }, "<C-w>s", function()
 	vim.cmd("split")
 end, { silent = true, noremap = true, desc = "Create a horizontal split" })
-vim.keymap.set({ "n" }, "<leader>wq", function()
+vim.keymap.set({ "n" }, "<C-w>q", function()
 	vim.cmd("quit")
 end, { silent = true, noremap = true, desc = "Close a split" })
 vim.keymap.set(
 	{ "n" },
-	"<leader>w=",
+	"<C-w>=",
 	"<C-w>=",
 	{ silent = true, noremap = true, desc = "Reset all split size to be identical" }
 )
 vim.keymap.set({ "n" }, "<C-o>", "<C-i>", { silent = true, noremap = true, desc = "Jump forward" })
 vim.keymap.set({ "n" }, "<C-i>", "<C-o>", { silent = true, noremap = true, desc = "Jump backward" })
 
-vim.keymap.set({ "n" }, "<leader>wL", "<C-w>L", { silent = true, noremap = true, desc = "Swap with right split" })
-vim.keymap.set({ "n" }, "<leader>wH", "<C-w>H", { silent = true, noremap = true, desc = "Swap with left split" })
-vim.keymap.set({ "n" }, "<leader>wK", "<C-w>K", { silent = true, noremap = true, desc = "Swap with top split" })
-vim.keymap.set({ "n" }, "<leader>wJ", "<C-w>J", { silent = true, noremap = true, desc = "Swap with bottom split" })
+vim.keymap.set({ "n" }, "<C-w>L", "<C-w>L", { silent = true, noremap = true, desc = "Swap with right split" })
+vim.keymap.set({ "n" }, "<C-w>H", "<C-w>H", { silent = true, noremap = true, desc = "Swap with left split" })
+vim.keymap.set({ "n" }, "<C-w>K", "<C-w>K", { silent = true, noremap = true, desc = "Swap with top split" })
+vim.keymap.set({ "n" }, "<C-w>J", "<C-w>J", { silent = true, noremap = true, desc = "Swap with bottom split" })
 
-vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to right split" })
-vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to left split" })
-vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
-vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
+vim.keymap.set({ "n" }, "<C-w>l", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to right split" })
+vim.keymap.set({ "n" }, "<C-w>h", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to left split" })
+vim.keymap.set({ "n" }, "<C-w>k", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
+vim.keymap.set({ "n" }, "<C-w>j", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
-vim.keymap.set({ "n" }, "<leader>w>", "10<C-w>>", { noremap = true, silent = true, desc = "Increase split width" })
-vim.keymap.set({ "n" }, "<leader>w<", "10<C-w><", { noremap = true, silent = true, desc = "Decrease split width" })
-vim.keymap.set({ "n" }, "<leader>w+", "10<C-w>+", { noremap = true, silent = true, desc = "Increase split height" })
-vim.keymap.set({ "n" }, "<leader>w-", "10<C-w>-", { noremap = true, silent = true, desc = "Decrease split height" })
+vim.keymap.set({ "n" }, "<C-w>>", "10<C-w>>", { noremap = true, silent = true, desc = "Increase split width" })
+vim.keymap.set({ "n" }, "<C-w><", "10<C-w><", { noremap = true, silent = true, desc = "Decrease split width" })
+vim.keymap.set({ "n" }, "<C-w>+", "10<C-w>+", { noremap = true, silent = true, desc = "Increase split height" })
+vim.keymap.set({ "n" }, "<C-w>-", "10<C-w>-", { noremap = true, silent = true, desc = "Decrease split height" })
 
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
