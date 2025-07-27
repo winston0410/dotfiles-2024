@@ -251,6 +251,7 @@ return {
 				"gdscript",
 				"scry",
 				"biome",
+				"gnls",
 				"eslint",
 				"angularls",
 				"bashls",

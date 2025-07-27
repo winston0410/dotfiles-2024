@@ -210,7 +210,7 @@ return {
 						},
 						tools = {
 							opts = {
-								default_tools = { "mcp", "files", "fetch_webpage" },
+								default_tools = { "full_stack_dev" },
 							},
 						},
 					},
