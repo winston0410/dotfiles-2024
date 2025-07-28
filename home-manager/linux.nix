@@ -43,7 +43,7 @@
 
     openscad
     inkscape
-    kicad
+    unstable.kicad
   ];
 
   home.shellAliases = { docker-compose = "podman-compose"; };
