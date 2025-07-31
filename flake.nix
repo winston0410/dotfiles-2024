@@ -82,6 +82,19 @@
       };
     in {
       homeConfigurations = {
+        "darwin-work" = home-manager.lib.homeManagerConfiguration {
+          pkgs = darwinArmPkgs;
+          extraSpecialArgs = {
+            inherit inputs outputs;
+            system = darwinArmSystem;
+            unstable = unstable.legacyPackages.aarch64-darwin;
+          };
+          modules = [
+            inputs.sops-nix.homeManagerModules.sops
+            ./home-manager/darwin.nix
+            ./home-manager/darwin-work.nix
+          ];
+        };
         "darwin" = home-manager.lib.homeManagerConfiguration {
           pkgs = darwinArmPkgs;
           extraSpecialArgs = {
