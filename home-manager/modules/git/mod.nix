@@ -32,21 +32,26 @@
     lfs = { enable = true; };
 
     merge = {
-      tool = "nvimdiff";
+      tool = "diffview";
       conflictStyle = "zdiff3";
     };
     mergetool = {
       prompt = false;
+      keepBackup = false;
       nvimdiff = { layout = "@LOCAL, REMOTE"; };
+      # https://gist.github.com/Pagliacii/8fcb4dc64937305c19df9bb3137e4cad
+      diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
     };
 
     diff = {
-      tool = "nvimdiff";
+      tool = "diffview";
       conflictStyle = "zdiff3";
     };
     difftool = {
       prompt = false;
+      keepBackup = false;
       nvimdiff = { layout = "@LOCAL, REMOTE"; };
+      diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
     };
 
     alias = {
