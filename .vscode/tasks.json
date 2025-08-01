@@ -2,6 +2,16 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "nh home switch . -c darwin-work",
+			"type": "shell",
+			"command": "nh home switch . -c darwin-work",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "nh home switch . -c darwin",
 			"type": "shell",
 			"command": "nh home switch . -c darwin",

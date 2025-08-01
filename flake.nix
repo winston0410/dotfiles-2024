@@ -12,6 +12,9 @@
 
     unstable.url = "github:nixos/nixpkgs";
 
+    mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
+
     oxeylyzer.url = "github:o-x-e-y/oxeylyzer";
     oxeylyzer.inputs.nixpkgs.follows = "nixpkgs";
     oxeylyzer.inputs.rust-overlay.follows = "rust-overlay";
@@ -40,8 +43,8 @@
     nixpkgs-firefox-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, rust-overlay
-    , sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
+  outputs = { self, nixpkgs, unstable, home-manager, mac-app-util, nixd, darwin
+    , rust-overlay, sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
 
     let
       inherit (self) outputs;
@@ -90,6 +93,7 @@
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
           modules = [
+            mac-app-util.homeManagerModules.default
             inputs.sops-nix.homeManagerModules.sops
             ./home-manager/darwin.nix
             ./home-manager/darwin-work.nix
@@ -103,6 +107,7 @@
             unstable = unstable.legacyPackages.aarch64-darwin;
           };
           modules = [
+            mac-app-util.homeManagerModules.default
             inputs.sops-nix.homeManagerModules.sops
             ./home-manager/darwin.nix
           ];
