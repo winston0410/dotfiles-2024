@@ -6,7 +6,7 @@
   programs.git.extraConfig = {
     user = {
       email = lib.mkForce "hsum@trintech.com";
-      name = "Hugo Sum";
+      name = lib.mkForce "Hugo Sum";
     };
   };
 }
