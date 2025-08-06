@@ -182,6 +182,16 @@ return {
 				noremap = true,
 				desc = "Grep in files",
 			},
+			{
+				"<leader>pw",
+				function()
+					Snacks.picker.grep_word()
+				end,
+				mode = { "x" },
+				silent = true,
+				noremap = true,
+				desc = "Grep in files",
+			},
 
 			{
 				"<leader>pgb",
@@ -227,7 +237,7 @@ return {
 		config = function()
 			local picker_keys = {
 				["<2-LeftMouse>"] = "confirm",
-				["<leader>k"] = { "qflist", mode = { "i", "n" } },
+				["<leader>k"] = { "qflist", mode = { "n" } },
 				["<CR>"] = { "confirm", mode = { "n", "i" } },
 				["<Down>"] = { "list_down", mode = { "i", "n" } },
 				["<Up>"] = { "list_up", mode = { "i", "n" } },

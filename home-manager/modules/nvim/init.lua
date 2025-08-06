@@ -118,6 +118,8 @@ require("lazy").setup({
 		{ import = "plugins.conform" },
 		{
 			"stevearc/quicker.nvim",
+			-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
+			lazy = false,
 			ft = { "qf" },
 			keys = {
 				{
@@ -174,11 +176,12 @@ require("lazy").setup({
 	},
 })
 
-vim.api.nvim_create_autocmd("DiagnosticChanged", {
-	callback = function()
-		local qflist_id = 1
-		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
-		local items = vim.diagnostic.toqflist(diagnostics)
-		vim.fn.setqflist({}, "r", { id = qflist_id, title = "Diagnostics", items = items })
-	end,
-})
+-- TODO Do not push diagnostic to quickfix for now. We need to figure out how to push these diagnostic to another quickfix list, without disrupting the current one
+-- vim.api.nvim_create_autocmd("DiagnosticChanged", {
+-- 	callback = function()
+-- 		local qflist_id = 1
+-- 		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
+-- 		local items = vim.diagnostic.toqflist(diagnostics)
+-- 		vim.fn.setqflist({}, "r", { id = qflist_id, title = "Diagnostics", items = items })
+-- 	end,
+-- })
