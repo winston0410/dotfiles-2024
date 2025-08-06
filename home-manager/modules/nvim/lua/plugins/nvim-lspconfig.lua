@@ -304,7 +304,8 @@ return {
 				"ziggy",
 				"cypher_ls",
 				"npmls",
-				"codebook",
+				-- too buggy, enable this later
+				-- "codebook",
 				"powershell_es",
 				"protols",
 			}
