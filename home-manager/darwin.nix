@@ -51,6 +51,8 @@
   xdg.userDirs.enable = lib.mkForce false;
   xdg.desktopEntries = lib.mkForce { };
 
+  programs.wezterm.enable = lib.mkForce false;
+
   nix.settings.use-xdg-base-directories = lib.mkForce false;
   programs.firefox.package = lib.mkForce pkgs.firefox-bin;
   programs.firefox.nativeMessagingHosts = lib.mkForce [ ];

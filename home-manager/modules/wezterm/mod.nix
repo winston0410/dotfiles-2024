@@ -1,5 +1,8 @@
 { inputs, lib, config, pkgs, system, unstable, ... }: {
-  home.packages = with pkgs; [ wezterm unstable.zellij ];
+  programs.wezterm.enable = true;
+  programs.wezterm.enableBashIntegration = true;
+  programs.wezterm.enableZshIntegration = true;
+  home.packages = with pkgs; [ unstable.zellij ];
 
   xdg.configFile = {
     "wezterm/wezterm.lua" = { source = ./linux.lua; };
