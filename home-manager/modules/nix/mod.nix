@@ -1,4 +1,5 @@
 { inputs, lib, config, pkgs, system, ... }: {
+  # NOTE This only set which Nix version we are targeting, instead of installing that version for us
   nix.package = pkgs.nix;
   nix.enable = true;
   nix.settings.trusted-users = [ "@wheel" ];
@@ -16,7 +17,7 @@
   };
 
   news = { display = "notify"; };
-  home.packages = with pkgs; [ sqlite ];
+  home.packages = with pkgs; [ sqlite nix ];
   home.preferXdgDirectories = true;
   programs.man.enable = false;
 }

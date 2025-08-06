@@ -32,7 +32,7 @@
           sha256 = "sha256-2Q7Jnt7pVCuNne442KPh2cSjA6V6WSZkgUj99UpmnOM=";
         };
 
-        cargoHash = "sha256-saipf9HZkw1HdGpdhtHddBsKeSvb6jS7QbhOxjXvRzY=";
+        cargoHash = "sha256-cu7wn75rQcwPLjFl4v05kVMsiCD0mAlIBt49mvIaPPU=";
         doCheck = false;
       })
       (pkgs.buildNpmPackage rec {
@@ -94,7 +94,7 @@
     MANWIDTH = 999;
   };
 
-  programs.zsh.initExtra = ''
+  programs.zsh.initContent = ''
     nrg() {
         if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
             nvim --cmd 'let g:enable_session = v:false' -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -

@@ -29,7 +29,7 @@
     homeDirectory = "/home/kghugo";
   };
 
-  programs.zsh.initExtra = lib.mkBefore "";
+  programs.zsh.initContent = lib.mkBefore "";
 
   home.packages = with pkgs; [
     bitwarden-cli
@@ -49,5 +49,5 @@
   home.shellAliases = { docker-compose = "podman-compose"; };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }
