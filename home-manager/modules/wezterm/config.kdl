@@ -1,0 +1,7 @@
+keybinds clear-defaults=true {
+
+}
+
+theme "tokyo-night-storm"
+show_startup_tips false
+show_release_notes false

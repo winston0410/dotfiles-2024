@@ -7,7 +7,8 @@ return {
 		config = function()
 			-- TODO add a key binding for formatting operator
 			-- TODO jump to specific kind of comments, for example TODO
-			local prettier = { "biome", "prettierd", "prettier", stop_after_first = true }
+			-- FIXME "biome" format is not working yet
+			local prettier = { "prettierd", "prettier", stop_after_first = true }
 			require("conform").setup({
 				formatters_by_ft = {
 					ember = {},
