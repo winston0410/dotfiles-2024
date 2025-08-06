@@ -1,4 +1,6 @@
-{ inputs, lib, config, pkgs, unstable, ... }: {
+{ inputs, lib, config, pkgs, unstable, ... }:
+let username = "kghugo";
+in {
   imports = [
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
@@ -25,8 +27,8 @@
   ];
 
   home = {
-    username = "kghugo";
-    homeDirectory = "/home/kghugo";
+    inherit username;
+    homeDirectory = "/home/${username}";
   };
 
   programs.zsh.initContent = lib.mkBefore "";

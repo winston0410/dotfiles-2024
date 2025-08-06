@@ -1,4 +1,8 @@
-{ inputs, lib, config, pkgs, unstable, ... }: {
+{ inputs, lib, config, pkgs, unstable, ... }:
+let
+
+  username = "hugosum";
+in {
   imports = [
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
@@ -38,8 +42,8 @@
   '');
 
   home = {
-    username = "hugosum";
-    homeDirectory = "/Users/hugosum";
+    inherit username;
+    homeDirectory = "/Users/${username}";
   };
   home.packages = with pkgs; [
     kubectl
