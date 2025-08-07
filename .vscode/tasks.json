@@ -1,35 +1,45 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "nh home switch . -c darwin-work",
-			"type": "shell",
-			"command": "nh home switch . -c darwin-work",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": []
-		},
-		{
-			"label": "nh home switch . -c darwin",
-			"type": "shell",
-			"command": "nh home switch . -c darwin",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": []
-		},
-		{
-			"label": "nh home switch . -c linux",
-			"type": "shell",
-			"command": "nh home switch . -c linux",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": []
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nh home switch . -c darwin-work",
+      "type": "shell",
+      "command": "nh home switch . -c darwin-work",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "nh home switch . -c darwin",
+      "type": "shell",
+      "command": "nh home switch . -c darwin",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "nh home switch . -c linux",
+      "type": "shell",
+      "command": "nh home switch . -c linux",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "nh os switch . -H hugo",
+      "type": "shell",
+      "command": "nh os switch . -H hugo",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
 }
