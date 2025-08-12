@@ -1,8 +1,11 @@
-{ inputs, lib, config, pkgs, unstable, ... }: {
+{ inputs, lib, config, pkgs, unstable, ... }:
+let username = "hsum";
+in {
   home = {
-    username = lib.mkForce "hsum";
-    homeDirectory = lib.mkForce "/Users/hsum";
+    username = lib.mkForce username;
+    homeDirectory = lib.mkForce "/Users/${username}";
   };
+  nix.settings = { extra-trusted-users = lib.mkForce username; };
   programs.git.extraConfig = {
     user = {
       email = lib.mkForce "hsum@trintech.com";
