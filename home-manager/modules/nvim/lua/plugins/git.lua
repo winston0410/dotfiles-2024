@@ -211,9 +211,21 @@ return {
 						-- },
 						{
 							"n",
-							"<leader>pf",
+							"<leader>o",
 							actions.toggle_files,
 							{ desc = "Toggle the file panel." },
+						},
+						{
+							"n",
+							"do",
+							actions.conflict_choose("ours"),
+							{ desc = "Choose OURS version of a conflict" },
+						},
+						{
+							"n",
+							"dp",
+							actions.conflict_choose("theirs"),
+							{ desc = "Choose THEIRS version of a conflict" },
 						},
 					},
 					file_panel = {
