@@ -227,6 +227,18 @@ return {
 							actions.conflict_choose("theirs"),
 							{ desc = "Choose THEIRS version of a conflict" },
 						},
+						-- {
+						-- 	"n",
+						-- 	"do",
+						-- 	actions.conflict_choose_all("ours"),
+						-- 	{ desc = "Choose OURS version of a conflict" },
+						-- },
+						-- {
+						-- 	"n",
+						-- 	"dp",
+						-- 	actions.conflict_choose_all("theirs"),
+						-- 	{ desc = "Choose THEIRS version of a conflict" },
+						-- },
 					},
 					file_panel = {
 						{
