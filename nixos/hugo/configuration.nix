@@ -8,7 +8,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 3;
+  boot.loader.systemd-boot.configurationLimit = 2;
 
   boot.plymouth.enable = true;
   # boot.plymouth.themePackages = with pkgs; [ nixos-bgrt-plymouth ];
@@ -78,7 +78,7 @@
   programs.ssh.enableAskPassword = false;
   services.gnome.gnome-keyring.enable = true;
   services.gnome.games.enable = false;
-  services.gnome.core-utilities.enable = false;
+  services.gnome.core-apps.enable = false;
   services.gnome.gnome-browser-connector.enable = true;
   environment.gnome.excludePackages =
     (with pkgs; [ gnome-tour gnome-shell-extensions ]);
@@ -112,7 +112,7 @@
       userServices = true;
     };
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.sudo-rs.enable = true;
   security.pam.services.gdm-password.enableGnomeKeyring = true;
@@ -209,19 +209,19 @@
     };
   };
 
-  # TODO move this to home-manager config in the future
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-    extest = { enable = true; };
-    protontricks = { enable = true; };
-  };
-  # Steam own hardware support
-  hardware.steam-hardware.enable = true;
-  # Xbox controller support
-  hardware.xpadneo.enable = true;
+  # # TODO move this to home-manager config in the future
+  # programs.steam = {
+  #   enable = true;
+  #   remotePlay.openFirewall = true;
+  #   dedicatedServer.openFirewall = true;
+  #   localNetworkGameTransfers.openFirewall = true;
+  #   extest = { enable = true; };
+  #   protontricks = { enable = true; };
+  # };
+  # # Steam own hardware support
+  # hardware.steam-hardware.enable = true;
+  # # Xbox controller support
+  # hardware.xpadneo.enable = true;
   xdg.portal = { enable = true; };
 
   documentation.nixos.enable = false;
@@ -239,5 +239,5 @@
 
   # IMPORTANT do not define anything git related here, somehow it conflicted with the user's git config
 
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
