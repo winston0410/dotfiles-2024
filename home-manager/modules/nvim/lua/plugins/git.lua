@@ -277,6 +277,12 @@ return {
 							actions.select_prev_entry,
 							{ desc = "Open the diff for the previous file" },
 						},
+						{
+							"n",
+							"gf",
+							actions.goto_file_edit,
+							{ desc = "Open the file in the previous tabpage" },
+						},
 					},
 					file_history_panel = {
 						{
@@ -308,6 +314,12 @@ return {
 							"<s-tab>",
 							actions.select_prev_entry,
 							{ desc = "Open the diff for the previous file" },
+						},
+						{
+							"n",
+							"gf",
+							actions.goto_file_edit,
+							{ desc = "Open the file in the previous tabpage" },
 						},
 					},
 					option_panel = {
