@@ -8,7 +8,7 @@
     };
     pull = { ff = true; };
     # REF https://stackoverflow.com/a/61920529
-    http = { postBuffer = 524288000; };
+    http = { postBuffer = 2097152000; };
 
     init = { defaultBranch = "main"; };
 
