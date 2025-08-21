@@ -227,6 +227,24 @@ return {
 							actions.conflict_choose("theirs"),
 							{ desc = "Choose THEIRS version of a conflict" },
 						},
+						{
+							"n",
+							"<leader>h3",
+							actions.conflict_choose("base"),
+							{ desc = "Choose BASE version of a conflict" },
+						},
+						{
+							"n",
+							"<leader>h4",
+							actions.conflict_choose("all"),
+							{ desc = "Choose ALL version of a conflict" },
+						},
+						{
+							"n",
+							"<leader>h5",
+							actions.conflict_choose("none"),
+							{ desc = "Choose NONE version of a conflict" },
+						},
 						-- {
 						-- 	"n",
 						-- 	"do",
