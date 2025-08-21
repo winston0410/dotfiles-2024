@@ -3,7 +3,7 @@ return {
 		"stevearc/conform.nvim",
 		version = "9.x",
 		event = { "BufWritePre" },
-		cmd = { "ConformInfo" },
+		cmd = { "ConformInfo", "ConformDisable", "ConformEnable" },
 		config = function()
 			-- TODO add a key binding for formatting operator
 			-- TODO jump to specific kind of comments, for example TODO
