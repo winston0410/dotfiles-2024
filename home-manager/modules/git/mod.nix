@@ -2,6 +2,10 @@
   programs.git.enable = true;
 
   programs.git.extraConfig = {
+    pack = {
+      threads = 0;
+      sparse = true;
+    };
     pull = { ff = true; };
     # REF https://stackoverflow.com/a/61920529
     http = { postBuffer = 524288000; };
