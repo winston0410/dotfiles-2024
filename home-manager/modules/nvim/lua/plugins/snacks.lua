@@ -323,7 +323,8 @@ return {
 					level = vim.log.levels.INFO,
 				},
 				indent = {
-					enabled = true,
+					-- TODO enable later, after is it working with DiffviewOpen without error
+					enabled = false,
 				},
 				words = { enabled = false },
 				styles = {
