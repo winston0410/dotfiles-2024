@@ -217,13 +217,13 @@ return {
 						},
 						{
 							"n",
-							"do",
+							"<leader>h1",
 							actions.conflict_choose("ours"),
 							{ desc = "Choose OURS version of a conflict" },
 						},
 						{
 							"n",
-							"dp",
+							"<leader>h2",
 							actions.conflict_choose("theirs"),
 							{ desc = "Choose THEIRS version of a conflict" },
 						},
