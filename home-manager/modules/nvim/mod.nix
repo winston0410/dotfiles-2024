@@ -112,6 +112,8 @@
       "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"neogit\").open()'";
     k8s =
       "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
+    diffview =
+      "nvim --cmd 'let g:enable_session = v:false' --cmd 'let g:disable_autoformat = v:true' -c 'DiffviewOpen'";
   };
 
   xdg.configFile = {
