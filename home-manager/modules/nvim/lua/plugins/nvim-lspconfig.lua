@@ -372,7 +372,7 @@ return {
 					vim.diagnostic.config({
 						underline = true,
 						virtual_text = false,
-						virtual_lines = { current_line = true },
+						virtual_lines = { current_line = false },
 						signs = {
 							text = {
 								-- FIXME: cannot customize the icon, without not showing it in signcolumn
