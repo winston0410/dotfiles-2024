@@ -16,6 +16,8 @@ M.config = {
 		-- not a bad font, but seems to be not actively maintained
 		-- "Mononoki Nerd Font Mono",
 		"Noto Sans Mono CJK HK",
+		-- for matplotlib
+		"DejaVu Sans Mono",
 	}),
 	font_size = 15,
 	enable_tab_bar = true,
