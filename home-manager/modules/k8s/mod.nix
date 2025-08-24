@@ -15,6 +15,8 @@
 
       cargoHash = "sha256-hNM5P+hZb+EW8ymN1rOHxq1gVPZ9CcuKN2JbytP8nAA=";
 
+      buildInputs = with pkgs; [ zlib ];
+
       meta = with pkgs.lib; {
         description = "Source VS Deployed";
         homepage = "https://github.com/Ramilito/kubediff";
