@@ -22,6 +22,7 @@ in {
     # ./modules/bw/mod.nix
     ./modules/nix/mod.nix
     ./modules/mcphub/mod.nix
+    ./modules/k8s/mod.nix
     # Firefox just won't start
     # ./modules/firefox/mod.nix
   ];
@@ -45,11 +46,11 @@ in {
     inherit username;
     homeDirectory = "/Users/${username}";
   };
-  home.packages = with pkgs; [
-    kubectl
-    inputs.oxeylyzer.packages.${system}.default
+  home.packages = with pkgs;
+    [
+      inputs.oxeylyzer.packages.${system}.default
 
-  ];
+    ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
   xdg.userDirs.enable = lib.mkForce false;

@@ -42,7 +42,7 @@ return {
 				desc = "kubectl.nvim panel",
 			},
 		},
-		dependencies = { "folke/snacks.nvim" },
+		dependencies = { "saghen/blink.download" },
 		config = function()
 			require("kubectl").setup({
 				log_level = vim.log.levels.INFO,
