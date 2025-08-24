@@ -28,8 +28,9 @@ return {
 	},
 	{
 		"ramilito/kubectl.nvim",
-		version = "2.7.12",
+		version = "v2.7.12",
 		cmd = { "Kubectl", "Kubectx", "Kubens" },
+		-- build = false,
 		dependencies = { "saghen/blink.download" },
 		keys = {
 			{
