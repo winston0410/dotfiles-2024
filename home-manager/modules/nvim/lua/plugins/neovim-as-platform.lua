@@ -27,10 +27,10 @@ return {
 		end,
 	},
 	{
+		-- FIXME it does not download the kubectl_client???
 		"ramilito/kubectl.nvim",
 		version = "v2.7.12",
 		cmd = { "Kubectl", "Kubectx", "Kubens" },
-		-- build = false,
 		dependencies = { "saghen/blink.download" },
 		keys = {
 			{
