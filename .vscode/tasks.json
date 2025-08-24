@@ -40,6 +40,12 @@
         "isDefault": true
       },
       "problemMatcher": []
+    },
+    {
+      "label": "nh clean all",
+      "type": "shell",
+      "command": "nh clean all",
+      "problemMatcher": []
     }
   ]
 }
