@@ -253,11 +253,6 @@ vim.keymap.set({ "n" }, "<C-w>h", "<C-w>h", { silent = true, noremap = true, des
 vim.keymap.set({ "n" }, "<C-w>k", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
 vim.keymap.set({ "n" }, "<C-w>j", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
 
-vim.keymap.set({ "n" }, "<C-w>>", "10<C-w>>", { noremap = true, silent = true, desc = "Increase split width" })
-vim.keymap.set({ "n" }, "<C-w><", "10<C-w><", { noremap = true, silent = true, desc = "Decrease split width" })
-vim.keymap.set({ "n" }, "<C-w>+", "10<C-w>+", { noremap = true, silent = true, desc = "Increase split height" })
-vim.keymap.set({ "n" }, "<C-w>-", "10<C-w>-", { noremap = true, silent = true, desc = "Decrease split height" })
-
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
