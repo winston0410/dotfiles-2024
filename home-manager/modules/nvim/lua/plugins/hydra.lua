@@ -12,9 +12,39 @@ return {
 				name = "Window",
 				mode = { "n" },
 				body = "<c-w>",
-				hint = false,
-				config = {},
+				config = {
+					hint = false,
+				},
 				heads = {
+					{
+						"q",
+						function()
+							vim.cmd("quit")
+						end,
+						{
+							noremap = true,
+							silent = true,
+							desc = "Create a horizontal split",
+						},
+					},
+					{
+						"s",
+						"<c-w>s",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Create a horizontal split",
+						},
+					},
+					{
+						"v",
+						"<c-w>v",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Create a vertical split",
+						},
+					},
 					{
 						"+",
 						"10<c-w>+",
@@ -40,6 +70,15 @@ return {
 							noremap = true,
 							silent = true,
 							desc = "Increase split width",
+						},
+					},
+					{
+						"=",
+						"<c-w>=",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Resize all splits to identical size",
 						},
 					},
 					{

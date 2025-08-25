@@ -224,25 +224,10 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
--- Use redundant keymapping for now, we might use <leader>w again in the future
-vim.keymap.set({ "n" }, "<C-w>v", function()
-	vim.cmd("vsplit")
-end, { silent = true, noremap = true, desc = "Create a vertical split" })
-vim.keymap.set({ "n" }, "<C-w>s", function()
-	vim.cmd("split")
-end, { silent = true, noremap = true, desc = "Create a horizontal split" })
-vim.keymap.set({ "n" }, "<C-w>q", function()
-	vim.cmd("quit")
-end, { silent = true, noremap = true, desc = "Close a split" })
-vim.keymap.set(
-	{ "n" },
-	"<C-w>=",
-	"<C-w>=",
-	{ silent = true, noremap = true, desc = "Reset all split size to be identical" }
-)
 vim.keymap.set({ "n" }, "<C-o>", "<C-i>", { silent = true, noremap = true, desc = "Jump forward" })
 vim.keymap.set({ "n" }, "<C-i>", "<C-o>", { silent = true, noremap = true, desc = "Jump backward" })
 
+-- Use redundant keymapping for now, we might use <leader>w again in the future
 vim.keymap.set({ "n" }, "<C-w>L", "<C-w>L", { silent = true, noremap = true, desc = "Swap with right split" })
 vim.keymap.set({ "n" }, "<C-w>H", "<C-w>H", { silent = true, noremap = true, desc = "Swap with left split" })
 vim.keymap.set({ "n" }, "<C-w>K", "<C-w>K", { silent = true, noremap = true, desc = "Swap with top split" })
