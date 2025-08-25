@@ -180,8 +180,10 @@ return {
 			local utils = require("heirline.utils")
 			local heirline = require("heirline")
 			local heirline_components = require("heirline-components.all")
+			local hydra_statusline = require("hydra.statusline")
 
 			heirline_components.init.subscribe_to_events()
+			-- FIXME heirline-compoments would reload color after colorscheme has changed, we need to set our custom color again as well
 			heirline.load_colors(heirline_components.hl.get_colors())
 
 			local FileSize = {
@@ -220,9 +222,47 @@ return {
 				utils.make_tablist(Tabpage),
 			}
 
+			local dmode_enabled = false
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "DebugModeChanged",
+				callback = function(args)
+					dmode_enabled = args.data.enabled
+				end,
+			})
+
+			local Mode = heirline_components.component.builder({
+				{
+					provider = function()
+						local text = heirline_components.env.modes[vim.fn.mode()][1]
+						local hydra_mode = hydra_statusline.get_name()
+						if hydra_mode ~= nil then
+							text = string.format(" %s ", hydra_mode:upper())
+						end
+						-- print(hydra_statusline.get_color())
+						-- if dmode_enabled then
+						-- 	text = "DEBUG"
+						-- end
+						local opts = {}
+						return heirline_components.utils.stylize(text, opts)
+					end,
+				},
+				surround = {
+					separator = "left",
+					color = function()
+						local hydra_mode = hydra_statusline.get_name()
+						if hydra_mode ~= nil then
+							return string.format("hydra_%s", hydra_mode:lower())
+						end
+						local hl = heirline_components.hl.mode_bg()
+						return hl
+					end,
+				},
+				hl = heirline_components.hl.get_attributes("mode"),
+			})
+
 			require("heirline").setup({
 				statusline = {
-					heirline_components.component.mode({ mode_text = {} }),
+					Mode,
 					heirline_components.component.git_branch({}),
 					heirline_components.component.file_encoding({
 						file_format = { padding = { left = 0, right = 0 } },
@@ -250,6 +290,9 @@ return {
 				},
 				tabline = { TabPages },
 				opts = {
+					colors = {
+						hydra_window = utils.get_highlight("Constant").fg,
+					},
 					disable_winbar_cb = function(args)
 						return require("heirline.conditions").buffer_matches({
 							buftype = { "nofile", "help", "quickfix" },
@@ -280,8 +323,6 @@ return {
 					end,
 				},
 			})
-			-- https://github.com/rebelot/heirline.nvim/blob/master/cookbook.md#theming
-			-- require("heirline").load_colors({})
 		end,
 	},
 	{
