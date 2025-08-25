@@ -55,20 +55,9 @@ return {
 				},
 				config = function()
 					local dap = require("dap")
-					--             local dv = require("dap-view")
-					-- dap.listeners.before.attach["dap-view-config"] = function()
-					-- 	dv.open()
-					-- end
-					-- dap.listeners.before.launch["dap-view-config"] = function()
-					-- 	dv.open()
-					-- end
-					-- dap.listeners.before.event_terminated["dap-view-config"] = function()
-					-- 	dv.close()
-					-- end
-					-- dap.listeners.before.event_exited["dap-view-config"] = function()
-					-- 	dv.close()
-					-- end
 					-- REF https://www.compart.com/en/unicode/search?q=circle#characters
+					-- NOTE we are defining the highlight group here, because we are not using nvim-dap-ui
+					vim.api.nvim_set_hl(0, "DapUIStop", { link = "PreProc" })
 					vim.fn.sign_define(
 						"DapBreakpoint",
 						{ text = "●", texthl = "DapUIStop", linehl = "", numhl = "", priority = 90 }
@@ -77,6 +66,7 @@ return {
 						"DapBreakpointCondition",
 						{ text = "⊜", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
 					)
+					vim.api.nvim_set_hl(0, "DapUIPlayPause", { link = "Repeat" })
 					vim.fn.sign_define(
 						"DapStopped",
 						{ text = "→", texthl = "", linehl = "DapUIPlayPause", numhl = "", priority = 99 }
