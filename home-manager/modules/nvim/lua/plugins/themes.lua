@@ -46,21 +46,28 @@ return {
 		opts = {},
 	},
 	{
-		"wnkz/monoglow.nvim",
-		init = function()
-			vim.opt.wildignore:append({
-				"monoglow.lua",
-				"monoglow-void.lua",
-				"monoglow-lack.lua",
+		"kyza0d/xeno.nvim",
+		lazy = false,
+		opts = {
+			transparent = true,
+			contrast = 0.1,
+		},
+		config = function(_, opts)
+			local xeno = require("xeno")
+			xeno.config(opts)
+
+			xeno.new_theme("xeno-lilypad", {
+				base = "#1E1E1E",
+				accent = "#8CBE8C",
+				contrast = 0.1,
+			})
+
+			xeno.new_theme("xeno-golden-hour", {
+				base = "#11100f",
+				accent = "#FFCC33",
+				contrast = 0.1,
 			})
 		end,
-		config = function()
-			require("monoglow").setup({
-				on_colors = function() end,
-				on_highlights = function() end,
-			})
-		end,
-		lazy = true,
 	},
 	{
 		"alexxGmZ/e-ink.nvim",

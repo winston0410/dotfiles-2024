@@ -1,8 +1,16 @@
 return {
 	{
+		"aaronik/treewalker.nvim",
+		event = { "CursorHold" },
+		enabled = true,
+		opts = {
+			highlight = false,
+		},
+	},
+	{
 		"nvimtools/hydra.nvim",
 		version = "1.x",
-		lazy = false,
+		event = { "VeryLazy" },
 		config = function()
 			local hydra = require("hydra")
 
@@ -14,6 +22,77 @@ return {
 					vim.cmd.redrawstatus()
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeExit" })
 				end),
+			})
+
+			hydra({
+				name = "Treewalk",
+				mode = { "n" },
+				body = "<leader>s",
+				config = {
+					hint = false,
+				},
+				heads = {
+					{
+						"k",
+						function()
+							local count = vim.v.count1
+							for _ = 1, count do
+								vim.cmd("Treewalker Up")
+							end
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Move upward to a Treesitter node",
+						},
+					},
+					{
+						"j",
+						function()
+							local count = vim.v.count1
+							for _ = 1, count do
+								vim.cmd("Treewalker Down")
+							end
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Move downward to a Treesitter node",
+						},
+					},
+					{
+						"l",
+						function()
+							local count = vim.v.count1
+							for _ = 1, count do
+								vim.cmd("Treewalker Right")
+							end
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Move right to a Treesitter node",
+						},
+					},
+					{
+						"h",
+						function()
+							local count = vim.v.count1
+							for _ = 1, count do
+								vim.cmd("Treewalker Left")
+							end
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Move left to a Treesitter node",
+						},
+					},
+				},
 			})
 
 			hydra({

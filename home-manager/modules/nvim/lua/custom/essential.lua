@@ -248,29 +248,30 @@ vim.keymap.set({ "c", "n" }, "q:", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q/", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 
-vim.keymap.set({ "n" }, "<leader>tv", function()
-	vim.cmd("tabnew")
-end, { silent = true, noremap = true, desc = "Create a new tab" })
-vim.keymap.set({ "n" }, "<leader>to", "gt", {
-	silent = true,
-	noremap = true,
-	desc = "Go to the next tab page",
-})
-vim.keymap.set({ "n" }, "<leader>ti", "gT", {
-	silent = true,
-	noremap = true,
-	desc = "Go to the previous tab page",
-})
-vim.keymap.set({ "n" }, "<leader>tq", function()
-	pcall(function()
-		vim.cmd("tabclose")
-	end)
-end, { silent = true, noremap = true, desc = "Close a tab" })
-for i = 1, 9 do
-	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
-		vim.cmd(string.format("tabn %s", i))
-	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
-end
+-- NOTE not really sure if we need keybinding for creating tab
+-- vim.keymap.set({ "n" }, "<leader>tv", function()
+-- 	vim.cmd("tabnew")
+-- end, { silent = true, noremap = true, desc = "Create a new tab" })
+-- vim.keymap.set({ "n" }, "<leader>to", "gt", {
+-- 	silent = true,
+-- 	noremap = true,
+-- 	desc = "Go to the next tab page",
+-- })
+-- vim.keymap.set({ "n" }, "<leader>ti", "gT", {
+-- 	silent = true,
+-- 	noremap = true,
+-- 	desc = "Go to the previous tab page",
+-- })
+-- vim.keymap.set({ "n" }, "<leader>tq", function()
+-- 	pcall(function()
+-- 		vim.cmd("tabclose")
+-- 	end)
+-- end, { silent = true, noremap = true, desc = "Close a tab" })
+-- for i = 1, 9 do
+-- 	vim.keymap.set({ "n" }, "<leader>t" .. i, function()
+-- 		vim.cmd(string.format("tabn %s", i))
+-- 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
+-- end
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
