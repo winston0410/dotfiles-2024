@@ -257,7 +257,6 @@ return {
 						return hl
 					end,
 				},
-				update = { "ModeChanged", "HydraModeEnter", "HydraModeExit" },
 				hl = heirline_components.hl.get_attributes("mode"),
 			})
 
