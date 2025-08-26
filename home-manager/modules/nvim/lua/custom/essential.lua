@@ -227,17 +227,6 @@ vim.keymap.set(
 vim.keymap.set({ "n" }, "<C-o>", "<C-i>", { silent = true, noremap = true, desc = "Jump forward" })
 vim.keymap.set({ "n" }, "<C-i>", "<C-o>", { silent = true, noremap = true, desc = "Jump backward" })
 
--- Use redundant keymapping for now, we might use <leader>w again in the future
-vim.keymap.set({ "n" }, "<C-w>L", "<C-w>L", { silent = true, noremap = true, desc = "Swap with right split" })
-vim.keymap.set({ "n" }, "<C-w>H", "<C-w>H", { silent = true, noremap = true, desc = "Swap with left split" })
-vim.keymap.set({ "n" }, "<C-w>K", "<C-w>K", { silent = true, noremap = true, desc = "Swap with top split" })
-vim.keymap.set({ "n" }, "<C-w>J", "<C-w>J", { silent = true, noremap = true, desc = "Swap with bottom split" })
-
-vim.keymap.set({ "n" }, "<C-w>l", "<C-w>l", { silent = true, noremap = true, desc = "Navigate to right split" })
-vim.keymap.set({ "n" }, "<C-w>h", "<C-w>h", { silent = true, noremap = true, desc = "Navigate to left split" })
-vim.keymap.set({ "n" }, "<C-w>k", "<C-w>k", { silent = true, noremap = true, desc = "Navigate to top split" })
-vim.keymap.set({ "n" }, "<C-w>j", "<C-w>j", { silent = true, noremap = true, desc = "Navigate to bottom split" })
-
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",

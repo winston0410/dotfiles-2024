@@ -90,6 +90,78 @@ return {
 							desc = "Decrease split width",
 						},
 					},
+					{
+						"l",
+						"<c-w>l",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Navigate to the right split",
+						},
+					},
+					{
+						"h",
+						"<c-w>h",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Navigate to the left split",
+						},
+					},
+					{
+						"k",
+						"<c-w>k",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Navigate to the top split",
+						},
+					},
+					{
+						"j",
+						"<c-w>j",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Navigate to the bottom split",
+						},
+					},
+					{
+						"L",
+						"<c-w>L",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Swap with the right split",
+						},
+					},
+					{
+						"H",
+						"<c-w>H",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Swap with the left split",
+						},
+					},
+					{
+						"K",
+						"<c-w>K",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Swap with the top split",
+						},
+					},
+					{
+						"J",
+						"<c-w>J",
+						{
+							noremap = true,
+							silent = true,
+							desc = "Swap with the bottom split",
+						},
+					},
 				},
 			})
 		end,
