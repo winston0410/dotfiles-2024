@@ -91,6 +91,9 @@ return {
 				use_bundled_binary = true,
 				port = 3000,
 				config = vim.fn.expand("~/.config/mcphub/servers.json"),
+				global_env = {
+					["input:ado_org"] = "trintech-coe",
+				},
 				log = {
 					level = vim.log.levels.WARN,
 					to_file = false,
