@@ -78,6 +78,29 @@ end
 return {
 	{ "github/copilot.vim", version = "1.x", cmd = { "Copilot" } },
 	{
+		"ravitemer/mcphub.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		version = "6.x",
+		cmd = { "MCPHub" },
+		build = "bundled_build.lua",
+		config = function()
+			require("mcphub").setup({
+				auto_approve = false,
+				use_bundled_binary = true,
+				port = 3000,
+				config = vim.fn.expand("~/.config/mcphub/servers.json"),
+				log = {
+					level = vim.log.levels.WARN,
+					to_file = false,
+					file_path = nil,
+					prefix = "MCPHub",
+				},
+			})
+		end,
+	},
+	{
 		"olimorris/codecompanion.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -90,29 +113,6 @@ return {
 			-- },
 			"ravitemer/codecompanion-history.nvim",
 			"franco-ruggeri/codecompanion-spinner.nvim",
-			{
-				"ravitemer/mcphub.nvim",
-				dependencies = {
-					"nvim-lua/plenary.nvim",
-				},
-				version = "6.2.0",
-				cmd = { "MCPHub" },
-				build = "bundled_build.lua",
-				config = function()
-					require("mcphub").setup({
-						auto_approve = false,
-						use_bundled_binary = true,
-						port = 3000,
-						config = vim.fn.expand("~/.config/mcphub/servers.json"),
-						log = {
-							level = vim.log.levels.WARN,
-							to_file = false,
-							file_path = nil,
-							prefix = "MCPHub",
-						},
-					})
-				end,
-			},
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
 				version = "8.x",

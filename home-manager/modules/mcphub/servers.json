@@ -1,88 +1,89 @@
 {
-	"nativeMCPServers": [],
-	"mcpServers": {
-		"memory": {
-			"autoApprove": true,
-			"command": "docker",
-			"args": [
-				"run",
-				"-i",
-				"-v",
-				"claude-memory:/app/dist",
-				"--rm",
-				"mcp/memory"
-			]
-		},
-		"sequentialthinking": {
-			"autoApprove": true,
-			"command": "docker",
-			"args": ["run", "--rm", "-i", "mcp/sequentialthinking"]
-		},
-		"Сontext7": {
-			"autoApprove": true,
-			"disabled": false,
-			"timeout": 60,
-			"command": "docker",
-			"args": ["run", "-i", "--rm", "context7-mcp"],
-			"transportType": "stdio"
-		},
-		"filesystem": {
-			"disabled": false,
-			"command": "docker",
-			"env": {
-				"workspaceFolder": "${cmd: pwd}"
-			},
-			"args": [
-				"run",
-				"-i",
-				"--rm",
-				"--mount",
-				"type=bind,src=${workspaceFolder},dst=/workspace",
-				"mcp/filesystem",
-				"/workspace"
-			],
-			"autoApprove": [
-				"read_file",
-				"read_multiple_files",
-				"write_file",
-				"create_directory",
-				"list_directory",
-				"search_files",
-				"get_file_info",
-				"list_allowed_directories"
-			]
-		},
-		"time": {
-			"command": "docker",
-			"args": ["run", "-i", "--rm", "mcp/time"],
-			"autoApprove": true
-		},
-		"git": {
-			"command": "docker",
-			"args": [
-				"run",
-				"--rm",
-				"-i",
-				"--mount",
-				"type=bind,src=${workspaceFolder},dst=/workspace",
-				"mcp/git"
-			],
-			"env": {
-				"workspaceFolder": "${cmd: pwd}"
-			},
-			"autoApprove": true
-		},
-		"playwright": {
-			"command": "docker",
-			"args": [
-				"run",
-				"-i",
-				"--rm",
-				"--init",
-				"--pull=always",
-				"mcr.microsoft.com/playwright/mcp"
-			],
-			"autoApprove": true
-		}
-	}
+  "nativeMCPServers": [],
+  "mcpServers": {
+    "memory": {
+      "disabled": true,
+      "autoApprove": true,
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "-v",
+        "claude-memory:/app/dist",
+        "--rm",
+        "mcp/memory"
+      ]
+    },
+    "sequentialthinking": {
+      "autoApprove": true,
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "mcp/sequentialthinking"]
+    },
+    "Сontext7": {
+      "autoApprove": true,
+      "disabled": true,
+      "timeout": 60,
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "context7-mcp"],
+      "transportType": "stdio"
+    },
+    "filesystem": {
+      "disabled": false,
+      "command": "docker",
+      "env": {
+        "workspaceFolder": "${cmd: pwd}"
+      },
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--mount",
+        "type=bind,src=${workspaceFolder},dst=/workspace",
+        "mcp/filesystem",
+        "/workspace"
+      ],
+      "autoApprove": [
+        "read_file",
+        "read_multiple_files",
+        "write_file",
+        "create_directory",
+        "list_directory",
+        "search_files",
+        "get_file_info",
+        "list_allowed_directories"
+      ]
+    },
+    "time": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp/time"],
+      "autoApprove": true
+    },
+    "git": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--mount",
+        "type=bind,src=${workspaceFolder},dst=/workspace",
+        "mcp/git"
+      ],
+      "env": {
+        "workspaceFolder": "${cmd: pwd}"
+      },
+      "autoApprove": true
+    },
+    "playwright": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--init",
+        "--pull=always",
+        "mcr.microsoft.com/playwright/mcp"
+      ],
+      "autoApprove": true
+    }
+  }
 }
