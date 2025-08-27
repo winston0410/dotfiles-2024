@@ -89,12 +89,13 @@ return {
 			-- 	cmd = "VectorCode",
 			-- },
 			"ravitemer/codecompanion-history.nvim",
+			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"ravitemer/mcphub.nvim",
 				dependencies = {
 					"nvim-lua/plenary.nvim",
 				},
-				version = "5.x",
+				version = "6.2.0",
 				cmd = { "MCPHub" },
 				build = "bundled_build.lua",
 				config = function()
@@ -181,6 +182,7 @@ return {
 					end,
 				},
 				extensions = {
+					spinner = {},
 					mcphub = {
 						callback = "mcphub.extensions.codecompanion",
 						opts = {
@@ -196,15 +198,10 @@ return {
 							expiration_days = 30,
 						},
 					},
-					-- vectorcode = {
-					-- 	opts = {
-					-- 		add_tool = true,
-					-- 	},
-					-- },
 				},
 				strategies = {
 					chat = {
-						adapter = "gemini",
+						adapter = "copilot",
 						opts = {
 							completion_provider = "blink",
 						},
@@ -215,7 +212,7 @@ return {
 						},
 					},
 					inline = {
-						adapter = "gemini",
+						adapter = "copilot",
 						keymaps = {
 							accept_change = {
 								modes = { n = "do" },
