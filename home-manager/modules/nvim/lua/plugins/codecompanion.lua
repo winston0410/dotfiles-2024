@@ -210,7 +210,7 @@ return {
 						},
 						tools = {
 							opts = {
-								default_tools = { "full_stack_dev" },
+								default_tools = { "full_stack_dev", "next_edit_suggestion" },
 							},
 						},
 					},
