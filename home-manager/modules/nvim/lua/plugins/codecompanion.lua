@@ -78,6 +78,32 @@ end
 return {
 	{ "github/copilot.vim", version = "1.x", cmd = { "Copilot" } },
 	{
+		"ravitemer/mcphub.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		version = "6.x",
+		cmd = { "MCPHub" },
+		build = "bundled_build.lua",
+		config = function()
+			require("mcphub").setup({
+				auto_approve = false,
+				use_bundled_binary = true,
+				port = 3000,
+				config = vim.fn.expand("~/.config/mcphub/servers.json"),
+				global_env = {
+					["input:ado_org"] = "trintech-coe",
+				},
+				log = {
+					level = vim.log.levels.WARN,
+					to_file = false,
+					file_path = nil,
+					prefix = "MCPHub",
+				},
+			})
+		end,
+	},
+	{
 		"olimorris/codecompanion.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -89,29 +115,7 @@ return {
 			-- 	cmd = "VectorCode",
 			-- },
 			"ravitemer/codecompanion-history.nvim",
-			{
-				"ravitemer/mcphub.nvim",
-				dependencies = {
-					"nvim-lua/plenary.nvim",
-				},
-				version = "5.x",
-				cmd = { "MCPHub" },
-				build = "bundled_build.lua",
-				config = function()
-					require("mcphub").setup({
-						auto_approve = false,
-						use_bundled_binary = true,
-						port = 3000,
-						config = vim.fn.expand("~/.config/mcphub/servers.json"),
-						log = {
-							level = vim.log.levels.WARN,
-							to_file = false,
-							file_path = nil,
-							prefix = "MCPHub",
-						},
-					})
-				end,
-			},
+			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
 				version = "8.x",
@@ -181,6 +185,7 @@ return {
 					end,
 				},
 				extensions = {
+					spinner = {},
 					mcphub = {
 						callback = "mcphub.extensions.codecompanion",
 						opts = {
@@ -196,15 +201,10 @@ return {
 							expiration_days = 30,
 						},
 					},
-					-- vectorcode = {
-					-- 	opts = {
-					-- 		add_tool = true,
-					-- 	},
-					-- },
 				},
 				strategies = {
 					chat = {
-						adapter = "gemini",
+						adapter = "copilot",
 						opts = {
 							completion_provider = "blink",
 						},
@@ -215,7 +215,7 @@ return {
 						},
 					},
 					inline = {
-						adapter = "gemini",
+						adapter = "copilot",
 						keymaps = {
 							accept_change = {
 								modes = { n = "do" },
