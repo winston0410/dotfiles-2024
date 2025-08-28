@@ -114,7 +114,7 @@ return {
 			-- 	dependencies = { "nvim-lua/plenary.nvim" },
 			-- 	cmd = "VectorCode",
 			-- },
-			"ravitemer/codecompanion-history.nvim",
+			{ "ravitemer/codecompanion-history.nvim" },
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
@@ -151,38 +151,48 @@ return {
 				desc = "Pick CodeCompanion actions",
 			},
 		},
-		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+		cmd = {
+			"CodeCompanion",
+			"CodeCompanionActions",
+			"CodeCompanionChat",
+			"CodeCompanionCmd",
+			-- these commands is from codecompanion-history
+			"CodeCompanionHistory",
+			"CodeCompanionSummaries",
+		},
 		version = "17.x",
 		config = function()
 			require("codecompanion").setup({
 				auto_approve = true,
 				adapters = {
-					jina = function()
-						return require("codecompanion.adapters").extend("jina", {
-							env = {
-								api_key = get_api_key("JINA_API_KEY"),
-							},
-						})
-					end,
-					tavily = function()
-						return require("codecompanion.adapters").extend("tavily", {
-							env = {
-								api_key = get_api_key("TAVILY_API_KEY"),
-							},
-						})
-					end,
-					gemini = function()
-						return require("codecompanion.adapters").extend("gemini", {
-							env = {
-								api_key = get_api_key("GEMINI_API_KEY"),
-							},
-							schema = {
-								model = {
-									default = "gemini-2.5-flash",
+					http = {
+						jina = function()
+							return require("codecompanion.adapters").extend("jina", {
+								env = {
+									api_key = get_api_key("JINA_API_KEY"),
 								},
-							},
-						})
-					end,
+							})
+						end,
+						tavily = function()
+							return require("codecompanion.adapters").extend("tavily", {
+								env = {
+									api_key = get_api_key("TAVILY_API_KEY"),
+								},
+							})
+						end,
+						gemini = function()
+							return require("codecompanion.adapters").extend("gemini", {
+								env = {
+									api_key = get_api_key("GEMINI_API_KEY"),
+								},
+								schema = {
+									model = {
+										default = "gemini-2.5-flash",
+									},
+								},
+							})
+						end,
+					},
 				},
 				extensions = {
 					spinner = {},
@@ -199,6 +209,10 @@ return {
 						opts = {
 							picker = "snacks",
 							expiration_days = 30,
+							title_generation_opts = {
+								refresh_every_n_prompts = 5,
+								max_refreshes = 3,
+							},
 						},
 					},
 				},
