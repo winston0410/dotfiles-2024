@@ -238,6 +238,7 @@ return {
 						opts = {
 							completion_provider = "blink",
 							-- REF https://codecompanion.olimorris.dev/configuration/chat-buffer.html#prompt-decorator
+							---Decorate the user message before it's sent to the LLM
 							---@param message string
 							---@param adapter CodeCompanion.Adapter
 							---@param context table
@@ -336,8 +337,10 @@ return {
 					},
 				},
 				display = {
-					intro_message = "Welcome to CodeCompanion!",
-					start_in_insert_mode = true,
+					chat = {
+						intro_message = "Welcome to CodeCompanion!",
+						start_in_insert_mode = true,
+					},
 					action_palette = {
 						provider = "snacks",
 					},

@@ -284,6 +284,18 @@ return {
 							desc = "Swap buffer between windows",
 						},
 					},
+					-- {
+					-- 	"?",
+					-- 	function()
+					-- 		require("which-key").show({ global = false, loop = true })
+					-- 	end,
+					-- 	{
+					-- 		mode = { "n" },
+					-- 		noremap = true,
+					-- 		silent = true,
+					-- 		desc = "Show hydra mode keymaps",
+					-- 	},
+					-- },
 				},
 			})
 		end,
