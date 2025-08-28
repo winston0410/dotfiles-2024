@@ -2,16 +2,25 @@ return {
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		version = "3.14.1",
+		version = "3.x",
 		keys = {
 			{
-				"?",
+				"?l",
+				function()
+					require("which-key").show({ global = false, loop = true })
+				end,
+				silent = true,
+				noremap = true,
+				desc = "Show local keymaps",
+			},
+			{
+				"?g",
 				function()
 					require("which-key").show({ global = true, loop = true })
 				end,
 				silent = true,
 				noremap = true,
-				desc = "Show local keymaps",
+				desc = "Show global keymaps",
 			},
 		},
 		config = function()
