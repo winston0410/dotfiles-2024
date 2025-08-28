@@ -237,6 +237,14 @@ return {
 						},
 						opts = {
 							completion_provider = "blink",
+							-- REF https://codecompanion.olimorris.dev/configuration/chat-buffer.html#prompt-decorator
+							---@param message string
+							---@param adapter CodeCompanion.Adapter
+							---@param context table
+							---@return string
+							prompt_decorator = function(message, adapter, context)
+								return string.format([[<prompt>%s</prompt>]], message)
+							end,
 						},
 						tools = {
 							opts = {
@@ -328,6 +336,8 @@ return {
 					},
 				},
 				display = {
+					intro_message = "Welcome to CodeCompanion!",
+					start_in_insert_mode = true,
 					action_palette = {
 						provider = "snacks",
 					},
