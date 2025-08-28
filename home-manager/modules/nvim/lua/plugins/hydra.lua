@@ -18,6 +18,7 @@ return {
 				on_enter = function()
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeEnter" })
 				end,
+				on_key = function() end,
 				on_exit = vim.schedule_wrap(function()
 					vim.cmd.redrawstatus()
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeExit" })
@@ -284,18 +285,6 @@ return {
 							desc = "Swap buffer between windows",
 						},
 					},
-					-- {
-					-- 	"?",
-					-- 	function()
-					-- 		require("which-key").show({ global = false, loop = true })
-					-- 	end,
-					-- 	{
-					-- 		mode = { "n" },
-					-- 		noremap = true,
-					-- 		silent = true,
-					-- 		desc = "Show hydra mode keymaps",
-					-- 	},
-					-- },
 				},
 			})
 		end,
