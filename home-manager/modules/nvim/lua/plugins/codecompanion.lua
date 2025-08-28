@@ -114,6 +114,16 @@ return {
 			-- 	dependencies = { "nvim-lua/plenary.nvim" },
 			-- 	cmd = "VectorCode",
 			-- },
+			{
+				-- FIXME this is very cutting edge and expect to break
+				"3ZsForInsomnia/vs-code-companion",
+				opts = {
+					directories = {
+						".github/chatmodes",
+						".github/prompts",
+					},
+				},
+			},
 			{ "ravitemer/codecompanion-history.nvim" },
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
@@ -156,9 +166,11 @@ return {
 			"CodeCompanionActions",
 			"CodeCompanionChat",
 			"CodeCompanionCmd",
-			-- these commands is from codecompanion-history
+			-- commands from codecompanion-history
 			"CodeCompanionHistory",
 			"CodeCompanionSummaries",
+			-- commands from vs-code-companion
+			"VsccImport",
 		},
 		version = "17.x",
 		config = function()
@@ -219,6 +231,10 @@ return {
 				strategies = {
 					chat = {
 						adapter = "copilot",
+						slash_commands = {
+							vs_import = require("vs-code-companion").import_slash_command,
+							vs_select = require("vs-code-companion").select_slash_command,
+						},
 						opts = {
 							completion_provider = "blink",
 						},
@@ -227,6 +243,7 @@ return {
 								default_tools = { "full_stack_dev", "next_edit_suggestion" },
 							},
 						},
+						keymaps = {},
 					},
 					inline = {
 						adapter = "copilot",
