@@ -249,7 +249,15 @@ return {
 						},
 						tools = {
 							opts = {
-								default_tools = { "full_stack_dev", "next_edit_suggestion" },
+								default_tools = {
+									-- do not use full_stack_dev directly, as we don't have the api key for websearching
+									-- "full_stack_dev",
+									"cmd_runner",
+									"list_code_usages",
+									"fetch_webpage",
+									"files",
+									"next_edit_suggestion",
+								},
 							},
 						},
 						keymaps = {},
