@@ -4,6 +4,14 @@ local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 return {
 	{
+		"oribarilan/lensline.nvim",
+		tag = "1.0.0",
+		event = { "LspAttach" },
+		config = function()
+			require("lensline").setup()
+		end,
+	},
+	{
 		"nvimtools/none-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action", "ThePrimeagen/refactoring.nvim" },
 		event = { "BufReadPre", "BufNewFile" },
