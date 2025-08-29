@@ -249,7 +249,7 @@ return {
 				["j"] = "list_down",
 				["k"] = "list_up",
 				["q"] = "close",
-				["?"] = function()
+				["?l"] = function()
 					require("which-key").show({ global = false, loop = true })
 				end,
 			}

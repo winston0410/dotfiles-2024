@@ -114,7 +114,17 @@ return {
 			-- 	dependencies = { "nvim-lua/plenary.nvim" },
 			-- 	cmd = "VectorCode",
 			-- },
-			"ravitemer/codecompanion-history.nvim",
+			{
+				-- FIXME this is very cutting edge and expect to break
+				"3ZsForInsomnia/vs-code-companion",
+				opts = {
+					directories = {
+						".github/chatmodes",
+						".github/prompts",
+					},
+				},
+			},
+			{ "ravitemer/codecompanion-history.nvim" },
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"MeanderingProgrammer/render-markdown.nvim",
@@ -151,38 +161,50 @@ return {
 				desc = "Pick CodeCompanion actions",
 			},
 		},
-		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+		cmd = {
+			"CodeCompanion",
+			"CodeCompanionActions",
+			"CodeCompanionChat",
+			"CodeCompanionCmd",
+			-- commands from codecompanion-history
+			"CodeCompanionHistory",
+			"CodeCompanionSummaries",
+			-- commands from vs-code-companion
+			"VsccImport",
+		},
 		version = "17.x",
 		config = function()
 			require("codecompanion").setup({
 				auto_approve = true,
 				adapters = {
-					jina = function()
-						return require("codecompanion.adapters").extend("jina", {
-							env = {
-								api_key = get_api_key("JINA_API_KEY"),
-							},
-						})
-					end,
-					tavily = function()
-						return require("codecompanion.adapters").extend("tavily", {
-							env = {
-								api_key = get_api_key("TAVILY_API_KEY"),
-							},
-						})
-					end,
-					gemini = function()
-						return require("codecompanion.adapters").extend("gemini", {
-							env = {
-								api_key = get_api_key("GEMINI_API_KEY"),
-							},
-							schema = {
-								model = {
-									default = "gemini-2.5-flash",
+					http = {
+						jina = function()
+							return require("codecompanion.adapters").extend("jina", {
+								env = {
+									api_key = get_api_key("JINA_API_KEY"),
 								},
-							},
-						})
-					end,
+							})
+						end,
+						tavily = function()
+							return require("codecompanion.adapters").extend("tavily", {
+								env = {
+									api_key = get_api_key("TAVILY_API_KEY"),
+								},
+							})
+						end,
+						gemini = function()
+							return require("codecompanion.adapters").extend("gemini", {
+								env = {
+									api_key = get_api_key("GEMINI_API_KEY"),
+								},
+								schema = {
+									model = {
+										default = "gemini-2.5-flash",
+									},
+								},
+							})
+						end,
+					},
 				},
 				extensions = {
 					spinner = {},
@@ -199,20 +221,37 @@ return {
 						opts = {
 							picker = "snacks",
 							expiration_days = 30,
+							title_generation_opts = {
+								refresh_every_n_prompts = 5,
+								max_refreshes = 3,
+							},
 						},
 					},
 				},
 				strategies = {
 					chat = {
 						adapter = "copilot",
+						slash_commands = {
+							vs_import = require("vs-code-companion").import_slash_command,
+							vs_select = require("vs-code-companion").select_slash_command,
+						},
 						opts = {
 							completion_provider = "blink",
+							-- REF https://codecompanion.olimorris.dev/configuration/chat-buffer.html#prompt-decorator
+							---@param message string
+							---@param adapter CodeCompanion.Adapter
+							---@param context table
+							---@return string
+							prompt_decorator = function(message, adapter, context)
+								return string.format([[<prompt>%s</prompt>]], message)
+							end,
 						},
 						tools = {
 							opts = {
 								default_tools = { "full_stack_dev", "next_edit_suggestion" },
 							},
 						},
+						keymaps = {},
 					},
 					inline = {
 						adapter = "copilot",
@@ -297,6 +336,8 @@ return {
 					},
 				},
 				display = {
+					intro_message = "Welcome to CodeCompanion!",
+					start_in_insert_mode = true,
 					action_palette = {
 						provider = "snacks",
 					},
