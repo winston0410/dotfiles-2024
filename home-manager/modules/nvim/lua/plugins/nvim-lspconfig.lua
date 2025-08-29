@@ -5,7 +5,7 @@ local HINT_ICON = "󰌶 "
 return {
 	{
 		"oribarilan/lensline.nvim",
-		tag = "1.0.0",
+		version = "1.x",
 		event = { "LspAttach" },
 		config = function()
 			require("lensline").setup()
