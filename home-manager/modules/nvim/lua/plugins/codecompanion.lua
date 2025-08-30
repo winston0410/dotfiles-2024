@@ -203,7 +203,7 @@ return {
 						gemini = function()
 							return require("codecompanion.adapters").extend("gemini", {
 								env = {
-									api_key = get_api_iey("GEMINI_API_KEY"),
+									api_key = get_api_key("GEMINI_API_KEY"),
 								},
 								schema = {
 									model = {
@@ -259,12 +259,13 @@ return {
 							opts = {
 								default_tools = {
 									-- do not use full_stack_dev directly, as we don't have the api key for websearching
-									-- "full_stack_dev",
-									"cmd_runner",
-									"list_code_usages",
-									"fetch_webpage",
-									"search_web",
-									"files",
+									"full_stack_dev",
+									"mcp",
+									-- "cmd_runner",
+									-- "list_code_usages",
+									-- "fetch_webpage",
+									-- "search_web",
+									-- "files",
 									"next_edit_suggestion",
 								},
 							},

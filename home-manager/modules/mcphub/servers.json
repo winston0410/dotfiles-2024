@@ -28,7 +28,7 @@
       "transportType": "stdio"
     },
     "filesystem": {
-      "disabled": false,
+      "disabled": true,
       "command": "docker",
       "env": {
         "workspaceFolder": "${cmd: pwd}"
@@ -74,6 +74,7 @@
       "autoApprove": true
     },
     "playwright": {
+      "disabled": true,
       "command": "docker",
       "args": [
         "run",
