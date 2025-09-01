@@ -61,6 +61,14 @@ local get_api_key = function(key)
 		vim.env.BW_SESSION = session_key
 	end
 
+	-- NOTE we have to manually sync, otherwise it will always use the old data and we might not be able to find our password
+	vim.system({
+		"bw",
+		"sync",
+	}, {
+		text = true,
+	}):wait()
+
 	local pwd_res = vim.system({
 		"bw",
 		"get",
@@ -249,7 +257,17 @@ return {
 						},
 						tools = {
 							opts = {
-								default_tools = { "full_stack_dev", "next_edit_suggestion" },
+								default_tools = {
+									-- do not use full_stack_dev directly, as we don't have the api key for websearching
+									"full_stack_dev",
+									"mcp",
+									-- "cmd_runner",
+									-- "list_code_usages",
+									-- "fetch_webpage",
+									-- "search_web",
+									-- "files",
+									"next_edit_suggestion",
+								},
 							},
 						},
 						keymaps = {
