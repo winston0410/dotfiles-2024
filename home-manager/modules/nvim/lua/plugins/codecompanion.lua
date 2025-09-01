@@ -252,7 +252,14 @@ return {
 								default_tools = { "full_stack_dev", "next_edit_suggestion" },
 							},
 						},
-						keymaps = {},
+						keymaps = {
+							options = {
+								modes = { n = "?" },
+								callback = function()
+									require("which-key").show({ global = false, loop = true })
+								end,
+							},
+						},
 					},
 					inline = {
 						adapter = "copilot",
