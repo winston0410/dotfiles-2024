@@ -24,6 +24,15 @@ return {
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeExit" })
 				end),
 			})
+			hydra({
+				name = "Surround",
+				mode = { "n", "x" },
+				body = "s",
+				config = {
+					hint = false,
+				},
+				heads = {},
+			})
 
 			hydra({
 				name = "Treewalk",
@@ -112,6 +121,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Create a horizontal split",
 						},
 					},
@@ -121,6 +131,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Create a horizontal split",
 						},
 					},
@@ -130,6 +141,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Create a vertical split",
 						},
 					},
@@ -184,6 +196,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Navigate to the right split",
 						},
 					},
@@ -193,6 +206,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Navigate to the left split",
 						},
 					},
@@ -202,6 +216,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Navigate to the top split",
 						},
 					},
@@ -211,6 +226,7 @@ return {
 						{
 							noremap = true,
 							silent = true,
+							exit = true,
 							desc = "Navigate to the bottom split",
 						},
 					},

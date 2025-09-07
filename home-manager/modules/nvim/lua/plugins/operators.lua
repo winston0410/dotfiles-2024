@@ -113,29 +113,24 @@ return {
 	},
 	{
 		"kylechui/nvim-surround",
-		version = "*",
+		version = "3.x",
 		-- NOTE By default, s is a useless synonym of cc, therefore we remap that
-		keys = {
-			{ "s", mode = "n" },
-			{ "ss", mode = "n" },
-			{ "cs", mode = "n" },
-			{ "ds", mode = "n" },
-			{ "s", mode = "x" },
-		},
+		event = { "VeryLazy" },
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
 			require("nvim-surround").setup({
 				keymaps = {
-					insert = false,
-					insert_line = false,
+					insert = "<C-g>s",
+					insert_line = "<C-g>S",
 					normal = "s",
 					normal_cur = "ss",
-					normal_line = false,
-					normal_cur_line = false,
+					normal_line = "S",
+					normal_cur_line = "SS",
 					visual = "s",
-					visual_line = false,
+					visual_line = "gS",
 					delete = "ds",
 					change = "cs",
-					change_line = false,
+					change_line = "cS",
 				},
 				aliases = {},
 			})
