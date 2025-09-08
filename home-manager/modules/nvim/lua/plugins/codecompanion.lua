@@ -228,6 +228,7 @@ return {
 						enabled = true,
 						opts = {
 							picker = "snacks",
+							continue_last_chat = true,
 							expiration_days = 30,
 							title_generation_opts = {
 								refresh_every_n_prompts = 5,
@@ -270,7 +271,14 @@ return {
 								},
 							},
 						},
-						keymaps = {},
+						keymaps = {
+							options = {
+								modes = { n = "?" },
+								callback = function()
+									require("which-key").show({ global = false, loop = true })
+								end,
+							},
+						},
 					},
 					inline = {
 						adapter = "copilot",

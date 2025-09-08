@@ -40,7 +40,7 @@ return {
 				"folke/snacks.nvim",
 			},
 		},
-		event = "LspAttach",
+		event = { "LspAttach" },
 		opts = {
 			backend = "vim",
 			picker = "snacks",
