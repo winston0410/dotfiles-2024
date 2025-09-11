@@ -1,3 +1,6 @@
+-- conform.nvim related
+vim.g.disable_autoformat = true
+
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
 vim.g.loaded_gzip = 1
