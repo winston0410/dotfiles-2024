@@ -3,13 +3,26 @@ return {
 	{
 		"A7Lavinraj/fyler.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		lazy = false,
+		enabled = false,
 		cmd = { "Fyler" },
-
-		branch = "stable",
+		keys = {
+			{
+				"<leader>o",
+				function()
+					vim.cmd("Fyler")
+				end,
+				mode = { "n" },
+				noremap = true,
+				silent = true,
+				desc = "Open Oil.nvim panel",
+			},
+		},
 		config = function()
 			require("fyler").setup({
-				-- enable this once oil.nvim is removed
-				default_explorer = false,
+				close_on_select = true,
+				confirm_simple = true,
+				default_explorer = true,
 				icon_provider = "nvim-web-devicons",
 				views = {
 					explorer = {},
@@ -22,6 +35,7 @@ return {
 		-- version = "2.x",
 		"winston0410/oil.nvim",
 		lazy = false,
+		enabled = true,
 		cmd = { "Oil" },
 		branch = "feat/handle-buffer-callback",
 		keys = {
