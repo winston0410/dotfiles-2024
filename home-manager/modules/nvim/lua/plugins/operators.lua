@@ -187,6 +187,32 @@ return {
 			vim.api.nvim_set_hl(0, "SubstituteSubstituted", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "SubstituteRange", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "SubstituteExchange", { link = "Visual" })
+
+			local group = vim.api.nvim_create_augroup("SubstitueHydraMode", { clear = true })
+
+			vim.api.nvim_create_autocmd("User", {
+				group = group,
+				pattern = "SubstitutePrepareExchange",
+				callback = function()
+					print("substitue exchange prepared")
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("User", {
+				group = group,
+				pattern = "SubstituteCancelExchange",
+				callback = function()
+					print("substitue exchange cancelled")
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("User", {
+				group = group,
+				pattern = "SubstituteCompleteExchange",
+				callback = function()
+					print("substitue exchange completed")
+				end,
+			})
 		end,
 	},
 }

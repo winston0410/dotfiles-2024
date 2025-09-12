@@ -5,6 +5,8 @@ local HINT_ICON = "󰌶 "
 return {
 	{
 		"oribarilan/lensline.nvim",
+        -- makes loading slow, enable it later
+        enabled = false,
 		version = "1.x",
 		event = { "LspAttach" },
 		config = function()
