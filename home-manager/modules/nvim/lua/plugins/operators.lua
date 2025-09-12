@@ -188,13 +188,24 @@ return {
 			vim.api.nvim_set_hl(0, "SubstituteRange", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "SubstituteExchange", { link = "Visual" })
 
+			local hydra = require("hydra")
+			local exchange_hydra = hydra({
+				name = "Exchange",
+				mode = { "n", "x" },
+				config = {
+					hint = false,
+                    foreign_keys = "run"
+				},
+				heads = {},
+			})
+
 			local group = vim.api.nvim_create_augroup("SubstitueHydraMode", { clear = true })
 
 			vim.api.nvim_create_autocmd("User", {
 				group = group,
 				pattern = "SubstitutePrepareExchange",
 				callback = function()
-					print("substitue exchange prepared")
+					exchange_hydra:activate()
 				end,
 			})
 
@@ -202,7 +213,7 @@ return {
 				group = group,
 				pattern = "SubstituteCancelExchange",
 				callback = function()
-					print("substitue exchange cancelled")
+					exchange_hydra:exit()
 				end,
 			})
 
@@ -210,7 +221,7 @@ return {
 				group = group,
 				pattern = "SubstituteCompleteExchange",
 				callback = function()
-					print("substitue exchange completed")
+					exchange_hydra:exit()
 				end,
 			})
 		end,

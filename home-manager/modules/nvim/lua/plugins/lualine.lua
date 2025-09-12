@@ -294,6 +294,7 @@ return {
 						hydra_window = utils.get_highlight("Constant").fg,
 						hydra_treewalk = utils.get_highlight("@comment.info").fg,
 						hydra_surround = utils.get_highlight("@comment.info").fg,
+						hydra_exchange = utils.get_highlight("@comment.info").fg,
 					},
 					disable_winbar_cb = function(args)
 						return require("heirline.conditions").buffer_matches({
