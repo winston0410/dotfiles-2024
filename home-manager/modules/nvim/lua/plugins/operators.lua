@@ -188,24 +188,26 @@ return {
 			vim.api.nvim_set_hl(0, "SubstituteRange", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "SubstituteExchange", { link = "Visual" })
 
-			local hydra = require("hydra")
-			local exchange_hydra = hydra({
-				name = "Exchange",
-				mode = { "n", "x" },
-				config = {
-					hint = false,
-                    foreign_keys = 'run'
-				},
-				heads = {},
-			})
+			-- local hydra = require("hydra")
+			-- local exchange_hydra = hydra({
+			-- 	name = "Exchange",
+			-- 	mode = { "n", "x" },
+			-- 	config = {
+			--                  -- color = "pink",
+			--                  -- foreign_keys = 'run'
+			-- 		hint = false,
+			-- 	},
+			-- 	heads = {},
+			-- })
 
 			local group = vim.api.nvim_create_augroup("SubstitueHydraMode", { clear = true })
 
+            -- somehow with pink hydra, the mode cannot be switched correctly
 			vim.api.nvim_create_autocmd("User", {
 				group = group,
 				pattern = "SubstitutePrepareExchange",
 				callback = function()
-					exchange_hydra:activate()
+					-- exchange_hydra:activate()
 				end,
 			})
 

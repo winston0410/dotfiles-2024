@@ -17,11 +17,13 @@ return {
 			hydra.setup({
 				on_enter = function()
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeEnter" })
-				end,
-				on_key = function() end,
-				on_exit = vim.schedule_wrap(function()
 					vim.cmd.redrawstatus()
+				end,
+				on_key = function() 
+                end,
+				on_exit = vim.schedule_wrap(function()
 					vim.api.nvim_exec_autocmds("User", { pattern = "HydraModeExit" })
+					vim.cmd.redrawstatus()
 				end),
 			})
 			hydra({
