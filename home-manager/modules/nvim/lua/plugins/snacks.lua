@@ -292,6 +292,10 @@ return {
 					sources = {},
 					enabled = true,
 					ui_select = true,
+					---@class snacks.picker.matcher.Config
+					matcher = {
+                        cwd_bonus = true,
+                    },
 					layout = {
 						cycle = true,
 						preset = function()

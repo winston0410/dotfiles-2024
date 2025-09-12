@@ -194,7 +194,7 @@ return {
 				mode = { "n", "x" },
 				config = {
 					hint = false,
-                    foreign_keys = "run"
+                    foreign_keys = 'run'
 				},
 				heads = {},
 			})
@@ -213,7 +213,7 @@ return {
 				group = group,
 				pattern = "SubstituteCancelExchange",
 				callback = function()
-					exchange_hydra:exit()
+					-- exchange_hydra:exit()
 				end,
 			})
 
@@ -221,7 +221,7 @@ return {
 				group = group,
 				pattern = "SubstituteCompleteExchange",
 				callback = function()
-					exchange_hydra:exit()
+					-- exchange_hydra:exit()
 				end,
 			})
 		end,
