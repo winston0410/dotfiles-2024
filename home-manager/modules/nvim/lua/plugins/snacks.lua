@@ -214,9 +214,25 @@ return {
 				desc = "Browse files in remote Git server",
 			},
 			{
+				"<leader>pF",
+				function()
+					-- local res = Snacks.picker.files({
+					--                    cmd = "fd",
+					--                    args = {"-t", "d"},
+					--                    hidden = true
+					--                })
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Explore files under a specific directory",
+			},
+			{
 				"<leader>pf",
 				function()
-					Snacks.picker.files()
+					Snacks.picker.files({
+                        hidden = true
+                    })
 				end,
 				mode = { "n" },
 				silent = true,

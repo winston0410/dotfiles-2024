@@ -326,7 +326,7 @@ return {
 			vim.lsp.enable(servers, true)
 
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
 					local supported_modes = { "n" }
 					-- vim.keymap.set(supported_modes, "]de", function()
