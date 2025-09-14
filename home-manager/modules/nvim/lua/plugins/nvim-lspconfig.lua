@@ -5,8 +5,8 @@ local HINT_ICON = "󰌶 "
 return {
 	{
 		"oribarilan/lensline.nvim",
-        -- makes loading slow, enable it later
-        enabled = false,
+		-- makes loading slow, enable it later
+		enabled = false,
 		version = "1.x",
 		event = { "LspAttach" },
 		config = function()
@@ -51,10 +51,14 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		enabled = true,
+        -- https://www.reddit.com/r/neovim/comments/1308ie7/comment/jhvkipp/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+		event = {
+			-- for reading a buffer
+			"BufReadPost",
+			-- for creating an unamed buffer
+			"BufNewFile",
+		},
 		version = "2.x",
-		lazy = false,
-		-- Reference the lazyload event from LazyVim
-		-- REF https://github.com/LazyVim/LazyVim/blob/86ac9989ea15b7a69bb2bdf719a9a809db5ce526/lua/lazyvim/plugins/lsp/init.lua#L5
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
