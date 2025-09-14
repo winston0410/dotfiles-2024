@@ -100,48 +100,48 @@ return {
 				noremap = true,
 				desc = "Search diagnostics",
 			},
-			{
-				"<leader>pl",
-				function()
-					-- Snacks.picker.lines()
-					local items = {
-						{
-							text = "Sidebar layout",
-							---@type LayoutRuleOpts[]
-							value = {
-								{
-									width = 0.2,
-									height = 1,
-									allowed = {
-										ft = { "oil" },
-									},
-								},
-								{ width = 0.8, height = 1 },
-							},
-							preview = {
-								text = "foo",
-							},
-						},
-					}
-
-					-- Create and show the picker
-					require("snacks").picker({
-						title = "Pick a Greeting",
-						items = items,
-						format = "text",
-						preview = "preview",
-						---@param item { value: LayoutRuleOpts[]}
-						confirm = function(picker, item)
-							utils.open_layout(item.value)
-							picker:close()
-						end,
-					})
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Search lines in buffer",
-			},
+			-- {
+			-- 	"<leader>pl",
+			-- 	function()
+			-- 		-- Snacks.picker.lines()
+			-- 		local items = {
+			-- 			{
+			-- 				text = "Sidebar layout",
+			-- 				---@type LayoutRuleOpts[]
+			-- 				value = {
+			-- 					{
+			-- 						width = 0.2,
+			-- 						height = 1,
+			-- 						allowed = {
+			-- 							ft = { "oil" },
+			-- 						},
+			-- 					},
+			-- 					{ width = 0.8, height = 1 },
+			-- 				},
+			-- 				preview = {
+			-- 					text = "foo",
+			-- 				},
+			-- 			},
+			-- 		}
+			--
+			-- 		-- Create and show the picker
+			-- 		require("snacks").picker({
+			-- 			title = "Pick a Greeting",
+			-- 			items = items,
+			-- 			format = "text",
+			-- 			preview = "preview",
+			-- 			---@param item { value: LayoutRuleOpts[]}
+			-- 			confirm = function(picker, item)
+			-- 				utils.open_layout(item.value)
+			-- 				picker:close()
+			-- 			end,
+			-- 		})
+			-- 	end,
+			-- 	mode = { "n" },
+			-- 	silent = true,
+			-- 	noremap = true,
+			-- 	desc = "Search lines in buffer",
+			-- },
 			{
 				"<leader>pgs",
 				function()
@@ -213,26 +213,28 @@ return {
 				noremap = true,
 				desc = "Browse files in remote Git server",
 			},
-			{
-				"<leader>pF",
-				function()
-					-- local res = Snacks.picker.files({
-					--                    cmd = "fd",
-					--                    args = {"-t", "d"},
-					--                    hidden = true
-					--                })
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Explore files under a specific directory",
-			},
+            -- TODO can't figure out a way to picker directories
+            -- checked https://github.com/folke/snacks.nvim/blob/bc0630e43be5699bb94dadc302c0d21615421d93/lua/snacks/picker/source/files.lua#L184, but cannot get and pass ctx here
+			-- {
+			-- 	"<leader>pF",
+			-- 	function()
+			-- 		Snacks.picker.pick({
+			--                      source = "procs",
+			--                      cmd = "fd",
+			--                      args = { "-t", "d" },
+			--                  })
+			-- 	end,
+			-- 	mode = { "n" },
+			-- 	silent = true,
+			-- 	noremap = true,
+			-- 	desc = "Explore all directories",
+			-- },
 			{
 				"<leader>pf",
 				function()
 					Snacks.picker.files({
-                        hidden = true
-                    })
+						hidden = true,
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -310,8 +312,8 @@ return {
 					ui_select = true,
 					---@class snacks.picker.matcher.Config
 					matcher = {
-                        cwd_bonus = true,
-                    },
+						cwd_bonus = true,
+					},
 					layout = {
 						cycle = true,
 						preset = function()
