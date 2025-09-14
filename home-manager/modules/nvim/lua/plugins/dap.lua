@@ -5,6 +5,7 @@ return {
 			{
 				"mfussenegger/nvim-dap",
 				version = "0.10.0",
+				event = { "VeryLazy" },
 				dependencies = {
 					-- TODO revisit this plugin, once we switch to 0.11
 					-- { "igorlfs/nvim-dap-view", opts = {} },
