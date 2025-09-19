@@ -263,6 +263,8 @@ return {
 			require("heirline").setup({
 				statusline = {
 					Mode,
+                    -- FIXME no idea why its position is fixed
+                    -- heirline_components.component.git_diff(),
 					heirline_components.component.git_branch({}),
 					heirline_components.component.file_encoding({
 						file_format = { padding = { left = 0, right = 0 } },
@@ -270,9 +272,9 @@ return {
 					{ provider = " " },
 					FileSize,
 					{ provider = "%=" },
+					heirline_components.component.diagnostics(),
 					heirline_components.component.cmd_info(),
 					heirline_components.component.nav({ percentage = false }),
-					heirline_components.component.diagnostics(),
 				},
 				winbar = {
 					{
