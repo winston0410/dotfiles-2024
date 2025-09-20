@@ -13,6 +13,8 @@
             # for sqlite.lua
             sqlite
             luv
+            # for sops.nvim
+            lyaml
           ]);
         withRuby = false;
         withPython3 = false;

@@ -33,11 +33,10 @@ return {
 		end,
 	},
 	{
-		"trixnz/sops.nvim",
-		lazy = false,
-		opts = {
-			supported_file_formats = { ".env", "*.yaml", "*.json", "*.ini" },
-		},
+		"winston0410/sops.nvim",
+		cmd = {"SopsEncrypt", "SopsDecrypt"},
+        events = { "BufReadPost", "FileReadPost" },
+		opts = { },
 	},
 	{
 		"nvim-neorg/neorg",
