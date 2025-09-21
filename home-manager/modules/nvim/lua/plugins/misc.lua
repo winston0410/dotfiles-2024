@@ -35,8 +35,11 @@ return {
 	{
 		"winston0410/sops.nvim",
 		cmd = {"SopsEncrypt", "SopsDecrypt"},
-        events = { "BufReadPost", "FileReadPost" },
-		opts = { },
+        lazy = false,
+        -- events = {"VeryLazy"},
+        config = function ()
+            require("sops").setup({})
+        end
 	},
 	{
 		"nvim-neorg/neorg",
