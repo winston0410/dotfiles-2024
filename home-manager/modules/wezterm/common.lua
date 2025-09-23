@@ -19,7 +19,7 @@ M.config = {
 		-- for matplotlib
 		"DejaVu Sans Mono",
 	}),
-	font_size = 14,
+	font_size = 14.5,
 	enable_tab_bar = true,
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",
