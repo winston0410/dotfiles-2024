@@ -66,16 +66,19 @@ return {
 		"mistweaverco/kulala.nvim",
 		version = "5.x",
 		ft = { "http", "rest" },
-		opts = {
-			display_mode = "split",
-			split_direction = "vertical",
-			debug = false,
-			winbar = true,
-			vscode_rest_client_environmentvars = true,
-			disable_script_print_output = false,
-			environment_scope = "b",
-			urlencode = "always",
-			show_variable_info_text = "float",
-		},
+		config = function()
+			require("kulala").setup({
+				global_keymaps = false,
+				display_mode = "split",
+				split_direction = "vertical",
+				debug = false,
+				winbar = true,
+				vscode_rest_client_environmentvars = true,
+				disable_script_print_output = false,
+				environment_scope = "b",
+				urlencode = "always",
+				show_variable_info_text = "float",
+			})
+		end,
 	},
 }
