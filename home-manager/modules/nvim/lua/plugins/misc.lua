@@ -36,7 +36,7 @@ return {
 		"winston0410/sops.nvim",
 		cmd = {"SopsEncrypt", "SopsDecrypt"},
         lazy = false,
-        -- events = {"VeryLazy"},
+        -- event = {"VeryLazy"},
         config = function ()
             require("sops").setup({})
         end

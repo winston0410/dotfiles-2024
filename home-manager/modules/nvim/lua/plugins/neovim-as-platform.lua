@@ -66,6 +66,7 @@ return {
 		"mistweaverco/kulala.nvim",
 		version = "5.x",
 		ft = { "http", "rest" },
+		event = { "VeryLazy" },
 		config = function()
 			require("kulala").setup({
 				global_keymaps = false,
@@ -77,7 +78,43 @@ return {
 				disable_script_print_output = false,
 				environment_scope = "b",
 				urlencode = "always",
-				show_variable_info_text = "float",
+				-- show_variable_info_text = "float",
+				show_variable_info_text = false
+			})
+			local hydra = require("hydra")
+			hydra({
+				name = "Kulala",
+				mode = { "n", "x" },
+				body = "<leader>r",
+				config = {
+					hint = false,
+				},
+				heads = {
+					{
+						"<CR>",
+						function()
+							require("kulala").run()
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Execute a request",
+						},
+					},
+					{
+						"<M-h>",
+						function()
+							require("kulala").toggle_view()
+						end,
+						{
+							mode = { "n", "v" },
+							noremap = true,
+							silent = true,
+							desc = "Toggle headers and body",
+						},
+					},
+				},
 			})
 		end,
 	},
