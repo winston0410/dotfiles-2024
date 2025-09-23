@@ -80,6 +80,9 @@
       chafa
       # render-markdown.nvim
       python312Packages.pylatexenc
+      # kulala.nvim
+      grpcurl
+      websocat
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       # img-clip.nvim
       pkgs.pngpaste

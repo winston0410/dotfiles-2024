@@ -79,7 +79,12 @@ return {
 				environment_scope = "b",
 				urlencode = "always",
 				-- show_variable_info_text = "float",
-				show_variable_info_text = false
+				show_variable_info_text = false,
+                ui = {
+                    -- 1Mb
+                    max_response_size = 1024 * 1024,
+                    disable_news_popup = true
+                }
 			})
 			local hydra = require("hydra")
 			hydra({
