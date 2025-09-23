@@ -9,7 +9,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			-- neotest integration
 			"thenbe/neotest-playwright",
-			{ "fredrikaverpil/neotest-golang", version = "*" },
+			{ "fredrikaverpil/neotest-golang", version = "2.x" },
 			"nvim-neotest/neotest-python",
 			"nvim-neotest/neotest-go",
 			"nvim-neotest/neotest-jest",
