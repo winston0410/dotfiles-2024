@@ -153,16 +153,6 @@ return {
 				},
 			})
 
-			vim.lsp.config("ts_ls", {
-				init_options = {
-					plugins = ts_ls_plugins,
-				},
-				filetypes = {
-					"javascript",
-					"typescript",
-					"vue",
-				},
-			})
 			vim.lsp.config("ltex_plus", {
 				settings = {
 					ltex = {
@@ -305,6 +295,7 @@ return {
 				"yamlls",
 				"kulala_ls",
 				"ts_ls",
+                "tsgo",
 				"earthlyls",
 				"elixirls",
 				"lua_ls",
