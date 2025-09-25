@@ -116,6 +116,7 @@ return {
 				return res.stdout:gsub("\n", "")
 			end)
 
+            -- TODO set up vue support later
 			local ts_ls_plugins = {}
 
 			if ok then
