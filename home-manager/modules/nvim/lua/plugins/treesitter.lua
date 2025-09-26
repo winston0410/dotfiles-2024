@@ -127,6 +127,35 @@ return {
 				{ lhs = "i", desc = "Select inside %s" },
 			}
 
+			-- Helper function to create textobject configuration
+			local function create_textobj_config(binding, desc, include_move, select_bindings)
+				include_move = include_move == nil and true or include_move
+				select_bindings = select_bindings or { select_inside_binding }
+				
+				local select_keymaps = {}
+				for _, binding_group in ipairs(select_bindings) do
+					local mapped_bindings = vim.tbl_map(function(entry)
+						return {
+							lhs = entry.lhs .. binding,
+							desc = string.format(entry.desc, desc),
+						}
+					end, binding_group)
+					for _, mapped_binding in ipairs(mapped_bindings) do
+						table.insert(select_keymaps, mapped_binding)
+					end
+				end
+				
+				return {
+					move = include_move and vim.tbl_map(function(entry)
+						return {
+							lhs = entry.lhs .. binding,
+							desc = string.format(entry.desc, desc),
+						}
+					end, prev_next_binding) or {},
+					select = select_keymaps,
+				}
+			end
+
 			local enabled_ts_nodes = {
 				-- ["@fold"] = {
 				-- 	move = vim.tbl_map(function(entry)
@@ -143,218 +172,24 @@ return {
 				-- 		}
 				-- 	end, select_around_binding),
 				-- },
-				["@block.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. block_textobj_binding,
-							desc = string.format(entry.desc, "block"),
-						}
-					end, select_inside_binding),
-				},
-				["@block.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. block_textobj_binding,
-							desc = string.format(entry.desc, "block"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. block_textobj_binding,
-							desc = string.format(entry.desc, "block"),
-						}
-					end, select_around_binding),
-				},
-				["@comment.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. comment_textobj_binding,
-							desc = string.format(entry.desc, "comment"),
-						}
-					end, select_inside_binding),
-				},
-				["@comment.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. comment_textobj_binding,
-							desc = string.format(entry.desc, "comment"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. comment_textobj_binding,
-							desc = string.format(entry.desc, "comment"),
-						}
-					end, select_around_binding),
-				},
-				["@return.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. return_textobj_binding,
-							desc = string.format(entry.desc, "return statement"),
-						}
-					end, select_inside_binding),
-				},
-				["@return.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. return_textobj_binding,
-							desc = string.format(entry.desc, "return statement"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. return_textobj_binding,
-							desc = string.format(entry.desc, "return statement"),
-						}
-					end, select_around_binding),
-				},
-				["@conditional.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. conditional_textobj_binding,
-							desc = string.format(entry.desc, "conditional"),
-						}
-					end, select_inside_binding),
-				},
-				["@conditional.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. conditional_textobj_binding,
-							desc = string.format(entry.desc, "conditional"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. conditional_textobj_binding,
-							desc = string.format(entry.desc, "conditional"),
-						}
-					end, select_around_binding),
-				},
-				["@parameter.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. parameter_textobj_binding,
-							desc = string.format(entry.desc, "parameter"),
-						}
-					end, select_inside_binding),
-				},
-				["@parameter.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. parameter_textobj_binding,
-							desc = string.format(entry.desc, "parameter"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. parameter_textobj_binding,
-							desc = string.format(entry.desc, "parameter"),
-						}
-					end, select_around_binding),
-				},
-				["@function.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. function_textobj_binding,
-							desc = string.format(entry.desc, "function"),
-						}
-					end, select_inside_binding),
-				},
-				["@function.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. function_textobj_binding,
-							desc = string.format(entry.desc, "function"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. function_textobj_binding,
-							desc = string.format(entry.desc, "function"),
-						}
-					end, select_around_binding),
-				},
-				["@call.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. call_textobj_binding,
-							desc = string.format(entry.desc, "call"),
-						}
-					end, select_inside_binding),
-				},
-				["@call.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. call_textobj_binding,
-							desc = string.format(entry.desc, "call"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. call_textobj_binding,
-							desc = string.format(entry.desc, "call"),
-						}
-					end, select_around_binding),
-				},
-				["@class.inner"] = {
-					move = {},
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. class_textobj_binding,
-							desc = string.format(entry.desc, "class"),
-						}
-					end, select_inside_binding),
-				},
-				["@class.outer"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. class_textobj_binding,
-							desc = string.format(entry.desc, "class"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. class_textobj_binding,
-							desc = string.format(entry.desc, "class"),
-						}
-					end, select_around_binding),
-				},
-				["@assignment.lhs"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. assignment_lhs_textobj_binding,
-							desc = string.format(entry.desc, "lhs of assignment"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. assignment_lhs_textobj_binding,
-							desc = string.format(entry.desc, "lhs of assignment"),
-						}
-					end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
-				},
-				["@assignment.rhs"] = {
-					move = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. assignment_rhs_textobj_binding,
-							desc = string.format(entry.desc, "rhs of assignment"),
-						}
-					end, prev_next_binding),
-					select = vim.tbl_map(function(entry)
-						return {
-							lhs = entry.lhs .. assignment_rhs_textobj_binding,
-							desc = string.format(entry.desc, "rhs of assignment"),
-						}
-					end, vim.list_extend(vim.list_extend({}, select_around_binding), select_inside_binding)),
-				},
+				["@block.inner"] = create_textobj_config(block_textobj_binding, "block", false),
+				["@block.outer"] = create_textobj_config(block_textobj_binding, "block", true, { select_around_binding }),
+				["@comment.inner"] = create_textobj_config(comment_textobj_binding, "comment", false),
+				["@comment.outer"] = create_textobj_config(comment_textobj_binding, "comment", true, { select_around_binding }),
+				["@return.inner"] = create_textobj_config(return_textobj_binding, "return statement", false),
+				["@return.outer"] = create_textobj_config(return_textobj_binding, "return statement", true, { select_around_binding }),
+				["@conditional.inner"] = create_textobj_config(conditional_textobj_binding, "conditional", false),
+				["@conditional.outer"] = create_textobj_config(conditional_textobj_binding, "conditional", true, { select_around_binding }),
+				["@parameter.inner"] = create_textobj_config(parameter_textobj_binding, "parameter", false),
+				["@parameter.outer"] = create_textobj_config(parameter_textobj_binding, "parameter", true, { select_around_binding }),
+				["@function.inner"] = create_textobj_config(function_textobj_binding, "function", false),
+				["@function.outer"] = create_textobj_config(function_textobj_binding, "function", true, { select_around_binding }),
+				["@call.inner"] = create_textobj_config(call_textobj_binding, "call", false),
+				["@call.outer"] = create_textobj_config(call_textobj_binding, "call", true, { select_around_binding }),
+				["@class.inner"] = create_textobj_config(class_textobj_binding, "class", false),
+				["@class.outer"] = create_textobj_config(class_textobj_binding, "class", true, { select_around_binding }),
+				["@assignment.lhs"] = create_textobj_config(assignment_lhs_textobj_binding, "lhs of assignment", true, { select_around_binding, select_inside_binding }),
+				["@assignment.rhs"] = create_textobj_config(assignment_rhs_textobj_binding, "rhs of assignment", true, { select_around_binding, select_inside_binding }),
 			}
 			local config = {
 				auto_install = false,
