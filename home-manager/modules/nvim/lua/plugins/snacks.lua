@@ -346,7 +346,7 @@ return {
 				},
 				indent = {
 					-- TODO enable later, after is it working with DiffviewOpen without error
-					enabled = false,
+					enabled = true,
 				},
 				words = { enabled = false },
 				styles = {

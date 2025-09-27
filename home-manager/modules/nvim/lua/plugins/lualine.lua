@@ -284,8 +284,8 @@ return {
 					},
 				},
 				statuscolumn = {
-					heirline_components.component.numbercolumn(),
 					heirline_components.component.signcolumn(),
+					heirline_components.component.numbercolumn(),
 					{
 						provider = "%C",
 					},
