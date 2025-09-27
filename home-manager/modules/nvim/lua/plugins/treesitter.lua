@@ -177,8 +177,9 @@ return {
 				-- },
 				["@block.inner"] = create_textobj_config(block_textobj_binding, "block", false, { select_inside_binding }),
 				["@block.outer"] = create_textobj_config(block_textobj_binding, "block", true, { select_around_binding }),
-				["@comment.inner"] = create_textobj_config(comment_textobj_binding, "comment", false, { select_inside_binding }),
-				["@comment.outer"] = create_textobj_config(comment_textobj_binding, "comment", true, { select_around_binding }),
+                -- NOTE note really that helpful, and it causing a conflict with [c
+				-- ["@comment.inner"] = create_textobj_config(comment_textobj_binding, "comment", false, { select_inside_binding }),
+				-- ["@comment.outer"] = create_textobj_config(comment_textobj_binding, "comment", true, { select_around_binding }),
 				["@return.inner"] = create_textobj_config(return_textobj_binding, "return statement", false, { select_inside_binding }),
 				["@return.outer"] = create_textobj_config(return_textobj_binding, "return statement", true, { select_around_binding }),
 				["@conditional.inner"] = create_textobj_config(conditional_textobj_binding, "conditional", false, { select_inside_binding }),

@@ -280,8 +280,6 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
-vim.keymap.set({ "n" }, "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
-vim.keymap.set({ "n" }, "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then

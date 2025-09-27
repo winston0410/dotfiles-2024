@@ -46,7 +46,7 @@ in {
     inherit username;
     homeDirectory = "/Users/${username}";
   };
-  home.packages = with pkgs; [ inputs.oxeylyzer.packages.${system}.default ];
+  home.packages = with pkgs; [ inputs.oxeylyzer.packages.${system}.default unstable.opencode ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
   xdg.userDirs.enable = lib.mkForce false;
