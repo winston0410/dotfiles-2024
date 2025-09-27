@@ -127,10 +127,13 @@ return {
 				{ lhs = "i", desc = "Select inside %s" },
 			}
 
-			-- Helper function to create textobject configuration
+			---@param binding string The key binding suffix
+			---@param desc string The description for the textobject
+			---@param include_move boolean Whether to include movement keybindings
+			---@param select_bindings table[] Array of binding groups for selection
+			---@return table Configuration object with move and select keymaps
 			local function create_textobj_config(binding, desc, include_move, select_bindings)
 				include_move = include_move == nil and true or include_move
-				select_bindings = select_bindings or { select_inside_binding }
 				
 				local select_keymaps = {}
 				for _, binding_group in ipairs(select_bindings) do
@@ -172,21 +175,21 @@ return {
 				-- 		}
 				-- 	end, select_around_binding),
 				-- },
-				["@block.inner"] = create_textobj_config(block_textobj_binding, "block", false),
+				["@block.inner"] = create_textobj_config(block_textobj_binding, "block", false, { select_inside_binding }),
 				["@block.outer"] = create_textobj_config(block_textobj_binding, "block", true, { select_around_binding }),
-				["@comment.inner"] = create_textobj_config(comment_textobj_binding, "comment", false),
+				["@comment.inner"] = create_textobj_config(comment_textobj_binding, "comment", false, { select_inside_binding }),
 				["@comment.outer"] = create_textobj_config(comment_textobj_binding, "comment", true, { select_around_binding }),
-				["@return.inner"] = create_textobj_config(return_textobj_binding, "return statement", false),
+				["@return.inner"] = create_textobj_config(return_textobj_binding, "return statement", false, { select_inside_binding }),
 				["@return.outer"] = create_textobj_config(return_textobj_binding, "return statement", true, { select_around_binding }),
-				["@conditional.inner"] = create_textobj_config(conditional_textobj_binding, "conditional", false),
+				["@conditional.inner"] = create_textobj_config(conditional_textobj_binding, "conditional", false, { select_inside_binding }),
 				["@conditional.outer"] = create_textobj_config(conditional_textobj_binding, "conditional", true, { select_around_binding }),
-				["@parameter.inner"] = create_textobj_config(parameter_textobj_binding, "parameter", false),
+				["@parameter.inner"] = create_textobj_config(parameter_textobj_binding, "parameter", false, { select_inside_binding }),
 				["@parameter.outer"] = create_textobj_config(parameter_textobj_binding, "parameter", true, { select_around_binding }),
-				["@function.inner"] = create_textobj_config(function_textobj_binding, "function", false),
+				["@function.inner"] = create_textobj_config(function_textobj_binding, "function", false, { select_inside_binding }),
 				["@function.outer"] = create_textobj_config(function_textobj_binding, "function", true, { select_around_binding }),
-				["@call.inner"] = create_textobj_config(call_textobj_binding, "call", false),
+				["@call.inner"] = create_textobj_config(call_textobj_binding, "call", false, { select_inside_binding }),
 				["@call.outer"] = create_textobj_config(call_textobj_binding, "call", true, { select_around_binding }),
-				["@class.inner"] = create_textobj_config(class_textobj_binding, "class", false),
+				["@class.inner"] = create_textobj_config(class_textobj_binding, "class", false, { select_inside_binding }),
 				["@class.outer"] = create_textobj_config(class_textobj_binding, "class", true, { select_around_binding }),
 				["@assignment.lhs"] = create_textobj_config(assignment_lhs_textobj_binding, "lhs of assignment", true, { select_around_binding, select_inside_binding }),
 				["@assignment.rhs"] = create_textobj_config(assignment_rhs_textobj_binding, "rhs of assignment", true, { select_around_binding, select_inside_binding }),
