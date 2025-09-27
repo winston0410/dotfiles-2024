@@ -187,29 +187,29 @@ end, { remap = true, silent = true, desc = "Open terminal" })
 -- 	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
 -- end
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*",
-	callback = function(ev)
-		local ok, bufferlocked = pcall(function()
-			return vim.api.nvim_buf_get_var(0, "lockbuffer")
-		end)
-
-		if not ok then
-			return
-		end
-
-		if not bufferlocked then
-			return
-		end
-		vim.keymap.set({ "n" }, clear_buffer_keybinding, "<Nop>", { buffer = ev.buf })
-		vim.keymap.set({ "n" }, delete_buffer_keybinding, "<Nop>", { buffer = ev.buf })
-		vim.keymap.set({ "n" }, next_buffer_keybinding, "<Nop>", { buffer = ev.buf })
-		vim.keymap.set({ "n" }, prev_buffer_keybinding, "<Nop>", { buffer = ev.buf })
-		for i = 1, 9 do
-			vim.keymap.set({ "n" }, "<leader>b" .. i, "<Nop>", { buffer = ev.buf })
-		end
-	end,
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+-- 	pattern = "*",
+-- 	callback = function(ev)
+-- 		local ok, bufferlocked = pcall(function()
+-- 			return vim.api.nvim_buf_get_var(0, "lockbuffer")
+-- 		end)
+--
+-- 		if not ok then
+-- 			return
+-- 		end
+--
+-- 		if not bufferlocked then
+-- 			return
+-- 		end
+-- 		vim.keymap.set({ "n" }, clear_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+-- 		vim.keymap.set({ "n" }, delete_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+-- 		vim.keymap.set({ "n" }, next_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+-- 		vim.keymap.set({ "n" }, prev_buffer_keybinding, "<Nop>", { buffer = ev.buf })
+-- 		for i = 1, 9 do
+-- 			vim.keymap.set({ "n" }, "<leader>b" .. i, "<Nop>", { buffer = ev.buf })
+-- 		end
+-- 	end,
+-- })
 
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set({ "n", "x" }, "Y", "y$", {

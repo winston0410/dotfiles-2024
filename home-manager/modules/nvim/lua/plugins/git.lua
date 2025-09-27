@@ -352,44 +352,44 @@ return {
 				},
 			})
 
-			local autocmd_callback = function(ev)
-				vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
-				vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
-				vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
-
-				vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
-				vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
-
-				vim.api.nvim_buf_set_var(ev.buf, "isdiffbuf", true)
-				vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
-			end
-
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "DiffviewDiffBufRead",
-				callback = autocmd_callback,
-			})
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "DiffviewDiffBufWinEnter",
-				callback = autocmd_callback,
-			})
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "DiffviewFileHistory",
-				callback = function(ev)
-					local tab_id = vim.api.nvim_get_current_tabpage()
-					vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFileHistory")
-					vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
-					vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
-				end,
-			})
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "DiffviewFiles",
-				callback = function(ev)
-					local tab_id = vim.api.nvim_get_current_tabpage()
-					vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFiles")
-					vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
-					vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
-				end,
-			})
+			-- local autocmd_callback = function(ev)
+			-- 	vim.api.nvim_set_option_value("foldenable", false, { scope = "local" })
+			-- 	vim.api.nvim_set_option_value("foldcolumn", "0", { scope = "local" })
+			-- 	vim.api.nvim_set_option_value("wrap", false, { scope = "local" })
+			--
+			-- 	vim.keymap.set("n", "[h", "[c", { noremap = true, silent = true, desc = "Jump to the previous hunk" })
+			-- 	vim.keymap.set("n", "]h", "]c", { noremap = true, silent = true, desc = "Jump to the next hunk" })
+			--
+			-- 	vim.api.nvim_buf_set_var(ev.buf, "isdiffbuf", true)
+			-- 	vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
+			-- end
+			--
+			-- vim.api.nvim_create_autocmd("User", {
+			-- 	pattern = "DiffviewDiffBufRead",
+			-- 	callback = autocmd_callback,
+			-- })
+			-- vim.api.nvim_create_autocmd("User", {
+			-- 	pattern = "DiffviewDiffBufWinEnter",
+			-- 	callback = autocmd_callback,
+			-- })
+			-- vim.api.nvim_create_autocmd("FileType", {
+			-- 	pattern = "DiffviewFileHistory",
+			-- 	callback = function(ev)
+			-- 		local tab_id = vim.api.nvim_get_current_tabpage()
+			-- 		vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFileHistory")
+			-- 		vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
+			-- 		vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
+			-- 	end,
+			-- })
+			-- vim.api.nvim_create_autocmd("FileType", {
+			-- 	pattern = "DiffviewFiles",
+			-- 	callback = function(ev)
+			-- 		local tab_id = vim.api.nvim_get_current_tabpage()
+			-- 		vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "DiffviewFiles")
+			-- 		vim.api.nvim_buf_set_var(ev.buf, "lockbuffer", true)
+			-- 		vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
+			-- 	end,
+			-- })
 		end,
 	},
 	{
