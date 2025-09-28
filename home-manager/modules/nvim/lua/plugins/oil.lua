@@ -4,7 +4,7 @@ return {
 		"A7Lavinraj/fyler.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = false,
-		enabled = true,
+		enabled = false,
 		cmd = { "Fyler" },
 		version = "1.x",
 		keys = {
@@ -36,7 +36,7 @@ return {
 		-- version = "2.x",
 		"winston0410/oil.nvim",
 		lazy = false,
-		enabled = false,
+		enabled = true,
 		cmd = { "Oil" },
 		branch = "feat/handle-buffer-callback",
 		keys = {
