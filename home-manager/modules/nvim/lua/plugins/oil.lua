@@ -1,36 +1,36 @@
 local utils = require("custom.utils")
 return {
-	{
-		"A7Lavinraj/fyler.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		lazy = false,
-		enabled = false,
-		cmd = { "Fyler" },
-		version = "1.x",
-		keys = {
-			{
-				"<leader>o",
-				function()
-					vim.cmd("Fyler")
-				end,
-				mode = { "n" },
-				noremap = true,
-				silent = true,
-				desc = "Open Oil.nvim panel",
-			},
-		},
-		config = function()
-			require("fyler").setup({
-				close_on_select = true,
-				confirm_simple = true,
-				default_explorer = true,
-				icon_provider = "nvim-web-devicons",
-				views = {
-					explorer = {},
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"A7Lavinraj/fyler.nvim",
+	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	-- 	lazy = false,
+	-- 	enabled = false,
+	-- 	cmd = { "Fyler" },
+	-- 	version = "1.x",
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>o",
+	-- 			function()
+	-- 				vim.cmd("Fyler")
+	-- 			end,
+	-- 			mode = { "n" },
+	-- 			noremap = true,
+	-- 			silent = true,
+	-- 			desc = "Open Oil.nvim panel",
+	-- 		},
+	-- 	},
+	-- 	config = function()
+	-- 		require("fyler").setup({
+	-- 			close_on_select = true,
+	-- 			confirm_simple = true,
+	-- 			default_explorer = true,
+	-- 			icon_provider = "nvim-web-devicons",
+	-- 			views = {
+	-- 				explorer = {},
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		-- "stevearc/oil.nvim",
 		-- version = "2.x",
