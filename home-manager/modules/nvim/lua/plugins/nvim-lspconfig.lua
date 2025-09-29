@@ -6,6 +6,7 @@ return {
 	{
 		"oribarilan/lensline.nvim",
 		-- makes loading slow, enable it later
+        enabled = false,
 		version = "2.x",
 		event = { "LspAttach" },
 		config = function()
