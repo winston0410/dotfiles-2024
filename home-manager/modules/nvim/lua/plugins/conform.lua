@@ -46,7 +46,7 @@ return {
 					bash = { "shfmt" },
 					markdown = prettier,
 					json = prettier,
-					jsonl = prettier,
+					jsonl = {"biome"},
 					jsonc = prettier,
 					json5 = prettier,
 					yaml = prettier,

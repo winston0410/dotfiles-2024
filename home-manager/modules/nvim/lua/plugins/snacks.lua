@@ -276,7 +276,7 @@ return {
 			require("snacks").setup({
 				toggle = { enabled = true },
 				gitbrowse = { enabled = true },
-				bigfile = { enabled = true },
+				bigfile = { enabled = false },
 				scratch = { enabled = true },
 				image = { enabled = true },
 				dashboard = {
