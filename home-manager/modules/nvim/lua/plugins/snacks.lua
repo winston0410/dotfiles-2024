@@ -143,7 +143,7 @@ return {
 			-- 	desc = "Search lines in buffer",
 			-- },
 			{
-				"<leader>pgs",
+				"<leader>p<leader>gs",
 				function()
 					Snacks.picker.git_stash()
 				end,
@@ -153,7 +153,7 @@ return {
 				desc = "Search Git Stash",
 			},
 			{
-				"<leader>pgh",
+				"<leader>p<leader>gh",
 				function()
 					Snacks.picker.git_diff()
 				end,
@@ -163,9 +163,11 @@ return {
 				desc = "Search Git Hunks",
 			},
 			{
-				"<leader>pgl",
+				"<leader>p<leader>gl",
 				function()
-					Snacks.picker.git_log({})
+					Snacks.picker.git_log({
+                        confirm = "diffview"
+                    })
 				end,
 				mode = { "n" },
 				silent = true,
@@ -194,7 +196,7 @@ return {
 			},
 
 			{
-				"<leader>pgb",
+				"<leader>p<leader>gb",
 				function()
 					Snacks.picker.git_branches()
 				end,
@@ -320,6 +322,22 @@ return {
 							return vim.o.columns >= 120 and "default" or "vertical"
 						end,
 					},
+                    actions = {
+                        diffview = function (picker, item)
+                            picker:close()
+                            if not item then
+                                return
+                            end
+
+                            local what = item.branch or item.commit --[[@as string?]]
+
+                            if not what then
+                                return
+                            end
+
+                            vim.cmd(string.format("DiffviewOpen %s", what))
+                        end
+                    },
 					win = {
 						input = {
 							keys = picker_keys,
