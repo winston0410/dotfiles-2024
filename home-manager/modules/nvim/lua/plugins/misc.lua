@@ -42,22 +42,6 @@ return {
         end
 	},
 	{
-		"nvim-neorg/neorg",
-		ft = { "norg" },
-		enabled = true,
-		dependencies = { "pysan3/pathlib.nvim", "nvim-neorg/lua-utils.nvim", "nvim-neotest/nvim-nio" },
-		version = "9.x",
-		config = function()
-			-- NOTE https://github.com/nvim-neorg/neorg/blob/53714b1783d4bb5fa154e2a5428b086fb5f3d8a5/res/wiki/static/Setup-Guide.md
-			require("neorg").setup({
-				load = {
-					["core.defaults"] = {},
-					["core.concealer"] = {},
-				},
-			})
-		end,
-	},
-	{
 		"michaelb/sniprun",
 		version = "1.x",
 		build = false,

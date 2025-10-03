@@ -1,4 +1,5 @@
 local render_markdown_ft = { "markdown", "codecompanion" }
+local enable_markview = true
 
 local get_api_key = function(key)
 	if vim.env[key] ~= nil then
@@ -135,8 +136,25 @@ return {
 			{ "ravitemer/codecompanion-history.nvim" },
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
+				"OXY2DEV/markview.nvim",
+				version = "26.x",
+				lazy = false,
+				enabled = enable_markview,
+				dependencies = {
+					"saghen/blink.cmp",
+				},
+				opts = {
+					preview = {
+						filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto" },
+						ignore_buftypes = {},
+					},
+				},
+			},
+			{
 				"MeanderingProgrammer/render-markdown.nvim",
+				dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
 				version = "8.x",
+				enabled = not enable_markview,
 				ft = render_markdown_ft,
 				opts = {
 					completions = { blink = { enabled = true } },
