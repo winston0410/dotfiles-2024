@@ -9,7 +9,6 @@
     ruff
     rustfmt
     biome
-    prettierd
     yamlfmt
     taplo
     shfmt
