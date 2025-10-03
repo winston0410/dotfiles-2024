@@ -1,4 +1,5 @@
 local render_markdown_ft = { "markdown", "codecompanion" }
+-- use markview as it supports multiple filetypes
 local enable_markview = true
 
 local get_api_key = function(key)
@@ -145,8 +146,7 @@ return {
 				},
 				opts = {
 					preview = {
-						filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto" },
-						ignore_buftypes = {},
+						filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto", "yaml", "typst"},
 					},
 				},
 			},
