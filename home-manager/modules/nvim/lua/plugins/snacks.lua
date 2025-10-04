@@ -165,7 +165,7 @@ return {
 			{
 				"<leader>gl",
 				function()
-                    vim.cmd("DiffviewFileHistory %")
+					vim.cmd("DiffviewFileHistory %")
 				end,
 				mode = { "n" },
 				silent = true,
@@ -176,8 +176,8 @@ return {
 				"<leader>p<leader>gl",
 				function()
 					Snacks.picker.git_log({
-                        confirm = "diffview"
-                    })
+						confirm = "diffview",
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -188,8 +188,8 @@ return {
 				"<leader>pw",
 				function()
 					Snacks.picker.grep({
-                        hidden = true
-                    })
+						hidden = true,
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -199,13 +199,13 @@ return {
 			{
 				"<leader>pW",
 				function()
-                    local bufname = vim.api.nvim_buf_get_name(0)
-                    local dir = vim.fn.fnamemodify(bufname, ":p:h")
+					local bufname = vim.api.nvim_buf_get_name(0)
+					local dir = vim.fn.fnamemodify(bufname, ":p:h")
 					Snacks.picker.grep({
-                        hidden = true,
-                        title = string.format("Grep [%s]", dir),
-                        dirs = {dir}
-                    })
+						hidden = true,
+						title = string.format("Grep [%s]", dir),
+						dirs = { dir },
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -216,8 +216,8 @@ return {
 				"<leader>pw",
 				function()
 					Snacks.picker.grep_word({
-                        hidden = true
-                    })
+						hidden = true,
+					})
 				end,
 				mode = { "x" },
 				silent = true,
@@ -228,8 +228,8 @@ return {
 				"<leader>p<leader>gb",
 				function()
 					Snacks.picker.git_branches({
-                        confirm = "diffview"
-                    })
+						confirm = "diffview",
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -241,13 +241,13 @@ return {
 				function()
 					Snacks.gitbrowse.open()
 				end,
-				mode = { "n" },
+				mode = { "n", "x" },
 				silent = true,
 				noremap = true,
 				desc = "Browse files in remote Git server",
 			},
-            -- TODO can't figure out a way to picker directories
-            -- checked https://github.com/folke/snacks.nvim/blob/bc0630e43be5699bb94dadc302c0d21615421d93/lua/snacks/picker/source/files.lua#L184, but cannot get and pass ctx here
+			-- TODO can't figure out a way to picker directories
+			-- checked https://github.com/folke/snacks.nvim/blob/bc0630e43be5699bb94dadc302c0d21615421d93/lua/snacks/picker/source/files.lua#L184, but cannot get and pass ctx here
 			-- {
 			-- 	"<leader>pF",
 			-- 	function()
@@ -318,7 +318,18 @@ return {
 			---@cast config_dir string
 			require("snacks").setup({
 				toggle = { enabled = true },
-				gitbrowse = { enabled = true },
+				gitbrowse = {
+					enabled = true,
+					url_patterns = {
+						["visualstudio%.com"] = {
+							branch = "?version=GB{branch}",
+                            -- FIXME only line row number is returned, we need both row and column to get the highlight in ado https://github.com/folke/snacks.nvim/blob/bfe8c26dbd83f7c4fbc222787552e29b4eccfcc0/lua/snacks/gitbrowse.lua#L177C24-L177C49
+							file = "?path={file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=999&lineStyle=plain&_a=contents",
+							permalink = "?path={file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=999&lineStyle=plain&_a=contents",
+							commit = "/commit/{commit}",
+						},
+					},
+				},
 				bigfile = { enabled = false },
 				scratch = { enabled = true },
 				image = { enabled = true },
@@ -363,22 +374,22 @@ return {
 							return vim.o.columns >= 120 and "default" or "vertical"
 						end,
 					},
-                    actions = {
-                        diffview = function (picker, item)
-                            picker:close()
-                            if not item then
-                                return
-                            end
+					actions = {
+						diffview = function(picker, item)
+							picker:close()
+							if not item then
+								return
+							end
 
-                            local what = item.branch or item.commit --[[@as string?]]
+							local what = item.branch or item.commit --[[@as string?]]
 
-                            if not what then
-                                return
-                            end
+							if not what then
+								return
+							end
 
-                            vim.cmd(string.format("DiffviewOpen %s", what))
-                        end
-                    },
+							vim.cmd(string.format("DiffviewOpen %s", what))
+						end,
+					},
 					win = {
 						input = {
 							keys = picker_keys,
