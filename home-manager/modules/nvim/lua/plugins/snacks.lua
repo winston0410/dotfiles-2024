@@ -145,6 +145,16 @@ return {
 			{
 				"<leader>p<leader>gs",
 				function()
+					Snacks.picker.git_status()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search Git Status",
+			},
+			{
+				"<leader>p<leader>gZ",
+				function()
 					Snacks.picker.git_stash()
 				end,
 				mode = { "n" },
@@ -153,7 +163,7 @@ return {
 				desc = "Search Git Stash",
 			},
 			{
-				"<leader>p<leader>gh",
+				"<leader>p<leader>gc",
 				function()
 					Snacks.picker.git_diff()
 				end,
@@ -162,8 +172,20 @@ return {
 				noremap = true,
 				desc = "Search Git Hunks",
 			},
+			-- {
+			-- 	"<leader>p<leader>gl",
+			-- 	function()
+			-- 		Snacks.picker.git_log_file({
+			--                      confirm = "diffview_file"
+			--                  })
+			-- 	end,
+			-- 	mode = { "n" },
+			-- 	silent = true,
+			-- 	noremap = true,
+			-- 	desc = "Search Git log of current file",
+			-- },
 			{
-				"<leader>p<leader>gl",
+				"<leader>p<leader>gL",
 				function()
 					Snacks.picker.git_log({
                         confirm = "diffview"
@@ -198,7 +220,9 @@ return {
 			{
 				"<leader>p<leader>gb",
 				function()
-					Snacks.picker.git_branches()
+					Snacks.picker.git_branches({
+                        confirm = "diffview"
+                    })
 				end,
 				mode = { "n" },
 				silent = true,
@@ -206,7 +230,7 @@ return {
 				desc = "Search Git branches",
 			},
 			{
-				"<leader>go",
+				"<leader>gx",
 				function()
 					Snacks.gitbrowse.open()
 				end,
@@ -323,6 +347,14 @@ return {
 						end,
 					},
                     actions = {
+                        diffview_file = function (picker, item)
+                            picker:close()
+                            if not item then
+                                return
+                            end
+
+                            print(vim.inspect(item))
+                        end,
                         diffview = function (picker, item)
                             picker:close()
                             if not item then
