@@ -30,17 +30,18 @@ return {
 				lazy = false,
 				dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 				keys = {
-					{
-						"<leader>ps",
-						function()
-							require("dropbar.api").pick()
-						end,
-						mode = { "n" },
-						silent = true,
-						noremap = true,
-						expr = true,
-						desc = "Search symobls",
-					},
+                    -- NOTE this doesn't work at all
+					-- {
+					-- 	"<leader>ps",
+					-- 	function()
+					-- 		require("dropbar.api").pick()
+					-- 	end,
+					-- 	mode = { "n" },
+					-- 	silent = true,
+					-- 	noremap = true,
+					-- 	expr = true,
+					-- 	desc = "Search symobls",
+					-- },
 				},
 				init = function()
 					vim.o.mousemoveevent = true

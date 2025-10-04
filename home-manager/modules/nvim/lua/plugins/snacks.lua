@@ -275,6 +275,16 @@ return {
 				desc = "Explore files",
 			},
 			{
+				"<leader>ps",
+				function()
+					Snacks.picker.lsp_symbols({})
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Resume last picker",
+			},
+			{
 				"<leader>pr",
 				function()
 					Snacks.picker.resume()
