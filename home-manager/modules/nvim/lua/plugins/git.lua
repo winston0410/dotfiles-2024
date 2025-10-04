@@ -15,6 +15,7 @@ return {
 				noremap = true,
 				desc = "Git hunk",
 			},
+            -- They are not really operators, therefore use the structure of ns-noun-verb
 			{
 				"<leader>gcs",
 				function()
