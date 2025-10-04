@@ -26,7 +26,7 @@ return {
 				desc = "Git hunk",
 			},
 			{
-				"<leader>ghs",
+				"<leader>gcs",
 				function()
 					require("gitsigns").stage_hunk()
 				end,
@@ -36,7 +36,7 @@ return {
 				desc = "Stage hunk",
 			},
 			{
-				"<leader>ghp",
+				"<leader>gcp",
 				function()
 					require("gitsigns").preview_hunk()
 				end,
@@ -46,7 +46,7 @@ return {
 				desc = "Preview hunk",
 			},
 			{
-				"<leader>ghr",
+				"<leader>gcr",
 				function()
 					require("gitsigns").reset_hunk()
 				end,
@@ -56,7 +56,7 @@ return {
 				desc = "Reset hunk",
 			},
 			{
-				"]gh",
+				"]gc",
 				function()
 					require("gitsigns").nav_hunk("next")
 				end,
@@ -66,7 +66,7 @@ return {
 				desc = "Jump to next hunk",
 			},
 			{
-				"[gh",
+				"[gc",
 				function()
 					require("gitsigns").nav_hunk("prev")
 				end,

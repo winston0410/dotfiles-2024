@@ -172,20 +172,18 @@ return {
 				noremap = true,
 				desc = "Search Git Hunks",
 			},
-			-- {
-			-- 	"<leader>p<leader>gl",
-			-- 	function()
-			-- 		Snacks.picker.git_log_file({
-			--                      confirm = "diffview_file"
-			--                  })
-			-- 	end,
-			-- 	mode = { "n" },
-			-- 	silent = true,
-			-- 	noremap = true,
-			-- 	desc = "Search Git log of current file",
-			-- },
 			{
-				"<leader>p<leader>gL",
+				"<leader>gl",
+				function()
+                    vim.cmd("DiffviewFileHistory %")
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Git log of the current file",
+			},
+			{
+				"<leader>p<leader>gl",
 				function()
 					Snacks.picker.git_log({
                         confirm = "diffview"
