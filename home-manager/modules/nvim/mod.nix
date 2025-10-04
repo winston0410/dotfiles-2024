@@ -101,23 +101,10 @@
     FCEDIT = "nvim --clean";
     MANWIDTH = 999;
   };
-
-  programs.zsh.initContent = ''
-    nrg() {
-        if [[ -p /dev/stdin ]] || [ ! -t 0 ]; then
-            nvim --cmd 'let g:enable_session = v:false' -c "BaleiaColorize" -c "lua Snacks.picker.lines()" -
-        else
-            nvim --cmd 'let g:enable_session = v:false' -c "lua Snacks.picker.grep()"
-        fi
-    }
-  '';
-
   home.shellAliases = {
     vi = "nvim --clean";
     vim =
       "nvim --cmd 'let g:enable_session = v:false' -u $XDG_CONFIG_HOME/nvim/minimal.lua";
-    neogit =
-      "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"neogit\").open()'";
     k8s =
       "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
     diffview =

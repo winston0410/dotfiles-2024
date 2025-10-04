@@ -29,7 +29,7 @@ return {
 				desc = "Select Scratch Buffer",
 			},
 			{
-				"<leader>phj",
+				"<leader>pj",
 				function()
 					Snacks.picker.jumps()
 				end,
@@ -39,7 +39,7 @@ return {
 				desc = "Search jumplist history",
 			},
 			{
-				"<leader>phu",
+				"<leader>pu",
 				function()
 					Snacks.picker.undo()
 				end,
@@ -49,7 +49,7 @@ return {
 				desc = "Search undo history",
 			},
 			{
-				"<leader>phn",
+				"<leader>pn",
 				function()
 					Snacks.picker.notifications({
 						confirm = { "copy", "close" },
@@ -61,7 +61,7 @@ return {
 				desc = "Search notifications history",
 			},
 			{
-				"<leader>phc",
+				"<leader>pc",
 				function()
 					Snacks.picker.command_history()
 				end,
@@ -71,17 +71,7 @@ return {
 				desc = "Search command history",
 			},
 			{
-				"<leader>pb",
-				function()
-					Snacks.picker.buffers()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Search buffers",
-			},
-			{
-				"<leader>pc",
+				"<leader>pC",
 				function()
 					Snacks.picker.colorschemes()
 				end,
@@ -197,7 +187,9 @@ return {
 			{
 				"<leader>pw",
 				function()
-					Snacks.picker.grep()
+					Snacks.picker.grep({
+                        hidden = true
+                    })
 				end,
 				mode = { "n" },
 				silent = true,
@@ -205,16 +197,33 @@ return {
 				desc = "Grep in files",
 			},
 			{
+				"<leader>pW",
+				function()
+                    local bufname = vim.api.nvim_buf_get_name(0)
+                    local dir = vim.fn.fnamemodify(bufname, ":p:h")
+					Snacks.picker.grep({
+                        hidden = true,
+                        title = string.format("Grep [%s]", dir),
+                        dirs = {dir}
+                    })
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Grep in files under the buffer's directory",
+			},
+			{
 				"<leader>pw",
 				function()
-					Snacks.picker.grep_word()
+					Snacks.picker.grep_word({
+                        hidden = true
+                    })
 				end,
 				mode = { "x" },
 				silent = true,
 				noremap = true,
-				desc = "Grep in files",
+				desc = "Combined Grep in files",
 			},
-
 			{
 				"<leader>p<leader>gb",
 				function()
@@ -345,14 +354,6 @@ return {
 						end,
 					},
                     actions = {
-                        diffview_file = function (picker, item)
-                            picker:close()
-                            if not item then
-                                return
-                            end
-
-                            print(vim.inspect(item))
-                        end,
                         diffview = function (picker, item)
                             picker:close()
                             if not item then
