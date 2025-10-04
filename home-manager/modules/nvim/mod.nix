@@ -84,6 +84,8 @@
       # kulala.nvim
       grpcurl
       websocat
+      # presenterm
+      unstable.presenterm
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       # img-clip.nvim
       pkgs.pngpaste

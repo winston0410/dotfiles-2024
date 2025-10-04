@@ -211,6 +211,7 @@ return {
 		dependencies = {
 			"jbyuki/one-small-step-for-vimkind",
 		},
+        enabled = false,
 		config = function()
 			local dm = require("debugmaster")
 			dm.plugins.osv_integration.enabled = true
