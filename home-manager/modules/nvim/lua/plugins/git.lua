@@ -15,9 +15,9 @@ return {
 				noremap = true,
 				desc = "Git hunk",
 			},
-            -- They are not really operators, therefore use the structure of ns-noun-verb
+            -- NOTE in the structure of ns-verb-noun, similar to an operator
 			{
-				"<leader>gcs",
+				"<leader>gsc",
 				function()
 					require("gitsigns").stage_hunk()
 				end,
@@ -27,7 +27,7 @@ return {
 				desc = "Stage hunk",
 			},
 			{
-				"<leader>gcp",
+				"<leader>gpc",
 				function()
 					require("gitsigns").preview_hunk()
 				end,
@@ -37,7 +37,7 @@ return {
 				desc = "Preview hunk",
 			},
 			{
-				"<leader>gcr",
+				"<leader>grc",
 				function()
 					require("gitsigns").reset_hunk()
 				end,
