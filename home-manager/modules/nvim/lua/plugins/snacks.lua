@@ -239,7 +239,16 @@ return {
 			{
 				"<leader>gx",
 				function()
-					Snacks.gitbrowse.open()
+					vim.ui.select({ "file","branch", "permalink", "commit"}, {
+						prompt = "Gitbrowse resource type",
+					}, function(choice)
+						if not choice then
+							return
+						end
+						Snacks.gitbrowse.open({
+                                what = choice
+                            })
+					end)
 				end,
 				mode = { "n", "x" },
 				silent = true,
@@ -323,7 +332,7 @@ return {
 					url_patterns = {
 						["visualstudio%.com"] = {
 							branch = "?version=GB{branch}",
-                            -- FIXME only line row number is returned, we need both row and column to get the highlight in ado https://github.com/folke/snacks.nvim/blob/bfe8c26dbd83f7c4fbc222787552e29b4eccfcc0/lua/snacks/gitbrowse.lua#L177C24-L177C49
+							-- FIXME only line row number is returned, we need both row and column to get the highlight in ado https://github.com/folke/snacks.nvim/blob/bfe8c26dbd83f7c4fbc222787552e29b4eccfcc0/lua/snacks/gitbrowse.lua#L177C24-L177C49
 							file = "?path={file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=999&lineStyle=plain&_a=contents",
 							permalink = "?path={file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=999&lineStyle=plain&_a=contents",
 							commit = "/commit/{commit}",
