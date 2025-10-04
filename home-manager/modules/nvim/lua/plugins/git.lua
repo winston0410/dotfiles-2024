@@ -6,17 +6,7 @@ return {
 		keys = {
 			-- TODO how to select local diff hunk?????
 			{
-				"gh",
-				function()
-					require("gitsigns").select_hunk()
-				end,
-				mode = { "o", "x" },
-				silent = true,
-				noremap = true,
-				desc = "Git hunk",
-			},
-			{
-				"agh",
+				"ac",
 				function()
 					require("gitsigns").select_hunk()
 				end,
@@ -56,9 +46,13 @@ return {
 				desc = "Reset hunk",
 			},
 			{
-				"]gc",
+				"]c",
 				function()
-					require("gitsigns").nav_hunk("next")
+                  if vim.wo.diff then
+                    vim.cmd.normal({']c', bang = true})
+                  else
+                    require("gitsigns").nav_hunk('next')
+                  end
 				end,
 				mode = { "n" },
 				silent = true,
@@ -66,9 +60,13 @@ return {
 				desc = "Jump to next hunk",
 			},
 			{
-				"[gc",
+				"[c",
 				function()
-					require("gitsigns").nav_hunk("prev")
+                  if vim.wo.diff then
+                    vim.cmd.normal({'[c', bang = true})
+                  else
+                    require("gitsigns").nav_hunk('prev')
+                  end
 				end,
 				mode = { "n" },
 				silent = true,
