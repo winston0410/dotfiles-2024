@@ -71,10 +71,12 @@ vim.opt.fillchars:append({
 	eob = " ",
 	diff = "╱",
 	lastline = " ",
-	foldopen = "",
-	foldclose = "",
-	-- foldsep = " ",
-	-- fold = " ",
+	foldopen = '',
+	foldclose = '',
+    fold = ' ',
+    foldsep = ' ',
+    -- TODO wait for the https://www.reddit.com/r/neovim/comments/1nxzz9i/new_foldinner_fillchar/#lightbox to land in my Neovim version
+    -- foldinner = ' '
 })
 vim.o.expandtab = true
 vim.o.autoindent = true
@@ -90,6 +92,7 @@ vim.o.foldlevel = 99
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = ""
+-- TODO set this to 1, once foldinner is available
 vim.opt.foldcolumn = "0"
 vim.opt.fillchars:append({ fold = " " })
 vim.api.nvim_create_autocmd("WinEnter", {
