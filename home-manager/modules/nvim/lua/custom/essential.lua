@@ -221,7 +221,7 @@ vim.keymap.set({ "n", "x" }, "Y", "y$", {
 	desc = "Yank to EOL",
 })
 
-vim.keymap.set({ "n" }, "vv", "<C-v>", { silent = true, noremap = true, desc = "Enter Visual block mode" })
+-- vim.keymap.set({ "n" }, "vv", "<C-v>", { silent = true, noremap = true, desc = "Enter Visual block mode" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
