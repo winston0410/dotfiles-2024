@@ -282,6 +282,8 @@ return {
 				"kotlin_language_server",
 				"cmake",
 				"basedpyright",
+                -- TODO replace basedpyright with ty, once it is ready
+				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
 				"ruff-lsp",

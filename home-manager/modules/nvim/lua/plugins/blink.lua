@@ -106,7 +106,7 @@ return {
 				end,
 			},
 			{ "disrupted/blink-cmp-conventional-commits" },
-			-- { "Kaiser-Yang/blink-cmp-git", version = "3.x" },
+			{ "Kaiser-Yang/blink-cmp-git", version = "3.x" },
 			-- FIXME this module is exposing the value of an env. Reconsider if we need this
 			{ "bydlw98/blink-cmp-env" },
 			{ "archie-judd/blink-cmp-words" },
@@ -198,16 +198,13 @@ return {
 							score_offset = 0,
 						},
 					},
-					-- git = {
-					-- 	module = "blink-cmp-git",
-					-- 	name = "Git",
-					-- 	enabled = function()
-					-- 		return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype)
-					-- 	end,
-					-- 	--- @module 'blink-cmp-git'
-					-- 	--- @type blink-cmp-git.Options
-					-- 	opts = {},
-					-- },
+					git = {
+						module = "blink-cmp-git",
+						name = "Git",
+						--- @module 'blink-cmp-git'
+						--- @type blink-cmp-git.Options
+						opts = {},
+					},
 					conventional_commits = {
 						name = "Conventional Commits",
 						module = "blink-cmp-conventional-commits",
@@ -220,9 +217,11 @@ return {
 					},
 				},
 				per_filetype = {
-					gitcommit = { inherit_defaults = true, "conventional_commits" },
+					octo = { inherit_defaults = true, "conventional_commits", "git" },
+					gitcommit = { inherit_defaults = true, "conventional_commits", "git" },
 					markdown = {
 						inherit_defaults = true,
+						"git",
 						"thesaurus",
 						-- disable this now, as it makes the UI laggy
 						-- "dictionary"
@@ -249,6 +248,8 @@ return {
 										if dev_icon then
 											icon = dev_icon
 										end
+									elseif ctx.kind == "Copilot" then
+                                        -- noop
 									else
 										icon = require("lspkind").symbolic(ctx.kind, {
 											mode = "symbol",

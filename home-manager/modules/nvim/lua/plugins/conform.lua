@@ -54,15 +54,17 @@ return {
 					toml = { "taplo" },
 					lua = { "stylua" },
 					teal = { "stylua" },
+					scala = { "scalafmt" },
 					python = function(bufnr)
 						if require("conform").get_formatter_info("ruff_format", bufnr).available then
-							return { "ruff_format" }
+							return { "ruff_fix", "ruff_format" }
 						else
 							return { "isort", "black" }
 						end
 					end,
 					rust = { "rustfmt", lsp_format = "fallback" },
 					go = { "goimports", "gofmt" },
+                    typespec = {"typespec"},
 					nix = { "nixfmt" },
 					nginx = { "nginxfmt" },
 					ruby = { "rufo" },
@@ -72,11 +74,14 @@ return {
 					cpp = { "clang_format" },
 					c = { "clang_format" },
 					cs = { "clang_format" },
-					swift = { "swift_format" },
+					swift = { "swift" },
 					r = { "styler" },
 					elm = { "elm_format" },
 					elixir = { "mix" },
-					sql = { "pg_format" },
+					crystal = { "crystal" },
+					caramel = { "caramel_fmt" },
+					dockerfile = { "dockerfmt" },
+					sql = { "sqruff" },
 					tf = { "hcl" },
 					ini = { "inifmt" },
 					dosini = { "inifmt" },
@@ -90,9 +95,11 @@ return {
 					mint = { "mintfmt" },
 					kdl = { "kdlfmt" },
 					just = { "just" },
+					hurl = { "hurlfmt" },
 					erb = { "erb_format" },
 					ql = { "codeql" },
 					d2 = { "d2" },
+                    cue = { "cue_fmt"},
 					erlang = { "efmt" },
 					awk = { "gawk" },
 					gleam = { "gleam" },

@@ -1,6 +1,7 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
   home.packages = with pkgs; [
-    dockfmt
+    unstable.dockerfmt
+    unstable.sqruff
     gotools
     stylua
     nixfmt-classic
@@ -17,7 +18,6 @@
     hclfmt
     elmPackages.elm-format
     haskellPackages.hindent
-    pgformatter
   ];
 
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };
