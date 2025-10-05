@@ -86,7 +86,27 @@ local get_api_key = function(key)
 	return pwd
 end
 return {
-	{ "github/copilot.vim", version = "1.x", cmd = { "Copilot" } },
+	{
+		"github/copilot.vim",
+		version = "1.x",
+		cmd = "Copilot",
+		event = "BufWinEnter",
+        -- REF https://github.com/fang2hou/blink-copilot
+		init = function()
+			vim.g.copilot_no_maps = true
+		end,
+		config = function()
+			-- Block the normal Copilot suggestions
+			vim.api.nvim_create_augroup("github_copilot", { clear = true })
+			vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
+				group = "github_copilot",
+				callback = function(args)
+					vim.fn["copilot#On" .. args.event]()
+				end,
+			})
+			vim.fn["copilot#OnFileType"]()
+		end,
+	},
 	{
 		"ravitemer/mcphub.nvim",
 		dependencies = {
@@ -171,7 +191,7 @@ return {
 								["^group$"] = conceal_tag("", "CodeCompanionChatToolGroup"),
 							},
 						},
-                        -- FIXME known issue, it is giving out an error when open CodeCompanionChat
+						-- FIXME known issue, it is giving out an error when open CodeCompanionChat
 						preview = {
 							filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto", "yaml", "typst" },
 							ignore_buftypes = {},

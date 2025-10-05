@@ -3,7 +3,8 @@ return {
 		"saghen/blink.cmp",
 		event = "InsertEnter",
 		dependencies = {
-			"moyiz/blink-emoji.nvim",
+			{ "moyiz/blink-emoji.nvim", version = "1.x" },
+			"fang2hou/blink-copilot",
 			{
 				"L3MON4D3/LuaSnip",
 				version = "v2.*",
@@ -151,8 +152,21 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "omni", "emoji" },
+				default = { "lsp", "path", "snippets", "buffer", "omni", "emoji", "copilot" },
 				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-copilot",
+						score_offset = 100,
+						async = true,
+						transform_items = function(ctx, items)
+							for _, item in ipairs(items) do
+								item.kind_icon = ""
+								item.kind_name = "Copilot"
+							end
+							return items
+						end,
+					},
 					emoji = {
 						module = "blink-emoji",
 						name = "Emoji",
