@@ -4,7 +4,7 @@ return {
 		event = "InsertEnter",
 		dependencies = {
 			{ "moyiz/blink-emoji.nvim", version = "1.x" },
-			"fang2hou/blink-copilot",
+			{ "fang2hou/blink-copilot", version = "1.x" },
 			{
 				"L3MON4D3/LuaSnip",
 				version = "v2.*",
@@ -106,7 +106,8 @@ return {
 				end,
 			},
 			{ "disrupted/blink-cmp-conventional-commits" },
-			{ "Kaiser-Yang/blink-cmp-git", version = "3.x" },
+			-- Only working for github and gitlab
+			-- { "Kaiser-Yang/blink-cmp-git", version = "3.x" },
 			-- FIXME this module is exposing the value of an env. Reconsider if we need this
 			{ "bydlw98/blink-cmp-env" },
 			{ "archie-judd/blink-cmp-words" },
@@ -198,30 +199,28 @@ return {
 							score_offset = 0,
 						},
 					},
-					git = {
-						module = "blink-cmp-git",
-						name = "Git",
-						--- @module 'blink-cmp-git'
-						--- @type blink-cmp-git.Options
-						opts = {},
-					},
+					-- git = {
+					-- 	module = "blink-cmp-git",
+					-- 	name = "Git",
+					-- 	--- @module 'blink-cmp-git'
+					-- 	--- @type blink-cmp-git.Options
+					-- 	opts = {},
+					-- },
 					conventional_commits = {
 						name = "Conventional Commits",
 						module = "blink-cmp-conventional-commits",
-						enabled = function()
-							return true
-						end,
 						---@module 'blink-cmp-conventional-commits'
 						---@type blink-cmp-conventional-commits.Options
 						opts = {},
 					},
 				},
 				per_filetype = {
-					octo = { inherit_defaults = true, "conventional_commits", "git" },
-					gitcommit = { inherit_defaults = true, "conventional_commits", "git" },
+					gitcommit = { inherit_defaults = true, "conventional_commits", 
+                        -- "git" 
+                    },
 					markdown = {
 						inherit_defaults = true,
-						"git",
+						-- "git",
 						"thesaurus",
 						-- disable this now, as it makes the UI laggy
 						-- "dictionary"
@@ -249,7 +248,7 @@ return {
 											icon = dev_icon
 										end
 									elseif ctx.kind == "Copilot" then
-                                        -- noop
+										-- noop
 									else
 										icon = require("lspkind").symbolic(ctx.kind, {
 											mode = "symbol",
