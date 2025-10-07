@@ -92,6 +92,8 @@
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       # vectorcode, cannot build on Darwin yet
       unstable.vectorcode
+      # difftastic
+      unstable.difftastic
     ];
 
   home.sessionVariables = {
