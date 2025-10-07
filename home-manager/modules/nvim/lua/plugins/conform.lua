@@ -41,6 +41,7 @@ return {
 					typescript = biome,
 					typescriptreact = biome,
 					["typescript.jsx"] = biome,
+					r = { "air" },
 					sh = { "shfmt" },
 					zsh = { "shfmt" },
 					bash = { "shfmt" },

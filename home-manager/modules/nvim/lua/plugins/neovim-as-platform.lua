@@ -29,7 +29,7 @@ return {
 	{
 		-- FIXME it does not download the kubectl_client???
 		"ramilito/kubectl.nvim",
-		version = "v2.7.12",
+		version = "2.x",
 		cmd = { "Kubectl", "Kubectx", "Kubens" },
 		dependencies = { "saghen/blink.download" },
 		keys = {
@@ -51,15 +51,15 @@ return {
 					bin = "kubediff",
 				},
 			})
-			local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = true })
-			vim.api.nvim_create_autocmd("FileType", {
-				group = group,
-				pattern = "k8s_*",
-				callback = function()
-					local tab_id = vim.api.nvim_get_current_tabpage()
-					vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "Kubectl")
-				end,
-			})
+			-- local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = true })
+			-- vim.api.nvim_create_autocmd("FileType", {
+			-- 	group = group,
+			-- 	pattern = "k8s_*",
+			-- 	callback = function()
+			-- 		local tab_id = vim.api.nvim_get_current_tabpage()
+			-- 		vim.api.nvim_tabpage_set_var(tab_id, "tabtitle", "Kubectl")
+			-- 	end,
+			-- })
 		end,
 	},
 	{

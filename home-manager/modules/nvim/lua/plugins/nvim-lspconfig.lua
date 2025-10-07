@@ -209,6 +209,9 @@ return {
 			})
 
 			local servers = {
+                "visualforce_ls",
+                "air",
+                "contextive",
 				"codeqlls",
 				"denols",
 				"azure_pipelines_ls",
@@ -281,6 +284,7 @@ return {
 				"r_language_server",
 				"kotlin_language_server",
 				"cmake",
+                "atopile",
 				"basedpyright",
                 -- TODO replace basedpyright with ty, once it is ready
 				-- "ty",
