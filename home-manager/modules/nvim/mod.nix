@@ -60,6 +60,8 @@
 
         npmDepsHash = "sha256-iWTuG/ExpAmz16g5wbhO7fiYH9TULTz8BRcjUwVM6r0=";
       })
+      # difftastic
+      unstable.difftastic
       # needed for snacks.nvim
       imagemagick
       mermaid-cli
@@ -92,8 +94,6 @@
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       # vectorcode, cannot build on Darwin yet
       unstable.vectorcode
-      # difftastic
-      unstable.difftastic
     ];
 
   home.sessionVariables = {
