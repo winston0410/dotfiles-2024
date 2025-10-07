@@ -66,6 +66,7 @@ in {
       keepBackup = false;
       nvimdiff = { layout = "@LOCAL, REMOTE"; };
       diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
+      difftastic = { cmd = ''difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"''; };
     };
   };
   home.packages = with pkgs; [ git-credential-manager ];
