@@ -49,10 +49,11 @@ in {
       diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
     };
 
-    diff = { } 
+    diff = { 
+      conflictStyle = "zdiff3";
+    } 
     // lib.optionalAttrs (!use_difftastic) {
       tool = "diffview";
-      conflictStyle = "zdiff3";
     }
     // lib.optionalAttrs use_difftastic {
       external = "difft";
