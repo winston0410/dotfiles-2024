@@ -23,6 +23,7 @@
       # luajit
       lua5_1
       luarocks
+      unstable.ast-grep
       unstable.codesnap
       (pkgs.rustPlatform.buildRustPackage rec {
         pname = "sniprun";

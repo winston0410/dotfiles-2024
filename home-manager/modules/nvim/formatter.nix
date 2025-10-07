@@ -10,7 +10,7 @@
     kulala-fmt
     ruff
     rustfmt
-    biome
+    unstable.biome
     yamlfmt
     taplo
     shfmt

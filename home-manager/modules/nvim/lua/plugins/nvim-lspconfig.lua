@@ -259,6 +259,7 @@ return {
 				"gdscript",
 				"scry",
 				"biome",
+                "ast_grep",
 				"gnls",
 				"eslint",
 				"angularls",
