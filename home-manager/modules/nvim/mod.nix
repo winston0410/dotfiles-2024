@@ -100,6 +100,8 @@
     EDITOR = "nvim";
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
+    # using nvim as pager would lose the color
+    # PAGER = "nvim";
     FCEDIT = "nvim --clean";
     MANWIDTH = 999;
   };
