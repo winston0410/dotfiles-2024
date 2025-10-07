@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     unstable.dockerfmt
     unstable.sqruff
+    clang-tools
     bibtex-tidy
     gotools
     stylua

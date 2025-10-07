@@ -1,4 +1,6 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, ... }: let 
+    use_difftastic = true;
+in {
   programs.git.enable = true;
 
   programs.git.extraConfig = {
@@ -47,21 +49,24 @@
       diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
     };
 
-    diff = {
-      tool = "diffview";
+    diff = { 
       conflictStyle = "zdiff3";
+    } 
+    // lib.optionalAttrs (!use_difftastic) {
+      tool = "diffview";
+    }
+    // lib.optionalAttrs use_difftastic {
+      external = "difft";
+    };
+    pager = {
+      difftool = true;
     };
     difftool = {
       prompt = false;
       keepBackup = false;
       nvimdiff = { layout = "@LOCAL, REMOTE"; };
       diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
-    };
-
-    alias = {
-      diffview = "!nvim -c DiffviewOpen";
-      # mergetool = "!nvim -c DiffviewOpen";
-      # difftool = "!nvim -c DiffviewOpen";
+      difftastic = { cmd = ''difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"''; };
     };
   };
   home.packages = with pkgs; [ git-credential-manager ];

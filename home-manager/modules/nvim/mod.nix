@@ -61,6 +61,8 @@
 
         npmDepsHash = "sha256-iWTuG/ExpAmz16g5wbhO7fiYH9TULTz8BRcjUwVM6r0=";
       })
+      # difftastic
+      unstable.difftastic
       # needed for snacks.nvim
       imagemagick
       mermaid-cli
@@ -99,6 +101,8 @@
     EDITOR = "nvim";
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
+    # using nvim as pager would lose the color
+    # PAGER = "nvim";
     FCEDIT = "nvim --clean";
     MANWIDTH = 999;
   };
