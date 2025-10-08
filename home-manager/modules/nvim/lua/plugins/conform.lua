@@ -20,6 +20,7 @@ return {
 					hack = {},
 					inko = {"inko"},
 					julia = {},
+					imba = {"imba_fmt"},
 					rego = {"opa_fmt"},
                     bib = {"bibtex-tidy"},
 					odin = {"odinfmt"},
