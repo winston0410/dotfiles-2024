@@ -36,6 +36,10 @@ return {
 		"winston0410/sops.nvim",
 		cmd = {"SopsEncrypt", "SopsDecrypt"},
         lazy = false,
+        init = function()
+          vim.b.sops_auto_transform = true
+          vim.g.sops_auto_transform = true
+        end,
         -- event = {"VeryLazy"},
         config = function ()
             require("sops").setup({})
