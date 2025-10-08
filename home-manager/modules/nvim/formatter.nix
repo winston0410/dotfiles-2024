@@ -3,6 +3,7 @@
     unstable.dockerfmt
     unstable.sqruff
     unstable.prettierd
+    gawk
     clang-tools
     bibtex-tidy
     gotools
