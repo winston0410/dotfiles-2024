@@ -11,6 +11,7 @@ return {
 
 			require("conform").setup({
 				formatters_by_ft = {
+                    cedar = {"cedar"},
 					ember = {},
 					apex = {},
 					astro = {},
