@@ -5,8 +5,10 @@ return {
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo", "ConformDisable", "ConformEnable" },
 		config = function()
-			-- TODO add a key binding for formatting operator
-			local biome = { "biome", stop_after_first = true }
+            -- REF https://github.com/stevearc/conform.nvim/issues/781
+            -- biome might fail if biome.json does not exist
+			local biome = { "biome", "prettierd", stop_after_first = true }
+
 			require("conform").setup({
 				formatters_by_ft = {
 					ember = {},
@@ -80,7 +82,6 @@ return {
 					c = { "clang_format" },
 					cs = { "clang_format" },
 					swift = { "swift" },
-					r = { "styler" },
 					elm = { "elm_format" },
 					elixir = { "mix" },
 					rescript = { "rescript-format" },
@@ -96,6 +97,7 @@ return {
 					svelte = biome,
 					pug = biome,
 					nu = { "nufmt" },
+					nickel = { "nickel" },
 					nunjucks = { "njkfmt" },
 					liquid = { "liquidfmt" },
 					nim = { "nimpretty" },
@@ -105,6 +107,7 @@ return {
 					hurl = { "hurlfmt" },
 					erb = { "erb_format" },
 					ql = { "codeql" },
+                    d = { "dfmt" },
 					d2 = { "d2" },
                     cue = { "cue_fmt"},
 					erlang = { "efmt" },
