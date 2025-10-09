@@ -82,6 +82,7 @@ return {
 					cpp = { "clang_format" },
 					c = { "clang_format" },
 					cs = { "clang_format" },
+					java = { "clang_format" },
 					swift = { "swift" },
 					elm = { "elm_format" },
 					elixir = { "mix" },

@@ -260,6 +260,8 @@ return {
 				"scry",
 				"biome",
                 "awk_ls",
+                "hyprls",
+                "gleam",
                 "ast_grep",
 				"gnls",
 				"eslint",
