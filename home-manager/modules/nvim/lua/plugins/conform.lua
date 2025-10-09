@@ -15,7 +15,6 @@ return {
 					ember = {},
 					apex = {},
 					astro = {},
-					bibtex = {},
 					cuda = {},
 					foam = {},
 					fish = {"fish_indent"},
