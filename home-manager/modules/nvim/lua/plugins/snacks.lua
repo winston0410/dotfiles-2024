@@ -39,6 +39,23 @@ return {
 				desc = "Search jumplist history",
 			},
 			{
+				"<leader>px",
+				function()
+					Snacks.picker.pick({
+						source = "git_log_patch",
+						format = "git_log",
+						preview = "git_show",
+						-- regex = true,
+						live = true,
+						supports_live = true,
+					})
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Test custom picker",
+			},
+			{
 				"<leader>pu",
 				function()
 					Snacks.picker.undo()
@@ -239,15 +256,15 @@ return {
 			{
 				"<leader>gx",
 				function()
-					vim.ui.select({ "file","branch", "permalink", "commit"}, {
+					vim.ui.select({ "file", "branch", "permalink", "commit" }, {
 						prompt = "Gitbrowse resource type",
 					}, function(choice)
 						if not choice then
 							return
 						end
 						Snacks.gitbrowse.open({
-                                what = choice
-                            })
+							what = choice,
+						})
 					end)
 				end,
 				mode = { "n", "x" },
@@ -323,6 +340,7 @@ return {
 					require("which-key").show({ global = false, loop = true })
 				end,
 			}
+
 			local config_dir = vim.fn.stdpath("config")
 			---@cast config_dir string
 			require("snacks").setup({
@@ -370,7 +388,47 @@ return {
 					},
 				},
 				picker = {
-					sources = {},
+					sources = {
+						git_log_patch = {
+							finder = function(opts, ctx)
+								if ctx.filter.search == "" then
+									return function() end
+								end
+
+                                -- local cwd = svim.fs.normalize(file and vim.fn.fnamemodify(file, ":h") or opts and opts.cwd or uv.cwd() or ".") or nil
+                                -- cwd = Snacks.git.get_root(cwd) or cwd
+
+                                local args = {"log", "-p"}
+                                table.insert(args, string.format("-G%s", ctx.filter.search))
+                                print(vim.inspect(args))
+
+								-- print("check opts", vim.inspect(opts), vim.inspect(ctx))
+								return require("snacks.picker.source.proc").proc({
+									opts,
+									{
+										cmd = "git",
+										args = args,
+										title = "Git log content search",
+										preview = "git_show",
+                                        ---@param item snacks.picker.finder.Item
+                                        transform = function(item)
+                                          -- local commit, msg, date = item.text:match("^(%S+) (.*) %((.*)%)$")
+                                          -- if not commit then
+                                          --   Snacks.notify.error(("failed to parse log item:\n%q"):format(item.text))
+                                          --   return false
+                                          -- end
+                                          -- -- item.cwd = cwd
+                                          -- item.commit = commit
+                                          -- item.msg = msg
+                                          -- item.date = date
+                                          -- -- item.file = file
+                                          -- -- item.files = renames
+                                        end,
+									},
+								}, ctx)
+							end,
+						},
+					},
 					enabled = true,
 					ui_select = true,
 					---@class snacks.picker.matcher.Config
