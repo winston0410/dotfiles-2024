@@ -58,7 +58,7 @@ return {
 						source = "enhanced_git_log",
 						format = "git_log",
 						preview = "git_show",
-						confirm = "git_checkout",
+						confirm = "diffview",
 						live = true,
 						sort = { fields = { "score:desc", "idx" } },
 					})
@@ -349,8 +349,8 @@ return {
 				["j"] = "list_down",
 				["k"] = "list_up",
 				["q"] = "close",
-				["?l"] = function()
-					require("which-key").show({ global = false, loop = true })
+				["?"] = function()
+					require("which-key").show({ global = true, loop = true })
 				end,
 			}
 
@@ -407,8 +407,15 @@ return {
 							---@param opts EnhancedGitLogOpts
 							---@type snacks.picker.finder
 							finder = function(opts, ctx)
+                                if ctx.filter.search == "" then
+                                    return function () end
+                                end
+                                local input = ctx.filter.search
+                                print(input)
+
 								local args = git_args(
 									"log",
+                                    ctx.filter.search,
 									"--pretty=format:%h %s (%ch)",
 									"--abbrev-commit",
 									"--decorate",
@@ -434,9 +441,10 @@ return {
 											transform = function(item)
 												local commit, msg, date = item.text:match("^(%S+) (.*) %((.*)%)$")
 												if not commit then
-													Snacks.notify.error(
-														("failed to parse log item:\n%q"):format(item.text)
-													)
+                                                    -- TODO wait for debounce to be avaliable in Neovim, then trigger this notification with debounce
+													-- Snacks.notify.error(
+													-- 	("failed to parse log item:\n%q"):format(item.text)
+													-- )
 													return false
 												end
 												item.commit = commit
