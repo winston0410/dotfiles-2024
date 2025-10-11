@@ -9,6 +9,8 @@ local function git_args(...)
 	end
 	return ret
 end
+---@class EnhancedGitLogOpts
+---@field author? string filter commits by author
 
 return {
 	{
@@ -56,8 +58,9 @@ return {
 						source = "enhanced_git_log",
 						format = "git_log",
 						preview = "git_show",
+						confirm = "git_checkout",
 						live = true,
-						supports_live = true,
+						sort = { fields = { "score:desc", "idx" } },
 					})
 				end,
 				mode = { "n" },
@@ -399,13 +402,12 @@ return {
 				},
 				picker = {
 					sources = {
-                        -- https://github.com/folke/snacks.nvim/blob/dae80fb393f712bd7352a20f9185f5e16b69f20f/lua/snacks/picker/source/git.lua#L90
+						-- https://github.com/folke/snacks.nvim/blob/dae80fb393f712bd7352a20f9185f5e16b69f20f/lua/snacks/picker/source/git.lua#L90
 						enhanced_git_log = {
-							---@param opts snacks.picker.git.log.Config
+							---@param opts EnhancedGitLogOpts
 							---@type snacks.picker.finder
 							finder = function(opts, ctx)
 								local args = git_args(
-									opts.args,
 									"log",
 									"--pretty=format:%h %s (%ch)",
 									"--abbrev-commit",
@@ -420,64 +422,12 @@ return {
 									table.insert(args, "--author=" .. opts.author)
 								end
 
-								local file ---@type string?
-								if opts.current_line then
-									local cursor = vim.api.nvim_win_get_cursor(ctx.filter.current_win)
-									file = vim.api.nvim_buf_get_name(ctx.filter.current_buf)
-									local line = cursor[1]
-									args[#args + 1] = "-L"
-									args[#args + 1] = line .. ",+1:" .. file
-								elseif opts.current_file then
-									file = vim.api.nvim_buf_get_name(ctx.filter.current_buf)
-									if opts.follow then
-										args[#args + 1] = "--follow"
-									end
-									args[#args + 1] = "--"
-									args[#args + 1] = file
-								end
-
 								local Proc = require("snacks.picker.source.proc")
-								file = file and svim.fs.normalize(file) or nil
 
-								local cwd = svim.fs.normalize(
-									file and vim.fn.fnamemodify(file, ":h") or opts and opts.cwd or uv.cwd() or "."
-								) or nil
-								cwd = Snacks.git.get_root(cwd) or cwd
-
-								local renames = { file } ---@type string[]
 								return function(cb)
-									if file then
-										-- detect renames
-										local is_rename = false
-										Proc.proc({
-											cmd = "git",
-											cwd = cwd,
-											args = {
-												"log",
-												"-z",
-												"--follow",
-												"--name-status",
-												"--pretty=format:''",
-												"--diff-filter=R",
-												"--",
-												file,
-											},
-										}, ctx)(function(item)
-											for _, text in ipairs(vim.split(item.text, "\0")) do
-												if text:find("^R%d%d%d$") then
-													is_rename = true
-												elseif is_rename then
-													is_rename = false
-													renames[#renames + 1] = text
-												end
-											end
-										end)
-									end
-
 									Proc.proc({
 										opts,
 										{
-											cwd = cwd,
 											cmd = "git",
 											args = args,
 											---@param item snacks.picker.finder.Item
@@ -489,86 +439,15 @@ return {
 													)
 													return false
 												end
-												item.cwd = cwd
 												item.commit = commit
 												item.msg = msg
 												item.date = date
-												item.file = file
-												item.files = renames
 											end,
 										},
 									}, ctx)(cb)
 								end
 							end,
 						},
-						-- git_log_patch = {
-						-- 	finder = function(opts, ctx)
-						--                           ---@param ... (string|string[]|nil)
-						--                           local function git_args(...)
-						--                             local ret = { "-c", "core.quotepath=false" } ---@type string[]
-						--                             for i = 1, select("#", ...) do
-						--                               local arg = select(i, ...)
-						--                               vim.list_extend(ret, type(arg) == "table" and arg or { arg })
-						--                             end
-						--                             return ret
-						--                           end
-						--
-						--                           if ctx.filter.search == "" then
-						--                               return function() end
-						--                           end
-						--
-						-- 		local args = git_args(
-						-- 			opts.args,
-						-- 			"log",
-						-- 			"--pretty=format:%h %s (%ch)",
-						-- 			"--abbrev-commit",
-						-- 			"--decorate",
-						-- 			"--date=short",
-						-- 			"--color=never",
-						-- 			"--no-show-signature",
-						-- 			"--no-patch",
-						--                               -- support -S as well for searching for change in occurance count
-						--                               -- string.format("-S%s", ctx.filter.search)
-						--                               string.format("-G%s", ctx.filter.search)
-						-- 		)
-						--
-						-- 		if opts.author then
-						-- 			table.insert(args, "--author=" .. opts.author)
-						-- 		end
-						--
-						-- 		local Proc = require("snacks.picker.source.proc")
-						--
-						-- 		-- local cwd = svim.fs.normalize(
-						-- 		-- 	file and vim.fn.fnamemodify(file, ":h") or opts and opts.cwd or vim.uv.cwd() or "."
-						-- 		-- ) or nil
-						-- 		-- cwd = Snacks.git.get_root(cwd) or cwd
-						--
-						-- 		return function(cb)
-						-- 			Proc.proc({
-						-- 				opts,
-						-- 				{
-						-- 					-- cwd = cwd,
-						-- 					cmd = "git",
-						-- 					args = args,
-						-- 					---@param item snacks.picker.finder.Item
-						-- 					transform = function(item)
-						-- 						local commit, msg, date = item.text:match("^(%S+) (.*) %((.*)%)$")
-						-- 						if not commit then
-						-- 							Snacks.notify.error(
-						-- 								("failed to parse log item:\n%q"):format(item.text)
-						-- 							)
-						-- 							return false
-						-- 						end
-						-- 						-- item.cwd = cwd
-						-- 						item.commit = commit
-						-- 						item.msg = msg
-						-- 						item.date = date
-						-- 					end,
-						-- 				},
-						-- 			}, ctx)(cb)
-						-- 		end
-						-- 	end,
-						-- },
 					},
 					enabled = true,
 					ui_select = true,
