@@ -1,16 +1,4 @@
 local utils = require("custom.utils")
-local uv = vim.uv or vim.loop
----@param ... (string|string[]|nil)
-local function git_args(...)
-	local ret = { "-c", "core.quotepath=false" } ---@type string[]
-	for i = 1, select("#", ...) do
-		local arg = select(i, ...)
-		vim.list_extend(ret, type(arg) == "table" and arg or { arg })
-	end
-	return ret
-end
----@class EnhancedGitLogOpts
----@field author? string filter commits by author
 
 return {
 	{
@@ -60,6 +48,7 @@ return {
 						preview = "git_show",
 						confirm = "diffview",
 						live = true,
+						supports_live = true,
 						sort = { fields = { "score:desc", "idx" } },
 					})
 				end,
@@ -321,7 +310,7 @@ return {
 				mode = { "n" },
 				silent = true,
 				noremap = true,
-				desc = "Resume last picker",
+				desc = "Explore LSP symbols",
 			},
 			{
 				"<leader>pr",
@@ -336,6 +325,7 @@ return {
 		},
 		config = function()
 			local picker_keys = {
+				["/"] = "toggle_focus",
 				["<2-LeftMouse>"] = "confirm",
 				["<leader>k"] = { "qflist", mode = { "n" } },
 				["<CR>"] = { "confirm", mode = { "n", "i" } },
@@ -349,6 +339,10 @@ return {
 				["j"] = "list_down",
 				["k"] = "list_up",
 				["q"] = "close",
+				["<c-w>H"] = "layout_left",
+				["<c-w>J"] = "layout_bottom",
+				["<c-w>K"] = "layout_top",
+				["<c-w>L"] = "layout_right",
 				["?"] = function()
 					require("which-key").show({ global = true, loop = true })
 				end,
@@ -402,60 +396,7 @@ return {
 				},
 				picker = {
 					sources = {
-						-- https://github.com/folke/snacks.nvim/blob/dae80fb393f712bd7352a20f9185f5e16b69f20f/lua/snacks/picker/source/git.lua#L90
-						enhanced_git_log = {
-							---@param opts EnhancedGitLogOpts
-							---@type snacks.picker.finder
-							finder = function(opts, ctx)
-                                if ctx.filter.search == "" then
-                                    return function () end
-                                end
-                                local input = ctx.filter.search
-                                print(input)
-
-								local args = git_args(
-									"log",
-                                    ctx.filter.search,
-									"--pretty=format:%h %s (%ch)",
-									"--abbrev-commit",
-									"--decorate",
-									"--date=short",
-									"--color=never",
-									"--no-show-signature",
-									"--no-patch"
-								)
-
-								if opts.author then
-									table.insert(args, "--author=" .. opts.author)
-								end
-
-								local Proc = require("snacks.picker.source.proc")
-
-								return function(cb)
-									Proc.proc({
-										opts,
-										{
-											cmd = "git",
-											args = args,
-											---@param item snacks.picker.finder.Item
-											transform = function(item)
-												local commit, msg, date = item.text:match("^(%S+) (.*) %((.*)%)$")
-												if not commit then
-                                                    -- TODO wait for debounce to be avaliable in Neovim, then trigger this notification with debounce
-													-- Snacks.notify.error(
-													-- 	("failed to parse log item:\n%q"):format(item.text)
-													-- )
-													return false
-												end
-												item.commit = commit
-												item.msg = msg
-												item.date = date
-											end,
-										},
-									}, ctx)(cb)
-								end
-							end,
-						},
+						enhanced_git_log = require("custom.enhanced_git_log_source").enhanced_git_log,
 					},
 					enabled = true,
 					ui_select = true,
@@ -490,7 +431,11 @@ return {
 							keys = picker_keys,
 						},
 						list = {
-							keys = picker_keys,
+							keys = vim.tbl_extend("force", picker_keys, {
+								["zb"] = "list_scroll_bottom",
+								["zt"] = "list_scroll_top",
+								["zz"] = "list_scroll_center",
+							}),
 						},
 					},
 				},
@@ -521,6 +466,12 @@ return {
 						},
 					},
 				},
+			})
+
+			vim.api.nvim_create_user_command("Zen", function ()
+                Snacks.notifier.hide() -- hide all notifications, but keep Snacks.notifier there
+			end, {
+				desc = "Reduce distraction",
 			})
 		end,
 	},

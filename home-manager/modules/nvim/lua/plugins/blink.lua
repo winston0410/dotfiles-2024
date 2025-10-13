@@ -280,7 +280,7 @@ return {
 					auto_show = true,
 					auto_show_delay_ms = 400,
 				},
-				ghost_text = { enabled = false, show_with_menu = false },
+				ghost_text = { enabled = true, show_with_menu = true },
 			},
 			signature = { enabled = true },
 			fuzzy = { implementation = "prefer_rust" },
