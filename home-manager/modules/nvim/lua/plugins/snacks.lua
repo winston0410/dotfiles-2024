@@ -1,5 +1,3 @@
-local utils = require("custom.utils")
-
 return {
 	{
 		"folke/snacks.nvim",
@@ -194,9 +192,19 @@ return {
 			{
 				"<leader>p<leader>gl",
 				function()
-					Snacks.picker.git_log({
-						confirm = "diffview",
-					})
+					-- Snacks.picker.git_log({
+					-- 	confirm = "diffview",
+					-- })
+					vim.ui.select({ "file", "branch", "permalink", "commit" }, {
+						prompt = "Gitbrowse resource type",
+					}, function(choice)
+						if not choice then
+							return
+						end
+						Snacks.gitbrowse.open({
+							what = choice,
+						})
+					end)
 				end,
 				mode = { "n" },
 				silent = true,
@@ -258,38 +266,13 @@ return {
 			{
 				"<leader>gx",
 				function()
-					vim.ui.select({ "file", "branch", "permalink", "commit" }, {
-						prompt = "Gitbrowse resource type",
-					}, function(choice)
-						if not choice then
-							return
-						end
-						Snacks.gitbrowse.open({
-							what = choice,
-						})
-					end)
+
 				end,
 				mode = { "n", "x" },
 				silent = true,
 				noremap = true,
-				desc = "Browse files in remote Git server",
+				desc = "Experiment picker",
 			},
-			-- TODO can't figure out a way to picker directories
-			-- checked https://github.com/folke/snacks.nvim/blob/bc0630e43be5699bb94dadc302c0d21615421d93/lua/snacks/picker/source/files.lua#L184, but cannot get and pass ctx here
-			-- {
-			-- 	"<leader>pF",
-			-- 	function()
-			-- 		Snacks.picker.pick({
-			--                      source = "procs",
-			--                      cmd = "fd",
-			--                      args = { "-t", "d" },
-			--                  })
-			-- 	end,
-			-- 	mode = { "n" },
-			-- 	silent = true,
-			-- 	noremap = true,
-			-- 	desc = "Explore all directories",
-			-- },
 			{
 				"<leader>pf",
 				function()
@@ -339,6 +322,8 @@ return {
 				["j"] = "list_down",
 				["k"] = "list_up",
 				["q"] = "close",
+                ["<a-p>"] = "toggle_preview",
+                ["<a-w>"] = "cycle_win",
 				["<c-w>H"] = "layout_left",
 				["<c-w>J"] = "layout_bottom",
 				["<c-w>K"] = "layout_top",

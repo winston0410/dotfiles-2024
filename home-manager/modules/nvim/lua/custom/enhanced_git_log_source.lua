@@ -160,7 +160,7 @@ M.enhanced_git_log = {
 		if ctx.filter.search == "" then
 			return function() end
 		end
-		local _, pargs = Snacks.picker.util.parse(string.format("-- %s", ctx.filter.search))
+		local _, pargs = Snacks.picker.util.parse(string.format("dummy -- %s", ctx.filter.search))
 
 		local args = git_args(
 			"log",
@@ -174,14 +174,13 @@ M.enhanced_git_log = {
 		)
 
 		pargs = vim.iter(pargs):map(function(v)
-            if not string.sub(v, 1, 1) then
+            if string.sub(v, 1, 1) == "-" then
                 return v
             end
             return "--" .. v
 		end):totable()
 
 		vim.list_extend(args, pargs)
-        print(vim.inspect(args))
 
 		if opts.author then
 			table.insert(args, "--author=" .. opts.author)
