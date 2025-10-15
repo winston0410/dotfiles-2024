@@ -1,3 +1,5 @@
+local utils = require("custom.utils")
+
 return {
 	{
 		"folke/snacks.nvim",
@@ -36,24 +38,6 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Search jumplist history",
-			},
-			{
-				"<leader>px",
-				function()
-					Snacks.picker.pick({
-						source = "enhanced_git_log",
-						format = "git_log",
-						preview = "git_show",
-						confirm = "diffview",
-						live = true,
-						supports_live = true,
-						sort = { fields = { "score:desc", "idx" } },
-					})
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Test custom picker",
 			},
 			{
 				"<leader>pu",
@@ -192,19 +176,15 @@ return {
 			{
 				"<leader>p<leader>gl",
 				function()
-					-- Snacks.picker.git_log({
-					-- 	confirm = "diffview",
-					-- })
-					vim.ui.select({ "file", "branch", "permalink", "commit" }, {
-						prompt = "Gitbrowse resource type",
-					}, function(choice)
-						if not choice then
-							return
-						end
-						Snacks.gitbrowse.open({
-							what = choice,
-						})
-					end)
+					Snacks.picker.pick({
+						source = "enhanced_git_log",
+						format = "git_log",
+						preview = "git_show",
+						confirm = "diffview",
+						live = true,
+						supports_live = true,
+						sort = { fields = { "score:desc", "idx" } },
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -266,12 +246,21 @@ return {
 			{
 				"<leader>gx",
 				function()
-
+					vim.ui.select({ "file", "branch", "permalink", "commit" }, {
+						prompt = "Gitbrowse resource type",
+					}, function(choice)
+						if not choice then
+							return
+						end
+						Snacks.gitbrowse.open({
+							what = choice,
+						})
+					end)
 				end,
 				mode = { "n", "x" },
 				silent = true,
 				noremap = true,
-				desc = "Experiment picker",
+				desc = "Browse files in remote Git server",
 			},
 			{
 				"<leader>pf",
