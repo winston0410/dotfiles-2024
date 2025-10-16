@@ -21,7 +21,7 @@
     pkgs.nodePackages.purescript-language-server
     pkgs.nodePackages.bash-language-server
     pkgs.nodePackages.dockerfile-language-server-nodejs
-    pkgs.nodePackages.yaml-language-server
+    pkgs.yaml-language-server
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
     unstable.basedpyright
