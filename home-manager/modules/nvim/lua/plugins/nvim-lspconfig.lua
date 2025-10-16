@@ -75,16 +75,6 @@ return {
 				root_markers = { "package.json" },
 				workspace_required = true,
 			})
-			vim.lsp.config("yamlls", {
-				settings = {
-					redhat = {
-						telemetry = {
-							enabled = false,
-						},
-					},
-				},
-			})
-
 			vim.lsp.config("elixirls", {
 				cmd = { "elixir-ls" },
 			})
