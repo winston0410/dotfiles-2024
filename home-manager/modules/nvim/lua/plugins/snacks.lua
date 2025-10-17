@@ -1,5 +1,3 @@
-local utils = require("custom.utils")
-
 return {
 	{
 		"folke/snacks.nvim",
@@ -178,7 +176,7 @@ return {
 				function()
 					Snacks.picker.pick({
 						source = "enhanced_git_log",
-                        notify = false,
+						notify = false,
 						format = "git_log",
 						preview = "git_show",
 						confirm = "diffview",
@@ -312,8 +310,8 @@ return {
 				["j"] = "list_down",
 				["k"] = "list_up",
 				["q"] = "close",
-                ["<a-p>"] = "toggle_preview",
-                ["<a-w>"] = "cycle_win",
+				["<a-p>"] = "toggle_preview",
+				["<a-w>"] = "cycle_win",
 				["<c-w>H"] = "layout_left",
 				["<c-w>J"] = "layout_bottom",
 				["<c-w>K"] = "layout_top",
@@ -371,7 +369,8 @@ return {
 				},
 				picker = {
 					sources = {
-						enhanced_git_log = require("custom.enhanced_git_log_source").enhanced_git_log,
+						enhanced_git_log = require("custom.snacks.enhanced_git_log_source").enhanced_git_log,
+                        ast_grep = require("custom.snacks.ast_grep").ast_grep,
 					},
 					enabled = true,
 					ui_select = true,
@@ -443,60 +442,24 @@ return {
 				},
 			})
 
-			vim.api.nvim_create_user_command("Zen", function ()
-                Snacks.notifier.hide() -- hide all notifications, but keep Snacks.notifier there
+			vim.api.nvim_create_user_command("Zen", function()
+				Snacks.notifier.hide() -- hide all notifications, but keep Snacks.notifier there
 			end, {
 				desc = "Reduce distraction",
 			})
 
-
-            vim.keymap.set('n', '<space>sg', function()
-  Snacks.picker.pick {
-    format = 'file',
-    notify = false, -- Also prevents error when searching with additional arguments
-    show_empty = true,
-    live = true,
-    supports_live = true,
-    -- hidden = true,
-    -- ignored = true,
-    ---@param opts snacks.picker.grep.Config
-    finder = function(opts, ctx)
-      local cmd = 'ast-grep'
-      local args = { 'run', '--color=never', '--json=stream' }
-      if vim.fn.has 'win32' == 1 then
-        cmd = 'sg'
-      end
-      if opts.hidden then
-        table.insert(args, '--no-ignore=hidden')
-      end
-      if opts.ignored then
-        table.insert(args, '--no-ignore=vcs')
-      end
-      local pattern, pargs = Snacks.picker.util.parse(ctx.filter.search)
-      table.insert(args, string.format('--pattern=%s', pattern))
-      vim.list_extend(args, pargs)
-      return require('snacks.picker.source.proc').proc({
-        opts,
-        {
-          cmd = cmd,
-          args = args,
-          transform = function(item)
-            local entry = vim.json.decode(item.text)
-            if vim.tbl_isempty(entry) then
-              return false
-            else
-              local start = entry.range.start
-              item.cwd = svim.fs.normalize(opts and opts.cwd or vim.uv.cwd() or '.') or nil
-              item.file = entry.file
-              item.line = entry.text
-              item.pos = { tonumber(start.line) + 1, tonumber(start.column) }
-            end
-          end,
-        },
-      }, ctx)
-    end,
-  }
-end)
+			vim.keymap.set("n", "<space>sg", function()
+				Snacks.picker.pick({
+					format = "file",
+					notify = false,
+                    source = "ast_grep",
+					show_empty = true,
+					live = true,
+					supports_live = true,
+					hidden = true,
+					ignored = true,
+				})
+			end)
 		end,
 	},
 }
