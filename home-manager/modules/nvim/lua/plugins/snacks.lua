@@ -369,8 +369,8 @@ return {
 				},
 				picker = {
 					sources = {
-						enhanced_git_log = require("custom.enhanced_git_log_source").enhanced_git_log,
-                        ast_grep = require("custom.ast_grep").ast_grep,
+						enhanced_git_log = require("custom.snacks.enhanced_git_log_source").enhanced_git_log,
+                        ast_grep = require("custom.snacks.ast_grep").ast_grep,
 					},
 					enabled = true,
 					ui_select = true,
