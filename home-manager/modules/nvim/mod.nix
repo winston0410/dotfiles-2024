@@ -89,6 +89,8 @@
       websocat
       # presenterm
       unstable.presenterm
+      # procs
+      procs
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       # img-clip.nvim
       pkgs.pngpaste
