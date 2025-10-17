@@ -32,13 +32,12 @@ return {
 		end,
 	},
 	{
-		-- "stevearc/oil.nvim",
-		-- version = "2.x",
-		"winston0410/oil.nvim",
+		"stevearc/oil.nvim",
 		lazy = false,
 		enabled = enable_oil,
 		cmd = { "Oil" },
-		branch = "feat/handle-buffer-callback",
+		-- branch = "feat/handle-buffer-callback",
+		-- "winston0410/oil.nvim",
 		keys = {
 			{
 				"<leader>o",
