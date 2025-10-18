@@ -2,6 +2,8 @@
   # NOTE This only set which Nix version we are targeting, instead of installing that version for us
   nix.package = pkgs.nix;
   nix.enable = true;
+  # TODO figure out why the list here never worked
+  # https://discourse.nixos.org/t/trusted-users-is-ignored-in-config-nix-nix-conf/41885
   nix.settings.trusted-users = [ ]
     ++ lib.optionals pkgs.stdenv.isDarwin [ "@admin" ]
     ++ lib.optionals pkgs.stdenv.isLinux [ "@wheel" ];
