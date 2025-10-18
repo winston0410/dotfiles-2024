@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, unstable, ... }:
 let
-
   username = "hugosum";
 in {
   imports = [
@@ -28,7 +27,6 @@ in {
   ];
 
   nix.settings = {
-    extra-trusted-users = "hugosum";
     builders-use-substitutes = true;
   };
   xdg.configFile = {

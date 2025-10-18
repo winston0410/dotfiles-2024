@@ -6,7 +6,6 @@ in {
     homeDirectory = lib.mkForce "/Users/${username}";
     packages = with pkgs; [ docker_28 ];
   };
-  nix.settings = { extra-trusted-users = lib.mkForce username; };
   programs.git.extraConfig = {
     user = {
       email = lib.mkForce "hsum@trintech.com";
