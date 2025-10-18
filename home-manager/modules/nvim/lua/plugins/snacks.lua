@@ -38,6 +38,26 @@ return {
 				desc = "Search jumplist history",
 			},
 			{
+				'<leader>p"',
+				function()
+                    Snacks.picker.registers()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search registers",
+			},
+			{
+				"<leader>p/",
+				function()
+                    Snacks.picker.search_history()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search search history",
+			},
+			{
 				"<leader>pu",
 				function()
 					Snacks.picker.undo()
@@ -88,6 +108,16 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Search diagnostics",
+			},
+			{
+				"<leader>pD",
+				function()
+                    Snacks.picker.diagnostics_buffer()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search diagnostics in the current buffer",
 			},
 			-- {
 			-- 	"<leader>pl",
@@ -175,9 +205,10 @@ return {
 				"<leader>p<leader>gl",
 				function()
 					Snacks.picker.pick({
-						source = "enhanced_git_log",
-						notify = false,
 						format = "git_log",
+						notify = false,
+						source = "enhanced_git_log",
+                        show_empty = true,
 						preview = "git_show",
 						confirm = "diffview",
 						live = true,
@@ -189,6 +220,25 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Search Git log",
+			},
+			{
+				"<leader>pS",
+				function()
+                    Snacks.picker.pick({
+                        format = "file",
+                        notify = false,
+                        source = "ast_grep",
+                        show_empty = true,
+                        live = true,
+                        supports_live = true,
+                        hidden = true,
+                        ignored = true,
+                    })
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "AST Grep in files",
 			},
 			{
 				"<leader>pw",
@@ -447,19 +497,6 @@ return {
 			end, {
 				desc = "Reduce distraction",
 			})
-
-			vim.keymap.set("n", "<space>sg", function()
-				Snacks.picker.pick({
-					format = "file",
-					notify = false,
-                    source = "ast_grep",
-					show_empty = true,
-					live = true,
-					supports_live = true,
-					hidden = true,
-					ignored = true,
-				})
-			end)
 		end,
 	},
 }

@@ -1,4 +1,12 @@
 return {
+    {
+      "ahkohd/difft.nvim",
+      -- not sure why is this useful
+      enabled = false,
+      config = function()
+        require("difft").setup()
+      end,
+    },
 	-- FIXME it never built successfully
 	{
 		"jackplus-xyz/player-one.nvim",
