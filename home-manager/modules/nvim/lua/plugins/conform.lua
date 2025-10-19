@@ -65,7 +65,6 @@ return {
                     v = {"v"},
                     qml = {"qmlformat"},
 					http = { "kulala-fmt" },
-					rest = { "kulala-fmt" },
 					toml = { "taplo" },
 					lua = { "stylua" },
 					teal = { "stylua" },
