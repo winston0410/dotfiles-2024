@@ -154,8 +154,10 @@ vim.filetype.add({
 	extension = {
 		http = "http",
 		rest = "http",
+		k = "kcl",
 		qalc = "qalc",
 		kbd = "kbd",
+		gr = "grain",
 	},
 })
 

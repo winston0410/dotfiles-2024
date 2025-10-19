@@ -114,6 +114,9 @@ return {
             vim.keymap.set({ "n", }, "[<leader>r",function ()
                 require("kulala").jump_prev()
             end, { remap = true, silent = true, desc = "Jump to previous request" })
+            vim.keymap.set({ "n", }, "<leader>rg",function ()
+                require("kulala").download_graphql_schema()
+            end, { remap = true, silent = true, desc = "Download GraphQL schema" })
             -- NOTE kulala request doesn't work well with hydra mode, and the UI wouldn't update automatically
 			-- local hydra = require("hydra")
 			-- hydra({
