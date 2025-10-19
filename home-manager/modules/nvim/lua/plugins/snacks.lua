@@ -222,7 +222,7 @@ return {
 				desc = "Search Git log",
 			},
 			{
-				"<leader>pS",
+				"<leader>pW",
 				function()
                     Snacks.picker.pick({
                         format = "file",
@@ -251,22 +251,6 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Grep in files",
-			},
-			{
-				"<leader>pW",
-				function()
-					local bufname = vim.api.nvim_buf_get_name(0)
-					local dir = vim.fn.fnamemodify(bufname, ":p:h")
-					Snacks.picker.grep({
-						hidden = true,
-						title = string.format("Grep [%s]", dir),
-						dirs = { dir },
-					})
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Grep in files under the buffer's directory",
 			},
 			{
 				"<leader>pw",

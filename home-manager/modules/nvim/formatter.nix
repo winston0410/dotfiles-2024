@@ -3,6 +3,9 @@
     unstable.dockerfmt
     unstable.sqruff
     unstable.prettierd
+    perl540Packages.PerlTidy
+    unstable.mago
+    unstable.typos
     gawk
     clang-tools
     bibtex-tidy

@@ -310,8 +310,7 @@ return {
 				"ziggy",
 				"cypher_ls",
 				"npmls",
-				-- too buggy, enable this later
-				-- "codebook",
+                "typos_lsp",
 				"powershell_es",
 				"protols",
 			}

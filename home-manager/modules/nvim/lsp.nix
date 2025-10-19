@@ -5,9 +5,9 @@
     # kulala-ls
     pkgs.openscad-lsp
     unstable.protols
-    unstable.codebook
     pkgs.docker-compose-language-service
     unstable.docker-language-server
+    unstable.typos-lsp
     pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools

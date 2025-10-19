@@ -7,11 +7,17 @@ return {
 		config = function()
             -- REF https://github.com/stevearc/conform.nvim/issues/781
             -- biome might fail if biome.json does not exist
-			local biome = { "biome", "prettierd", stop_after_first = true }
+			local biome = { "biome", "prettierd", "prettier", stop_after_first = true }
 
 			require("conform").setup({
 				formatters_by_ft = {
+                    roc = {"roc"},
+                    bicep = {"bicep"},
+                    proto = {"buf"},
+                    gn = {"gn"},
+                    vhdl = {"ghdl"},
                     cedar = {"cedar"},
+                    tf = {"tofu_fmt", "terraform_fmt", stop_after_first = true},
 					ember = {},
 					apex = {},
 					astro = {},
@@ -29,7 +35,8 @@ return {
 					tact = {},
 					nasm = {},
 					slang = {},
-					perl = {},
+					perl = {"perltidy"},
+                    php = {"mago_format"},
 					wgsl = {},
 					html = biome,
 					xml = biome,
@@ -55,6 +62,8 @@ return {
 					json5 = biome,
 					yaml = biome,
 					vue = biome,
+                    v = {"v"},
+                    qml = {"qmlformat"},
 					http = { "kulala-fmt" },
 					rest = { "kulala-fmt" },
 					toml = { "taplo" },
@@ -90,7 +99,7 @@ return {
 					caramel = { "caramel_fmt" },
 					dockerfile = { "dockerfmt" },
 					sql = { "sqruff" },
-					tf = { "hcl" },
+					hcl = { "hcl" },
 					ini = { "inifmt" },
 					dosini = { "inifmt" },
 					dhall = { "dhall_format" },
@@ -115,6 +124,7 @@ return {
 					awk = { "gawk" },
 					gleam = { "gleam" },
 					zig = { "zigfmt" },
+                    ["*"] = { "typos" },
 				},
 				default_format_opts = {
 					lsp_format = "fallback",
