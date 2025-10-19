@@ -6,6 +6,7 @@
     perl540Packages.PerlTidy
     unstable.mago
     unstable.typos
+    kcl
     gawk
     clang-tools
     bibtex-tidy
