@@ -189,7 +189,6 @@ return {
 						opts = {
 							dictionary_search_threshold = 3,
 							score_offset = 0,
-							pointer_symbols = { "!", "&", "^" },
 						},
 					},
 					thesaurus = {

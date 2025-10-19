@@ -73,7 +73,9 @@ return {
 				display_mode = "split",
 				split_direction = "vertical",
 				debug = false,
+                default_view = "headers_body",
 				winbar = true,
+                default_winbar_panes = {  "headers_body", "verbose", "script_output", "report", },
 				vscode_rest_client_environmentvars = true,
 				disable_script_print_output = false,
 				environment_scope = "b",
@@ -81,46 +83,69 @@ return {
 				-- show_variable_info_text = "float",
 				show_variable_info_text = false,
                 ui = {
-                    -- 1Mb
-                    max_response_size = 1024 * 1024,
+                    -- 10Mb
+                    max_response_size = 1024 * 1024 * 10,
                     disable_news_popup = true
                 }
 			})
-			local hydra = require("hydra")
-			hydra({
-				name = "Kulala",
-				mode = { "n", "x" },
-				body = "<leader>r",
-				config = {
-					hint = false,
-				},
-				heads = {
-					{
-						"<CR>",
-						function()
-							require("kulala").run()
-						end,
-						{
-							mode = { "n", "v" },
-							noremap = true,
-							silent = true,
-							desc = "Execute a request",
-						},
-					},
-					{
-						"<M-h>",
-						function()
-							require("kulala").toggle_view()
-						end,
-						{
-							mode = { "n", "v" },
-							noremap = true,
-							silent = true,
-							desc = "Toggle headers and body",
-						},
-					},
-				},
-			})
+            vim.keymap.set({ "x", }, "<leader>r<CR>",function ()
+                require("kulala").run()
+            end, { remap = true, silent = true, desc = "Execute selected requests" })
+            vim.keymap.set({ "n", }, "<leader>r<CR>",function ()
+                require("kulala").run()
+            end, { remap = true, silent = true, desc = "Execute a request" })
+
+            vim.keymap.set({ "n"}, "<leader>ry",function ()
+                require("kulala").copy()
+            end, { remap = true, silent = true, desc = "Copy a request as Curl" })
+            vim.keymap.set({ "n" }, "<leader>rp",function ()
+                require("kulala").from_curl()
+            end, { remap = true, silent = true, desc = "Paste a request from Curl" })
+            vim.keymap.set({ "n", }, "<leader>r/",function ()
+                require("kulala").search()
+            end, { remap = true, silent = true, desc = "Find a request" })
+            vim.keymap.set({ "n", }, "]<leader>r",function ()
+                require("kulala").jump_next()
+            end, { remap = true, silent = true, desc = "Jump to next request" })
+            vim.keymap.set({ "n", }, "[<leader>r",function ()
+                require("kulala").jump_prev()
+            end, { remap = true, silent = true, desc = "Jump to previous request" })
+            -- NOTE kulala request doesn't work well with hydra mode, and the UI wouldn't update automatically
+			-- local hydra = require("hydra")
+			-- hydra({
+			-- 	name = "Kulala",
+			-- 	mode = { "n", "x" },
+			-- 	body = "<leader>r",
+			-- 	config = {
+			-- 		hint = false,
+			-- 	},
+			-- 	heads = {
+			-- 		{
+			-- 			"<CR>",
+			-- 			function()
+			-- 				require("kulala").run()
+			-- 			end,
+			-- 			{
+			-- 				mode = { "n", "v" },
+			-- 				noremap = true,
+			-- 				silent = true,
+			-- 				desc = "Execute a request",
+			-- 			},
+			-- 		},
+			-- 		{
+			-- 			"<M-h>",
+			-- 			function()
+			-- 				require("kulala").toggle_view()
+			-- 			end,
+			-- 			{
+			-- 				mode = { "n", "v" },
+			-- 				noremap = true,
+			-- 				silent = true,
+			-- 				desc = "Toggle headers and body",
+			-- 			},
+			-- 		},
+			-- 	},
+			-- })
 		end,
 	},
 }

@@ -123,6 +123,8 @@ return {
 					awk = { "gawk" },
 					gleam = { "gleam" },
 					zig = { "zigfmt" },
+					fsharp = { "fantomas" },
+                    fortran = {"fprettify"},
                     ["*"] = { "typos" },
 				},
 				default_format_opts = {
