@@ -88,6 +88,10 @@ return {
                     disable_news_popup = true
                 }
 			})
+            vim.keymap.set({ "n", }, "<leader>ri",function ()
+                -- inspect a request for result interpolation
+                require("kulala").inspect()
+            end, { remap = true, silent = true, desc = "Inspect request" })
             vim.keymap.set({ "x", }, "<leader>r<CR>",function ()
                 require("kulala").run()
             end, { remap = true, silent = true, desc = "Execute selected requests" })
