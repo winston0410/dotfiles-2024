@@ -84,7 +84,7 @@ return {
 					nginx = { "nginxfmt" },
 					ruby = { "rufo" },
 					dart = { "dart_format" },
-					haskell = { "hindent" },
+					haskell = { "ormolu" },
 					kotlin = { "ktlint" },
 					cpp = { "clang_format" },
 					c = { "clang_format" },

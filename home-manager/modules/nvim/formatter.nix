@@ -3,6 +3,7 @@
     unstable.dockerfmt
     unstable.sqruff
     unstable.prettierd
+    unstable.ormolu
     perl540Packages.PerlTidy
     unstable.mago
     unstable.typos
@@ -25,7 +26,6 @@
     rufo
     hclfmt
     elmPackages.elm-format
-    haskellPackages.hindent
   ];
 
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };
