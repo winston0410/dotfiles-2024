@@ -1,22 +1,22 @@
 return {
+    {
+        "GCBallesteros/jupytext.nvim",
+        lazy = false,
+        config = function()
+            require("jupytext").setup({
+                style = "markdown",
+                output_extension = "md",
+                force_ft = "markdown",
+            })
+        end,
+    },
 	{
 		"benlubas/molten-nvim",
 		version = "<2.0.0",
+        event = { "VeryLazy" },
 		-- TODO not sure why but there is an error message in lazy.nvim after adding the build command, but it can be installed successfully
 		-- REF on installing kernel for different envs https://docs.astral.sh/uv/guides/integration/jupyter/#creating-a-kernel
 		build = ":UpdateRemotePlugins",
-		dependencies = {
-			{
-				"GCBallesteros/jupytext.nvim",
-				config = function()
-					require("jupytext").setup({
-						style = "markdown",
-						output_extension = "md",
-						force_ft = "markdown",
-					})
-				end,
-			},
-		},
 		init = function()
             vim.g.molten_image_provider = "snacks.nvim"
 
