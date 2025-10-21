@@ -1,12 +1,19 @@
 return {
-    {
-      "ahkohd/difft.nvim",
-      -- not sure why is this useful
-      enabled = false,
-      config = function()
-        require("difft").setup()
-      end,
-    },
+	{
+		"benlubas/molten-nvim",
+		version = "<2.0.0",
+        -- TODO not sure why but there is an error message in lazy.nvim after adding the build command, but it can be installed successfully
+		build = ":UpdateRemotePlugins",
+		init = function() end,
+	},
+	{
+		"ahkohd/difft.nvim",
+		-- not sure why is this useful
+		enabled = false,
+		config = function()
+			require("difft").setup()
+		end,
+	},
 	-- FIXME it never built successfully
 	{
 		"jackplus-xyz/player-one.nvim",
@@ -42,16 +49,16 @@ return {
 	},
 	{
 		"winston0410/sops.nvim",
-		cmd = {"SopsEncrypt", "SopsDecrypt"},
-        lazy = false,
-        init = function()
-          vim.b.sops_auto_transform = true
-          vim.g.sops_auto_transform = true
-        end,
-        -- event = {"VeryLazy"},
-        config = function ()
-            require("sops").setup({})
-        end
+		cmd = { "SopsEncrypt", "SopsDecrypt" },
+		lazy = false,
+		init = function()
+			vim.b.sops_auto_transform = true
+			vim.g.sops_auto_transform = true
+		end,
+		-- event = {"VeryLazy"},
+		config = function()
+			require("sops").setup({})
+		end,
 	},
 	{
 		"michaelb/sniprun",

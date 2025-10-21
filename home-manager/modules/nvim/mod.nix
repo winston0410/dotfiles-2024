@@ -16,8 +16,22 @@
             # for sops.nvim
             lyaml
           ]);
+        extraPython3Packages = p:
+          with p; [
+            pynvim
+            jupyter-client
+            cairosvg
+            pnglatex
+            plotly
+            kaleido
+            pyperclip
+            nbformat
+            pillow
+            requests
+            websocket-client
+          ];
         withRuby = false;
-        withPython3 = false;
+        withPython3 = true;
         withNodeJs = false;
       })
       # luajit
@@ -91,6 +105,8 @@
       unstable.presenterm
       # procs
       procs
+      # molten.nvim
+      python313Packages.jupytext
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
       # img-clip.nvim
       pkgs.pngpaste
