@@ -69,10 +69,13 @@ return {
                     if not parsername then
                         return
                     end
-					local parser = vim.treesitter.get_parser(ev.buf, parsername)
-					if not parser then
-						return
-					end
+                    local ok, parser = pcall(function ()
+                        local parser = vim.treesitter.get_parser(ev.buf, parsername)
+                        return parser
+                    end)
+                    if not ok or not parser then
+                        return
+                    end
 					require("otter").activate()
 				end,
 			})
