@@ -97,7 +97,7 @@
       bat
       chafa
       # render-markdown.nvim
-      python312Packages.pylatexenc
+      python313Packages.pylatexenc
       # kulala.nvim
       grpcurl
       websocat

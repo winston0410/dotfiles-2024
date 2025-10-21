@@ -75,7 +75,8 @@
     RUSTUP_HOME = "${config.xdg.dataHome}/rustup";
     MAILCAPS = "${config.xdg.configHome}/mailcap";
     IPYTHONDIR = "${config.xdg.dataHome}/ipython";
-    JUPYTER_CONFIG_DIR = "${config.xdg.dataHome}/ipython";
+    JUPYTER_CONFIG_DIR = "${config.xdg.configHome}/jupyter";
+    JUPYTER_PLATFORM_DIRS="1";
     RLWRAP_HOME = "${config.xdg.dataHome}/rlwrap";
     CUDA_CACHE_PATH = "${config.xdg.dataHome}/.nv";
     GRADLE_USER_HOME = "${config.xdg.cacheHome}/gradle";
