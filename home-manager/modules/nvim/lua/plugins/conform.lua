@@ -55,7 +55,7 @@ return {
 					sh = { "shfmt" },
 					zsh = { "shfmt" },
 					bash = { "shfmt" },
-					markdown = biome,
+					markdown = vim.list_extend(biome, {"injected"}),
 					json = biome,
 					jsonl = {"biome"},
 					jsonc = biome,
@@ -144,6 +144,14 @@ return {
 				end,
 				formatters = {},
 			})
+            require('conform').formatters.injected = {
+                options = {
+                  lang_to_ext = {
+                    bash = "sh",
+                    javascript = "js",
+                  }
+                }
+            }
 			local disable_autoformat = function(args)
 				if args.bang then
 					-- FormatDisable! will disable formatting just for this buffer
