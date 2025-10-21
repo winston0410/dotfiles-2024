@@ -1,20 +1,5 @@
 return {
 	{
-		"jmbuhr/otter.nvim",
-        -- Same events as nvim-lspconfig
-		event = {
-			"BufReadPost",
-			"BufNewFile",
-		},
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-		},
-		version = "2.x",
-		config = function()
-			require("otter").setup({})
-		end,
-	},
-	{
 		"GCBallesteros/jupytext.nvim",
 		lazy = false,
 		config = function()

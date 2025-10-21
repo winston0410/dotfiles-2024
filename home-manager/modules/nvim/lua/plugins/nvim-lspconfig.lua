@@ -6,7 +6,7 @@ return {
 	{
 		"oribarilan/lensline.nvim",
 		-- makes loading slow, enable it later
-        enabled = false,
+		enabled = false,
 		version = "2.x",
 		event = { "LspAttach" },
 		config = function()
@@ -49,15 +49,46 @@ return {
 		},
 	},
 	{
+		"jmbuhr/otter.nvim",
+		lazy = false,
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+		},
+		version = "2.x",
+		config = function()
+			require("otter").setup({
+				lsp = {
+					diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
+				},
+			})
+			vim.api.nvim_create_autocmd("BufEnter", {
+				pattern = "*",
+				callback = function(ev)
+					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
+					local parsername = vim.treesitter.language.get_lang(main_lang)
+                    if not parsername then
+                        return
+                    end
+					local parser = vim.treesitter.get_parser(ev.buf, parsername)
+					if not parser then
+						return
+					end
+					require("otter").activate()
+				end,
+			})
+		end,
+	},
+	{
 		"neovim/nvim-lspconfig",
 		enabled = true,
-        -- https://www.reddit.com/r/neovim/comments/1308ie7/comment/jhvkipp/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-		event = {
-			-- for reading a buffer
-			"BufReadPost",
-			-- for creating an unamed buffer
-			"BufNewFile",
-		},
+		-- https://www.reddit.com/r/neovim/comments/1308ie7/comment/jhvkipp/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+		lazy = false,
+		-- event = {
+		-- 	-- for reading a buffer
+		-- 	"BufReadPost",
+		-- 	-- for creating an unamed buffer
+		-- 	"BufNewFile",
+		-- },
 		version = "2.x",
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -106,7 +137,7 @@ return {
 				return res.stdout:gsub("\n", "")
 			end)
 
-            -- TODO set up vue support later
+			-- TODO set up vue support later
 			local ts_ls_plugins = {}
 
 			if ok then
@@ -199,9 +230,9 @@ return {
 			})
 
 			local servers = {
-                "visualforce_ls",
-                "air",
-                "contextive",
+				"visualforce_ls",
+				"air",
+				"contextive",
 				"codeqlls",
 				"denols",
 				"azure_pipelines_ls",
@@ -249,10 +280,10 @@ return {
 				"gdscript",
 				"scry",
 				"biome",
-                "awk_ls",
-                "hyprls",
-                "gleam",
-                "ast_grep",
+				"awk_ls",
+				"hyprls",
+				"gleam",
+				"ast_grep",
 				"gnls",
 				"eslint",
 				"angularls",
@@ -278,9 +309,9 @@ return {
 				"r_language_server",
 				"kotlin_language_server",
 				"cmake",
-                "atopile",
+				"atopile",
 				"basedpyright",
-                -- TODO replace basedpyright with ty, once it is ready
+				-- TODO replace basedpyright with ty, once it is ready
 				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
@@ -296,7 +327,7 @@ return {
 				"yamlls",
 				"kulala_ls",
 				"ts_ls",
-                "tsgo",
+				"tsgo",
 				"earthlyls",
 				"elixirls",
 				"lua_ls",
@@ -310,7 +341,7 @@ return {
 				"ziggy",
 				"cypher_ls",
 				"npmls",
-                "typos_lsp",
+				"typos_lsp",
 				"powershell_es",
 				"protols",
 			}
