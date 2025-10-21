@@ -314,7 +314,8 @@ return {
 				"cmake",
 				"atopile",
 				"basedpyright",
-				-- TODO replace basedpyright with ty, once it is ready
+				-- TODO replace basedpyright with ty or zuban, once it is ready
+                -- zuban 0.23 would panic immediately after starting up
 				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
