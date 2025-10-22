@@ -10,28 +10,29 @@ return {
 			})
 		end,
 	},
-	{
-		"benlubas/molten-nvim",
-		version = "<2.0.0",
-		event = { "VeryLazy" },
-		-- TODO not sure why but there is an error message in lazy.nvim after adding the build command, but it can be installed successfully
-		-- REF on installing kernel for different envs https://docs.astral.sh/uv/guides/integration/jupyter/#creating-a-kernel
-		build = ":UpdateRemotePlugins",
-		init = function()
-			vim.g.molten_image_provider = "snacks.nvim"
-
-			local runtime_path
-
-			local uname = vim.loop.os_uname()
-			if uname.sysname == "Darwin" then
-				runtime_path = vim.fn.expand("~") .. "/Library/Jupyter/runtime"
-			elseif uname.sysname == "Linux" then
-				-- TODO handle the path later
-			end
-			-- REF https://github.com/benlubas/molten-nvim/issues/264
-			vim.fn.mkdir(runtime_path, "p")
-		end,
-	},
+    -- https://github.com/benlubas/molten-nvim/issues/324
+	-- {
+	-- 	"benlubas/molten-nvim",
+	-- 	version = "<2.0.0",
+	-- 	event = { "VeryLazy" },
+	-- 	-- TODO not sure why but there is an error message in lazy.nvim after adding the build command, but it can be installed successfully
+	-- 	-- REF on installing kernel for different envs https://docs.astral.sh/uv/guides/integration/jupyter/#creating-a-kernel
+	-- 	build = ":UpdateRemotePlugins",
+	-- 	init = function()
+	-- 		vim.g.molten_image_provider = "snacks.nvim"
+	--
+	-- 		local runtime_path
+	--
+	-- 		local uname = vim.loop.os_uname()
+	-- 		if uname.sysname == "Darwin" then
+	-- 			runtime_path = vim.fn.expand("~") .. "/Library/Jupyter/runtime"
+	-- 		elseif uname.sysname == "Linux" then
+	-- 			-- TODO handle the path later
+	-- 		end
+	-- 		-- REF https://github.com/benlubas/molten-nvim/issues/264
+	-- 		vim.fn.mkdir(runtime_path, "p")
+	-- 	end,
+	-- },
 	{
 		"ahkohd/difft.nvim",
 		-- not sure why is this useful
