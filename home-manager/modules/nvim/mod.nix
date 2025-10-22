@@ -90,7 +90,7 @@
       uv
     ] ++ [
       # needed for treesitter
-      nodejs_22
+      nodejs_24
       tree-sitter
       gcc14
       fd
