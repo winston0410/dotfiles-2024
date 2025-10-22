@@ -10,7 +10,7 @@ return {
 			})
 		end,
 	},
-    -- https://github.com/benlubas/molten-nvim/issues/324
+	-- https://github.com/benlubas/molten-nvim/issues/324
 	-- {
 	-- 	"benlubas/molten-nvim",
 	-- 	version = "<2.0.0",
@@ -91,10 +91,18 @@ return {
 		"michaelb/sniprun",
 		version = "1.x",
 		build = false,
-		cmd = { "SnipClose", "SnipInfo", "SnipReset", "SnipRun", "SnipReplMemoryClean" },
+		cmd = { "SnipClose", "SnipInfo", "SnipReset", "SnipRun", "SnipReplMemoryClean", "SnipLive" },
 		config = function()
 			require("sniprun").setup({
 				binary_path = "sniprun",
+                selected_interpreters = { 'Python3_fifo' },
+                repl_enable = {'Python3_fifo'},
+				snipruncolors = {
+					SniprunVirtualTextOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
+					SniprunVirtualWinOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
+					SniprunVirtualTextErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
+					SniprunVirtualWinErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
+				},
 			})
 		end,
 	},
