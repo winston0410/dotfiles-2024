@@ -8,12 +8,11 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" }, 
 		build = function()
 			vim.cmd("TSUpdate")
 		end,
 		lazy = false,
-		priority = 98,
 		cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 		config = function()
 			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()

@@ -3,7 +3,7 @@ local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇",
 return {
 	{
 		"rebelot/heirline.nvim",
-		priority = 9998,
+		priority = 98,
 		dependencies = {
 			{
 				"Zeioth/heirline-components.nvim",
