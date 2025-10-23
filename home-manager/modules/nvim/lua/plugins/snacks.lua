@@ -40,7 +40,7 @@ return {
 			{
 				'<leader>p"',
 				function()
-                    Snacks.picker.registers()
+					Snacks.picker.registers()
 				end,
 				mode = { "n" },
 				silent = true,
@@ -50,7 +50,7 @@ return {
 			{
 				"<leader>p/",
 				function()
-                    Snacks.picker.search_history()
+					Snacks.picker.search_history()
 				end,
 				mode = { "n" },
 				silent = true,
@@ -112,7 +112,7 @@ return {
 			{
 				"<leader>pD",
 				function()
-                    Snacks.picker.diagnostics_buffer()
+					Snacks.picker.diagnostics_buffer()
 				end,
 				mode = { "n" },
 				silent = true,
@@ -208,7 +208,7 @@ return {
 						format = "git_log",
 						notify = false,
 						source = "enhanced_git_log",
-                        show_empty = true,
+						show_empty = true,
 						preview = "git_show",
 						confirm = "diffview",
 						live = true,
@@ -224,16 +224,16 @@ return {
 			{
 				"<leader>pW",
 				function()
-                    Snacks.picker.pick({
-                        format = "file",
-                        notify = false,
-                        source = "ast_grep",
-                        show_empty = true,
-                        live = true,
-                        supports_live = true,
-                        hidden = true,
-                        ignored = true,
-                    })
+					Snacks.picker.pick({
+						format = "file",
+						notify = false,
+						source = "ast_grep",
+						show_empty = true,
+						live = true,
+						supports_live = true,
+						hidden = true,
+						ignored = true,
+					})
 				end,
 				mode = { "n" },
 				silent = true,
@@ -361,6 +361,9 @@ return {
 				toggle = { enabled = true },
 				gitbrowse = {
 					enabled = true,
+                    remote_patterns = {
+                        {"^(.-)@vs%-ssh%.visualstudio%.com:v3/(.-)/(.-)/(.-)$", "%1.visualstudio.com/%3/_git/%4"}
+                    },
 					url_patterns = {
 						["visualstudio%.com"] = {
 							branch = "?version=GB{branch}",
@@ -404,7 +407,7 @@ return {
 				picker = {
 					sources = {
 						enhanced_git_log = require("custom.snacks.enhanced_git_log_source").enhanced_git_log,
-                        ast_grep = require("custom.snacks.ast_grep").ast_grep,
+						ast_grep = require("custom.snacks.ast_grep").ast_grep,
 					},
 					enabled = true,
 					ui_select = true,
