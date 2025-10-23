@@ -128,7 +128,7 @@ return {
 					zig = { "zigfmt" },
 					fsharp = { "fantomas" },
                     fortran = {"fprettify"},
-                    ["*"] = { "typos" },
+                    -- ["*"] = { "typos" },
 				},
 				default_format_opts = {
 					lsp_format = "fallback",
@@ -154,7 +154,7 @@ return {
             }
 			local disable_autoformat = function(args)
 				if args.bang then
-					-- FormatDisable! will disable formatting just for this buffer
+					-- ConformDisable! will disable formatting just for this buffer
 					vim.b.disable_autoformat = true
 				else
 					vim.g.disable_autoformat = true

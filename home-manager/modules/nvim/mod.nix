@@ -39,6 +39,9 @@
       luarocks
       unstable.ast-grep
       unstable.codesnap
+      # for sniprun compiler
+      mono
+      usql
       (pkgs.rustPlatform.buildRustPackage rec {
         pname = "sniprun";
         version = "1.3.18";
