@@ -91,7 +91,7 @@ return {
 		version = "1.x",
 		cmd = "Copilot",
 		event = "BufWinEnter",
-        -- REF https://github.com/fang2hou/blink-copilot
+		-- REF https://github.com/fang2hou/blink-copilot
 		init = function()
 			vim.g.copilot_no_maps = true
 		end,
@@ -158,13 +158,17 @@ return {
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"OXY2DEV/markview.nvim",
-				version = "26.x",
+                -- wait for a new version, then use version again
+                commit = "c93ea99",
+				-- version = "26.x",
 				lazy = false,
 				enabled = enable_markview,
 				dependencies = {
 					"saghen/blink.cmp",
 				},
-				opts = function()
+				config = function()
+					local presets = require("markview.presets")
+
 					local function conceal_tag(icon, hl_group)
 						return {
 							on_node = { hl_group = hl_group },
@@ -176,7 +180,7 @@ return {
 							},
 						}
 					end
-					return {
+					require("markview").setup {
 						html = {
 							container_elements = {
 								["^buf$"] = conceal_tag("", "CodeCompanionChatVariable"),
@@ -193,10 +197,22 @@ return {
 						},
 						-- FIXME known issue, it is giving out an error when open CodeCompanionChat
 						preview = {
+                            hybrid_modes = { "n" },
+                            icon_provider = "devicons",
 							filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto", "yaml", "typst" },
 							ignore_buftypes = {},
 						},
+						markdown = {
+							headings = {
+                                shift_width = 0,
+                            },
+                            code_blocks = {
+                                style = "simple",
+                                sign = false
+                            }
+						},
 					}
+                    -- require("markview.extras.editor").setup();
 				end,
 			},
 			{
