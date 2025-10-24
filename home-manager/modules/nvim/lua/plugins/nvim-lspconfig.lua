@@ -403,6 +403,22 @@ return {
 					vim.keymap.set({ "n", "x" }, "<leader>s6", function()
 						require("tiny-code-action").code_action({})
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" })
+					vim.keymap.set(
+						{ "n" },
+						"<leader>s7",
+                        function ()
+                            Snacks.picker.lsp_incoming_calls()
+                        end,
+						{ silent = true, noremap = true, buffer = ev.buf, desc = "Incoming calls" }
+					)
+					vim.keymap.set(
+						{ "n" },
+						"<leader>s8",
+                        function ()
+                            Snacks.picker.lsp_outgoing_calls()
+                        end,
+						{ silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" }
+					)
 					pcall(function()
 						-- Remove default keybinding added by lspconfig
 						-- REF https://neovim.io/doc/user/lsp.html#lsp-config
