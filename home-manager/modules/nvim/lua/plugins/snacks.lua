@@ -89,16 +89,7 @@ return {
 				noremap = true,
 				desc = "Search command history",
 			},
-			{
-				"<leader>pC",
-				function()
-					Snacks.picker.colorschemes()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Search colorschemes",
-			},
+			
 			{
 				"<leader>pd",
 				function()
@@ -326,6 +317,57 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Resume last picker",
+			},
+            -- <leader>px for extra, not frequently used picker
+			{
+				"<leader>pxh",
+				function()
+					Snacks.picker.highlights()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Explore LSP config",
+			},
+			{
+				"<leader>pxs",
+				function()
+					Snacks.picker.lsp_config()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Explore LSP config",
+			},
+            {
+				"<leader>pxc",
+				function()
+					Snacks.picker.colorschemes()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search colorschemes",
+			},
+            {
+				"<leader>pxi",
+				function()
+					Snacks.picker.icons()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search icons",
+			},
+            {
+				"<leader>pxC",
+				function()
+					Snacks.picker.commands()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search commands",
 			},
 		},
 		config = function()
