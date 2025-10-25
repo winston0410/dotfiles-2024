@@ -18,8 +18,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
 vim.o.shell = "zsh"
--- don't have a need to read .nvim.lua from a project at the moment
-vim.o.exrc = false
+vim.o.exrc = true
 
 vim.o.incsearch = true
 vim.o.wrapscan = true
