@@ -236,18 +236,8 @@ return {
 						telemetry = {
 							enable = false,
 						},
-						hint = { enable = true },
+						hint = { enable = true, arrayIndex = "Disable" },
 					},
-				},
-				inlay_hints = {
-					enabled = true,
-					exclude = {},
-				},
-				codelens = {
-					enabled = true,
-				},
-				document_highlight = {
-					enabled = true,
 				},
 			})
 
