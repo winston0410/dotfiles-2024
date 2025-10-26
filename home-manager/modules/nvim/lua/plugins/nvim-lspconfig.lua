@@ -66,19 +66,38 @@ return {
 				callback = function(ev)
 					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
 					local parsername = vim.treesitter.language.get_lang(main_lang)
-                    if not parsername then
-                        return
-                    end
-                    local ok, parser = pcall(function ()
-                        local parser = vim.treesitter.get_parser(ev.buf, parsername)
-                        return parser
-                    end)
-                    if not ok or not parser then
-                        return
-                    end
+					if not parsername then
+						return
+					end
+					local ok, parser = pcall(function()
+						local parser = vim.treesitter.get_parser(ev.buf, parsername)
+						return parser
+					end)
+					if not ok or not parser then
+						return
+					end
 					require("otter").activate()
 				end,
 			})
+		end,
+	},
+	{
+		"rachartier/tiny-inline-diagnostic.nvim",
+		event = "VeryLazy",
+		priority = 1000,
+		config = function()
+			require("tiny-inline-diagnostic").setup({
+				options = {
+					show_source = {
+						enabled = true,
+					},
+					show_related = {
+						enabled = true,
+						max_count = 3,
+					},
+				},
+			})
+			vim.diagnostic.config({ virtual_text = false })
 		end,
 	},
 	{
@@ -315,7 +334,7 @@ return {
 				"atopile",
 				"basedpyright",
 				-- TODO replace basedpyright with ty or zuban, once it is ready
-                -- zuban 0.23 would panic immediately after starting up
+				-- zuban 0.23 would panic immediately after starting up
 				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
@@ -354,6 +373,7 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
+                    vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
 					local supported_modes = { "n" }
 					-- vim.keymap.set(supported_modes, "]de", function()
 					-- 	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
@@ -403,22 +423,12 @@ return {
 					vim.keymap.set({ "n", "x" }, "<leader>s6", function()
 						require("tiny-code-action").code_action({})
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" })
-					vim.keymap.set(
-						{ "n" },
-						"<leader>s7",
-                        function ()
-                            Snacks.picker.lsp_incoming_calls()
-                        end,
-						{ silent = true, noremap = true, buffer = ev.buf, desc = "Incoming calls" }
-					)
-					vim.keymap.set(
-						{ "n" },
-						"<leader>s8",
-                        function ()
-                            Snacks.picker.lsp_outgoing_calls()
-                        end,
-						{ silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" }
-					)
+					vim.keymap.set({ "n" }, "<leader>s7", function()
+						Snacks.picker.lsp_incoming_calls()
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Incoming calls" })
+					vim.keymap.set({ "n" }, "<leader>s8", function()
+						Snacks.picker.lsp_outgoing_calls()
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
 					pcall(function()
 						-- Remove default keybinding added by lspconfig
 						-- REF https://neovim.io/doc/user/lsp.html#lsp-config
@@ -444,6 +454,8 @@ return {
 						},
 						update_in_insert = true,
 					})
+
+					vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
 				end,
 			})
 		end,
