@@ -273,6 +273,7 @@ return {
 					{ provider = " " },
 					FileSize,
 					{ provider = "%=" },
+                    heirline_components.component.lsp({ lsp_client_names = false }),
 					heirline_components.component.diagnostics(),
 					heirline_components.component.cmd_info(),
 					heirline_components.component.nav({ percentage = false }),

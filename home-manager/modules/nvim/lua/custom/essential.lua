@@ -19,6 +19,7 @@ vim.g.loaded_node_provider = 0
 
 vim.o.shell = "zsh"
 vim.o.exrc = true
+vim.o.secure = true
 
 vim.o.incsearch = true
 vim.o.wrapscan = true
