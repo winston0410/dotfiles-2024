@@ -141,10 +141,10 @@
     "nvim/init.lua" = { source = ./init.lua; };
     "nvim/minimal.lua" = { source = ./minimal.lua; };
     "nvim/.luarc.jsonc" = { source = ./.luarc.jsonc; };
-    "nvim/ftplugin" = { source = ./ftplugin; };
-    "nvim/after" = { source = ./after; };
-    "nvim/assets" = { source = ./assets; };
-    "nvim/lua" = { source = ./lua; };
+    "nvim/ftplugin" = { source = ./ftplugin; recursive = true;};
+    "nvim/after" = { source = ./after; recursive = true;};
+    "nvim/assets" = { source = ./assets; recursive = true;};
+    "nvim/lua" = { source = ./lua; recursive = true; };
     # Disable until we really need custom LSP config
     # "nvim/lsp" = { source = ./lsp; };
   };
