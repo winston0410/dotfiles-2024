@@ -3,6 +3,7 @@ return {
 		-- TODO implement position specific tag https://github.com/cbochs/grapple.nvim/issues/118
 		"cbochs/grapple.nvim",
 		version = "0.30.x",
+        enabled = false,
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons", lazy = true },
 		},
