@@ -153,15 +153,24 @@ return {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "omni", "emoji", 
-                    -- "copilot" 
-                },
+				default = {
+					"lsp",
+					"path",
+					"snippets",
+					"buffer",
+					"omni",
+					"emoji",
+					"copilot",
+				},
 				providers = {
 					copilot = {
 						name = "copilot",
 						module = "blink-copilot",
 						score_offset = 100,
 						async = true,
+						opts = {
+							max_completions = 1,
+						},
 						transform_items = function(ctx, items)
 							for _, item in ipairs(items) do
 								item.kind_icon = ""
@@ -216,9 +225,11 @@ return {
 					},
 				},
 				per_filetype = {
-					gitcommit = { inherit_defaults = true, "conventional_commits", 
-                        -- "git" 
-                    },
+					gitcommit = {
+						inherit_defaults = true,
+						"conventional_commits",
+						-- "git"
+					},
 					markdown = {
 						inherit_defaults = true,
 						-- "git",
