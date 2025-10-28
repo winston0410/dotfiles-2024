@@ -40,14 +40,15 @@ return {
         version = "0.x",
 		keys = {
 			{
-				"<leader>ic",
+				"<leader>si",
 				function()
 					require("insert-inlay-hints").closest()
 				end,
-				desc = "Insert the colsest inline hint as code.",
+				desc = "Insert the closest inline hint as code.",
+				mode = { "n" },
 			},
 			{
-				"<leader>i",
+				"<leader>si",
 				function()
 					require("insert-inlay-hints").visual()
 				end,
