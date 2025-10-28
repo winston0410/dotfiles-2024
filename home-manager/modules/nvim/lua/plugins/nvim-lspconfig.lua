@@ -402,16 +402,16 @@ return {
 						vim.diagnostic.open_float()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Show diagnostics message" })
 					-- TODO combine all these functions, using Snacks.picker
-					vim.keymap.set(supported_modes, "<leader>s1", function()
+					vim.keymap.set(supported_modes, "<leader>sgd", function()
 						Snacks.picker.lsp_definitions()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" })
-					vim.keymap.set(supported_modes, "<leader>s2", function()
+					vim.keymap.set(supported_modes, "<leader>sgt", function()
 						Snacks.picker.lsp_type_definitions()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" })
-					vim.keymap.set(supported_modes, "<leader>s3", function()
+					vim.keymap.set(supported_modes, "<leader>sgi", function()
 						Snacks.picker.lsp_implementations()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" })
-					vim.keymap.set(supported_modes, "<leader>s4", function()
+					vim.keymap.set(supported_modes, "<leader>sgr", function()
 						Snacks.picker.lsp_references()
 					end, {
 						silent = true,
@@ -420,26 +420,21 @@ return {
 						desc = "Jump to references",
 						nowait = true,
 					})
+					vim.keymap.set({ "n" }, "<leader>sgc", function()
+						Snacks.picker.lsp_incoming_calls()
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Incoming calls" })
+					vim.keymap.set({ "n" }, "<leader>sgC", function()
+						Snacks.picker.lsp_outgoing_calls()
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
 					vim.keymap.set(
 						{ "n", "x" },
-						"<leader>s5",
+						"<leader>sr",
 						vim.lsp.buf.rename,
 						{ silent = true, noremap = true, buffer = ev.buf, desc = "Rename variable" }
 					)
-					vim.keymap.set({ "n", "x" }, "<leader>s6", function()
+					vim.keymap.set({ "n", "x" }, "<leader>sR", function()
 						require("tiny-code-action").code_action({})
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Apply code action" })
-					vim.keymap.set({ "n" }, "<leader>s7", function()
-						Snacks.picker.lsp_incoming_calls()
-					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Incoming calls" })
-					vim.keymap.set({ "n" }, "<leader>s8", function()
-						Snacks.picker.lsp_outgoing_calls()
-					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
-					pcall(function()
-						-- Remove default keybinding added by lspconfig
-						-- REF https://neovim.io/doc/user/lsp.html#lsp-config
-						vim.keymap.del({ "n" }, "K", { buffer = ev.buf })
-					end)
 
 					vim.diagnostic.config({
 						underline = true,
