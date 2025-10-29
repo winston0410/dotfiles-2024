@@ -35,15 +35,38 @@ return {
 		end,
 	},
 	{
+		"AbysmalBiscuit/insert-inlay-hints.nvim",
+		event = { "LspAttach" },
+        version = "0.x",
+		keys = {
+			{
+				"<leader>si",
+				function()
+					require("insert-inlay-hints").closest()
+				end,
+				desc = "Insert the closest inline hint as code.",
+				mode = { "n" },
+			},
+			{
+				"<leader>si",
+				function()
+					require("insert-inlay-hints").visual()
+				end,
+				desc = "Insert all inlay hints in the current visual selection as code.",
+				mode = { "x" },
+			},
+		},
+	},
+	{
 		"kosayoda/nvim-lightbulb",
-        enabled = false,
-        version = "1.x",
+		enabled = false,
+		version = "1.x",
 		event = { "LspAttach" },
 		config = function()
 			require("nvim-lightbulb").setup({
 				autocmd = { enabled = true },
 				ignore = {
-					clients = {"null-ls"},
+					clients = { "null-ls" },
 					ft = {},
 					actions_without_kind = false,
 				},

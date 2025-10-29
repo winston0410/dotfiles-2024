@@ -309,6 +309,16 @@ return {
 				desc = "Explore LSP symbols",
 			},
 			{
+				"<leader>pS",
+				function()
+					Snacks.picker.lsp_workspace_symbols({})
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Explore LSP workspace symbols",
+			},
+			{
 				"<leader>pr",
 				function()
 					Snacks.picker.resume()
