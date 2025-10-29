@@ -4,7 +4,7 @@ return {
 		event = { "CursorHold" },
 		enabled = true,
 		opts = {
-			highlight = false,
+			highlight = true,
 		},
 	},
 	{
