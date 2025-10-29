@@ -10,7 +10,7 @@ in {
     };
     pull = { ff = true; };
     # REF https://stackoverflow.com/a/61920529
-    http = { postBuffer = 2097152000; };
+    http = { postBuffer = 2097152000; sslBackend = "openssl"; };
 
     init = { defaultBranch = "main"; };
 
