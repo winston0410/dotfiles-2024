@@ -38,7 +38,7 @@ return {
 
 			hydra({
 				name = "Treewalk",
-				mode = { "n" },
+				mode = { "n", "x" },
 				body = "<leader>s",
 				config = {
 					hint = false,
@@ -53,7 +53,7 @@ return {
 							end
 						end,
 						{
-							mode = { "n", "v" },
+							mode = { "n", "x" },
 							noremap = true,
 							silent = true,
 							desc = "Move upward to a Treesitter node",
@@ -68,7 +68,7 @@ return {
 							end
 						end,
 						{
-							mode = { "n", "v" },
+							mode = { "n", "x" },
 							noremap = true,
 							silent = true,
 							desc = "Move downward to a Treesitter node",
@@ -83,7 +83,7 @@ return {
 							end
 						end,
 						{
-							mode = { "n", "v" },
+							mode = { "n", "x" },
 							noremap = true,
 							silent = true,
 							desc = "Move right to a Treesitter node",
@@ -98,7 +98,7 @@ return {
 							end
 						end,
 						{
-							mode = { "n", "v" },
+							mode = { "n", "x" },
 							noremap = true,
 							silent = true,
 							desc = "Move left to a Treesitter node",
