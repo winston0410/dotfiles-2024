@@ -71,27 +71,49 @@ return {
 	-- 		})
 	-- 	end,
 	-- },
+	-- Does not support restore session with git branch
+	-- {
+	-- 	"Shatur/neovim-session-manager",
+	-- 	dependencies = { "nvim-lua/plenary.nvim" },
+	-- 	lazy = false,
+	-- 	priority = 89,
+	-- 	enabled = vim.g.enable_session,
+	-- 	config = function()
+	-- 		local config = require("session_manager.config")
+	-- 		require("session_manager").setup({
+	-- 			autoload_mode = {
+	-- 				config.AutoloadMode.GitSession,
+	-- 				config.AutoloadMode.CurrentDir,
+	-- 				config.AutoloadMode.Disabled,
+	-- 			},
+	-- 			autosave_last_session = true,
+	-- 			autosave_ignore_not_normal = true,
+	-- 			autosave_ignore_filetypes = {
+	-- 				"gitcommit",
+	-- 				"gitrebase",
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
-		"Shatur/neovim-session-manager",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		lazy = false,
-		priority = 89,
-		enabled = vim.g.enable_session,
-		config = function()
-			local config = require("session_manager.config")
-			require("session_manager").setup({
-				autoload_mode = {
-					config.AutoloadMode.GitSession,
-					config.AutoloadMode.CurrentDir,
-					config.AutoloadMode.Disabled,
-				},
-				autosave_last_session = true,
-				autosave_ignore_not_normal = true,
-				autosave_ignore_filetypes = {
-					"gitcommit",
-					"gitrebase",
-				},
+		"folke/persistence.nvim",
+		version = "3.x",
+		priority = 1000,
+        lazy = false,
+		init = function()
+			-- https://github.com/folke/persistence.nvim/issues/13
+			vim.api.nvim_create_autocmd("VimEnter", {
+				group = vim.api.nvim_create_augroup("Persistence", { clear = true }),
+				callback = function()
+					if vim.fn.argc() == 0 and vim.g.enable_session then
+						require("persistence").load()
+					end
+				end,
+				nested = true,
 			})
+		end,
+		config = function()
+			require("persistence").setup({})
 		end,
 	},
 }
