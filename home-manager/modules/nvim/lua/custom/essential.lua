@@ -29,6 +29,7 @@ vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
 vim.o.titleold = "zsh"
 
 vim.opt.spelllang = "en_gb"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,resize,tabpages,winsize,terminal,winpos,winsize"
 
 -- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
 vim.o.equalalways = false
