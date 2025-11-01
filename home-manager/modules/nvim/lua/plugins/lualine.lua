@@ -1,4 +1,5 @@
 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+local godot = require("custom.godot")
 
 return {
 	{
@@ -222,6 +223,15 @@ return {
 				{ provider = "%=" },
 				utils.make_tablist(Tabpage),
 			}
+            
+            local GoDotExternalEditor = {
+				condition = function()
+                    return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
+				end,
+                provider = function()
+                    return ""
+                end,
+            }
 
 			local dmode_enabled = false
 			vim.api.nvim_create_autocmd("User", {
@@ -273,6 +283,7 @@ return {
 					{ provider = " " },
 					FileSize,
 					{ provider = "%=" },
+                    GoDotExternalEditor,
                     heirline_components.component.lsp({ lsp_client_names = false }),
 					heirline_components.component.diagnostics(),
 					heirline_components.component.cmd_info(),

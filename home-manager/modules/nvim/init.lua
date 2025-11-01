@@ -12,6 +12,7 @@
 -- ## Register
 -- for deleting without polluting the current register, use blackhold register _, for example "_dd
 require("custom.essential")
+local godot = require("custom.godot")
 
 -- REF https://unix.stackexchange.com/a/637223/467987
 
@@ -176,6 +177,8 @@ require("lazy").setup({
 		},
 	},
 })
+
+godot.listen_godot_external_editor_pipe()
 
 -- TODO Do not push diagnostic to quickfix for now. We need to figure out how to push these diagnostic to another quickfix list, without disrupting the current one
 -- vim.api.nvim_create_autocmd("DiagnosticChanged", {
