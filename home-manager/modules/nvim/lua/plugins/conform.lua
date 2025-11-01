@@ -11,6 +11,7 @@ return {
 
 			require("conform").setup({
 				formatters_by_ft = {
+                    gdscript = {"gdformat"},
                     roc = {"roc"},
                     bicep = {"bicep"},
                     proto = {"buf"},
