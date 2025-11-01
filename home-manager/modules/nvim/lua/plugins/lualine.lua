@@ -229,7 +229,7 @@ return {
                     return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
 				end,
                 provider = function()
-                    return ""
+                    return " GoDot"
                 end,
             }
 

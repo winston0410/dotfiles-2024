@@ -18,6 +18,7 @@ $kubernetes\
 $line_break\
 $container\
 $python\
+$direnv\
 $character"""
 
 continuation_prompt = '[> ](dimmed white)'
@@ -69,6 +70,9 @@ symbol = ' '
 
 [git_metrics]
 disabled = true
+
+[direnv]
+disabled = false
 
 [kubernetes]
 style = "cyan"

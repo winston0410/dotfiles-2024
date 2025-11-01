@@ -337,7 +337,7 @@ return {
 				mode = { "n" },
 				silent = true,
 				noremap = true,
-				desc = "Explore LSP config",
+				desc = "Explore highlight",
 			},
 			{
 				"<leader>pxs",
