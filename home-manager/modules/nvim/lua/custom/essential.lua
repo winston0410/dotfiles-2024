@@ -313,7 +313,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 -- https://ericlathrop.com/2024/02/configuring-neovim-s-lsp-to-work-with-godot/
-local pipepath = vim.fn.stdpath("state") .. "/server.pipe"
+local pipepath = vim.fn.stdpath("state") .. "/godot-nvim.pipe"
 if not vim.loop.fs_stat(pipepath) then
   vim.fn.serverstart(pipepath)
 end
