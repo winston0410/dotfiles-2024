@@ -22,6 +22,7 @@ return {
 
 			null_ls.setup({
 				sources = {
+                    null_ls.builtins.diagnostics.gdlint,
 					null_ls.builtins.diagnostics.checkmake,
 					null_ls.builtins.diagnostics.haml_lint,
 					null_ls.builtins.diagnostics.terraform_validate,
