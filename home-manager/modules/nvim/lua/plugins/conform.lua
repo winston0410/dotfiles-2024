@@ -11,7 +11,7 @@ return {
             local clang_format = { "clang_format"}
 
 			require("conform").setup({
-                timeout_ms = 2000,
+                timeout_ms = 10000,
 				formatters_by_ft = {
                     gdscript = {"gdformat"},
                     roc = {"roc"},

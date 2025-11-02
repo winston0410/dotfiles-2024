@@ -178,7 +178,18 @@ require("lazy").setup({
 	},
 })
 
-godot.listen_godot_external_editor_pipe()
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    local cwd = vim.fn.getcwd()
+    local godot_dir = cwd .. "/.godot"
+
+    if vim.fn.isdirectory(godot_dir) == 1 then
+        godot.listen_godot_external_editor_pipe()
+    end
+  end,
+  desc = "Connect to godot external editor pipe",
+})
+
 
 -- TODO Do not push diagnostic to quickfix for now. We need to figure out how to push these diagnostic to another quickfix list, without disrupting the current one
 -- vim.api.nvim_create_autocmd("DiagnosticChanged", {
