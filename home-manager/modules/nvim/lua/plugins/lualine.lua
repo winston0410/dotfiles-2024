@@ -229,7 +229,7 @@ return {
                     return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
 				end,
                 provider = function()
-                    return " GoDot"
+                    return " Godot"
                 end,
             }
 
@@ -282,8 +282,8 @@ return {
 					}),
 					{ provider = " " },
 					FileSize,
-					{ provider = "%=" },
                     GoDotExternalEditor,
+					{ provider = "%=" },
                     heirline_components.component.lsp({ lsp_client_names = false }),
 					heirline_components.component.diagnostics(),
 					heirline_components.component.cmd_info(),

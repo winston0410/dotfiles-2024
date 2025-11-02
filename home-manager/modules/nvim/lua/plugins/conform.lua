@@ -8,8 +8,10 @@ return {
             -- REF https://github.com/stevearc/conform.nvim/issues/781
             -- biome might fail if biome.json does not exist
 			local biome = { "biome", "prettierd", "prettier", stop_after_first = true }
+            local clang_format = { "clang_format"}
 
 			require("conform").setup({
+                timeout_ms = 2000,
 				formatters_by_ft = {
                     gdscript = {"gdformat"},
                     roc = {"roc"},
@@ -87,10 +89,10 @@ return {
 					dart = { "dart_format" },
 					haskell = { "ormolu" },
 					kotlin = { "ktlint" },
-					cpp = { "clang_format" },
-					c = { "clang_format" },
-					cs = { "clang_format" },
-					java = { "clang_format" },
+					cpp = clang_format,
+					c = clang_format,
+					cs = clang_format,
+					java = clang_format,
 					swift = { "swift" },
 					elm = { "elm_format" },
 					elixir = { "mix" },
@@ -141,7 +143,7 @@ return {
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 						return
 					end
-					return { timeout_ms = 500, lsp_format = "fallback" }
+					return { lsp_format = "fallback" }
 				end,
 				formatters = {},
 			})

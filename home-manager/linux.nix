@@ -46,6 +46,7 @@ in {
     openscad
     inkscape
     unstable.kicad
+    godotPackages_4_4.godot-mono
   ];
 
   home.shellAliases = { docker-compose = "podman-compose"; };
