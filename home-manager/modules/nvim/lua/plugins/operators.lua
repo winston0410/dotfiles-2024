@@ -50,16 +50,6 @@ return {
 		"chrisgrieser/nvim-spider",
 		keys = {
 			{
-				"W",
-				function()
-					require("spider").motion("w")
-				end,
-				mode = { "n", "o", "x" },
-				silent = true,
-				noremap = true,
-				desc = "Jump forward to word",
-			},
-			{
 				"w",
 				function()
 					require("spider").motion("w")
@@ -80,14 +70,14 @@ return {
 				desc = "Jump forward to end of word",
 			},
 			{
-				"E",
+				"ge",
 				function()
-					require("spider").motion("e")
+					require("spider").motion("ge")
 				end,
 				mode = { "n", "o", "x" },
 				silent = true,
 				noremap = true,
-				desc = "Jump forward to end of word",
+				desc = "Jump backward to previous end of word",
 			},
 			{
 				"b",
@@ -98,17 +88,7 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Jump backward to word",
-			},
-			{
-				"B",
-				function()
-					require("spider").motion("b")
-				end,
-				mode = { "n", "o", "x" },
-				silent = true,
-				noremap = true,
-				desc = "Jump backward to word",
-			},
+			}
 		},
 	},
 	{
