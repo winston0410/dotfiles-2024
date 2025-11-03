@@ -73,6 +73,10 @@ disabled = true
 
 [direnv]
 disabled = false
+format = '[$symbol$allowed]($style) '
+allowed_msg = "󰐊"
+not_allowed_msg = "󰏤"
+denied_msg = "󰓛"
 
 [kubernetes]
 style = "cyan"
