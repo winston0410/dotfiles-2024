@@ -1,12 +1,12 @@
 return {
-    -- TODO fix this
+	-- TODO fix this
 	{
 		"mfussenegger/nvim-dap-python",
 		ft = { "python" },
 		dependencies = {
 			"mfussenegger/nvim-dap",
 		},
-        enabled = false,
+		enabled = false,
 		config = function()
 			-- https://github.com/mfussenegger/nvim-dap-python?tab=readme-ov-file#usage
 			require("dap-python").setup("uv")
@@ -124,6 +124,19 @@ return {
 				command = "elixir-debug-adapter",
 				args = {},
 			}
+			dap.adapters.godot = {
+				type = "server",
+				host = "127.0.0.1",
+				port = 6006,
+			}
+			dap.configurations.gdscript = {
+				{
+					type = "godot",
+					request = "launch",
+					name = "Launch scene",
+					project = "${workspaceFolder}",
+				},
+			}
 			dap.adapters.php = {
 				type = "executable",
 				command = "node",
@@ -211,7 +224,7 @@ return {
 		dependencies = {
 			"jbyuki/one-small-step-for-vimkind",
 		},
-        enabled = false,
+		enabled = false,
 		config = function()
 			local dm = require("debugmaster")
 			dm.plugins.osv_integration.enabled = true

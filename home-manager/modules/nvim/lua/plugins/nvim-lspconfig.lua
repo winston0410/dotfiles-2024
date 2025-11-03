@@ -367,6 +367,7 @@ return {
 				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
+                "gdscript",
 				"ruff-lsp",
 				"taplo",
 				"cucumber_language_server",
