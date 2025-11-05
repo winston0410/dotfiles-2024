@@ -55,6 +55,9 @@ return {
 					useDefaults = false,
 				},
 			})
+			vim.keymap.set({ "o", "x" }, "au", function()
+				require("various-textobjs").url()
+			end, { silent = true, noremap = true, desc = "Around URL" })
 			vim.keymap.set({ "o", "x" }, "aw", function()
 				require("various-textobjs").subword("outer")
 			end, { silent = true, noremap = true, desc = "Around subword" })

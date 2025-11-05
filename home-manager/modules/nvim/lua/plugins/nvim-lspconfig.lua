@@ -35,6 +35,10 @@ return {
 			})
 		end,
 	},
+    {
+        "b0o/schemastore.nvim",
+		event = { "VeryLazy" },
+    },
 	{
 		"AbysmalBiscuit/insert-inlay-hints.nvim",
 		event = { "LspAttach" },
@@ -237,6 +241,26 @@ return {
 				},
 			})
 
+            -- REF https://github.com/b0o/SchemaStore.nvim
+			vim.lsp.config("yamlls", {
+              settings = {
+                yaml = {
+                  schemaStore = {
+                    enable = false,
+                    url = "",
+                  },
+                  schemas = require('schemastore').yaml.schemas(),
+                },
+              },
+			})
+			vim.lsp.config("jsonls", {
+				settings = {
+                    json = {
+                      schemas = require('schemastore').json.schemas(),
+                      validate = { enable = true },
+                    },
+				},
+			})
 			vim.lsp.config("ltex_plus", {
 				settings = {
 					ltex = {
