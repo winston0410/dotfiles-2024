@@ -47,6 +47,23 @@ return {
 		opts = {},
 	},
 	{
+		"chrisgrieser/nvim-various-textobjs",
+		event = { "VeryLazy" },
+		config = function()
+			require("various-textobjs").setup({
+				keymaps = {
+					useDefaults = false,
+				},
+			})
+			vim.keymap.set({ "o", "x" }, "aw", function()
+				require("various-textobjs").subword("outer")
+			end, { silent = true, noremap = true, desc = "Around subword" })
+			vim.keymap.set({ "o", "x" }, "iw", function()
+				require("various-textobjs").subword("inner")
+			end, { silent = true, noremap = true, desc = "Inside subword" })
+		end,
+	},
+	{
 		"chrisgrieser/nvim-spider",
 		keys = {
 			{
@@ -88,7 +105,7 @@ return {
 				silent = true,
 				noremap = true,
 				desc = "Jump backward to word",
-			}
+			},
 		},
 	},
 	{
@@ -182,7 +199,7 @@ return {
 
 			local group = vim.api.nvim_create_augroup("SubstitueHydraMode", { clear = true })
 
-            -- somehow with pink hydra, the mode cannot be switched correctly
+			-- somehow with pink hydra, the mode cannot be switched correctly
 			vim.api.nvim_create_autocmd("User", {
 				group = group,
 				pattern = "SubstitutePrepareExchange",
