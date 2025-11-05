@@ -5,6 +5,7 @@ return {
 		event = { "VeryLazy" },
 		keys = {
 			-- TODO how to select local diff hunk?????
+            -- TODO review the keybindings here
 			{
 				"ac",
 				function()
