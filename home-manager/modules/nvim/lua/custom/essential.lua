@@ -38,9 +38,8 @@ vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
 vim.opt.termguicolors = true
 vim.o.diffopt = "internal,filler,closeoff,algorithm:histogram,followwrap"
-vim.o.timeoutlen = 400
 vim.o.ttimeoutlen = 0
-vim.o.updatetime = 300
+vim.o.updatetime = 200
 vim.o.showmode = false
 vim.o.backup = false
 vim.o.writebackup = false
@@ -82,7 +81,10 @@ vim.opt.fillchars:append({
 vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
+vim.o.smoothscroll = true
+vim.o.virtualedit = "block"
 vim.o.undofile = true
+vim.o.undolevels = 10000
 vim.o.winborder = "none"
 vim.o.showcmd = false
 vim.o.shiftwidth = 4
@@ -311,3 +313,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		end
 	end,
 })
+

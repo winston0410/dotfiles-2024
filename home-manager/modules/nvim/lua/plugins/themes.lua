@@ -22,6 +22,10 @@ return {
 		lazy = true,
 	},
 	{
+		"jnz/studio98",
+		lazy = true,
+	},
+	{
 		"AlexvZyl/nordic.nvim",
 		lazy = true,
 	},
