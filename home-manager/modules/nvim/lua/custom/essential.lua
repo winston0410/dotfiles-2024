@@ -288,6 +288,11 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
+-- NOTE remove additional wrapper around * and #
+vim.keymap.set({ "n" }, "*", "g*", { silent = true, noremap = true, desc = "Search word under cursor forward" })
+vim.keymap.set({ "n" }, "#", "g#", { silent = true, noremap = true, desc = "Search word under cursor backward" })
+vim.keymap.set({ 'x' }, '*', 'y/<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor forward" })
+vim.keymap.set({ 'x' }, '#', 'y?<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor backward" })
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then

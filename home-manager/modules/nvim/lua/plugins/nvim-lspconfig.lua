@@ -4,6 +4,16 @@ local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 return {
 	{
+		"dmmulroy/ts-error-translator.nvim",
+		version = "1.x",
+		event = { "LspAttach" },
+		config = function()
+			require("ts-error-translator").setup({
+				auto_override_publish_diagnostics = true,
+			})
+		end,
+	},
+	{
 		"oribarilan/lensline.nvim",
 		-- makes loading slow, enable it later
 		enabled = false,
@@ -22,7 +32,7 @@ return {
 
 			null_ls.setup({
 				sources = {
-                    null_ls.builtins.diagnostics.gdlint,
+					null_ls.builtins.diagnostics.gdlint,
 					null_ls.builtins.diagnostics.checkmake,
 					null_ls.builtins.diagnostics.haml_lint,
 					null_ls.builtins.diagnostics.terraform_validate,
@@ -38,7 +48,7 @@ return {
 	{
 		"AbysmalBiscuit/insert-inlay-hints.nvim",
 		event = { "LspAttach" },
-        version = "0.x",
+		version = "0.x",
 		keys = {
 			{
 				"<leader>si",
@@ -368,7 +378,7 @@ return {
 				-- "ty",
 				-- TODO switch over from pyright to tv, once it is more stable
 				-- "tv",
-                "gdscript",
+				"gdscript",
 				"ruff-lsp",
 				"taplo",
 				"cucumber_language_server",
