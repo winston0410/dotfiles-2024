@@ -162,7 +162,7 @@ return {
 		-- event = {
 		-- 	-- for reading a buffer
 		-- 	"BufReadPost",
-		-- 	-- for creating an unamed buffer
+		-- 	-- for creating an unnamed buffer
 		-- 	"BufNewFile",
 		-- },
 		version = "2.x",
@@ -486,6 +486,12 @@ return {
 					vim.keymap.set({ "n" }, "<leader>sgC", function()
 						Snacks.picker.lsp_outgoing_calls()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
+					vim.keymap.set({ "n" }, "<leader>s<leader>k", function()
+                          vim.diagnostic.setqflist({
+                            severity = { min = vim.diagnostic.severity.WARN },
+                          })
+                          vim.cmd('copen')
+					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Push diagnostics into Quickfix" })
 					vim.keymap.set(
 						{ "n", "x" },
 						"<leader>sr",
@@ -517,6 +523,11 @@ return {
 					})
 
 					vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                    if client == nil then
+                      return
+                    end
+                    client.server_capabilities.semanticTokensProvider = nil
 				end,
 			})
 		end,
