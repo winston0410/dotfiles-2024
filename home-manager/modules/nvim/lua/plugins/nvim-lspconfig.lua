@@ -4,6 +4,13 @@ local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
 return {
 	{
+		"artemave/workspace-diagnostics.nvim",
+		event = { "LspAttach" },
+		config = function()
+            require("workspace-diagnostics").setup({ })
+		end,
+	},
+	{
 		"dmmulroy/ts-error-translator.nvim",
 		version = "1.x",
 		event = { "LspAttach" },
@@ -528,6 +535,7 @@ return {
                       return
                     end
                     client.server_capabilities.semanticTokensProvider = nil
+                    require("workspace-diagnostics").populate_workspace_diagnostics(client, ev.buf)
 				end,
 			})
 		end,
