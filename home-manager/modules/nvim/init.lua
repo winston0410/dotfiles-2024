@@ -125,7 +125,7 @@ require("lazy").setup({
 			ft = { "qf" },
 			keys = {
 				{
-					"<leader>kk",
+					"<leader>k",
 					function()
 						require("quicker").toggle()
 					end,
