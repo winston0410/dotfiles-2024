@@ -5,6 +5,8 @@ local HINT_ICON = "󰌶 "
 return {
 	{
 		"artemave/workspace-diagnostics.nvim",
+        -- TODO enable this later, as there is no way to disable the warning message, and it can only help with existing LSP client. It doesn't trigger LSP to start automatically.
+        enabled = false,
 		event = { "LspAttach" },
 		config = function()
             require("workspace-diagnostics").setup({ })
