@@ -31,6 +31,9 @@ vim.o.titleold = "zsh"
 vim.opt.spelllang = "en_gb"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
 
+vim.o.completeopt = "menu,popup,fuzzy"
+vim.o.wildoptions = "pum,fuzzy"
+
 -- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
 vim.o.equalalways = false
 vim.o.encoding = "UTF-8"
