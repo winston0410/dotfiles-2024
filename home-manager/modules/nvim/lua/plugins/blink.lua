@@ -125,10 +125,13 @@ return {
 		version = "1.x",
 		opts = {
 			keymap = {
+				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-e>"] = { "hide", "fallback" },
+				["<C-y>"] = { "select_and_accept", "fallback" },
 				["<Up>"] = { "select_prev", "fallback" },
 				["<Down>"] = { "select_next", "fallback" },
-				["<C-n>"] = { "select_next", "fallback" },
-				["<C-p>"] = { "select_prev", "fallback" },
+				["<C-n>"] = { "show", "select_next", "fallback" },
+				["<C-p>"] = { "show", "select_prev", "fallback" },
 				["<CR>"] = { "select_and_accept", "fallback" },
 				-- NOTE Remember, gh bring us back to select mode again. Use this after the first edit
 				["<Tab>"] = {
