@@ -535,7 +535,6 @@ return {
                       return
                     end
                     client.server_capabilities.semanticTokensProvider = nil
-                    require("workspace-diagnostics").populate_workspace_diagnostics(client, ev.buf)
 				end,
 			})
 		end,
