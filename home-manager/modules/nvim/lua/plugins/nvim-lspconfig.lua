@@ -438,6 +438,7 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
+
 					vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
 					local supported_modes = { "n" }
 					-- vim.keymap.set(supported_modes, "]de", function()

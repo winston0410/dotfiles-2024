@@ -163,6 +163,13 @@ vim.filetype.add({
 		gr = "grain",
 	},
 })
+-- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
+vim.keymap.del({ 'n' }, 'gra', {})
+vim.keymap.del({ 'n' }, 'gri', {})
+vim.keymap.del({ 'n' }, 'grn', {})
+vim.keymap.del({ 'n' }, 'grr', {})
+vim.keymap.del({ 'n' }, 'grt', {})
+vim.keymap.del({ 'n' }, 'gO', {})
 
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
@@ -172,61 +179,12 @@ vim.keymap.set({ "n" }, "<leader>T", function()
 	vim.cmd("term")
 end, { remap = true, silent = true, desc = "Open terminal" })
 
--- NOTE buffer jumping is not really that useful
--- local clear_buffer_keybinding = "<leader>bc"
--- local delete_buffer_keybinding = "<leader>bq"
--- local next_buffer_keybinding = "<leader>bo"
--- local prev_buffer_keybinding = "<leader>bi"
--- vim.keymap.set({ "n" }, clear_buffer_keybinding, function()
--- 	-- TODO
--- end, { silent = true, noremap = true, desc = "Unload other buffers" })
--- vim.keymap.set({ "n" }, delete_buffer_keybinding, function()
--- 	Snacks.bufdelete.delete()
--- end, { silent = true, noremap = true, desc = "Delete current buffer" })
--- vim.keymap.set({ "n" }, next_buffer_keybinding, function()
--- 	vim.cmd("bnext")
--- end, { silent = true, noremap = true, desc = "Go to next buffer" })
--- vim.keymap.set({ "n" }, prev_buffer_keybinding, function()
--- 	vim.cmd("bprev")
--- end, { silent = true, noremap = true, desc = "Go to previous buffer" })
--- for i = 1, 9 do
--- 	vim.keymap.set({ "n" }, "<leader>b" .. i, function()
--- 		vim.cmd(string.format("LualineBuffersJump %s", i))
--- 	end, { noremap = true, silent = true, desc = string.format("Jump to buffer %s", i) })
--- end
-
--- vim.api.nvim_create_autocmd("BufEnter", {
--- 	pattern = "*",
--- 	callback = function(ev)
--- 		local ok, bufferlocked = pcall(function()
--- 			return vim.api.nvim_buf_get_var(0, "lockbuffer")
--- 		end)
---
--- 		if not ok then
--- 			return
--- 		end
---
--- 		if not bufferlocked then
--- 			return
--- 		end
--- 		vim.keymap.set({ "n" }, clear_buffer_keybinding, "<Nop>", { buffer = ev.buf })
--- 		vim.keymap.set({ "n" }, delete_buffer_keybinding, "<Nop>", { buffer = ev.buf })
--- 		vim.keymap.set({ "n" }, next_buffer_keybinding, "<Nop>", { buffer = ev.buf })
--- 		vim.keymap.set({ "n" }, prev_buffer_keybinding, "<Nop>", { buffer = ev.buf })
--- 		for i = 1, 9 do
--- 			vim.keymap.set({ "n" }, "<leader>b" .. i, "<Nop>", { buffer = ev.buf })
--- 		end
--- 	end,
--- })
-
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set({ "n", "x" }, "Y", "y$", {
 	silent = true,
 	noremap = true,
 	desc = "Yank to EOL",
 })
-
--- vim.keymap.set({ "n" }, "vv", "<C-v>", { silent = true, noremap = true, desc = "Enter Visual block mode" })
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
@@ -293,6 +251,8 @@ vim.keymap.set({ "n" }, "*", "g*", { silent = true, noremap = true, desc = "Sear
 vim.keymap.set({ "n" }, "#", "g#", { silent = true, noremap = true, desc = "Search word under cursor backward" })
 vim.keymap.set({ 'x' }, '*', 'y/<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor forward" })
 vim.keymap.set({ 'x' }, '#', 'y?<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor backward" })
+vim.keymap.set({ "n", "x" }, "gf", "gF", { silent = true, noremap = true, desc = "Go to file under cursor" })
+vim.keymap.set({ "n"}, "<C-w>f", "<C-w>F", { silent = true, noremap = true, desc = "Split and go to file under cursor" })
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then
