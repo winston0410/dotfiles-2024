@@ -189,6 +189,14 @@ vim.keymap.set({ "n", "x" }, "Y", "y$", {
 	desc = "Yank to EOL",
 })
 
+-- NOTE this prevent which-key.nvim from showing hints for registers.
+vim.keymap.set(
+  "i",
+  "<C-r>",
+  "<C-r><C-o>",
+  { noremap = true, desc = "Insert contents of named register. Inserts text literally, not as if you typed it." }
+)
+
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
 	{ "i" },
