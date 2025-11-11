@@ -215,49 +215,67 @@ return {
 							actions.toggle_files,
 							{ desc = "Toggle the file panel." },
 						},
-						-- NOTE use <leader>x as the exclusive key for diffview for now
+						-- NOTE use <leader>x as the exclusive key for diffview for now. DO NOT use do and dp, as they would not work with 3 way diffs
 						{
 							"n",
-							"<leader>x1",
+							"<leader>xo",
 							actions.conflict_choose("ours"),
 							{ desc = "Choose OURS version of a conflict" },
 						},
 						{
 							"n",
-							"<leader>x2",
+							"<leader>xt",
 							actions.conflict_choose("theirs"),
 							{ desc = "Choose THEIRS version of a conflict" },
 						},
 						{
 							"n",
-							"<leader>x3",
+							"<leader>xb",
 							actions.conflict_choose("base"),
 							{ desc = "Choose BASE version of a conflict" },
 						},
 						{
 							"n",
-							"<leader>x4",
+							"<leader>xa",
 							actions.conflict_choose("all"),
 							{ desc = "Choose ALL version of a conflict" },
 						},
 						{
 							"n",
-							"<leader>x5",
+							"<leader>xn",
 							actions.conflict_choose("none"),
 							{ desc = "Choose NONE version of a conflict" },
 						},
-						-- {
-						-- 	"n",
-						-- 	"do",
-						-- 	actions.conflict_choose_all("ours"),
-						-- 	{ desc = "Choose OURS version of a conflict" },
-						-- },
-						-- {
-						-- 	"n",
-						-- 	"dp",
-						-- 	actions.conflict_choose_all("theirs"),
-						-- 	{ desc = "Choose THEIRS version of a conflict" },
-						-- },
+						{
+							"n",
+							"<leader>xO",
+							actions.conflict_choose_all("ours"),
+							{ desc = "Choose OURS version of all conflicts" },
+						},
+						{
+							"n",
+							"<leader>xT",
+							actions.conflict_choose_all("theirs"),
+							{ desc = "Choose THEIRS version of all conflicts" },
+						},
+						{
+							"n",
+							"<leader>xB",
+							actions.conflict_choose_all("base"),
+							{ desc = "Choose BASE version of all conflicts" },
+						},
+						{
+							"n",
+							"<leader>xA",
+							actions.conflict_choose_all("all"),
+							{ desc = "Choose ALL version of all conflicts" },
+						},
+						{
+							"n",
+							"<leader>xN",
+							actions.conflict_choose("none"),
+							{ desc = "Choose NONE version of all conflicts" },
+						},
 					},
 					file_panel = {
 						{
