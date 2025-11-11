@@ -6,6 +6,13 @@ return {
 		enabled = vim.fn.has("nvim-0.10.0") == 1,
 		config = function() end,
 	},
+    -- keep using this until d2 is supporte by neovim out of the box
+    {
+          "ravsii/tree-sitter-d2",
+          dependencies = { "nvim-treesitter/nvim-treesitter" },
+          version = "*",
+          build = "make nvim-install",
+    },
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" }, 
