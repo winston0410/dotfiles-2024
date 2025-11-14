@@ -2,14 +2,22 @@ local ERROR_ICON = " "
 local WARNING_ICON = " "
 local INFO_ICON = " "
 local HINT_ICON = "󰌶 "
+-- https://www.reddit.com/r/neovim/comments/1308ie7/comment/jhvkipp/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+local lspconfig_load_event = {
+	-- for reading a buffer
+	"BufReadPost",
+	-- for creating an unnamed buffer
+	"BufNewFile",
+	"CursorMoved",
+}
 return {
 	{
 		"artemave/workspace-diagnostics.nvim",
-        -- TODO enable this later, as there is no way to disable the warning message, and it can only help with existing LSP client. It doesn't trigger LSP to start automatically.
-        enabled = false,
+		-- TODO enable this later, as there is no way to disable the warning message, and it can only help with existing LSP client. It doesn't trigger LSP to start automatically.
+		enabled = false,
 		event = { "LspAttach" },
 		config = function()
-            require("workspace-diagnostics").setup({ })
+			require("workspace-diagnostics").setup({})
 		end,
 	},
 	{
@@ -35,7 +43,7 @@ return {
 	{
 		"nvimtools/none-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "ckolkey/ts-node-action", "ThePrimeagen/refactoring.nvim" },
-		event = { "BufReadPre", "BufNewFile" },
+		event = lspconfig_load_event,
 		config = function()
 			local null_ls = require("null-ls")
 
@@ -54,10 +62,10 @@ return {
 			})
 		end,
 	},
-    {
-        "b0o/schemastore.nvim",
+	{
+		"b0o/schemastore.nvim",
 		event = { "VeryLazy" },
-    },
+	},
 	{
 		"AbysmalBiscuit/insert-inlay-hints.nvim",
 		event = { "LspAttach" },
@@ -166,14 +174,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		enabled = true,
-		-- https://www.reddit.com/r/neovim/comments/1308ie7/comment/jhvkipp/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-		lazy = false,
-		-- event = {
-		-- 	-- for reading a buffer
-		-- 	"BufReadPost",
-		-- 	-- for creating an unnamed buffer
-		-- 	"BufNewFile",
-		-- },
+		-- lazy = false,
+		event = lspconfig_load_event,
 		version = "2.x",
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -260,24 +262,24 @@ return {
 				},
 			})
 
-            -- REF https://github.com/b0o/SchemaStore.nvim
+			-- REF https://github.com/b0o/SchemaStore.nvim
 			vim.lsp.config("yamlls", {
-              settings = {
-                yaml = {
-                  schemaStore = {
-                    enable = false,
-                    url = "",
-                  },
-                  schemas = require('schemastore').yaml.schemas(),
-                },
-              },
+				settings = {
+					yaml = {
+						schemaStore = {
+							enable = false,
+							url = "",
+						},
+						schemas = require("schemastore").yaml.schemas(),
+					},
+				},
 			})
 			vim.lsp.config("jsonls", {
 				settings = {
-                    json = {
-                      schemas = require('schemastore').json.schemas(),
-                      validate = { enable = true },
-                    },
+					json = {
+						schemas = require("schemastore").json.schemas(),
+						validate = { enable = true },
+					},
 				},
 			})
 			vim.lsp.config("ltex_plus", {
@@ -447,7 +449,6 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
-
 					vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
 					local supported_modes = { "n" }
 					-- vim.keymap.set(supported_modes, "]de", function()
@@ -496,10 +497,10 @@ return {
 						Snacks.picker.lsp_outgoing_calls()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
 					vim.keymap.set({ "n" }, "<leader>s<leader>k", function()
-                          vim.diagnostic.setqflist({
-                            severity = { min = vim.diagnostic.severity.WARN },
-                          })
-                          vim.cmd('copen')
+						vim.diagnostic.setqflist({
+							severity = { min = vim.diagnostic.severity.WARN },
+						})
+						vim.cmd("copen")
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Push diagnostics into Quickfix" })
 					vim.keymap.set(
 						{ "n", "x" },
@@ -532,11 +533,11 @@ return {
 					})
 
 					vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
-                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                    if client == nil then
-                      return
-                    end
-                    client.server_capabilities.semanticTokensProvider = nil
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
+					if client == nil then
+						return
+					end
+					client.server_capabilities.semanticTokensProvider = nil
 				end,
 			})
 		end,
