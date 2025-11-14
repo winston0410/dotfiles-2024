@@ -158,9 +158,7 @@ return {
 			"franco-ruggeri/codecompanion-spinner.nvim",
 			{
 				"OXY2DEV/markview.nvim",
-                -- wait for a new version, then use version again
-                commit = "c93ea99",
-				-- version = "26.x",
+				version = "27.x",
 				lazy = false,
 				enabled = enable_markview,
 				dependencies = {

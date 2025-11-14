@@ -3,6 +3,7 @@
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
+    pkgs.ts_query_ls
     pkgs.gdtoolkit_3
     pkgs.openscad-lsp
     unstable.protols

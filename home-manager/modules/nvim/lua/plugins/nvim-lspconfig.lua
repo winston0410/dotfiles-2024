@@ -443,6 +443,7 @@ return {
 				"typos_lsp",
 				"powershell_es",
 				"protols",
+                "ts_query_ls",
 			}
 			vim.lsp.enable(servers, true)
 
