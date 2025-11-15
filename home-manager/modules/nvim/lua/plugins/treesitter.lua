@@ -47,69 +47,6 @@ return {
 				filetype = "make",
 				used_by = { "make" },
 			}
-			local select_around_node = function()
-				local ts_utils = require("nvim-treesitter.ts_utils")
-				local node = ts_utils.get_node_at_cursor()
-				if node == nil then
-					vim.notify("No Treesitter node found at cursor position", vim.log.levels.WARN)
-					return
-				end
-				local start_row, start_col, end_row, end_col = ts_utils.get_vim_range({ node:range() })
-
-				if start_row > 0 and end_row > 0 then
-					vim.api.nvim_buf_set_mark(0, "<", start_row, start_col - 1, {})
-					vim.api.nvim_buf_set_mark(0, ">", end_row, end_col - 1, {})
-					vim.cmd("normal! gv")
-				end
-			end
-
-			vim.keymap.set(
-				{ "o", "x" },
-				"%",
-				select_around_node,
-				{ silent = true, noremap = true, desc = "Treesitter node" }
-			)
-			vim.keymap.set(
-				{ "o", "x" },
-				"a%",
-				select_around_node,
-				{ silent = true, noremap = true, desc = "Treesitter node" }
-			)
-			vim.keymap.set({ "n", "v" }, "%", function()
-				local ts_utils = require("nvim-treesitter.ts_utils")
-				local cur_row, cur_col = unpack(vim.api.nvim_win_get_cursor(0))
-
-				local node = ts_utils.get_node_at_cursor()
-
-				if node == nil then
-					vim.notify("No Treesitter node found at cursor position", vim.log.levels.WARN)
-					return
-				end
-				vim.notify(string.format("type of node is %s", node:type()), vim.log.levels.DEBUG)
-
-				local start_row, start_col, end_row, end_col = ts_utils.get_vim_range({ node:range() })
-
-				-- -- decide which position is further away from current cursor position, and jump to there
-				-- -- simple algo, row is always compared before column
-				local start_row_diff = math.abs(cur_row - start_row)
-				local end_row_diff = math.abs(end_row - cur_row)
-
-				local target_row = start_row
-				local target_col = start_col
-
-				if end_row_diff == start_row_diff then
-					if math.abs(end_col - cur_col) > math.abs(cur_col - start_col) then
-						target_row = end_row
-						target_col = end_col
-					end
-				else
-					if end_row_diff > start_row_diff then
-						target_row = end_row
-						target_col = end_col
-					end
-				end
-				vim.api.nvim_win_set_cursor(0, { target_row, target_col - 1 })
-			end, { silent = true, noremap = true, desc = "Jump between beginning and end of the node" })
 
 			local function_textobj_binding = "f"
 			local call_textobj_binding = "k"
