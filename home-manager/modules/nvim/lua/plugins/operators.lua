@@ -55,6 +55,9 @@ return {
 					useDefaults = false,
 				},
 			})
+			vim.keymap.set({ "o", "x" }, "ad", function()
+				require("various-textobjs").diagnostic()
+			end, { silent = true, noremap = true, desc = "Around diagnostic" })
 			vim.keymap.set({ "o", "x" }, "au", function()
 				require("various-textobjs").url()
 			end, { silent = true, noremap = true, desc = "Around URL" })
