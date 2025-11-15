@@ -444,6 +444,7 @@ return {
 				"powershell_es",
 				"protols",
                 "ts_query_ls",
+                "clojure_lsp"
 			}
 			vim.lsp.enable(servers, true)
 

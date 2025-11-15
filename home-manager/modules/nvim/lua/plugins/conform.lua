@@ -26,6 +26,8 @@ return {
 					astro = {},
 					cuda = {},
 					foam = {},
+                    lisp = {"joker"},
+                    clojure = {"joker"},
 					fish = {"fish_indent"},
 					glsl = {},
 					hack = {},

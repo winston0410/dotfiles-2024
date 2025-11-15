@@ -1,5 +1,6 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
   home.packages = with pkgs; [
+    unstable.joker
     unstable.dockerfmt
     unstable.sqruff
     unstable.prettierd
