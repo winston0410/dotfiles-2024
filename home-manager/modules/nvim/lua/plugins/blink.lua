@@ -3,6 +3,7 @@ return {
 		"saghen/blink.cmp",
 		event = "InsertEnter",
 		dependencies = {
+			{ "krissen/blink-cmp-bibtex" },
 			{ "moyiz/blink-emoji.nvim", version = "1.x" },
 			{ "fang2hou/blink-copilot", version = "1.x" },
 			{
@@ -166,6 +167,13 @@ return {
 					"copilot",
 				},
 				providers = {
+					bibtex = {
+						module = "blink-cmp-bibtex",
+						name = "BibTeX",
+						min_keyword_length = 2,
+						async = true,
+						opts = { },
+					},
 					copilot = {
 						name = "copilot",
 						module = "blink-copilot",
