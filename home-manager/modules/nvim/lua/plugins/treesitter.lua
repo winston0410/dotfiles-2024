@@ -1,12 +1,5 @@
 return {
-	{
-		"folke/ts-comments.nvim",
-		opts = {},
-		event = "VeryLazy",
-		enabled = vim.fn.has("nvim-0.10.0") == 1,
-		config = function() end,
-	},
-	-- keep using this until d2 is supporte by neovim out of the box
+	-- keep using this until d2 filetype and treesitter grammar is supported by neovim out of the box
 	{
 		"ravsii/tree-sitter-d2",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -34,26 +27,129 @@ return {
 		branch = "main",
 		config = function()
 			require("nvim-treesitter-textobjects").setup({
+				move = {
+					set_jumps = true,
+				},
 				select = {
 					lookahead = true,
 					selection_modes = {
-						["@parameter.outer"] = "v", -- charwise
-						["@function.outer"] = "V", -- linewise
-						["@class.outer"] = "<c-v>", -- blockwise
+						["@class.outer"] = "<c-v>",
 					},
 					include_surrounding_whitespace = false,
 				},
 			})
 
-            local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
+			local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
 
-            vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-            vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+			vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+			vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
 
-            vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-            vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-            vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-            vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
+			vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
+
+			vim.api.nvim_create_autocmd("FileType", {
+				-- pattern = { "lua" },
+				pattern = { "*" },
+				callback = function(ev)
+					local shared = require("nvim-treesitter-textobjects.shared")
+					local mappings = {
+						{ symbol = "r", node = "@return", label = "return statement", outer = true, inner = true },
+						{ symbol = "p", node = "@parameter", label = "parameter", outer = true, inner = true },
+						{ symbol = "f", node = "@function", label = "function definition", outer = true, inner = true },
+						{ symbol = "i", node = "@conditional", label = "conditional", outer = true, inner = true },
+						{ symbol = "k", node = "@call", label = "function call", outer = true, inner = true },
+					}
+					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
+					local parsername = vim.treesitter.language.get_lang(main_lang)
+					if not parsername then
+						return
+					end
+					local ok, parser = pcall(function()
+						local parser = vim.treesitter.get_parser(ev.buf, parsername)
+						return parser
+					end)
+					if not ok or not parser then
+						return
+					end
+
+					for _, mapping in ipairs(mappings) do
+						if mapping.inner then
+							local query_string = string.format("%s.inner", mapping.node)
+							if shared.check_support(ev.buf, "textobjects", { query_string }) then
+								vim.keymap.set(
+									{ "x", "o" },
+									"i" .. mapping.symbol,
+									function()
+										require("nvim-treesitter-textobjects.select").select_textobject(query_string)
+									end,
+									{
+										noremap = true,
+										silent = true,
+										desc = string.format("Inside %s", mapping.label),
+										buffer = ev.buf,
+									}
+								)
+							end
+						end
+						if mapping.outer then
+							local query_string = string.format("%s.outer", mapping.node)
+							if shared.check_support(ev.buf, "textobjects", { query_string }) then
+								vim.keymap.set(
+									{ "n", "x", "o" },
+									"[" .. mapping.symbol,
+									function()
+										require("nvim-treesitter-textobjects.move").goto_previous_start(
+											query_string,
+											"textobjects"
+										)
+									end,
+									{
+										noremap = true,
+										silent = true,
+										desc = string.format("Previous %s", mapping.label),
+										buffer = ev.buf,
+									}
+								)
+								vim.keymap.set(
+									{ "n", "x", "o" },
+									"]" .. mapping.symbol,
+									function()
+										require("nvim-treesitter-textobjects.move").goto_next_start(
+											query_string,
+											"textobjects"
+										)
+									end,
+									{
+										noremap = true,
+										silent = true,
+										desc = string.format("Next %s", mapping.label),
+										buffer = ev.buf,
+									}
+								)
+
+								vim.keymap.set(
+									{ "x", "o" },
+									"a" .. mapping.symbol,
+									function()
+										require("nvim-treesitter-textobjects.select").select_textobject(
+											query_string,
+											"textobjects"
+										)
+									end,
+									{
+										noremap = true,
+										silent = true,
+										desc = string.format("Around %s", mapping.label),
+										buffer = ev.buf,
+									}
+								)
+							end
+						end
+					end
+				end,
+			})
 		end,
 	},
 	{
@@ -83,7 +179,15 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 	},
 	{
+		"folke/ts-comments.nvim",
+		opts = {},
+		event = "VeryLazy",
+		enabled = vim.fn.has("nvim-0.10.0") == 1,
+		config = function() end,
+	},
+	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
+        enabled = false,
 		event = { "VeryLazy" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 	},

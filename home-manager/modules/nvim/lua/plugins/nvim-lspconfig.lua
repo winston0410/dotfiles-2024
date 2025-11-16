@@ -22,7 +22,7 @@ return {
 	},
 	{
 		"dmmulroy/ts-error-translator.nvim",
-		version = "1.x",
+		version = "2.x",
 		event = { "LspAttach" },
 		config = function()
 			require("ts-error-translator").setup({
