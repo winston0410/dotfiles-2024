@@ -498,7 +498,7 @@ return {
 					vim.keymap.set({ "n" }, "<leader>sgC", function()
 						Snacks.picker.lsp_outgoing_calls()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Outgoing calls" })
-					vim.keymap.set({ "n" }, "<leader>s<leader>k", function()
+					vim.keymap.set({ "n" }, "<leader>s<leader>q", function()
 						vim.diagnostic.setqflist({
 							severity = { min = vim.diagnostic.severity.WARN },
 						})

@@ -93,7 +93,7 @@ return {
 				desc = "Grapple remove all tags in a scope",
 			},
 			{
-				"<leader>m<leader>k",
+				"<leader>m<leader>q",
 				function()
 					require("grapple").quickfix()
 				end,

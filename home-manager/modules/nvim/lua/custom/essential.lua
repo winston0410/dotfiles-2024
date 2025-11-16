@@ -166,6 +166,21 @@ vim.filetype.add({
 		gr = "grain",
 	},
 })
+-- remove tag mapping as it has been replaced by LSP
+vim.keymap.del({ 'n' }, '[t', {})
+vim.keymap.del({ 'n' }, ']t', {})
+vim.keymap.del({ 'n' }, '[T', {})
+vim.keymap.del({ 'n' }, ']T', {})
+-- remove buffer navigation
+vim.keymap.del({ 'n' }, '[b', {})
+vim.keymap.del({ 'n' }, ']b', {})
+vim.keymap.del({ 'n' }, '[B', {})
+vim.keymap.del({ 'n' }, ']B', {})
+-- remove location list navigation
+vim.keymap.del({ 'n' }, '[l', {})
+vim.keymap.del({ 'n' }, ']l', {})
+vim.keymap.del({ 'n' }, '[L', {})
+vim.keymap.del({ 'n' }, ']L', {})
 -- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
 vim.keymap.del({ 'n' }, 'gra', {})
 vim.keymap.del({ 'n' }, 'gri', {})

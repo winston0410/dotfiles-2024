@@ -52,13 +52,15 @@ return {
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = { "*" },
 				callback = function(ev)
-					local shared = require("nvim-treesitter-textobjects.shared")
+					local ts_shared = require("nvim-treesitter-textobjects.shared")
 					local mappings = {
 						{ symbol = "r", node = "@return", label = "return statement", outer = true, inner = true },
 						{ symbol = "p", node = "@parameter", label = "parameter", outer = true, inner = true },
 						{ symbol = "f", node = "@function", label = "function definition", outer = true, inner = true },
 						{ symbol = "i", node = "@conditional", label = "conditional", outer = true, inner = true },
 						{ symbol = "k", node = "@call", label = "function call", outer = true, inner = true },
+						{ symbol = "K", node = "@class", label = "class", outer = true, inner = true },
+						{ symbol = "a", node = "@attribute", label = "attribute", outer = true, inner = true },
 					}
 					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
 					local parsername = vim.treesitter.language.get_lang(main_lang)
@@ -76,7 +78,7 @@ return {
 					for _, mapping in ipairs(mappings) do
 						if mapping.inner then
 							local query_string = string.format("%s.inner", mapping.node)
-							if shared.check_support(ev.buf, "textobjects", { query_string }) then
+							if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
 								vim.keymap.set(
 									{ "x", "o" },
 									"i" .. mapping.symbol,
@@ -94,7 +96,7 @@ return {
 						end
 						if mapping.outer then
 							local query_string = string.format("%s.outer", mapping.node)
-							if shared.check_support(ev.buf, "textobjects", { query_string }) then
+							if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
 								vim.keymap.set(
 									{ "n", "x", "o" },
 									"[" .. mapping.symbol,

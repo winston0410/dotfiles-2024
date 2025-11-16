@@ -384,7 +384,7 @@ return {
 			local picker_keys = {
 				["/"] = "toggle_focus",
 				["<2-LeftMouse>"] = "confirm",
-				["<leader>k"] = { "qflist", mode = { "n" } },
+				["<leader>q"] = { "qflist", mode = { "n" } },
 				["<CR>"] = { "confirm", mode = { "n", "i" } },
 				["<Down>"] = { "list_down", mode = { "i", "n" } },
 				["<Up>"] = { "list_up", mode = { "i", "n" } },
