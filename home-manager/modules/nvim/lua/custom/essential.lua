@@ -172,6 +172,8 @@ vim.keymap.del({ 'n' }, '[t', {})
 vim.keymap.del({ 'n' }, ']t', {})
 vim.keymap.del({ 'n' }, '[T', {})
 vim.keymap.del({ 'n' }, ']T', {})
+vim.keymap.del({ 'n' }, '[<C-t>', {})
+vim.keymap.del({ 'n' }, ']<C-t>', {})
 -- remove buffer navigation
 vim.keymap.del({ 'n' }, '[b', {})
 vim.keymap.del({ 'n' }, ']b', {})
@@ -182,6 +184,8 @@ vim.keymap.del({ 'n' }, '[l', {})
 vim.keymap.del({ 'n' }, ']l', {})
 vim.keymap.del({ 'n' }, '[L', {})
 vim.keymap.del({ 'n' }, ']L', {})
+vim.keymap.del({ 'n' }, '[<C-l>', {})
+vim.keymap.del({ 'n' }, ']<C-l>', {})
 
 -- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
 vim.keymap.del({ 'n' }, 'gra', {})
@@ -297,7 +301,6 @@ if vim.fn.has("wsl") == 1 then
 		cache_enabled = 0,
 	}
 end
-
 -- REF https://neovim.io/doc/user/lsp.html#lsp-semantic-highlight
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
@@ -306,4 +309,3 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		end
 	end,
 })
-
