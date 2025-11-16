@@ -28,6 +28,7 @@ vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
 vim.o.titleold = "zsh"
 
+vim.o.spell = false
 vim.opt.spelllang = "en_gb"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
 
@@ -181,6 +182,7 @@ vim.keymap.del({ 'n' }, '[l', {})
 vim.keymap.del({ 'n' }, ']l', {})
 vim.keymap.del({ 'n' }, '[L', {})
 vim.keymap.del({ 'n' }, ']L', {})
+
 -- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
 vim.keymap.del({ 'n' }, 'gra', {})
 vim.keymap.del({ 'n' }, 'gri', {})
