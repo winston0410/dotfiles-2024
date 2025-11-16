@@ -50,7 +50,6 @@ return {
 			vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
 
 			vim.api.nvim_create_autocmd("FileType", {
-				-- pattern = { "lua" },
 				pattern = { "*" },
 				callback = function(ev)
 					local shared = require("nvim-treesitter-textobjects.shared")
