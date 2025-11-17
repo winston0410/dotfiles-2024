@@ -95,7 +95,6 @@
       # needed for treesitter
       nodejs_24
       tree-sitter
-      gcc14
       fd
       bat
       chafa
@@ -114,6 +113,8 @@
       # img-clip.nvim
       pkgs.pngpaste
     ] ++ lib.optionals pkgs.stdenv.isLinux [
+      # needed for treesitter, but only install in Linux, so we can still use MacOS's default gcc and won't conflict with it
+      gcc14
       # vectorcode, cannot build on Darwin yet
       unstable.vectorcode
     ];

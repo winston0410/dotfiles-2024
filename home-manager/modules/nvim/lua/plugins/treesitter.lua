@@ -1,14 +1,15 @@
+local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main"  }
 return {
 	-- keep using this until d2 filetype and treesitter grammar is supported by neovim out of the box
 	{
 		"ravsii/tree-sitter-d2",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = ts_deps,
 		version = "*",
 		build = "make nvim-install",
 	},
 	{
 		"MeanderingProgrammer/treesitter-modules.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = ts_deps,
 		opts = {
 			incremental_selection = {
 				enable = true,
@@ -23,7 +24,7 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = ts_deps,
 		branch = "main",
 		config = function()
 			require("nvim-treesitter-textobjects").setup({
@@ -177,7 +178,7 @@ return {
 			max_lines = 5,
 		},
 		event = { "VeryLazy" },
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = ts_deps,
 	},
 	{
 		"folke/ts-comments.nvim",
@@ -190,6 +191,6 @@ return {
 		"JoosepAlviste/nvim-ts-context-commentstring",
         enabled = false,
 		event = { "VeryLazy" },
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		dependencies = ts_deps,
 	},
 }
