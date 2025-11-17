@@ -443,8 +443,17 @@ return {
 				"typos_lsp",
 				"powershell_es",
 				"protols",
-                "ts_query_ls",
-                "clojure_lsp"
+				"ts_query_ls",
+				"clojure_lsp",
+				"teal_ls",
+				"tclsp",
+				"uiua",
+				"veryl_ls",
+				"wasm_language_tools",
+                "marko-js",
+                "cue",
+                "aiken",
+                "erg_language_server"
 			}
 			vim.lsp.enable(servers, true)
 
