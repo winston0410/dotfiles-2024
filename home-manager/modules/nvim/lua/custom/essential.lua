@@ -187,6 +187,12 @@ vim.keymap.del({ 'n' }, ']L', {})
 vim.keymap.del({ 'n' }, '[<C-l>', {})
 vim.keymap.del({ 'n' }, ']<C-l>', {})
 
+-- remove unused quickfix list binding
+vim.keymap.del({ 'n' }, '[Q', {})
+vim.keymap.del({ 'n' }, ']Q', {})
+vim.keymap.del({ 'n' }, '[<C-q>', {})
+vim.keymap.del({ 'n' }, ']<C-q>', {})
+
 -- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
 vim.keymap.del({ 'n' }, 'gra', {})
 vim.keymap.del({ 'n' }, 'gri', {})

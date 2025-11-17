@@ -62,6 +62,7 @@ return {
 						{ symbol = "k", node = "@call", label = "function call", outer = true, inner = true },
 						{ symbol = "K", node = "@class", label = "class", outer = true, inner = true },
 						{ symbol = "a", node = "@attribute", label = "attribute", outer = true, inner = true },
+						{ symbol = "b", node = "@block", label = "block", outer = true, inner = true },
 					}
 					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
 					local parsername = vim.treesitter.language.get_lang(main_lang)
@@ -165,7 +166,19 @@ return {
 		config = function()
 			require("nvim-treesitter").setup({})
 
-			vim.api.nvim_create_autocmd("User", { pattern = "TSUpdate", callback = function() end })
+
+        vim.api.nvim_create_autocmd('FileType', {
+            group = vim.api.nvim_create_augroup('treesitter.setup', {}),
+            callback = function(args)
+                local filetype = args.match
+
+                local language = vim.treesitter.language.get_lang(filetype) or filetype
+                if not vim.treesitter.language.add(language) then
+                    return
+                end
+                vim.treesitter.start(args.buf, language)
+            end,
+        })
 		end,
 	},
 
