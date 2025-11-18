@@ -132,6 +132,8 @@
     vi = "nvim --clean";
     vim =
       "nvim --cmd 'let g:enable_session = v:false' -u $XDG_CONFIG_HOME/nvim/minimal.lua";
+    vimdiff = "nvim -d --cmd 'let g:enable_session = v:false'";
+    nvimdiff = "nvim -d --cmd 'let g:enable_session = v:false'";
     k8s =
       "nvim --cmd 'let g:enable_session = v:false' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
     diffview =

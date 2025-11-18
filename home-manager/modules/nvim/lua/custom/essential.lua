@@ -102,23 +102,6 @@ vim.o.foldtext = ""
 -- TODO set this to 1, once foldinner is available
 vim.opt.foldcolumn = "0"
 vim.opt.fillchars:append({ fold = " " })
-vim.api.nvim_create_autocmd("WinEnter", {
-	callback = function()
-		if vim.wo.diff then
-			local tab_id = vim.api.nvim_get_current_tabpage()
-			-- lockbuffer is a custom variable we create, to disable all buffer navigation related features
-			vim.api.nvim_tabpage_set_var(tab_id, "lockbuffer", true)
-			local windows = vim.api.nvim_tabpage_list_wins(0)
-			for _, win_id in ipairs(windows) do
-				vim.wo[win_id].winfixbuf = true
-				vim.wo[win_id].wrap = false
-
-				local buf_id = vim.api.nvim_win_get_buf(win_id)
-				vim.api.nvim_buf_set_var(buf_id, "lockbuffer", true)
-			end
-		end
-	end,
-})
 
 -- Use space as leader key
 vim.g.mapleader = " "
