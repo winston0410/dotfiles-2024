@@ -328,6 +328,8 @@ return {
 
 			local servers = {
 				"visualforce_ls",
+                "apex_ls",
+                "lwc_ls",
 				"air",
 				"contextive",
 				"codeqlls",
@@ -453,6 +455,7 @@ return {
                 "marko-js",
                 "cue",
                 "aiken",
+                "arduino_language_server",
                 "erg_language_server"
 			}
 			vim.lsp.enable(servers, true)
