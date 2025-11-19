@@ -75,12 +75,12 @@ vim.opt.fillchars:append({
 	eob = " ",
 	diff = "╱",
 	lastline = " ",
-	foldopen = '',
-	foldclose = '',
-    fold = ' ',
-    foldsep = ' ',
-    -- TODO wait for the https://www.reddit.com/r/neovim/comments/1nxzz9i/new_foldinner_fillchar/#lightbox to land in my Neovim version
-    -- foldinner = ' '
+	foldopen = "",
+	foldclose = "",
+	fold = " ",
+	foldsep = " ",
+	-- TODO wait for the https://www.reddit.com/r/neovim/comments/1nxzz9i/new_foldinner_fillchar/#lightbox to land in my Neovim version
+	-- foldinner = ' '
 })
 vim.o.expandtab = true
 vim.o.autoindent = true
@@ -151,38 +151,38 @@ vim.filetype.add({
 	},
 })
 -- remove tag mapping as it has been replaced by LSP
-vim.keymap.del({ 'n' }, '[t', {})
-vim.keymap.del({ 'n' }, ']t', {})
-vim.keymap.del({ 'n' }, '[T', {})
-vim.keymap.del({ 'n' }, ']T', {})
-vim.keymap.del({ 'n' }, '[<C-t>', {})
-vim.keymap.del({ 'n' }, ']<C-t>', {})
+vim.keymap.del({ "n" }, "[t", {})
+vim.keymap.del({ "n" }, "]t", {})
+vim.keymap.del({ "n" }, "[T", {})
+vim.keymap.del({ "n" }, "]T", {})
+vim.keymap.del({ "n" }, "[<C-t>", {})
+vim.keymap.del({ "n" }, "]<C-t>", {})
 -- remove buffer navigation
-vim.keymap.del({ 'n' }, '[b', {})
-vim.keymap.del({ 'n' }, ']b', {})
-vim.keymap.del({ 'n' }, '[B', {})
-vim.keymap.del({ 'n' }, ']B', {})
+vim.keymap.del({ "n" }, "[b", {})
+vim.keymap.del({ "n" }, "]b", {})
+vim.keymap.del({ "n" }, "[B", {})
+vim.keymap.del({ "n" }, "]B", {})
 -- remove location list navigation
-vim.keymap.del({ 'n' }, '[l', {})
-vim.keymap.del({ 'n' }, ']l', {})
-vim.keymap.del({ 'n' }, '[L', {})
-vim.keymap.del({ 'n' }, ']L', {})
-vim.keymap.del({ 'n' }, '[<C-l>', {})
-vim.keymap.del({ 'n' }, ']<C-l>', {})
+vim.keymap.del({ "n" }, "[l", {})
+vim.keymap.del({ "n" }, "]l", {})
+vim.keymap.del({ "n" }, "[L", {})
+vim.keymap.del({ "n" }, "]L", {})
+vim.keymap.del({ "n" }, "[<C-l>", {})
+vim.keymap.del({ "n" }, "]<C-l>", {})
 
 -- remove unused quickfix list binding
-vim.keymap.del({ 'n' }, '[Q', {})
-vim.keymap.del({ 'n' }, ']Q', {})
-vim.keymap.del({ 'n' }, '[<C-q>', {})
-vim.keymap.del({ 'n' }, ']<C-q>', {})
+vim.keymap.del({ "n" }, "[Q", {})
+vim.keymap.del({ "n" }, "]Q", {})
+vim.keymap.del({ "n" }, "[<C-q>", {})
+vim.keymap.del({ "n" }, "]<C-q>", {})
 
 -- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
-vim.keymap.del({ 'n' }, 'gra', {})
-vim.keymap.del({ 'n' }, 'gri', {})
-vim.keymap.del({ 'n' }, 'grn', {})
-vim.keymap.del({ 'n' }, 'grr', {})
-vim.keymap.del({ 'n' }, 'grt', {})
-vim.keymap.del({ 'n' }, 'gO', {})
+vim.keymap.del({ "n" }, "gra", {})
+vim.keymap.del({ "n" }, "gri", {})
+vim.keymap.del({ "n" }, "grn", {})
+vim.keymap.del({ "n" }, "grr", {})
+vim.keymap.del({ "n" }, "grt", {})
+vim.keymap.del({ "n" }, "gO", {})
 
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
@@ -201,10 +201,10 @@ vim.keymap.set({ "n", "x" }, "Y", "y$", {
 
 -- NOTE this prevent which-key.nvim from showing hints for registers.
 vim.keymap.set(
-  "i",
-  "<C-r>",
-  "<C-r><C-o>",
-  { noremap = true, desc = "Insert contents of named register. Inserts text literally, not as if you typed it." }
+	"i",
+	"<C-r>",
+	"<C-r><C-o>",
+	{ noremap = true, desc = "Insert contents of named register. Inserts text literally, not as if you typed it." }
 )
 
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
@@ -265,15 +265,50 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 -- 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
 -- end
 
+vim.keymap.set({ "n" }, "<leader>xd", function()
+	local wins = vim.api.nvim_tabpage_list_wins(0)
+
+	local has_diff = false
+	for _, w in ipairs(wins) do
+		if vim.api.nvim_win_get_option(w, "diff") then
+			has_diff = true
+			break
+		end
+	end
+
+	for _, w in ipairs(wins) do
+		vim.api.nvim_set_current_win(w)
+        if has_diff then
+            vim.cmd("diffoff!")
+        else
+            vim.cmd("diffthis")
+        end
+	end
+end, { silent = true, noremap = true, desc = "Toggle diff for current buffers" })
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 -- NOTE remove additional wrapper around * and #
 vim.keymap.set({ "n" }, "*", "g*", { silent = true, noremap = true, desc = "Search word under cursor forward" })
 vim.keymap.set({ "n" }, "#", "g#", { silent = true, noremap = true, desc = "Search word under cursor backward" })
-vim.keymap.set({ 'x' }, '*', 'y/<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor forward" })
-vim.keymap.set({ 'x' }, '#', 'y?<C-r>"<CR>', { noremap = true, silent = false, desc = "Search word under cursor backward" })
+vim.keymap.set(
+	{ "x" },
+	"*",
+	'y/<C-r>"<CR>',
+	{ noremap = true, silent = false, desc = "Search word under cursor forward" }
+)
+vim.keymap.set(
+	{ "x" },
+	"#",
+	'y?<C-r>"<CR>',
+	{ noremap = true, silent = false, desc = "Search word under cursor backward" }
+)
 vim.keymap.set({ "n", "x" }, "gf", "gF", { silent = true, noremap = true, desc = "Go to file under cursor" })
-vim.keymap.set({ "n"}, "<C-w>f", "<C-w>F", { silent = true, noremap = true, desc = "Split and go to file under cursor" })
+vim.keymap.set(
+	{ "n" },
+	"<C-w>f",
+	"<C-w>F",
+	{ silent = true, noremap = true, desc = "Split and go to file under cursor" }
+)
 
 -- NOTE support clipboard in WSL, https://neovim.io/doc/user/provider.html#clipboard-wsl
 if vim.fn.has("wsl") == 1 then

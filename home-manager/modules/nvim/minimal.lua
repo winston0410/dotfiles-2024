@@ -43,5 +43,6 @@ require("lazy").setup({
 		{ import = "plugins.which-key" },
 		{ import = "plugins.highlight" },
 		{ import = "plugins.nvim-lspconfig" },
+		{ import = "plugins.hydra" },
 	},
 })
