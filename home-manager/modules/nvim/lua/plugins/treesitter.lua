@@ -1,4 +1,4 @@
-local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main"  }
+local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
 	-- keep using this until d2 filetype and treesitter grammar is supported by neovim out of the box
 	{
@@ -21,6 +21,29 @@ return {
 				},
 			},
 		},
+	},
+	{
+		"dariuscorvus/tree-sitter-language-injection.nvim",
+        enabled = false,
+		config = function()
+			require("tree-sitter-language-injection").setup({
+                -- NOTE we need to use the name of treesitter grammar here
+				c_sharp = {
+                    string = {
+                        langs = {
+                            { name = "sql", match = "(\r\n|\r|\n)*-{2,}( )*{lang}" },
+                        },
+                        query = [[
+            ; query
+            ;; raw_string_literal {name} injection
+            ((raw_string_content) @injection.content
+                               (#match? @injection.content "{match}")
+                               (#set! injection.language "{name}"))
+                    ]],
+                    },
+				},
+			})
+		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
@@ -81,73 +104,53 @@ return {
 						if mapping.inner then
 							local query_string = string.format("%s.inner", mapping.node)
 							if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
-								vim.keymap.set(
-									{ "x", "o" },
-									"i" .. mapping.symbol,
-									function()
-										require("nvim-treesitter-textobjects.select").select_textobject(query_string)
-									end,
-									{
-										noremap = true,
-										silent = true,
-										desc = string.format("Inside %s", mapping.label),
-										buffer = ev.buf,
-									}
-								)
+								vim.keymap.set({ "x", "o" }, "i" .. mapping.symbol, function()
+									require("nvim-treesitter-textobjects.select").select_textobject(query_string)
+								end, {
+									noremap = true,
+									silent = true,
+									desc = string.format("Inside %s", mapping.label),
+									buffer = ev.buf,
+								})
 							end
 						end
 						if mapping.outer then
 							local query_string = string.format("%s.outer", mapping.node)
 							if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
-								vim.keymap.set(
-									{ "n", "x", "o" },
-									"[" .. mapping.symbol,
-									function()
-										require("nvim-treesitter-textobjects.move").goto_previous_start(
-											query_string,
-											"textobjects"
-										)
-									end,
-									{
-										noremap = true,
-										silent = true,
-										desc = string.format("Previous %s", mapping.label),
-										buffer = ev.buf,
-									}
-								)
-								vim.keymap.set(
-									{ "n", "x", "o" },
-									"]" .. mapping.symbol,
-									function()
-										require("nvim-treesitter-textobjects.move").goto_next_start(
-											query_string,
-											"textobjects"
-										)
-									end,
-									{
-										noremap = true,
-										silent = true,
-										desc = string.format("Next %s", mapping.label),
-										buffer = ev.buf,
-									}
-								)
+								vim.keymap.set({ "n", "x", "o" }, "[" .. mapping.symbol, function()
+									require("nvim-treesitter-textobjects.move").goto_previous_start(
+										query_string,
+										"textobjects"
+									)
+								end, {
+									noremap = true,
+									silent = true,
+									desc = string.format("Previous %s", mapping.label),
+									buffer = ev.buf,
+								})
+								vim.keymap.set({ "n", "x", "o" }, "]" .. mapping.symbol, function()
+									require("nvim-treesitter-textobjects.move").goto_next_start(
+										query_string,
+										"textobjects"
+									)
+								end, {
+									noremap = true,
+									silent = true,
+									desc = string.format("Next %s", mapping.label),
+									buffer = ev.buf,
+								})
 
-								vim.keymap.set(
-									{ "x", "o" },
-									"a" .. mapping.symbol,
-									function()
-										require("nvim-treesitter-textobjects.select").select_textobject(
-											query_string,
-											"textobjects"
-										)
-									end,
-									{
-										noremap = true,
-										silent = true,
-										desc = string.format("Around %s", mapping.label),
-										buffer = ev.buf,
-									}
-								)
+								vim.keymap.set({ "x", "o" }, "a" .. mapping.symbol, function()
+									require("nvim-treesitter-textobjects.select").select_textobject(
+										query_string,
+										"textobjects"
+									)
+								end, {
+									noremap = true,
+									silent = true,
+									desc = string.format("Around %s", mapping.label),
+									buffer = ev.buf,
+								})
 							end
 						end
 					end
@@ -166,19 +169,18 @@ return {
 		config = function()
 			require("nvim-treesitter").setup({})
 
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("treesitter.setup", {}),
+				callback = function(args)
+					local filetype = args.match
 
-        vim.api.nvim_create_autocmd('FileType', {
-            group = vim.api.nvim_create_augroup('treesitter.setup', {}),
-            callback = function(args)
-                local filetype = args.match
-
-                local language = vim.treesitter.language.get_lang(filetype) or filetype
-                if not vim.treesitter.language.add(language) then
-                    return
-                end
-                vim.treesitter.start(args.buf, language)
-            end,
-        })
+					local language = vim.treesitter.language.get_lang(filetype) or filetype
+					if not vim.treesitter.language.add(language) then
+						return
+					end
+					vim.treesitter.start(args.buf, language)
+				end,
+			})
 		end,
 	},
 
@@ -202,7 +204,7 @@ return {
 	},
 	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
-        enabled = false,
+		enabled = false,
 		event = { "VeryLazy" },
 		dependencies = ts_deps,
 	},
