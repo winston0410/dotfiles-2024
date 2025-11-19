@@ -52,9 +52,13 @@ return {
 	},
 	{
 		"mistricky/codesnap.nvim",
-		build = "make",
-		version = "1.x",
+		version = "2.x",
 		cmd = { "CodeSnapHighlight", "CodeSnapSaveHighlight", "CodeSnapASCII", "CodeSnap", "CodeSnapSave" },
+		config = function()
+			require("codesnap").setup({
+				show_line_number = true,
+			})
+		end,
 	},
 	-- NOTE interesting plugin, but not very useful
 	{
@@ -155,7 +159,7 @@ return {
 		},
 		version = "1.x",
 		config = function()
-            -- https://github.com/stevearc/overseer.nvim/discussions/373
+			-- https://github.com/stevearc/overseer.nvim/discussions/373
 			local overseer = require("overseer")
 			overseer.setup({
 				bundles = {
