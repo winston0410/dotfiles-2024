@@ -134,7 +134,8 @@ return {
 					fsharp = { "fantomas" },
 					fortran = { "fprettify" },
 					["*"] = {
-						"typos",
+                        "injected",
+						-- "typos",
 					},
 				},
 				default_format_opts = {
