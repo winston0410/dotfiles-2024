@@ -5,43 +5,43 @@ return {
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo", "ConformDisable", "ConformEnable" },
 		config = function()
-            -- REF https://github.com/stevearc/conform.nvim/issues/781
-            -- biome might fail if biome.json does not exist
+			-- REF https://github.com/stevearc/conform.nvim/issues/781
+			-- biome might fail if biome.json does not exist
 			local biome = { "biome", "prettierd", "prettier", stop_after_first = true }
-            local clang_format = { "clang_format"}
+			local clang_format = { "clang_format" }
 
 			require("conform").setup({
-                timeout_ms = 10000,
+				timeout_ms = 10000,
 				formatters_by_ft = {
-                    gdscript = {"gdformat"},
-                    roc = {"roc"},
-                    bicep = {"bicep"},
-                    proto = {"buf"},
-                    gn = {"gn"},
-                    vhdl = {"ghdl"},
-                    cedar = {"cedar"},
-                    tf = {"tofu_fmt", "terraform_fmt", stop_after_first = true},
+					gdscript = { "gdformat" },
+					roc = { "roc" },
+					bicep = { "bicep" },
+					proto = { "buf" },
+					gn = { "gn" },
+					vhdl = { "ghdl" },
+					cedar = { "cedar" },
+					tf = { "tofu_fmt", "terraform_fmt", stop_after_first = true },
 					ember = {},
 					apex = {},
 					astro = {},
 					cuda = {},
 					foam = {},
-                    lisp = {"joker"},
-                    clojure = {"joker"},
-					fish = {"fish_indent"},
+					lisp = { "joker" },
+					clojure = { "joker" },
+					fish = { "fish_indent" },
 					glsl = {},
 					hack = {},
-					inko = {"inko"},
+					inko = { "inko" },
 					julia = {},
-					imba = {"imba_fmt"},
-					rego = {"opa_fmt"},
-                    bib = {"bibtex-tidy"},
-					odin = {"odinfmt"},
+					imba = { "imba_fmt" },
+					rego = { "opa_fmt" },
+					bib = { "bibtex-tidy" },
+					odin = { "odinfmt" },
 					tact = {},
 					nasm = {},
 					slang = {},
-					perl = {"perltidy"},
-                    php = {"mago_format"},
+					perl = { "perltidy" },
+					php = { "mago_format" },
 					wgsl = {},
 					html = biome,
 					xml = biome,
@@ -60,15 +60,15 @@ return {
 					sh = { "shfmt" },
 					zsh = { "shfmt" },
 					bash = { "shfmt" },
-					markdown = vim.list_extend(biome, {"injected"}),
+					markdown = vim.list_extend(biome, { "injected" }),
 					json = biome,
-					jsonl = {"biome"},
+					jsonl = { "biome" },
 					jsonc = biome,
 					json5 = biome,
 					yaml = biome,
 					vue = biome,
-                    v = {"v"},
-                    qml = {"qmlformat"},
+					v = { "v" },
+					qml = { "qmlformat" },
 					http = { "kulala-fmt" },
 					toml = { "taplo" },
 					lua = { "stylua" },
@@ -83,8 +83,8 @@ return {
 					end,
 					rust = { "rustfmt", lsp_format = "fallback" },
 					go = { "goimports", "gofmt" },
-                    typespec = {"typespec"},
-                    ansible = {"ansible-lint"},
+					typespec = { "typespec" },
+					ansible = { "ansible-lint" },
 					nix = { "nixfmt" },
 					nginx = { "nginxfmt" },
 					ruby = { "rufo" },
@@ -117,23 +117,25 @@ return {
 					nim = { "nimpretty" },
 					mint = { "mintfmt" },
 					kdl = { "kdlfmt" },
-                    kcl = {"kcl"},
+					kcl = { "kcl" },
 					just = { "just" },
 					hurl = { "hurlfmt" },
 					erb = { "erb_format" },
 					ql = { "codeql" },
-                    d = { "dfmt" },
-                    jsonnet = {"jsonnetfmt"},
-                    grain = {"grain_format"},
+					d = { "dfmt" },
+					jsonnet = { "jsonnetfmt" },
+					grain = { "grain_format" },
 					d2 = { "d2" },
-                    cue = { "cue_fmt"},
+					cue = { "cue_fmt" },
 					erlang = { "efmt" },
 					awk = { "gawk" },
 					gleam = { "gleam" },
 					zig = { "zigfmt" },
 					fsharp = { "fantomas" },
-                    fortran = {"fprettify"},
-                    -- ["*"] = { "typos" },
+					fortran = { "fprettify" },
+					["*"] = {
+						"typos",
+					},
 				},
 				default_format_opts = {
 					lsp_format = "fallback",
@@ -149,14 +151,14 @@ return {
 				end,
 				formatters = {},
 			})
-            require('conform').formatters.injected = {
-                options = {
-                  lang_to_ext = {
-                    bash = "sh",
-                    javascript = "js",
-                  }
-                }
-            }
+			require("conform").formatters.injected = {
+				options = {
+					lang_to_ext = {
+						bash = "sh",
+						javascript = "js",
+					},
+				},
+			}
 			local disable_autoformat = function(args)
 				if args.bang then
 					-- ConformDisable! will disable formatting just for this buffer

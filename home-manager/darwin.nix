@@ -34,7 +34,8 @@ in {
       source = lib.mkForce ./modules/wezterm/darwin.lua;
     };
   };
-  programs.zsh.initContent = lib.mkBefore (''
+  programs.zsh.initContent = lib.mkBefore (# zsh
+  ''
     export PATH="$PATH:/opt/homebrew/bin";
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
     source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;

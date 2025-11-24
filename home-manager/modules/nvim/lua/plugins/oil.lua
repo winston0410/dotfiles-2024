@@ -6,7 +6,7 @@ return {
 		lazy = false,
 		enabled = not enable_oil,
 		cmd = { "Fyler" },
-		version = "1.x",
+		version = "2.x",
 		keys = {
 			{
 				"<leader>o",

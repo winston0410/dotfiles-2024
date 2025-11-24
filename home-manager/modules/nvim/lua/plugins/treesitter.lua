@@ -1,5 +1,12 @@
 local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
+	{
+		"winston0410/syringe.nvim",
+        dependencies = ts_deps,
+        config = function()
+            require("syringe").setup{}
+        end,
+	},
 	-- keep using this until d2 filetype and treesitter grammar is supported by neovim out of the box
 	{
 		"ravsii/tree-sitter-d2",
@@ -21,29 +28,6 @@ return {
 				},
 			},
 		},
-	},
-	{
-		"dariuscorvus/tree-sitter-language-injection.nvim",
-        enabled = false,
-		config = function()
-			require("tree-sitter-language-injection").setup({
-                -- NOTE we need to use the name of treesitter grammar here
-				c_sharp = {
-                    string = {
-                        langs = {
-                            { name = "sql", match = "(\r\n|\r|\n)*-{2,}( )*{lang}" },
-                        },
-                        query = [[
-            ; query
-            ;; raw_string_literal {name} injection
-            ((raw_string_content) @injection.content
-                               (#match? @injection.content "{match}")
-                               (#set! injection.language "{name}"))
-                    ]],
-                    },
-				},
-			})
-		end,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",

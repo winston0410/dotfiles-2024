@@ -13,7 +13,8 @@
     };
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
-    initContent = ''
+    initContent = 
+    ''
       # Set module path, so zsh can load *.so from /nix/store correctly
       module_path="${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}"
     '' + (builtins.readFile ./init.sh);
