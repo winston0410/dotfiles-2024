@@ -50,7 +50,8 @@ return {
 					scss = biome,
 					sass = biome,
 					less = biome,
-					javascript = biome,
+                    -- testing if using injected in * formatter is working
+					javascript = vim.list_extend(biome, { "injected" }),
 					javascriptreact = biome,
 					["javascript.jsx"] = biome,
 					typescript = biome,
