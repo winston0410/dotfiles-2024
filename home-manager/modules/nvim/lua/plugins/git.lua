@@ -5,7 +5,7 @@ return {
 		event = { "VeryLazy" },
 		keys = {
 			-- TODO how to select local diff hunk?????
-            -- TODO review the keybindings here
+			-- TODO review the keybindings here
 			{
 				"ac",
 				function()
@@ -16,7 +16,7 @@ return {
 				noremap = true,
 				desc = "Git hunk",
 			},
-            -- NOTE in the structure of ns-verb-noun, similar to an operator
+			-- NOTE in the structure of ns-verb-noun, similar to an operator
 			{
 				"<leader>gsc",
 				function()
@@ -50,11 +50,11 @@ return {
 			{
 				"]c",
 				function()
-                  if vim.wo.diff then
-                    vim.cmd.normal({']c', bang = true})
-                  else
-                    require("gitsigns").nav_hunk('next')
-                  end
+					if vim.wo.diff then
+						vim.cmd.normal({ "]c", bang = true })
+					else
+						require("gitsigns").nav_hunk("next")
+					end
 				end,
 				mode = { "n" },
 				silent = true,
@@ -64,11 +64,11 @@ return {
 			{
 				"[c",
 				function()
-                  if vim.wo.diff then
-                    vim.cmd.normal({'[c', bang = true})
-                  else
-                    require("gitsigns").nav_hunk('prev')
-                  end
+					if vim.wo.diff then
+						vim.cmd.normal({ "[c", bang = true })
+					else
+						require("gitsigns").nav_hunk("prev")
+					end
 				end,
 				mode = { "n" },
 				silent = true,
@@ -102,6 +102,12 @@ return {
 			})
 		end,
 		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+	{
+		"esmuellert/vscode-diff.nvim",
+		dependencies = { "MunifTanjim/nui.nvim" },
+		version = "1.x",
+        cmd = {"CodeDiff"}
 	},
 	{
 		"sindrets/diffview.nvim",
