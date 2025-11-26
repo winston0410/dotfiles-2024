@@ -122,6 +122,7 @@ require("lazy").setup({
 			"stevearc/quicker.nvim",
 			-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
 			lazy = false,
+            enabled = false,
 			ft = { "qf" },
 			keys = {
 				{
