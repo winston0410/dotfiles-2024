@@ -142,6 +142,8 @@ vim.opt.background = "dark"
 vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
+        vert     = "glsl",
+        frag     = "glsl",
 		http = "http",
 		rest = "http",
 		k = "kcl",
