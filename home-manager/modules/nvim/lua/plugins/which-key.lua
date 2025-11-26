@@ -5,7 +5,7 @@ return {
 		version = "3.x",
 		keys = {
 			{
-				"?l",
+				"<leader>b?",
 				function()
 					require("which-key").show({ global = false, loop = true })
 				end,
@@ -14,7 +14,7 @@ return {
 				desc = "Show local keymaps",
 			},
 			{
-				"?g",
+				"?",
 				function()
 					require("which-key").show({ global = true, loop = true })
 				end,
