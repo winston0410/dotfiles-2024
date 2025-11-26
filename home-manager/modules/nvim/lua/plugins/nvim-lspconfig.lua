@@ -54,7 +54,6 @@ return {
 					null_ls.builtins.diagnostics.haml_lint,
 					null_ls.builtins.diagnostics.terraform_validate,
 					null_ls.builtins.diagnostics.tidy,
-					null_ls.builtins.diagnostics.golangci_lint,
 					null_ls.builtins.diagnostics.opacheck,
 					null_ls.builtins.code_actions.refactoring,
 					null_ls.builtins.code_actions.ts_node_action,

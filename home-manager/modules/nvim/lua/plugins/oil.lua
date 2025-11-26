@@ -20,7 +20,7 @@ return {
 			},
 		},
 		config = function()
-            -- FIXME https://github.com/A7Lavinraj/fyler.nvim/issues/204 this prevents fyler to work with session manager
+			-- FIXME https://github.com/A7Lavinraj/fyler.nvim/issues/204 this prevents fyler to work with session manager
 			require("fyler").setup({
 				close_on_select = true,
 				confirm_simple = true,
@@ -29,16 +29,23 @@ return {
 				icon_provider = "nvim_web_devicons",
 				views = {
 					explorer = {},
-				},
-
-				mappings = {
-					["q"] = "CloseView",
-					["<CR>"] = "Select",
-					["-"] = "GotoParent",
-					["="] = "GotoCwd",
-					["."] = "GotoNode",
-					["zM"] = "CollapseAll",
-					["zc"] = "CollapseNode",
+					mappings = {
+						["q"] = "CloseView",
+						["<CR>"] = "Select",
+						["-"] = "GotoParent",
+						["="] = "GotoCwd",
+						["."] = "GotoNode",
+						["zM"] = "CollapseAll",
+						["zc"] = "CollapseNode",
+					},
+					watcher = {
+						enabled = true,
+					},
+					win = {
+						win_opts = {
+							number = true,
+						},
+					},
 				},
 			})
 		end,
