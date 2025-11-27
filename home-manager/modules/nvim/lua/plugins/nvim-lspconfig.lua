@@ -119,39 +119,6 @@ return {
 		},
 	},
 	{
-		"jmbuhr/otter.nvim",
-		lazy = false,
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-		},
-		version = "2.x",
-		config = function()
-			require("otter").setup({
-				lsp = {
-					diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
-				},
-			})
-			vim.api.nvim_create_autocmd("BufEnter", {
-				pattern = "*",
-				callback = function(ev)
-					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
-					local parsername = vim.treesitter.language.get_lang(main_lang)
-					if not parsername then
-						return
-					end
-					local ok, parser = pcall(function()
-						local parser = vim.treesitter.get_parser(ev.buf, parsername)
-						return parser
-					end)
-					if not ok or not parser then
-						return
-					end
-					require("otter").activate()
-				end,
-			})
-		end,
-	},
-	{
 		"rachartier/tiny-inline-diagnostic.nvim",
 		event = "VeryLazy",
 		priority = 1000,
