@@ -122,7 +122,7 @@ require("lazy").setup({
 			"stevearc/quicker.nvim",
 			-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
 			lazy = false,
-            enabled = false,
+            enabled = true,
 			ft = { "qf" },
 			keys = {
 				{
@@ -154,26 +154,6 @@ require("lazy").setup({
 						enabled = false,
 					},
 				})
-			end,
-		},
-		{
-			"m00qek/baleia.nvim",
-			version = "*",
-			cmd = { "BaleiaColorize", "BaleiaLogs" },
-			config = function()
-				vim.g.baleia = require("baleia").setup({})
-
-				vim.api.nvim_create_user_command("BaleiaColorize", function()
-					local bufId = tonumber(vim.api.nvim_get_current_buf())
-					if bufId == nil then
-						vim.notify("Unable to find current buffer handle", vim.log.levels.ERROR)
-						return
-					end
-					---@diagnostic disable-next-line: param-type-mismatch
-					vim.g.baleia.once(bufId)
-				end, { bang = true })
-
-				vim.api.nvim_create_user_command("BaleiaLogs", vim.g.baleia.logger.show, { bang = true })
 			end,
 		},
 	},
