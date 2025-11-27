@@ -2,15 +2,16 @@ local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
 	{
 		"winston0410/syringe.nvim",
-        dependencies = ts_deps,
-        config = function()
-            require("syringe").setup{}
-        end,
+		dependencies = ts_deps,
+        lazy = false,
+		config = function()
+			require("syringe").setup({})
+		end,
 	},
 	{
 		"jmbuhr/otter.nvim",
 		lazy = false,
-        dependencies = ts_deps,
+		dependencies = ts_deps,
 		version = "2.x",
 		config = function()
 			require("otter").setup({
