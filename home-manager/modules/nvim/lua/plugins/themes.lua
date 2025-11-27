@@ -51,7 +51,7 @@ return {
 	},
 	{
 		"kyza0d/xeno.nvim",
-		lazy = false,
+		lazy = true,
 		opts = {
 			transparent = true,
 			contrast = 0.1,
