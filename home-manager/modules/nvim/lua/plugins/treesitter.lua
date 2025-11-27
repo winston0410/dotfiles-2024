@@ -3,7 +3,7 @@ return {
 	{
 		"winston0410/syringe.nvim",
 		dependencies = ts_deps,
-        lazy = false,
+		lazy = false,
 		config = function()
 			require("syringe").setup({})
 		end,
@@ -14,7 +14,9 @@ return {
 		dependencies = ts_deps,
 		version = "2.x",
 		config = function()
-			require("otter").setup({
+			local host_languages = require("syringe").get_supported_host_languages()
+			local otter = require("otter")
+			otter.setup({
 				lsp = {
 					diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
 				},
@@ -23,6 +25,10 @@ return {
 				pattern = "*",
 				callback = function(ev)
 					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
+					if not vim.tbl_contains(host_languages, main_lang) then
+						return
+					end
+
 					local parsername = vim.treesitter.language.get_lang(main_lang)
 					if not parsername then
 						return
@@ -34,7 +40,7 @@ return {
 					if not ok or not parser then
 						return
 					end
-					require("otter").activate()
+					otter.activate()
 				end,
 			})
 		end,
