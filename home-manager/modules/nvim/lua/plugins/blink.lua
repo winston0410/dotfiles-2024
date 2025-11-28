@@ -164,7 +164,8 @@ return {
 					"buffer",
 					"omni",
 					"emoji",
-					"copilot",
+                    -- Too noisy, just disable it for now
+					-- "copilot",
 				},
 				providers = {
 					bibtex = {
