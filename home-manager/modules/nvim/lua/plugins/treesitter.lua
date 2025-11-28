@@ -1,3 +1,9 @@
+-- NOTE wait for Neovim 0.12
+-- vim.pack.add({
+--     { src = "https://github.com/winston0410/syringe.nvim", version = 'main' },
+-- })
+-- require("syringe").setup({})
+
 local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
 	{
