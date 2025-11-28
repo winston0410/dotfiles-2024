@@ -14,7 +14,7 @@ return {
 		dependencies = ts_deps,
 		version = "2.x",
 		config = function()
-			local host_languages = require("syringe").get_supported_host_languages()
+			local host_languages = vim.list_extend( require("syringe").get_supported_host_languages(), {"markdown", "markdown_inline"})
 			local otter = require("otter")
 			otter.setup({
 				lsp = {
