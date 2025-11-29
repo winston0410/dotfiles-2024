@@ -34,6 +34,23 @@ return {
 		lazy = true,
 	},
 	{
+        -- feels overlapped with kanagawa paper
+		"webhooked/kanso.nvim",
+		lazy = true,
+        enabled = false,
+		init = function()
+			vim.opt.wildignore:append({
+				"kanso.vim",
+				"kanso-pearl.vim",
+				"kanso-zen.vim",
+				"kanso-mist.vim",
+			})
+		end,
+		config = function()
+			require("kanso").setup({ })
+		end,
+	},
+	{
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 9999,
@@ -92,6 +109,7 @@ return {
 		init = function()
 			vim.opt.wildignore:append({
 				"rose-pine.lua",
+				"rose-pine-main.lua",
 				"rose-pine-dawn.lua",
 			})
 		end,
