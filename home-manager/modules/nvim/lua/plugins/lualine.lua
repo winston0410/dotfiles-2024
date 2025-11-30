@@ -182,7 +182,7 @@ return {
 			local utils = require("heirline.utils")
 			local heirline = require("heirline")
 			local heirline_components = require("heirline-components.all")
-			local hydra_statusline = require("hydra.statusline")
+			-- local hydra_statusline = require("hydra.statusline")
 
 			heirline_components.init.subscribe_to_events()
 			-- FIXME heirline-compoments would reload color after colorscheme has changed, we need to set our custom color again as well
@@ -241,39 +241,40 @@ return {
 				end,
 			})
 
-			local Mode = heirline_components.component.builder({
-				{
-					provider = function()
-						local text = heirline_components.env.modes[vim.fn.mode()][1]
-						local hydra_mode = hydra_statusline.get_name()
-						if hydra_mode ~= nil then
-							text = string.format(" %s ", hydra_mode:upper())
-						end
-						-- print(hydra_statusline.get_color())
-						-- if dmode_enabled then
-						-- 	text = "DEBUG"
-						-- end
-						local opts = {}
-						return heirline_components.utils.stylize(text, opts)
-					end,
-				},
-				surround = {
-					separator = "left",
-					color = function()
-						local hydra_mode = hydra_statusline.get_name()
-						if hydra_mode ~= nil then
-							return string.format("hydra_%s", hydra_mode:lower())
-						end
-						local hl = heirline_components.hl.mode_bg()
-						return hl
-					end,
-				},
-				hl = heirline_components.hl.get_attributes("mode"),
-			})
+			-- local Mode = heirline_components.component.builder({
+			-- 	{
+			-- 		provider = function()
+			-- 			local text = heirline_components.env.modes[vim.fn.mode()][1]
+			-- 			local hydra_mode = hydra_statusline.get_name()
+			-- 			if hydra_mode ~= nil then
+			-- 				text = string.format(" %s ", hydra_mode:upper())
+			-- 			end
+			-- 			-- print(hydra_statusline.get_color())
+			-- 			-- if dmode_enabled then
+			-- 			-- 	text = "DEBUG"
+			-- 			-- end
+			-- 			local opts = {}
+			-- 			return heirline_components.utils.stylize(text, opts)
+			-- 		end,
+			-- 	},
+			-- 	surround = {
+			-- 		separator = "left",
+			-- 		color = function()
+			-- 			local hydra_mode = hydra_statusline.get_name()
+			-- 			if hydra_mode ~= nil then
+			-- 				return string.format("hydra_%s", hydra_mode:lower())
+			-- 			end
+			-- 			local hl = heirline_components.hl.mode_bg()
+			-- 			return hl
+			-- 		end,
+			-- 	},
+			-- 	hl = heirline_components.hl.get_attributes("mode"),
+			-- })
 
 			require("heirline").setup({
 				statusline = {
-					Mode,
+                    heirline_components.component.mode({ mode_text = {} }),
+					-- Mode,
                     -- FIXME no idea why its position is fixed
                     -- heirline_components.component.git_diff(),
 					heirline_components.component.git_branch({}),

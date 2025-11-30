@@ -106,7 +106,7 @@ require("lazy").setup({
 		{ import = "plugins.colorpicker" },
 		{ import = "plugins.cord" },
 		{ import = "plugins.blink" },
-		{ import = "plugins.hydra" },
+		-- { import = "plugins.hydra" },
 		{ import = "plugins.range" },
 		{ import = "plugins.codecompanion" },
 		{ import = "plugins.operators" },
