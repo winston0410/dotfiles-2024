@@ -3,7 +3,6 @@ return {
 		-- TODO implement position specific tag https://github.com/cbochs/grapple.nvim/issues/118
 		"cbochs/grapple.nvim",
 		version = "0.30.x",
-        enabled = false,
 		dependencies = {
 			{ "nvim-tree/nvim-web-devicons", lazy = true },
 		},
@@ -19,7 +18,7 @@ return {
 			})
 		end,
 		event = { "BufReadPost", "BufNewFile" },
-		cmd = "Grapple",
+		cmd = { "Grapple" },
 		keys = {
 			{
 				"<leader>p<leader>m",
@@ -31,7 +30,7 @@ return {
 				desc = "Grapple toggle tags window",
 			},
 			{
-				"<leader>mo",
+				"]<leader>m",
 				function()
 					require("grapple").cycle_tags("next")
 				end,
@@ -40,7 +39,7 @@ return {
 				desc = "Grapple cycle next tag",
 			},
 			{
-				"<leader>mi",
+				"[<leader>m",
 				function()
 					require("grapple").cycle_tags("prev")
 				end,
@@ -102,7 +101,7 @@ return {
 				desc = "Grapple loads tag to quickfix",
 			},
 			{
-				"<leader>mso",
+				"]<leader>M",
 				function()
 					require("grapple").cycle_scopes("next")
 				end,
@@ -111,7 +110,7 @@ return {
 				desc = "Grapple cycle next scope",
 			},
 			{
-				"<leader>msi",
+				"[<leader>M",
 				function()
 					require("grapple").cycle_scopes("prev")
 				end,
