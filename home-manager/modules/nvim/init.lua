@@ -118,44 +118,44 @@ require("lazy").setup({
 		{ import = "plugins.snacks" },
 		{ import = "plugins.which-key" },
 		{ import = "plugins.conform" },
-		{
-			"stevearc/quicker.nvim",
-			-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
-			lazy = false,
-            enabled = true,
-			ft = { "qf" },
-			keys = {
-				{
-					"<leader>q",
-					function()
-						require("quicker").toggle()
-					end,
-					mode = { "n" },
-					silent = true,
-					noremap = true,
-					desc = "Open quickfix list",
-				},
-			},
-			config = function()
-				require("quicker").setup({
-					keys = {},
-					borders = {
-						vert = "│",
-					},
-					opts = {
-						buflisted = false,
-						number = false,
-						relativenumber = false,
-						signcolumn = "no",
-						winfixheight = true,
-						wrap = false,
-					},
-					follow = {
-						enabled = false,
-					},
-				})
-			end,
-		},
+		-- {
+		-- 	"stevearc/quicker.nvim",
+		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
+		-- 	lazy = false,
+		--           enabled = true,
+		-- 	ft = { "qf" },
+		-- 	keys = {
+		-- 		{
+		-- 			"<leader>q",
+		-- 			function()
+		-- 				require("quicker").toggle()
+		-- 			end,
+		-- 			mode = { "n" },
+		-- 			silent = true,
+		-- 			noremap = true,
+		-- 			desc = "Open quickfix list",
+		-- 		},
+		-- 	},
+		-- 	config = function()
+		-- 		require("quicker").setup({
+		-- 			keys = {},
+		-- 			borders = {
+		-- 				vert = "│",
+		-- 			},
+		-- 			opts = {
+		-- 				buflisted = false,
+		-- 				number = false,
+		-- 				relativenumber = false,
+		-- 				signcolumn = "no",
+		-- 				winfixheight = true,
+		-- 				wrap = false,
+		-- 			},
+		-- 			follow = {
+		-- 				enabled = false,
+		-- 			},
+		-- 		})
+		-- 	end,
+		-- },
 	},
 })
 
