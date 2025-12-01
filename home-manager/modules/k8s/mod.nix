@@ -3,6 +3,7 @@
     kubectl
     kubernetes-helm
     stern
+    fluxcd
     # FIXME cannot build this with Nix, as it requires kubectl-go
     # (pkgs.rustPlatform.buildRustPackage rec {
     #   pname = "kubectl_client";
