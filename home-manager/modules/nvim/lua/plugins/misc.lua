@@ -199,4 +199,50 @@ return {
 			-- })
 		end,
 	},
+	{
+		"chentoast/marks.nvim",
+		enabled = false,
+		event = { "VeryLazy" },
+		commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
+		keys = {
+			{
+				"m",
+				function()
+					require("marks").set()
+				end,
+				silent = true,
+				noremap = true,
+				desc = "Set mark",
+			},
+			{
+				"m,",
+				function()
+					require("marks").set_next()
+				end,
+				silent = true,
+				noremap = true,
+				desc = "Set next available mark",
+			},
+			{
+				"dm",
+				function()
+					require("marks").delete()
+				end,
+				silent = true,
+				noremap = true,
+				desc = "Delete mark",
+			},
+		},
+		opts = {
+			default_mappings = false,
+			builtin_marks = {
+				"[",
+				"]",
+				-- beginning of last insert
+				"^",
+			},
+			excluded_filetypes = { "fzf" },
+			excluded_buftypes = { "nofile" },
+		},
+	},
 }
