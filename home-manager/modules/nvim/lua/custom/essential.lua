@@ -205,6 +205,18 @@ vim.keymap.set({ "n" }, "[<leader>q", function()
 	end)
 end, { noremap = true, silent = true, desc = "Prev entry in quickfix" })
 
+vim.keymap.set({ "n" }, "<leader>q@", function()
+    local macro_key = vim.fn.getcharstr()
+    vim.cmd(string.format( "cdo normal! @%s", macro_key ))
+	vim.notify(string.format( "Triggered marco for %s", macro_key ), vim.log.levels.INFO)
+end, { noremap = true, silent = true, desc = "Execute macros in quickfix" })
+
+vim.keymap.set({ "n" }, "<leader>a@", function()
+    local macro_key = vim.fn.getcharstr()
+    vim.cmd(string.format( "argdo normal! @%s", macro_key ))
+	vim.notify(string.format( "Triggered marco for %s", macro_key ), vim.log.levels.INFO)
+end, { noremap = true, silent = true, desc = "Execute macros in arglist" })
+
 -- NOTE we won't be using arglist or quickfix list that often with vanilla Neovim anyway. Remapping to <leader><key>, so we can add more custom keybinding to each of them
 vim.keymap.set({ "n" }, "]<leader>a", function()
 	pcall(function()

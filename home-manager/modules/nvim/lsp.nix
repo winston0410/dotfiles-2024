@@ -134,5 +134,5 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-lsp ];
+  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-language-server ];
 }
