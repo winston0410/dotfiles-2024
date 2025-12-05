@@ -33,23 +33,7 @@ return {
 	-- 		vim.fn.mkdir(runtime_path, "p")
 	-- 	end,
 	-- },
-	{
-		"ahkohd/difft.nvim",
-		-- not sure why is this useful
-		enabled = false,
-		config = function()
-			require("difft").setup()
-		end,
-	},
 	-- FIXME it never built successfully
-	{
-		"jackplus-xyz/player-one.nvim",
-		enabled = false,
-		opts = {
-			is_enabled = true,
-			debug = true,
-		},
-	},
 	{
 		"mistricky/codesnap.nvim",
 		version = "2.x",
@@ -59,13 +43,6 @@ return {
 				show_line_number = true,
 			})
 		end,
-	},
-	-- NOTE interesting plugin, but not very useful
-	{
-		"mawkler/hml.nvim",
-		enabled = false,
-		event = { "VeryLazy" },
-		opts = {},
 	},
 	{
 		"mcauley-penney/visual-whitespace.nvim",
@@ -198,51 +175,5 @@ return {
 			-- 	end,
 			-- })
 		end,
-	},
-	{
-		"chentoast/marks.nvim",
-		enabled = false,
-		event = { "VeryLazy" },
-		commit = "bb25ae3f65f504379e3d08c8a02560b76eaf91e8",
-		keys = {
-			{
-				"m",
-				function()
-					require("marks").set()
-				end,
-				silent = true,
-				noremap = true,
-				desc = "Set mark",
-			},
-			{
-				"m,",
-				function()
-					require("marks").set_next()
-				end,
-				silent = true,
-				noremap = true,
-				desc = "Set next available mark",
-			},
-			{
-				"dm",
-				function()
-					require("marks").delete()
-				end,
-				silent = true,
-				noremap = true,
-				desc = "Delete mark",
-			},
-		},
-		opts = {
-			default_mappings = false,
-			builtin_marks = {
-				"[",
-				"]",
-				-- beginning of last insert
-				"^",
-			},
-			excluded_filetypes = { "fzf" },
-			excluded_buftypes = { "nofile" },
-		},
 	},
 }

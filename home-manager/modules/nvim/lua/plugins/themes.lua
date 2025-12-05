@@ -14,13 +14,6 @@ return {
 			})
 		end,
 	},
-	{ "miikanissi/modus-themes.nvim", lazy = true, enabled = false },
-	-- comment is too dark when using lackluster
-	{
-		"slugbyte/lackluster.nvim",
-		enabled = false,
-		lazy = true,
-	},
 	{
 		"jnz/studio98",
 		lazy = true,
@@ -32,23 +25,6 @@ return {
 	{
 		"thesimonho/kanagawa-paper.nvim",
 		lazy = true,
-	},
-	{
-        -- feels overlapped with kanagawa paper
-		"webhooked/kanso.nvim",
-		lazy = true,
-        enabled = false,
-		init = function()
-			vim.opt.wildignore:append({
-				"kanso.vim",
-				"kanso-pearl.vim",
-				"kanso-zen.vim",
-				"kanso-mist.vim",
-			})
-		end,
-		config = function()
-			require("kanso").setup({ })
-		end,
 	},
 	{
 		"folke/tokyonight.nvim",

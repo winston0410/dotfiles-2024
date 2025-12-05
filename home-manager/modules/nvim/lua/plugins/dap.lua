@@ -219,27 +219,4 @@ return {
 		-- 	},
 		-- },
 	},
-	{
-		"miroshQa/debugmaster.nvim",
-		dependencies = {
-			"jbyuki/one-small-step-for-vimkind",
-		},
-		enabled = false,
-		config = function()
-			local dm = require("debugmaster")
-			dm.plugins.osv_integration.enabled = true
-		end,
-		keys = {
-			{
-				"<leader>d",
-				function()
-					require("debugmaster").mode.toggle()
-				end,
-				mode = { "n", "x" },
-				silent = true,
-				noremap = true,
-				desc = "Toggle breakpoint",
-			},
-		},
-	},
 }

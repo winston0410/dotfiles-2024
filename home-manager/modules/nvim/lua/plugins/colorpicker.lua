@@ -1,5 +1,5 @@
 return {
-	-- TODO set up this colorpicker
+	-- NOTE not sure if we should set up this colorpicker, as its workflow is really different with Nvim
 	{
 		"nvzone/minty",
 		enabled = false,

@@ -211,29 +211,11 @@ return {
 			})
 		end,
 	},
-
-	-- TODO see if we can turn these into treesitter's dependencies, and config with its setup function
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-		-- replaced this plugin with dropbar.nvim, as it occupies less estate on screen
-		enabled = false,
-		opts = {
-			max_lines = 5,
-		},
-		event = { "VeryLazy" },
-		dependencies = ts_deps,
-	},
 	{
 		"folke/ts-comments.nvim",
 		opts = {},
 		event = "VeryLazy",
 		enabled = vim.fn.has("nvim-0.10.0") == 1,
 		config = function() end,
-	},
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		enabled = false,
-		event = { "VeryLazy" },
-		dependencies = ts_deps,
 	},
 }
