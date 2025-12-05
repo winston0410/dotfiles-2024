@@ -171,8 +171,15 @@ vim.keymap.del({ "n" }, "[L", {})
 vim.keymap.del({ "n" }, "]L", {})
 vim.keymap.del({ "n" }, "[<C-l>", {})
 vim.keymap.del({ "n" }, "]<C-l>", {})
+-- remove unused arglist binding
+vim.keymap.del({ "n" }, "[a", {})
+vim.keymap.del({ "n" }, "]a", {})
+vim.keymap.del({ "n" }, "[A", {})
+vim.keymap.del({ "n" }, "]A", {})
 
 -- remove unused quickfix list binding
+vim.keymap.del({ "n" }, "[q", {})
+vim.keymap.del({ "n" }, "]q", {})
 vim.keymap.del({ "n" }, "[Q", {})
 vim.keymap.del({ "n" }, "]Q", {})
 vim.keymap.del({ "n" }, "[<C-q>", {})
@@ -186,12 +193,51 @@ vim.keymap.del({ "n" }, "grr", {})
 vim.keymap.del({ "n" }, "grt", {})
 vim.keymap.del({ "n" }, "gO", {})
 
+vim.keymap.set({ "n" }, "]<leader>q",function ()
+    pcall(function ()
+        vim.cmd.cnext()
+    end)
+end, { noremap = true, silent = true, desc = "Next entry in quickfix" })
+
+vim.keymap.set({ "n" }, "[<leader>q",function ()
+    pcall(function ()
+        vim.cmd.cprev()
+    end)
+end, { noremap = true, silent = true, desc = "Prev entry in quickfix" })
+
+vim.keymap.set({ "n" }, "]<leader>a",function ()
+    pcall(function()
+        vim.cmd.next()
+    end)
+end, { noremap = true, silent = true, desc = "Next entry in arglist" })
+vim.keymap.set({ "n" }, "[<leader>a",function ()
+    pcall(function ()
+        vim.cmd.prev()
+    end)
+end, { noremap = true, silent = true, desc = "Prev entry in arglist" })
+vim.keymap.set({ "n" }, "<leader>aa",function ()
+    vim.cmd.argadd()
+    vim.cmd.argdedupe()
+    vim.notify(
+        "Added current buffer into arglist",
+        vim.log.levels.INFO
+    )
+end, { noremap = true, silent = true, desc = "Add current buffer to arglist" })
+
+vim.keymap.set({ "n" }, "<leader>ad",function ()
+    vim.cmd.argdelete()
+    vim.notify(
+        "Removed current buffer from arglist",
+        vim.log.levels.INFO
+    )
+end, { noremap = true, silent = true, desc = "Delete current buffer from arglist" })
+
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
 vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })
 vim.keymap.set({ "n" }, "<leader>T", function()
-	vim.cmd("term")
+	vim.cmd.term()
 end, { remap = true, silent = true, desc = "Open terminal" })
 
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
@@ -283,7 +329,7 @@ vim.keymap.set({ "n" }, "<leader>xd", function()
         if has_diff then
             vim.cmd("diffoff!")
         else
-            vim.cmd("diffthis")
+            vim.cmd.diffthis()
         end
 	end
 end, { silent = true, noremap = true, desc = "Toggle diff for current buffers" })

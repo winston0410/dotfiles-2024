@@ -503,14 +503,14 @@ return {
 					lualine_a = { "mode" },
 					lualine_b = {
 						"branch",
-						{
-							function()
-								return require("grapple").name_or_index()
-							end,
-							cond = function()
-								return package.loaded["grapple"] and require("grapple").exists()
-							end,
-						},
+						-- {
+						-- 	function()
+						-- 		return require("grapple").name_or_index()
+						-- 	end,
+						-- 	cond = function()
+						-- 		return package.loaded["grapple"] and require("grapple").exists()
+						-- 	end,
+						-- },
 					},
 					lualine_c = {
 						{
