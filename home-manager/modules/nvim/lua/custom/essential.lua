@@ -142,8 +142,8 @@ vim.opt.background = "dark"
 vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
-        vert     = "glsl",
-        frag     = "glsl",
+		vert = "glsl",
+		frag = "glsl",
 		http = "http",
 		rest = "http",
 		k = "kcl",
@@ -193,43 +193,38 @@ vim.keymap.del({ "n" }, "grr", {})
 vim.keymap.del({ "n" }, "grt", {})
 vim.keymap.del({ "n" }, "gO", {})
 
-vim.keymap.set({ "n" }, "]<leader>q",function ()
-    pcall(function ()
-        vim.cmd.cnext()
-    end)
+vim.keymap.set({ "n" }, "]<leader>q", function()
+	pcall(function()
+		vim.cmd.cnext()
+	end)
 end, { noremap = true, silent = true, desc = "Next entry in quickfix" })
 
-vim.keymap.set({ "n" }, "[<leader>q",function ()
-    pcall(function ()
-        vim.cmd.cprev()
-    end)
+vim.keymap.set({ "n" }, "[<leader>q", function()
+	pcall(function()
+		vim.cmd.cprev()
+	end)
 end, { noremap = true, silent = true, desc = "Prev entry in quickfix" })
 
-vim.keymap.set({ "n" }, "]<leader>a",function ()
-    pcall(function()
-        vim.cmd.next()
-    end)
+-- NOTE we won't be using arglist or quickfix list that often with vanilla Neovim anyway. Remapping to <leader><key>, so we can add more custom keybinding to each of them
+vim.keymap.set({ "n" }, "]<leader>a", function()
+	pcall(function()
+		vim.cmd.next()
+	end)
 end, { noremap = true, silent = true, desc = "Next entry in arglist" })
-vim.keymap.set({ "n" }, "[<leader>a",function ()
-    pcall(function ()
-        vim.cmd.prev()
-    end)
+vim.keymap.set({ "n" }, "[<leader>a", function()
+	pcall(function()
+		vim.cmd.prev()
+	end)
 end, { noremap = true, silent = true, desc = "Prev entry in arglist" })
-vim.keymap.set({ "n" }, "<leader>aa",function ()
-    vim.cmd.argadd()
-    vim.cmd.argdedupe()
-    vim.notify(
-        "Added current buffer into arglist",
-        vim.log.levels.INFO
-    )
+vim.keymap.set({ "n" }, "<leader>aa", function()
+	vim.cmd.argadd()
+	vim.cmd.argdedupe()
+	vim.notify("Added current buffer into arglist", vim.log.levels.INFO)
 end, { noremap = true, silent = true, desc = "Add current buffer to arglist" })
 
-vim.keymap.set({ "n" }, "<leader>ad",function ()
-    vim.cmd.argdelete()
-    vim.notify(
-        "Removed current buffer from arglist",
-        vim.log.levels.INFO
-    )
+vim.keymap.set({ "n" }, "<leader>ad", function()
+	vim.cmd.argdelete()
+	vim.notify("Removed current buffer from arglist", vim.log.levels.INFO)
 end, { noremap = true, silent = true, desc = "Delete current buffer from arglist" })
 
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
@@ -326,11 +321,11 @@ vim.keymap.set({ "n" }, "<leader>xd", function()
 
 	for _, w in ipairs(wins) do
 		vim.api.nvim_set_current_win(w)
-        if has_diff then
-            vim.cmd("diffoff!")
-        else
-            vim.cmd.diffthis()
-        end
+		if has_diff then
+			vim.cmd("diffoff!")
+		else
+			vim.cmd.diffthis()
+		end
 	end
 end, { silent = true, noremap = true, desc = "Toggle diff for current buffers" })
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })

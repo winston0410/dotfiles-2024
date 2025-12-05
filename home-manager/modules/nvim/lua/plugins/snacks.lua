@@ -18,6 +18,26 @@ return {
 				desc = "Toggle Scratch Buffer",
 			},
 			{
+				"<leader>p<leader>a",
+				function()
+                    -- TODO
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search arglist",
+			},
+			{
+				"<leader>p<leader>q",
+				function()
+					Snacks.picker.qflist()
+				end,
+				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Search quickfix",
+			},
+			{
 				"<leader>p<leader>n",
 				function()
 					Snacks.scratch.select()
