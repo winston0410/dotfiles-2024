@@ -1,6 +1,18 @@
 local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
 local godot = require("custom.godot")
 
+local function buf_in_arglist(buf_id)
+  local name = vim.api.nvim_buf_get_name(buf_id)
+  if name == "" then return false end
+
+  for _, arg in ipairs(vim.fn.argv()) do
+    if vim.fn.fnamemodify(arg, ":p") == name then
+      return true
+    end
+  end
+  return false
+end
+
 return {
 	{
 		"rebelot/heirline.nvim",
@@ -27,7 +39,7 @@ return {
 			},
 			{
 				"Bekaboo/dropbar.nvim",
-				version = "12.x",
+				version = "14.x",
 				lazy = false,
 				dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 				keys = {
@@ -233,6 +245,7 @@ return {
 				end,
 			}
 
+            -- add padding right 1 to this component
 			local ArglistIndex = {
 				condition = function()
 					return vim.fn.argc() > 0
@@ -241,16 +254,23 @@ return {
 					local arglist_idx = vim.fn.argidx() + 1
 					local arglist_count = vim.fn.argc()
 					local buf_nr = vim.api.nvim_get_current_buf()
-					local buf_name = vim.api.nvim_buf_get_name(buf_nr)
-                    print(vim.inspect( vim.fn.argv() ), buf_name)
-					-- local in_arglist = vim.tbl_contains(vim.fn.argv(), buf_name)
-					--                print("is in list", in_arglist)
+					local in_arglist = buf_in_arglist(buf_nr)
 
-					-- if in_arglist then
-					--     return string.format(" %s", vim.fn.argc())
-					-- end
+                    if in_arglist then
+                        return string.format("󰐷 %s/%s", arglist_idx, arglist_count)
+                    end
 
-					return string.format("󰐷 %s/%s", arglist_idx, arglist_count)
+					return string.format("󰐷 %s",  arglist_count)
+				end,
+			}
+			local QuickfixIndex = {
+				condition = function()
+                    local qf = vim.fn.getqflist()
+					return #qf > 0
+				end,
+				provider = function()
+                    local qf = vim.fn.getqflist()
+					return string.format("󰖷 %s",  #qf)
 				end,
 			}
 
@@ -290,6 +310,7 @@ return {
 				tabline = {
 					heirline_components.component.git_branch({ padding = { left = 1 }}),
 					ArglistIndex,
+					QuickfixIndex,
 					heirline_components.component.fill(),
 					TabPages,
 				},
