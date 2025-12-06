@@ -192,25 +192,28 @@ vim.keymap.del({ "n" }, "grn", {})
 vim.keymap.del({ "n" }, "grr", {})
 vim.keymap.del({ "n" }, "grt", {})
 vim.keymap.del({ "n" }, "gO", {})
+-- remove keybinding for adding additional lines. They do not follow the convention of using [ and ] key for navigation
+vim.keymap.del({ "n" }, "[<space>", {})
+vim.keymap.del({ "n" }, "]<space>", {})
 
 vim.keymap.set({ "n" }, "<leader>qa", function()
-	vim.ui.input({ prompt = "Quickfix text: " }, function(input)
-		print(input)
-		if input == "" then
+	vim.ui.input({ prompt = "Quickfix description" }, function(input)
+		if not input or input == "" then
 			return
 		end
 
-		local buf_nr = vim.api.nvim_get_current_buf()
-		local pos = vim.api.nvim_win_get_cursor(buf_nr)
-		local filename = vim.api.nvim_buf_get_name(buf_nr)
+		local buf_id = vim.api.nvim_get_current_buf()
+		local filename = vim.api.nvim_buf_get_name(buf_id)
 
+        local win_id = vim.api.nvim_get_current_win()
+		local pos = vim.api.nvim_win_get_cursor(win_id)
 		local row = pos[1]
 		local col = pos[2] + 1
 
 		vim.fn.setqflist({}, "a", {
 			items = {
 				{
-					bufnr = buf_nr,
+					bufnr = buf_id,
 					filename = filename,
 					lnum = row,
 					col = col,
@@ -221,10 +224,12 @@ vim.keymap.set({ "n" }, "<leader>qa", function()
 	end)
 end, { noremap = true, silent = true, desc = "Add current line into quickfix" })
 
-vim.keymap.set({ "n" }, "<leader>qd", function()
-	local qf = vim.fn.getqflist()
-	-- TODO
-end, { noremap = true, silent = true, desc = "Remove current line from quickfix" })
+-- NOTE not sure if this would make sense, create this later
+-- vim.keymap.set({ "n" }, "<leader>qd", function()
+-- 	local qf = vim.fn.getqflist()
+--     print(vim.inspect(qf))
+-- 	-- TODO
+-- end, { noremap = true, silent = true, desc = "Remove current line from quickfix" })
 
 vim.keymap.set({ "n" }, "]<leader>q", function()
 	local ok = pcall(function()

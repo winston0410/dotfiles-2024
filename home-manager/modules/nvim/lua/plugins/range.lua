@@ -1,5 +1,5 @@
 return {
-	{ "sitiom/nvim-numbertoggle", commit = "c5827153f8a955886f1b38eaea6998c067d2992f", event = { "VeryLazy" } },
+	{ "sitiom/nvim-numbertoggle", commit = "c469e0e588a54895591047f94c9f9ff5a1d658aa", event = { "VeryLazy" } },
 	{
 		"nacro90/numb.nvim",
 		enabled = true,

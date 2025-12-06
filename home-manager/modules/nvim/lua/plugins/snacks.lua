@@ -20,7 +20,7 @@ return {
 			{
 				"<leader>p<leader>a",
 				function()
-                    -- TODO
+					-- TODO
 				end,
 				mode = { "n" },
 				silent = true,
@@ -109,7 +109,7 @@ return {
 				noremap = true,
 				desc = "Search command history",
 			},
-			
+
 			{
 				"<leader>pd",
 				function()
@@ -348,7 +348,7 @@ return {
 				noremap = true,
 				desc = "Resume last picker",
 			},
-            -- <leader>px for extra, not frequently used picker
+			-- <leader>px for extra, not frequently used picker
 			{
 				"<leader>pxh",
 				function()
@@ -369,7 +369,7 @@ return {
 				noremap = true,
 				desc = "Explore LSP config",
 			},
-            {
+			{
 				"<leader>pxc",
 				function()
 					Snacks.picker.colorschemes()
@@ -379,7 +379,7 @@ return {
 				noremap = true,
 				desc = "Search colorschemes",
 			},
-            {
+			{
 				"<leader>pxi",
 				function()
 					Snacks.picker.icons()
@@ -389,7 +389,7 @@ return {
 				noremap = true,
 				desc = "Search icons",
 			},
-            {
+			{
 				"<leader>pxC",
 				function()
 					Snacks.picker.commands()
@@ -405,6 +405,7 @@ return {
 				["/"] = "toggle_focus",
 				["<2-LeftMouse>"] = "confirm",
 				["<leader>q"] = { "qflist", mode = { "n" } },
+				["<leader>a"] = { "argadd", mode = { "n" } },
 				["<CR>"] = { "confirm", mode = { "n", "i" } },
 				["<Down>"] = { "list_down", mode = { "i", "n" } },
 				["<Up>"] = { "list_up", mode = { "i", "n" } },
@@ -433,9 +434,9 @@ return {
 				toggle = { enabled = true },
 				gitbrowse = {
 					enabled = true,
-                    remote_patterns = {
-                        {"^(.-)@vs%-ssh%.visualstudio%.com:v3/(.-)/(.-)/(.-)$", "%1.visualstudio.com/%3/_git/%4"}
-                    },
+					remote_patterns = {
+						{ "^(.-)@vs%-ssh%.visualstudio%.com:v3/(.-)/(.-)/(.-)$", "%1.visualstudio.com/%3/_git/%4" },
+					},
 					url_patterns = {
 						["visualstudio%.com"] = {
 							branch = "?version=GB{branch}",
@@ -494,6 +495,13 @@ return {
 						end,
 					},
 					actions = {
+						argadd = function(picker)
+							local selected = picker:selected({ fallback = true })
+							for _, item in ipairs(selected) do
+								vim.cmd.argadd(item.file)
+							end
+							vim.cmd.argdedupe()
+						end,
 						diffview = function(picker, item)
 							picker:close()
 							if not item then
