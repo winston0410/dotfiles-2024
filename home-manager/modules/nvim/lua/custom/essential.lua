@@ -193,6 +193,40 @@ vim.keymap.del({ "n" }, "grr", {})
 vim.keymap.del({ "n" }, "grt", {})
 vim.keymap.del({ "n" }, "gO", {})
 
+vim.keymap.set({ "n" }, "<leader>qa", function()
+    vim.ui.input({ prompt = "Quickfix text: " }, function (input)
+        print(input)
+        if input == "" then
+            return
+        end
+
+        local buf_nr = vim.api.nvim_get_current_buf()
+        local pos = vim.api.nvim_win_get_cursor(buf_nr)
+        local filename = vim.api.nvim_buf_get_name(buf_nr)
+
+        local row = pos[1]
+        local col = pos[2] + 1
+
+        vim.fn.setqflist({}, "a", {
+            items = {
+                {
+                    bufnr = buf_nr,
+                    filename = filename,
+                    lnum = row,
+                    col = col,
+                    text = input,
+                },
+            },
+        })
+    end)
+end, { noremap = true, silent = true, desc = "Add current line into quickfix" })
+
+vim.keymap.set({ "n" }, "<leader>qd", function()
+    local qf = vim.fn.getqflist()
+    -- TODO
+end, { noremap = true, silent = true, desc = "Remove current line from quickfix" })
+
+
 vim.keymap.set({ "n" }, "]<leader>q", function()
 	pcall(function()
 		vim.cmd.cnext()
@@ -206,15 +240,15 @@ vim.keymap.set({ "n" }, "[<leader>q", function()
 end, { noremap = true, silent = true, desc = "Prev entry in quickfix" })
 
 vim.keymap.set({ "n" }, "<leader>q@", function()
-    local macro_key = vim.fn.getcharstr()
-    vim.cmd(string.format( "cdo normal! @%s", macro_key ))
-	vim.notify(string.format( "Triggered marco for %s", macro_key ), vim.log.levels.INFO)
+	local macro_key = vim.fn.getcharstr()
+	vim.cmd(string.format("cdo normal! @%s", macro_key))
+	vim.notify(string.format("Triggered marco for %s", macro_key), vim.log.levels.INFO)
 end, { noremap = true, silent = true, desc = "Execute macros in quickfix" })
 
 vim.keymap.set({ "n" }, "<leader>a@", function()
-    local macro_key = vim.fn.getcharstr()
-    vim.cmd(string.format( "argdo normal! @%s", macro_key ))
-	vim.notify(string.format( "Triggered marco for %s", macro_key ), vim.log.levels.INFO)
+	local macro_key = vim.fn.getcharstr()
+	vim.cmd(string.format("argdo normal! @%s", macro_key))
+	vim.notify(string.format("Triggered marco for %s", macro_key), vim.log.levels.INFO)
 end, { noremap = true, silent = true, desc = "Execute macros in arglist" })
 
 -- NOTE we won't be using arglist or quickfix list that often with vanilla Neovim anyway. Remapping to <leader><key>, so we can add more custom keybinding to each of them

@@ -30,9 +30,10 @@ return {
 			})
 		end,
 	},
+    -- NOTE enable this plugin after 0.12 using vim.pack, and disable it by default. Trigger it with usercmd when needed, so to reduce the noise in code
 	{
 		"oribarilan/lensline.nvim",
-		enabled = true,
+		enabled = false,
 		version = "2.x",
 		event = { "LspAttach" },
 		config = function()
