@@ -245,6 +245,8 @@ return {
 				end,
 			}
 
+            local Space = { provider = " " }
+
             -- add padding right 1 to this component
 			local ArglistIndex = {
 				condition = function()
@@ -262,6 +264,9 @@ return {
 
 					return string.format("󰐷 %s",  arglist_count)
 				end,
+                hl = function ()
+                    return "DiagnosticHint"
+                end
 			}
 			local QuickfixIndex = {
 				condition = function()
@@ -272,11 +277,15 @@ return {
                     local qf = vim.fn.getqflist()
 					return string.format("󰖷 %s",  #qf)
 				end,
+                hl = function ()
+                    return "DiagnosticWarn"
+                end
 			}
 
 			require("heirline").setup({
 				statusline = {
 					heirline_components.component.mode({ mode_text = {} }),
+					heirline_components.component.git_branch(),
 					-- Mode,
 					-- FIXME no idea why its position is fixed
 					-- heirline_components.component.git_diff(),
@@ -308,8 +317,9 @@ return {
 					},
 				},
 				tabline = {
-					heirline_components.component.git_branch({ padding = { left = 1 }}),
+                    Space,
 					ArglistIndex,
+                    Space,
 					QuickfixIndex,
 					heirline_components.component.fill(),
 					TabPages,
