@@ -31,7 +31,7 @@ return {
 				lazy = false,
 				dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" },
 				keys = {
-                    -- NOTE this doesn't work at all
+					-- NOTE this doesn't work at all
 					-- {
 					-- 	"<leader>ps",
 					-- 	function()
@@ -223,32 +223,52 @@ return {
 				{ provider = "%=" },
 				utils.make_tablist(Tabpage),
 			}
-            
-            local GoDotExternalEditor = {
+
+			local GoDotExternalEditor = {
 				condition = function()
-                    return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
+					return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
 				end,
-                provider = function()
-                    return " Godot"
-                end,
-            }
+				provider = function()
+					return " Godot"
+				end,
+			}
+
+			local ArglistIndex = {
+				condition = function()
+					return vim.fn.argc() > 0
+				end,
+				provider = function()
+					local arglist_idx = vim.fn.argidx() + 1
+					local arglist_count = vim.fn.argc()
+					local buf_nr = vim.api.nvim_get_current_buf()
+					local buf_name = vim.api.nvim_buf_get_name(buf_nr)
+                    print(vim.inspect( vim.fn.argv() ), buf_name)
+					-- local in_arglist = vim.tbl_contains(vim.fn.argv(), buf_name)
+					--                print("is in list", in_arglist)
+
+					-- if in_arglist then
+					--     return string.format(" %s", vim.fn.argc())
+					-- end
+
+					return string.format("󰐷 %s/%s", arglist_idx, arglist_count)
+				end,
+			}
 
 			require("heirline").setup({
 				statusline = {
-                    heirline_components.component.mode({ mode_text = {} }),
+					heirline_components.component.mode({ mode_text = {} }),
 					-- Mode,
-                    -- FIXME no idea why its position is fixed
-                    -- heirline_components.component.git_diff(),
-					heirline_components.component.git_branch({}),
+					-- FIXME no idea why its position is fixed
+					-- heirline_components.component.git_diff(),
 					heirline_components.component.file_encoding({
 						file_format = { padding = { left = 0, right = 0 } },
 					}),
 					{ provider = " " },
 					FileSize,
 					{ provider = " " },
-                    GoDotExternalEditor,
-                    heirline_components.component.fill(),
-                    heirline_components.component.lsp({ lsp_client_names = false }),
+					GoDotExternalEditor,
+					heirline_components.component.fill(),
+					heirline_components.component.lsp({ lsp_client_names = false }),
 					heirline_components.component.diagnostics(),
 					heirline_components.component.cmd_info(),
 					heirline_components.component.nav({ percentage = false }),
@@ -267,7 +287,12 @@ return {
 						provider = "%C",
 					},
 				},
-				tabline = { TabPages },
+				tabline = {
+					heirline_components.component.git_branch({ padding = { left = 1 }}),
+					ArglistIndex,
+					heirline_components.component.fill(),
+					TabPages,
+				},
 				opts = {
 					colors = {
 						hydra_window = utils.get_highlight("Constant").fg,

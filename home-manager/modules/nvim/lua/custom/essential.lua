@@ -194,49 +194,58 @@ vim.keymap.del({ "n" }, "grt", {})
 vim.keymap.del({ "n" }, "gO", {})
 
 vim.keymap.set({ "n" }, "<leader>qa", function()
-    vim.ui.input({ prompt = "Quickfix text: " }, function (input)
-        print(input)
-        if input == "" then
-            return
-        end
+	vim.ui.input({ prompt = "Quickfix text: " }, function(input)
+		print(input)
+		if input == "" then
+			return
+		end
 
-        local buf_nr = vim.api.nvim_get_current_buf()
-        local pos = vim.api.nvim_win_get_cursor(buf_nr)
-        local filename = vim.api.nvim_buf_get_name(buf_nr)
+		local buf_nr = vim.api.nvim_get_current_buf()
+		local pos = vim.api.nvim_win_get_cursor(buf_nr)
+		local filename = vim.api.nvim_buf_get_name(buf_nr)
 
-        local row = pos[1]
-        local col = pos[2] + 1
+		local row = pos[1]
+		local col = pos[2] + 1
 
-        vim.fn.setqflist({}, "a", {
-            items = {
-                {
-                    bufnr = buf_nr,
-                    filename = filename,
-                    lnum = row,
-                    col = col,
-                    text = input,
-                },
-            },
-        })
-    end)
+		vim.fn.setqflist({}, "a", {
+			items = {
+				{
+					bufnr = buf_nr,
+					filename = filename,
+					lnum = row,
+					col = col,
+					text = input,
+				},
+			},
+		})
+	end)
 end, { noremap = true, silent = true, desc = "Add current line into quickfix" })
 
 vim.keymap.set({ "n" }, "<leader>qd", function()
-    local qf = vim.fn.getqflist()
-    -- TODO
+	local qf = vim.fn.getqflist()
+	-- TODO
 end, { noremap = true, silent = true, desc = "Remove current line from quickfix" })
 
-
 vim.keymap.set({ "n" }, "]<leader>q", function()
-	pcall(function()
+	local ok = pcall(function()
 		vim.cmd.cnext()
 	end)
+	if not ok then
+		pcall(function()
+			vim.cmd.cfirst()
+		end)
+	end
 end, { noremap = true, silent = true, desc = "Next entry in quickfix" })
 
 vim.keymap.set({ "n" }, "[<leader>q", function()
-	pcall(function()
+	local ok = pcall(function()
 		vim.cmd.cprev()
 	end)
+	if not ok then
+		pcall(function()
+			vim.cmd.clast()
+		end)
+	end
 end, { noremap = true, silent = true, desc = "Prev entry in quickfix" })
 
 vim.keymap.set({ "n" }, "<leader>q@", function()
@@ -251,16 +260,26 @@ vim.keymap.set({ "n" }, "<leader>a@", function()
 	vim.notify(string.format("Triggered marco for %s", macro_key), vim.log.levels.INFO)
 end, { noremap = true, silent = true, desc = "Execute macros in arglist" })
 
--- NOTE we won't be using arglist or quickfix list that often with vanilla Neovim anyway. Remapping to <leader><key>, so we can add more custom keybinding to each of them
+-- NOTE we won't be using arglist or quickfix list that often with vanilla Neovim anyway. Remapping to <leader><key>, so we can add more custom keybinding to each of them. Also remapping make it supports cycling
 vim.keymap.set({ "n" }, "]<leader>a", function()
-	pcall(function()
+	local ok = pcall(function()
 		vim.cmd.next()
 	end)
+	if not ok then
+		pcall(function()
+			vim.cmd.first()
+		end)
+	end
 end, { noremap = true, silent = true, desc = "Next entry in arglist" })
 vim.keymap.set({ "n" }, "[<leader>a", function()
-	pcall(function()
+	local ok = pcall(function()
 		vim.cmd.prev()
 	end)
+	if not ok then
+		pcall(function()
+			vim.cmd.last()
+		end)
+	end
 end, { noremap = true, silent = true, desc = "Prev entry in arglist" })
 vim.keymap.set({ "n" }, "<leader>aa", function()
 	vim.cmd.argadd()
