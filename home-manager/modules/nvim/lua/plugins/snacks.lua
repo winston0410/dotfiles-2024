@@ -496,6 +496,7 @@ return {
 					},
 					actions = {
 						argadd = function(picker)
+                            picker:close()
 							local selected = picker:selected({ fallback = true })
 							for _, item in ipairs(selected) do
 								vim.cmd.argadd(item.file)

@@ -1,94 +1,12 @@
 return {
 	{
-		"mrjones2014/smart-splits.nvim",
-		version = "1.x",
-		enabled = false,
-		keys = {
-			{
-				"<leader>w>",
-				function()
-					require("smart-splits").resize_right()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to right",
-			},
-			{
-				"<C-w>>",
-				function()
-					require("smart-splits").resize_right()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to right",
-			},
-			{
-				"<C-w><",
-				function()
-					require("smart-splits").resize_left()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to left",
-			},
-			{
-				"<leader>w<",
-				function()
-					require("smart-splits").resize_left()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to left",
-			},
-			{
-				"<leader>w+",
-				function()
-					require("smart-splits").resize_up()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to top",
-			},
-			{
-				"<C-w>+",
-				function()
-					require("smart-splits").resize_up()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to top",
-			},
-			{
-				"<leader>w-",
-				function()
-					require("smart-splits").resize_down()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to bottom",
-			},
-			{
-				"<C-w>-",
-				function()
-					require("smart-splits").resize_down()
-				end,
-				mode = "n",
-				silent = true,
-				desc = "Resize split to bottom",
-			},
-		},
-		opts = {
-			default_amount = 10,
-		},
-	},
-	{
 		"s1n7ax/nvim-window-picker",
 		name = "window-picker",
-		event = "VeryLazy",
+		event = { "VeryLazy" },
 		version = "2.*",
 		keys = {
 			{
-				"<leader>p<leader>w",
+				"<leader>p<C-w>",
 				function()
 					local picked_window_id = require("window-picker").pick_window()
 					if picked_window_id == nil then
@@ -102,8 +20,25 @@ return {
 				desc = "Pick window",
 			},
 			{
-				"<leader>wx",
+				"<C-w>x",
+                function ()
+					local picked_window_id = require("window-picker").pick_window()
+					if picked_window_id == nil then
+						return
+					end
+
+                    local picked_buf_id = vim.api.nvim_win_get_buf(picked_window_id)
+
+                    local cur_win_id = vim.api.nvim_get_current_win()
+                    local cur_buf_id = vim.api.nvim_win_get_buf(cur_win_id)
+
+                    vim.api.nvim_win_set_buf(picked_window_id, cur_buf_id)
+                    vim.api.nvim_win_set_buf(cur_win_id, picked_buf_id)
+                end,
 				mode = { "n" },
+				silent = true,
+				noremap = true,
+				desc = "Swap window",
 			},
 		},
 		config = function()

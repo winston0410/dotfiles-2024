@@ -1,5 +1,86 @@
 return {
-
+	{
+		"mrjones2014/smart-splits.nvim",
+		version = "1.x",
+		enabled = false,
+		keys = {
+			{
+				"<leader>w>",
+				function()
+					require("smart-splits").resize_right()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to right",
+			},
+			{
+				"<C-w>>",
+				function()
+					require("smart-splits").resize_right()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to right",
+			},
+			{
+				"<C-w><",
+				function()
+					require("smart-splits").resize_left()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to left",
+			},
+			{
+				"<leader>w<",
+				function()
+					require("smart-splits").resize_left()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to left",
+			},
+			{
+				"<leader>w+",
+				function()
+					require("smart-splits").resize_up()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to top",
+			},
+			{
+				"<C-w>+",
+				function()
+					require("smart-splits").resize_up()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to top",
+			},
+			{
+				"<leader>w-",
+				function()
+					require("smart-splits").resize_down()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to bottom",
+			},
+			{
+				"<C-w>-",
+				function()
+					require("smart-splits").resize_down()
+				end,
+				mode = "n",
+				silent = true,
+				desc = "Resize split to bottom",
+			},
+		},
+		opts = {
+			default_amount = 10,
+		},
+	},
 	{
 		"chrisgrieser/nvim-recorder",
 		enabled = false,
