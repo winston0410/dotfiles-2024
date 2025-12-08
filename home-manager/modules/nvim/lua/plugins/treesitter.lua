@@ -1,19 +1,6 @@
--- NOTE wait for Neovim 0.12
--- vim.pack.add({
---     { src = "https://github.com/winston0410/syringe.nvim", version = 'main' },
--- })
--- require("syringe").setup({})
 
 local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
-	{
-		"winston0410/syringe.nvim",
-		dependencies = ts_deps,
-		lazy = false,
-		config = function()
-			require("syringe").setup({})
-		end,
-	},
 	{
 		"jmbuhr/otter.nvim",
 		lazy = false,
@@ -210,12 +197,5 @@ return {
 				end,
 			})
 		end,
-	},
-	{
-		"folke/ts-comments.nvim",
-		opts = {},
-		event = "VeryLazy",
-		enabled = vim.fn.has("nvim-0.10.0") == 1,
-		config = function() end,
 	},
 }
