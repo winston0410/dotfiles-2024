@@ -5,10 +5,12 @@
   # investigate later
   inputs = {
     proxy-flake.url = "github:winston0410/proxy-flake/main";
+
     nixpkgs.follows = "proxy-flake/nixpkgs";
     nur.follows = "proxy-flake/nur";
     flake-parts.follows = "proxy-flake/flake-parts";
     sops-nix.follows = "proxy-flake/sops-nix";
+    neovim-nightly-overlay.follows = "proxy-flake/neovim-nightly-overlay";
 
     unstable.url = "github:nixos/nixpkgs";
 
@@ -54,22 +56,25 @@
         builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinArmSystem;
       linuxAmdSystem = "x86_64-linux";
 
+      overlays = [
+        nur.overlays.default
+      ];
+
       darwinArmPkgs = import nixpkgs {
         system = darwinArmSystem;
-        overlays = [
+        overlays = overlays ++ [
           rust-overlay.overlays.default
-          nur.overlays.default
           nixpkgs-firefox-darwin.overlay
         ];
       };
       linuxAmdPkgs = import nixpkgs {
         system = linuxAmdSystem;
-        overlays = [ nur.overlays.default ];
+        overlays = overlays;
       };
 
       linuxArmPkgs = import nixpkgs {
         system = linuxArmSystem;
-        overlays = [ nur.overlays.default ];
+        overlays = overlays;
       };
 
       darwin-builder = nixpkgs.lib.nixosSystem {

@@ -2,38 +2,41 @@
 
   imports = [ ./lsp.nix ./formatter.nix ./dap.nix ];
 
+  programs.neovim = {
+    enable = true;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    extraLuaPackages = (ps:
+      with ps; [
+        luafilesystem
+        jsregexp
+        luassert
+        # for sqlite.lua
+        sqlite
+        luv
+        # for sops.nvim
+        lyaml
+      ]);
+    extraPython3Packages = p:
+      with p; [
+        pynvim
+        jupyter-client
+        cairosvg
+        pnglatex
+        plotly
+        kaleido
+        pyperclip
+        nbformat
+        pillow
+        requests
+        websocket-client
+      ];
+    withRuby = false;
+    withPython3 = true;
+    withNodeJs = false;
+  };
+
   home.packages = with pkgs;
     [
-      (unstable.neovim.override {
-        extraLuaPackages = (ps:
-          with ps; [
-            luafilesystem
-            jsregexp
-            luassert
-            # for sqlite.lua
-            sqlite
-            luv
-            # for sops.nvim
-            lyaml
-          ]);
-        extraPython3Packages = p:
-          with p; [
-            pynvim
-            jupyter-client
-            cairosvg
-            pnglatex
-            plotly
-            kaleido
-            pyperclip
-            nbformat
-            pillow
-            requests
-            websocket-client
-          ];
-        withRuby = false;
-        withPython3 = true;
-        withNodeJs = false;
-      })
       # luajit
       lua5_1
       luarocks
@@ -144,10 +147,22 @@
     "nvim/init.lua" = { source = ./init.lua; };
     "nvim/minimal.lua" = { source = ./minimal.lua; };
     "nvim/.luarc.jsonc" = { source = ./.luarc.jsonc; };
-    "nvim/ftplugin" = { source = ./ftplugin; recursive = true;};
-    "nvim/after" = { source = ./after; recursive = true;};
-    "nvim/assets" = { source = ./assets; recursive = true;};
-    "nvim/lua" = { source = ./lua; recursive = true; };
+    "nvim/ftplugin" = {
+      source = ./ftplugin;
+      recursive = true;
+    };
+    "nvim/after" = {
+      source = ./after;
+      recursive = true;
+    };
+    "nvim/assets" = {
+      source = ./assets;
+      recursive = true;
+    };
+    "nvim/lua" = {
+      source = ./lua;
+      recursive = true;
+    };
     # Disable until we really need custom LSP config
     # "nvim/lsp" = { source = ./lsp; };
   };

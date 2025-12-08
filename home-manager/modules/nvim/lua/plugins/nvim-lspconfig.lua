@@ -120,7 +120,7 @@ return {
 	},
 	{
 		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "VeryLazy",
+		event = {  "VeryLazy" },
 		priority = 1000,
 		config = function()
 			require("tiny-inline-diagnostic").setup({
@@ -480,7 +480,7 @@ return {
 						vim.diagnostic.setqflist({
 							severity = { min = vim.diagnostic.severity.WARN },
 						})
-						vim.cmd("copen")
+						vim.cmd.copen()
 					end, { silent = true, noremap = true, buffer = ev.buf, desc = "Push diagnostics into Quickfix" })
 					vim.keymap.set(
 						{ "n", "x" },
