@@ -2,17 +2,6 @@ return {
     {
         "sitiom/nvim-numbertoggle"
     },
-	{
-		"GCBallesteros/jupytext.nvim",
-		lazy = false,
-		config = function()
-			require("jupytext").setup({
-				style = "markdown",
-				output_extension = "md",
-				force_ft = "markdown",
-			})
-		end,
-	},
 	-- https://github.com/benlubas/molten-nvim/issues/324
 	-- {
 	-- 	"benlubas/molten-nvim",
@@ -36,17 +25,6 @@ return {
 	-- 		vim.fn.mkdir(runtime_path, "p")
 	-- 	end,
 	-- },
-	-- FIXME it never built successfully
-	{
-		"mistricky/codesnap.nvim",
-		version = "2.x",
-		cmd = { "CodeSnapHighlight", "CodeSnapSaveHighlight", "CodeSnapASCII", "CodeSnap", "CodeSnapSave" },
-		config = function()
-			require("codesnap").setup({
-				show_line_number = true,
-			})
-		end,
-	},
 	{
 		"michaelb/sniprun",
 		version = "1.x",

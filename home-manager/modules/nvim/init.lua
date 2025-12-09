@@ -53,6 +53,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 vim.pack.add({
+	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
+	{ src = "https://github.com/nvim-mini/mini.icons" },
+	{ src = "https://github.com/onsails/lspkind.nvim" },
 	{ src = "https://github.com/folke/tokyonight.nvim" },
 	{ src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
 	{ src = "https://github.com/rose-pine/neovim" },
@@ -60,6 +63,8 @@ vim.pack.add({
 	{ src = "https://github.com/kyza0d/xeno.nvim" },
 	{ src = "https://github.com/AlexvZyl/nordic.nvim" },
 	{ src = "https://github.com/jnz/studio98" },
+	{ src = "https://github.com/nuvic/flexoki-nvim" },
+	{ src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.0") },
 })
 
 vim.g.tokyonight_style = "moon"
@@ -71,6 +76,23 @@ vim.opt.wildignore:append({
 	"rose-pine.lua",
 	"rose-pine-main.lua",
 	"rose-pine-dawn.lua",
+})
+vim.opt.wildignore:append({
+	"flexoki.lua",
+	-- don't look good in dark theme
+	"flexoki-moon.lua",
+})
+vim.opt.wildignore:append({
+	"github_dark.vim",
+	"github_dark_default.vim",
+	"github_dark_tritanopia.vim",
+	"github_dark_high_contrast.vim",
+	"github_dark_dimmed.vim",
+	"github_light.vim",
+	"github_light_default.vim",
+	"github_light_tritanopia.vim",
+	"github_light_colorblind.vim",
+	"github_light_high_contrast.vim",
 })
 local xeno = require("xeno")
 xeno.config({
@@ -91,9 +113,6 @@ xeno.new_theme("xeno-golden-hour", {
 })
 
 vim.pack.add({
-	-- { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-	-- { src = "https://github.com/nvim-mini/mini.icons" },
-	-- { src = "https://github.com/onsails/lspkind.nvim" },
 	{ src = "https://github.com/winston0410/syringe.nvim", version = "main" },
 	{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
 	{ src = "https://github.com/nacro90/numb.nvim", version = "master" },
@@ -103,7 +122,7 @@ vim.pack.add({
 	{ src = "https://github.com/NStefan002/screenkey.nvim", version = "main" },
 	{ src = "http://github.com/winston0410/sops.nvim", version = "main" },
 	{ src = "https://github.com/vyfor/cord.nvim", version = vim.version.range("2.0") },
-	{ src = "https://github.com/folke/which-key.nvim", version = vim.version.range("3.0") },
+	-- { src = "https://github.com/folke/which-key.nvim", version = vim.version.range("3.0") },
 })
 require("syringe").setup({})
 require("numb").setup()
@@ -141,91 +160,6 @@ vim.pack.add({
 	{ src = "https://github.com/kylechui/nvim-surround", version = vim.version.range("3.0") },
 })
 
-vim.pack.add({
-    { src= "https://github.com/sphamba/smear-cursor.nvim", version = vim.version.range("0.6") }
-})
-
--- {
--- 	"kylechui/nvim-surround",
--- 	version = "3.x",
--- 	-- NOTE By default, s is a useless synonym of cc, therefore we remap that
--- 	event = { "VeryLazy" },
--- 	dependencies = { "nvim-treesitter/nvim-treesitter" },
--- 	config = function()
--- 		require("nvim-surround").setup({
--- 			keymaps = {
--- 				-- insert = false,
--- 				-- insert_line = false,
--- 				-- normal = false,
--- 				-- normal_cur = false,
--- 				-- normal_line = false,
--- 				-- normal_cur_line = false,
--- 				-- visual = false,
--- 				-- visual_line = false,
--- 				-- delete = false,
--- 				-- change = false,
--- 				-- change_line = false,
--- 				insert = "<C-g>s",
--- 				insert_line = "<C-g>S",
--- 				normal = "s",
--- 				normal_cur = "ss",
--- 				normal_line = "S",
--- 				normal_cur_line = "SS",
--- 				visual = "s",
--- 				visual_line = "gS",
--- 				delete = "ds",
--- 				change = "cs",
--- 				change_line = "cS",
--- 			},
--- 			aliases = {},
--- 		})
--- 	end,
--- },
--- {
--- 	"chrisgrieser/nvim-spider",
--- 	keys = {
--- 		{
--- 			"w",
--- 			function()
--- 				require("spider").motion("w")
--- 			end,
--- 			mode = { "n", "o", "x" },
--- 			silent = true,
--- 			noremap = true,
--- 			desc = "Jump forward to word",
--- 		},
--- 		{
--- 			"e",
--- 			function()
--- 				require("spider").motion("e")
--- 			end,
--- 			mode = { "n", "o", "x" },
--- 			silent = true,
--- 			noremap = true,
--- 			desc = "Jump forward to end of word",
--- 		},
--- 		{
--- 			"ge",
--- 			function()
--- 				require("spider").motion("ge")
--- 			end,
--- 			mode = { "n", "o", "x" },
--- 			silent = true,
--- 			noremap = true,
--- 			desc = "Jump backward to previous end of word",
--- 		},
--- 		{
--- 			"b",
--- 			function()
--- 				require("spider").motion("b")
--- 			end,
--- 			mode = { "n", "o", "x" },
--- 			silent = true,
--- 			noremap = true,
--- 			desc = "Jump backward to word",
--- 		},
--- 	},
--- },
 require("various-textobjs").setup({
 	keymaps = {
 		useDefaults = false,
@@ -243,6 +177,35 @@ end, { silent = true, noremap = true, desc = "Around subword" })
 vim.keymap.set({ "o", "x" }, "iw", function()
 	require("various-textobjs").subword("inner")
 end, { silent = true, noremap = true, desc = "Inside subword" })
+require("nvim-surround").setup({
+	keymaps = {
+		insert = "<C-g>s",
+		insert_line = "<C-g>S",
+		normal = "s",
+		normal_cur = "ss",
+		normal_line = "S",
+		normal_cur_line = "SS",
+		visual = "s",
+		visual_line = "gS",
+		delete = "ds",
+		change = "cs",
+		change_line = "cS",
+	},
+	aliases = {},
+})
+
+vim.keymap.set({ "n", "o", "x" }, "w", function()
+	require("spider").motion("w")
+end, { silent = true, noremap = true, desc = "Jump forward to word" })
+vim.keymap.set({ "n", "o", "x" }, "e", function()
+	require("spider").motion("e")
+end, { silent = true, noremap = true, desc = "Jump forward to end of word" })
+vim.keymap.set({ "n", "o", "x" }, "ge", function()
+	require("spider").motion("ge")
+end, { silent = true, noremap = true, desc = "Jump backward to previous end of word" })
+vim.keymap.set({ "n", "o", "x" }, "b", function()
+	require("spider").motion("b")
+end, { silent = true, noremap = true, desc = "Jump backward to word" })
 
 -- local wk = require("which-key")
 --
@@ -285,7 +248,53 @@ vim.pack.add({
 -- Treesitter related
 vim.pack.add({
 	{ src = "https://github.com/folke/ts-comments.nvim" },
+	-- { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+	-- { src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim" },
+	{ src = "https://github.com/GCBallesteros/jupytext.nvim" },
 })
+
+-- require("treesitter-modules").setup({
+-- 	incremental_selection = {
+-- 		enable = true,
+-- 		keymaps = {
+-- 			init_selection = false,
+-- 			node_incremental = "+",
+-- 			node_decremental = "-",
+-- 			scope_incremental = false,
+-- 		},
+-- 	},
+-- })
+
+-- require("nvim-treesitter").setup({})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	group = vim.api.nvim_create_augroup("treesitter.setup", {}),
+-- 	callback = function(args)
+-- 		local filetype = args.match
+--
+-- 		local language = vim.treesitter.language.get_lang(filetype) or filetype
+-- 		if not vim.treesitter.language.add(language) then
+-- 			return
+-- 		end
+-- 		vim.treesitter.start(args.buf, language)
+-- 	end,
+-- })
+--
+require("jupytext").setup({
+	style = "markdown",
+	output_extension = "md",
+	force_ft = "markdown",
+})
+
+vim.pack.add({
+	{ src = "https://github.com/sphamba/smear-cursor.nvim", version = vim.version.range("0.6") },
+	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
+})
+require("smear_cursor").setup({})
+require("smear_cursor").enabled = false
+-- require("codesnap").setup({
+-- 	show_line_number = true,
+-- })
+require("plugins.conform")
 
 require("lazy").setup({
 	performance = {
@@ -316,7 +325,6 @@ require("lazy").setup({
 		{ import = "plugins.oil" },
 		{ import = "plugins.treesitter" },
 		{ import = "plugins.snacks" },
-		{ import = "plugins.conform" },
 		-- {
 		-- 	"stevearc/quicker.nvim",
 		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
@@ -369,14 +377,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	desc = "Connect to godot external editor pipe",
 })
-
--- TODO Do not push diagnostic to quickfix for now. We need to figure out how to push these diagnostic to another quickfix list, without disrupting the current one
--- vim.api.nvim_create_autocmd("DiagnosticChanged", {
--- 	callback = function()
--- 		local qflist_id = 1
--- 		local diagnostics = vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN })
--- 		local items = vim.diagnostic.toqflist(diagnostics)
--- 		vim.fn.setqflist({}, "r", { id = qflist_id, title = "Diagnostics", items = items })
--- 	end,
--- })
-vim.pack.update(vim.pack.get())
