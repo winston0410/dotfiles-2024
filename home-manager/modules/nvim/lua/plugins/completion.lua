@@ -1,4 +1,5 @@
-vim.api.nvim_create_autocmd("InsertEnter", {
+-- InsertEnter is too late, because blink.cmp needs to be used
+vim.api.nvim_create_autocmd("VimEnter", {
     once = true,
     callback = function()
         vim.pack.add({
