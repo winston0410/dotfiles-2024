@@ -52,10 +52,6 @@ return {
 		end,
 	},
 	{
-		"b0o/schemastore.nvim",
-		event = { "VeryLazy" },
-	},
-	{
 		"AbysmalBiscuit/insert-inlay-hints.nvim",
 		event = { "LspAttach" },
 		version = "0.x",

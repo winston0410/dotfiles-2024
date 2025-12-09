@@ -1,44 +1,6 @@
 
 local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
-    { "winston0410/syringe.nvim"},
-	{
-		"jmbuhr/otter.nvim",
-		lazy = false,
-		dependencies = ts_deps,
-		version = "2.x",
-		config = function()
-			local host_languages = vim.list_extend( require("syringe").get_supported_host_languages(), {"markdown", "markdown_inline"})
-			local otter = require("otter")
-			otter.setup({
-				lsp = {
-					diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
-				},
-			})
-			vim.api.nvim_create_autocmd("BufEnter", {
-				pattern = "*",
-				callback = function(ev)
-					local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
-					if not vim.tbl_contains(host_languages, main_lang) then
-						return
-					end
-
-					local parsername = vim.treesitter.language.get_lang(main_lang)
-					if not parsername then
-						return
-					end
-					local ok, parser = pcall(function()
-						local parser = vim.treesitter.get_parser(ev.buf, parsername)
-						return parser
-					end)
-					if not ok or not parser then
-						return
-					end
-					otter.activate()
-				end,
-			})
-		end,
-	},
 	-- keep using this until d2 filetype and treesitter grammar is supported by neovim out of the box
 	{
 		"ravsii/tree-sitter-d2",

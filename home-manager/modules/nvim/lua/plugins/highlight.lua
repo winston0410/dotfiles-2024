@@ -1,4 +1,5 @@
 vim.pack.add({
+    { src = "https://github.com/winston0410/syringe.nvim" },
 	{ src = "https://github.com/mcauley-penney/visual-whitespace.nvim", version = "main" },
 	{ src = "https://github.com/GCBallesteros/jupytext.nvim" },
 })
