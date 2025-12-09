@@ -20,16 +20,6 @@ return {
 			require("workspace-diagnostics").setup({})
 		end,
 	},
-	{
-		"dmmulroy/ts-error-translator.nvim",
-		version = "2.x",
-		event = { "LspAttach" },
-		config = function()
-			require("ts-error-translator").setup({
-                auto_attach = true,
-			})
-		end,
-	},
     -- NOTE enable this plugin after 0.12 using vim.pack, and disable it by default. Trigger it with usercmd when needed, so to reduce the noise in code
 	{
 		"oribarilan/lensline.nvim",
@@ -102,39 +92,6 @@ return {
 					actions_without_kind = false,
 				},
 			})
-		end,
-	},
-	{
-		"rachartier/tiny-code-action.nvim",
-		dependencies = {
-			{ "nvim-lua/plenary.nvim" },
-			{
-				"folke/snacks.nvim",
-			},
-		},
-		event = { "LspAttach" },
-		opts = {
-			backend = "vim",
-			picker = "snacks",
-		},
-	},
-	{
-		"rachartier/tiny-inline-diagnostic.nvim",
-		event = {  "VeryLazy" },
-		priority = 1000,
-		config = function()
-			require("tiny-inline-diagnostic").setup({
-				options = {
-					show_source = {
-						enabled = true,
-					},
-					show_related = {
-						enabled = true,
-						max_count = 3,
-					},
-				},
-			})
-			vim.diagnostic.config({ virtual_text = false })
 		end,
 	},
 	{
@@ -429,7 +386,6 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(ev)
-					vim.diagnostic.open_float = require("tiny-inline-diagnostic.override").open_float
 					local supported_modes = { "n" }
 					-- vim.keymap.set(supported_modes, "]de", function()
 					-- 	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })

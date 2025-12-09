@@ -41,24 +41,25 @@ vim.opt.rtp:prepend(lazypath)
 require("plugins.lualine")
 require("plugins.theme")
 require("plugins.session-manager")
+require("plugins.file-manager")
+require("plugins.highlight")
+require("plugins.lsp")
 
 vim.api.nvim_create_autocmd("CursorHold", {
   once = true,
   callback = function()
     require("plugins.editing-support")
+    require("plugins.extra")
+    require("plugins.conform")
+    require("plugins.test")
   end,
 })
-require("plugins.highlight")
 
-vim.pack.add({
-	{ src = "https://github.com/b0o/SchemaStore.nvim" },
-})
 -- Treesitter related
 vim.pack.add({
-	{ src = "https://github.com/folke/ts-comments.nvim" },
+	-- { src = "https://github.com/folke/ts-comments.nvim" },
 	-- { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	-- { src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim" },
-	{ src = "https://github.com/GCBallesteros/jupytext.nvim" },
 })
 
 -- require("treesitter-modules").setup({
@@ -87,11 +88,6 @@ vim.pack.add({
 -- 	end,
 -- })
 --
-require("jupytext").setup({
-	style = "markdown",
-	output_extension = "md",
-	force_ft = "markdown",
-})
 
 vim.pack.add({
 	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
@@ -99,7 +95,6 @@ vim.pack.add({
 -- require("codesnap").setup({
 -- 	show_line_number = true,
 -- })
-require("plugins.conform")
 
 require("lazy").setup({
 	performance = {
@@ -112,8 +107,6 @@ require("lazy").setup({
 		hererocks = false,
 	},
 	spec = {
-		{ import = "plugins.misc" },
-		{ import = "plugins.neotest" },
 		{ import = "plugins.git" },
 		{ import = "plugins.neovim-as-platform" },
 		{ import = "plugins.dap" },
@@ -122,7 +115,6 @@ require("lazy").setup({
 		{ import = "plugins.codecompanion" },
 		{ import = "plugins.operators" },
 		{ import = "plugins.nvim-lspconfig" },
-		{ import = "plugins.oil" },
 		{ import = "plugins.treesitter" },
 		-- {
 		-- 	"stevearc/quicker.nvim",
@@ -177,4 +169,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	desc = "Connect to godot external editor pipe",
 })
 
-require("plugins.extra")

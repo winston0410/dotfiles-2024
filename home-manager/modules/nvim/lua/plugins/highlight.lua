@@ -1,5 +1,6 @@
 vim.pack.add({
 	{ src = "https://github.com/mcauley-penney/visual-whitespace.nvim", version = "main" },
+	{ src = "https://github.com/GCBallesteros/jupytext.nvim" },
 })
 
 local function setup()
@@ -18,3 +19,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 setup()
+
+require("jupytext").setup({
+	style = "markdown",
+	output_extension = "md",
+	force_ft = "markdown",
+})

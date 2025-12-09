@@ -179,5 +179,3 @@ vim.api.nvim_create_user_command("ConformEnable", enable_autoformat, {
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
-local M = {}
-return M
