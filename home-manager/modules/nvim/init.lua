@@ -41,7 +41,13 @@ vim.opt.rtp:prepend(lazypath)
 require("plugins.lualine")
 require("plugins.theme")
 require("plugins.session-manager")
-require("plugins.editing-support")
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  once = true,
+  callback = function()
+    require("plugins.editing-support")
+  end,
+})
 require("plugins.highlight")
 
 vim.pack.add({

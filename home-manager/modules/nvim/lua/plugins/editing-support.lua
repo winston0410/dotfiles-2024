@@ -1,7 +1,7 @@
 -- plugins that would help with motion and textobjects
 vim.pack.add({
 	{ src = "https://github.com/folke/flash.nvim", version = vim.version.range("2.0") },
-	{ src = "https://github.com/winston0410/syringe.nvim", version = "main" },
+	-- { src = "https://github.com/winston0410/syringe.nvim", version = "main" },
 	{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
 	{ src = "https://github.com/nacro90/numb.nvim", version = "master" },
 	{ src = "https://github.com/sitiom/nvim-numbertoggle" },
@@ -15,7 +15,7 @@ vim.pack.add({
 	{ src = "https://github.com/sphamba/smear-cursor.nvim", version = vim.version.range("0.6") },
 	{ src = "https://github.com/s1n7ax/nvim-window-picker", version = vim.version.range("2.0") },
 })
-require("syringe").setup({})
+-- require("syringe").setup({})
 require("numb").setup()
 require("nvim-highlight-colors").setup({
 	render = "virtual",

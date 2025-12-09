@@ -1,6 +1,7 @@
 
 local ts_deps = { "nvim-treesitter/nvim-treesitter", branch = "main" }
 return {
+    { "winston0410/syringe.nvim"},
 	{
 		"jmbuhr/otter.nvim",
 		lazy = false,
