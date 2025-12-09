@@ -1,7 +1,4 @@
 return {
-    {
-        "sitiom/nvim-numbertoggle"
-    },
 	-- https://github.com/benlubas/molten-nvim/issues/324
 	-- {
 	-- 	"benlubas/molten-nvim",
@@ -25,33 +22,6 @@ return {
 	-- 		vim.fn.mkdir(runtime_path, "p")
 	-- 	end,
 	-- },
-	{
-		"michaelb/sniprun",
-		version = "1.x",
-		build = false,
-		cmd = { "SnipClose", "SnipInfo", "SnipReset", "SnipRun", "SnipReplMemoryClean", "SnipLive" },
-		config = function()
-			require("sniprun").setup({
-				binary_path = "sniprun",
-				selected_interpreters = { "Python3_fifo" },
-				repl_enable = { "Python3_fifo" },
-				interpreter_options = {
-					CSharp_original = {
-						compiler = "csc",
-					},
-					TypeScript_original = {
-						interpreter = "node",
-					},
-				},
-				snipruncolors = {
-					SniprunVirtualTextOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
-					SniprunVirtualWinOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
-					SniprunVirtualTextErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
-					SniprunVirtualWinErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
-				},
-			})
-		end,
-	},
 	{
 		"stevearc/overseer.nvim",
 		cmd = {
