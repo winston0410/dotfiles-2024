@@ -44,6 +44,7 @@ require("plugins.session-manager")
 require("plugins.file-manager")
 require("plugins.highlight")
 require("plugins.lsp")
+require("plugins.completion")
 
 vim.api.nvim_create_autocmd("CursorHold", {
   once = true,
@@ -108,9 +109,8 @@ require("lazy").setup({
 	},
 	spec = {
 		{ import = "plugins.git" },
-		{ import = "plugins.neovim-as-platform" },
-		{ import = "plugins.dap" },
-		{ import = "plugins.blink" },
+		-- { import = "plugins.neovim-as-platform" },
+		-- { import = "plugins.dap" },
 		{ import = "plugins.snacks" },
 		{ import = "plugins.codecompanion" },
 		{ import = "plugins.operators" },
