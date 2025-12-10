@@ -19,25 +19,6 @@ local godot = require("custom.godot")
 -- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
 -- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
 
--- TODO how can I always open helpfiles in a tab?
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_echo({
-			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
-			{ "\nPress any key to exit..." },
-		}, true, {})
-		vim.fn.getchar()
-		os.exit(1)
-	end
-end
-vim.opt.rtp:prepend(lazypath)
-
-
 require("plugins.lualine")
 require("plugins.theme")
 require("plugins.session-manager")
@@ -46,6 +27,7 @@ require("plugins.highlight")
 require("plugins.lsp")
 require("plugins.completion")
 require("plugins.diff")
+require("plugins.snacks")
 
 vim.api.nvim_create_autocmd("CursorHold", {
   once = true,
@@ -57,69 +39,69 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
-vim.pack.add({
+-- vim.pack.add({
 	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
-})
+-- })
 -- require("codesnap").setup({
 -- 	show_line_number = true,
 -- })
 
-require("lazy").setup({
-	performance = {
-		reset_packpath = false,
-		rtp = {
-			reset = false,
-		},
-	},
-	rocks = {
-		hererocks = false,
-	},
-	spec = {
-		-- { import = "plugins.neovim-as-platform" },
-		-- { import = "plugins.dap" },
-		{ import = "plugins.snacks" },
-		-- { import = "plugins.codecompanion" },
-		{ import = "plugins.operators" },
-		-- {
-		-- 	"stevearc/quicker.nvim",
-		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
-		-- 	lazy = false,
-		--           enabled = true,
-		-- 	ft = { "qf" },
-		-- 	keys = {
-		-- 		{
-		-- 			"<leader>q",
-		-- 			function()
-		-- 				require("quicker").toggle()
-		-- 			end,
-		-- 			mode = { "n" },
-		-- 			silent = true,
-		-- 			noremap = true,
-		-- 			desc = "Open quickfix list",
-		-- 		},
-		-- 	},
-		-- 	config = function()
-		-- 		require("quicker").setup({
-		-- 			keys = {},
-		-- 			borders = {
-		-- 				vert = "│",
-		-- 			},
-		-- 			opts = {
-		-- 				buflisted = false,
-		-- 				number = false,
-		-- 				relativenumber = false,
-		-- 				signcolumn = "no",
-		-- 				winfixheight = true,
-		-- 				wrap = false,
-		-- 			},
-		-- 			follow = {
-		-- 				enabled = false,
-		-- 			},
-		-- 		})
-		-- 	end,
-		-- },
-	},
-})
+-- require("lazy").setup({
+-- 	performance = {
+-- 		reset_packpath = false,
+-- 		rtp = {
+-- 			reset = false,
+-- 		},
+-- 	},
+-- 	rocks = {
+-- 		hererocks = false,
+-- 	},
+-- 	spec = {
+-- 		-- { import = "plugins.neovim-as-platform" },
+-- 		-- { import = "plugins.dap" },
+-- 		-- { import = "plugins.snacks" },
+-- 		-- { import = "plugins.codecompanion" },
+-- 		-- { import = "plugins.operators" },
+-- 		-- {
+-- 		-- 	"stevearc/quicker.nvim",
+-- 		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
+-- 		-- 	lazy = false,
+-- 		--           enabled = true,
+-- 		-- 	ft = { "qf" },
+-- 		-- 	keys = {
+-- 		-- 		{
+-- 		-- 			"<leader>q",
+-- 		-- 			function()
+-- 		-- 				require("quicker").toggle()
+-- 		-- 			end,
+-- 		-- 			mode = { "n" },
+-- 		-- 			silent = true,
+-- 		-- 			noremap = true,
+-- 		-- 			desc = "Open quickfix list",
+-- 		-- 		},
+-- 		-- 	},
+-- 		-- 	config = function()
+-- 		-- 		require("quicker").setup({
+-- 		-- 			keys = {},
+-- 		-- 			borders = {
+-- 		-- 				vert = "│",
+-- 		-- 			},
+-- 		-- 			opts = {
+-- 		-- 				buflisted = false,
+-- 		-- 				number = false,
+-- 		-- 				relativenumber = false,
+-- 		-- 				signcolumn = "no",
+-- 		-- 				winfixheight = true,
+-- 		-- 				wrap = false,
+-- 		-- 			},
+-- 		-- 			follow = {
+-- 		-- 				enabled = false,
+-- 		-- 			},
+-- 		-- 		})
+-- 		-- 	end,
+-- 		-- },
+-- 	},
+-- })
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
