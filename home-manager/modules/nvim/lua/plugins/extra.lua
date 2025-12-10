@@ -1,8 +1,9 @@
 -- really optional plugins
 vim.pack.add({
 	{ src = "https://github.com/vyfor/cord.nvim", version = vim.version.range("2.0") },
-	{ src = "https://github.com/michaelb/sniprun", version = "v1.3.20"},
-	{ src = "https://github.com/stevearc/overseer.nvim", version = vim.version.range("2.x")},
+	{ src = "https://github.com/michaelb/sniprun", version = "v1.3.20" },
+	{ src = "https://github.com/stevearc/overseer.nvim", version = vim.version.range("2.x") },
+	{ src = "https://github.com/NeogitOrg/neogit" },
 })
 require("cord").setup({
 	timestamp = {
@@ -37,13 +38,33 @@ require("sniprun").setup({
 
 local overseer = require("overseer")
 overseer.setup({
-    bundles = {
-        autostart_on_load = false,
-    },
+	bundles = {
+		autostart_on_load = false,
+	},
 })
-vim.keymap.set({ "n" }, "<leader>e", function ()
-    require("overseer").toggle()
+vim.keymap.set({ "n" }, "<leader>e", function()
+	require("overseer").toggle()
 end, { silent = true, noremap = true, desc = "Toggle Overseer" })
-vim.keymap.set({ "n" }, "<leader>p<leader>e", function ()
+vim.keymap.set({ "n" }, "<leader>p<leader>e", function()
 	vim.cmd("OverseerRun")
 end, { silent = true, noremap = true, desc = "Trigger tasks" })
+
+require("neogit").setup({
+	-- FIXME range diffing is not working correctly, cannot select the target of "to"
+	disable_hint = true,
+	disable_commit_confirmation = true,
+	graph_style = "unicode",
+	kind = "tab",
+	integrations = {
+		diffview = true,
+		snacks = true,
+	},
+	mappings = {
+		status = {
+			["<enter>"] = "Toggle",
+		},
+	},
+})
+vim.keymap.set({ "n" }, "<leader>gg", function()
+	require("neogit").open()
+end, { silent = true, noremap = true, desc = "Open Neogit status" })

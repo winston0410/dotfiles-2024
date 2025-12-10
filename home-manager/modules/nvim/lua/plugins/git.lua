@@ -103,46 +103,4 @@ return {
 		end,
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{
-		"NeogitOrg/neogit",
-		cmd = {
-			"Neogit",
-			"NeogitCommit",
-			"NeogitLogCurrent",
-			"NeogitResetState",
-		},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"sindrets/diffview.nvim",
-			"folke/snacks.nvim",
-		},
-		keys = {
-			{
-				"<leader>gg",
-				function()
-					require("neogit").open()
-				end,
-				mode = { "n" },
-				silent = true,
-				noremap = true,
-				desc = "Open Neogit status",
-			},
-		},
-		opts = {
-			-- FIXME range diffing is not working correctly, cannot select the target of "to"
-			disable_hint = true,
-			disable_commit_confirmation = true,
-			graph_style = "unicode",
-			kind = "tab",
-			integrations = {
-				diffview = true,
-				snacks = true,
-			},
-			mappings = {
-				status = {
-					["<enter>"] = "Toggle",
-				},
-			},
-		},
-	},
 }
