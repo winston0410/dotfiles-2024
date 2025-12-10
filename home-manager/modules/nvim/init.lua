@@ -33,9 +33,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
   once = true,
   callback = function()
     require("plugins.editing-support")
-    require("plugins.extra")
     require("plugins.conform")
     require("plugins.test")
+    require("plugins.dap")
+    require("plugins.ai")
+    require("plugins.extra")
   end,
 })
 
@@ -57,10 +59,8 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- 		hererocks = false,
 -- 	},
 -- 	spec = {
--- 		-- { import = "plugins.neovim-as-platform" },
--- 		-- { import = "plugins.dap" },
--- 		-- { import = "plugins.snacks" },
--- 		-- { import = "plugins.codecompanion" },
+		-- { import = "plugins.neovim-as-platform" },
+		-- { import = "plugins.codecompanion" },
 -- 		-- { import = "plugins.operators" },
 -- 		-- {
 -- 		-- 	"stevearc/quicker.nvim",
