@@ -1,19 +1,20 @@
 -- plugins that would help with motion and textobjects
 vim.pack.add({
-    { src = "https://github.com/folke/flash.nvim",                           version = vim.version.range("2.0") },
+    { src = "https://github.com/folke/flash.nvim",                            version = vim.version.range("2.x") },
     -- { src = "https://github.com/winston0410/syringe.nvim", version = "main" },
-    { src = "https://github.com/winston0410/range-highlight.nvim",           version = "master" },
-    { src = "https://github.com/nacro90/numb.nvim",                          version = "master" },
+    { src = "https://github.com/winston0410/range-highlight.nvim",            version = "master" },
+    { src = "https://github.com/nacro90/numb.nvim",                           version = "master" },
     { src = "https://github.com/sitiom/nvim-numbertoggle" },
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
-    { src = "https://github.com/NStefan002/screenkey.nvim",                  version = "main" },
-    { src = "http://github.com/winston0410/sops.nvim",                       version = "main" },
-    { src = "https://github.com/folke/which-key.nvim",                       version = vim.version.range("3.0") },
+    { src = "https://github.com/NStefan002/screenkey.nvim",                   version = "main" },
+    { src = "http://github.com/winston0410/sops.nvim",                        version = "main" },
+    { src = "https://github.com/folke/which-key.nvim",                        version = vim.version.range("3.x") },
     { src = "https://github.com/chrisgrieser/nvim-various-textobjs" },
     { src = "https://github.com/chrisgrieser/nvim-spider" },
-    { src = "https://github.com/kylechui/nvim-surround",                     version = vim.version.range("3.0") },
-    { src = "https://github.com/sphamba/smear-cursor.nvim",                  version = vim.version.range("0.6") },
-    { src = "https://github.com/s1n7ax/nvim-window-picker",                  version = vim.version.range("2.0") },
+    { src = "https://github.com/kylechui/nvim-surround",                      version = vim.version.range("3.x") },
+    { src = "https://github.com/sphamba/smear-cursor.nvim",                   version = vim.version.range("0.6") },
+    { src = "https://github.com/s1n7ax/nvim-window-picker",                   version = vim.version.range("2.x") },
+    { src = "https://github.com/lewis6991/gitsigns.nvim",                     version = vim.version.range("1.x") },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
 })
 -- require("syringe").setup({})
@@ -280,4 +281,83 @@ vim.api.nvim_create_autocmd("FileType", {
             end
         end
     end,
+})
+local pipe_icon = "┃"
+local signs_icons = {
+    add = { text = pipe_icon },
+    change = { text = pipe_icon },
+    delete = { text = pipe_icon },
+    topdelete = { text = pipe_icon },
+    changedelete = { text = pipe_icon },
+    untracked = { text = pipe_icon },
+}
+require("gitsigns").setup({
+    signs = signs_icons,
+    signs_staged = signs_icons,
+    signcolumn = true,
+    linehl = false,
+    current_line_blame = true,
+    preview_config = {
+        border = "rounded",
+        style = "minimal",
+        relative = "cursor",
+        row = 0,
+        col = 1,
+    },
+})
+
+vim.keymap.set({ "o", "x" }, "ac", function()
+  require("gitsigns").select_hunk()
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Git hunk",
+})
+
+vim.keymap.set("n", "<leader>gsc", function()
+  require("gitsigns").stage_hunk()
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Stage hunk",
+})
+
+vim.keymap.set("n", "<leader>gpc", function()
+  require("gitsigns").preview_hunk()
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Preview hunk",
+})
+
+vim.keymap.set("n", "<leader>grc", function()
+  require("gitsigns").reset_hunk()
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Reset hunk",
+})
+
+vim.keymap.set("n", "]c", function()
+  if vim.wo.diff then
+    vim.cmd.normal({ "]c", bang = true })
+  else
+    require("gitsigns").nav_hunk("next")
+  end
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Jump to next hunk",
+})
+
+vim.keymap.set("n", "[c", function()
+  if vim.wo.diff then
+    vim.cmd.normal({ "[c", bang = true })
+  else
+    require("gitsigns").nav_hunk("prev")
+  end
+end, {
+  silent = true,
+  noremap = true,
+  desc = "Jump to previous hunk",
 })

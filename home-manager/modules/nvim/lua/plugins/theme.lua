@@ -10,7 +10,7 @@ vim.pack.add({
 	{ src = "https://github.com/AlexvZyl/nordic.nvim" },
 	{ src = "https://github.com/jnz/studio98" },
 	{ src = "https://github.com/nuvic/flexoki-nvim" },
-	{ src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.0") },
+	{ src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.x") },
 })
 
 vim.g.tokyonight_style = "moon"

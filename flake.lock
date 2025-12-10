@@ -88,11 +88,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764926570,
-        "narHash": "sha256-xzxiLQ6FYGrSMtyk240ZhowG1iYpvO8kKtURehUeFy8=",
+        "lastModified": 1765196647,
+        "narHash": "sha256-26gltW8MX2GnsB6b6qdQcrrYBUs20l3O+EGB36P6/rM=",
         "owner": "EmmyLuaLs",
         "repo": "emmylua-analyzer-rust",
-        "rev": "9d4f8c6ccc186d969b8d40076715857566626be3",
+        "rev": "294a787c46d92913655e8ec2113d815972d4ac7a",
         "type": "github"
       },
       "original": {
@@ -689,11 +689,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765075567,
-        "narHash": "sha256-KFDCdQcHJ0hE3Nt5Gm5enRIhmtEifAjpxgUQ3mzSJpA=",
+        "lastModified": 1765334520,
+        "narHash": "sha256-jTof2+ir9UPmv4lWksYO6WbaXCC0nsDExrB9KZj7Dz4=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "769156779b41e8787a46ca3d7d76443aaf68be6f",
+        "rev": "db61f666aea93b28f644861fbddd37f235cc5983",
         "type": "github"
       },
       "original": {
@@ -861,11 +861,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1765145380,
-        "narHash": "sha256-sWe9FDGMNuIbGn9bFGnl5x08+yG/TdAoTzoXOFPjdu0=",
+        "lastModified": 1765358415,
+        "narHash": "sha256-xFizMO8LIs0+2J6RdAlHIo2U3PxeKRdIaxE414ivqYg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d904f759a29c481e8a22d532ad2a4d52cd2dc7d5",
+        "rev": "df7d622f2a3d56b7572049b3d0603c35fc1426fa",
         "type": "github"
       },
       "original": {

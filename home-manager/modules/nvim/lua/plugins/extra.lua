@@ -1,10 +1,12 @@
 -- really optional plugins
 vim.pack.add({
-	{ src = "https://github.com/vyfor/cord.nvim", version = vim.version.range("2.0") },
+	{ src = "https://github.com/vyfor/cord.nvim", version = vim.version.range("2.x") },
 	{ src = "https://github.com/michaelb/sniprun", version = "v1.3.20" },
 	{ src = "https://github.com/stevearc/overseer.nvim", version = vim.version.range("2.x") },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
 	{ src = "https://github.com/NeogitOrg/neogit" },
 })
+
 require("cord").setup({
 	timestamp = {
 		enabled = true,

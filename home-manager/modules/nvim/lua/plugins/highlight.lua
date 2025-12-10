@@ -2,8 +2,10 @@ vim.pack.add({
     { src = "https://github.com/winston0410/syringe.nvim" },
     { src = "https://github.com/mcauley-penney/visual-whitespace.nvim",        version = "main" },
     { src = "https://github.com/GCBallesteros/jupytext.nvim" },
+	{ src = "https://github.com/folke/ts-comments.nvim" },
     { src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim", version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",              version = "main" },
+    { src = "https://github.com/ravsii/tree-sitter-d2"},
 })
 
 local function setup()

@@ -1,5 +1,5 @@
 vim.pack.add({
-    { src = "https://github.com/stevearc/conform.nvim", version = vim.version.range("9.0") },
+    { src = "https://github.com/stevearc/conform.nvim", version = vim.version.range("9.x") },
 })
 
 -- REF https://github.com/stevearc/conform.nvim/issues/781

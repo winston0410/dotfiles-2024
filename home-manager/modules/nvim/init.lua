@@ -57,40 +57,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
--- Treesitter related
-vim.pack.add({
-	-- { src = "https://github.com/folke/ts-comments.nvim" },
-	-- { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-	-- { src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim" },
-})
-
--- require("treesitter-modules").setup({
--- 	incremental_selection = {
--- 		enable = true,
--- 		keymaps = {
--- 			init_selection = false,
--- 			node_incremental = "+",
--- 			node_decremental = "-",
--- 			scope_incremental = false,
--- 		},
--- 	},
--- })
-
--- require("nvim-treesitter").setup({})
--- vim.api.nvim_create_autocmd("FileType", {
--- 	group = vim.api.nvim_create_augroup("treesitter.setup", {}),
--- 	callback = function(args)
--- 		local filetype = args.match
---
--- 		local language = vim.treesitter.language.get_lang(filetype) or filetype
--- 		if not vim.treesitter.language.add(language) then
--- 			return
--- 		end
--- 		vim.treesitter.start(args.buf, language)
--- 	end,
--- })
---
-
 vim.pack.add({
 	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
 })
@@ -109,14 +75,11 @@ require("lazy").setup({
 		hererocks = false,
 	},
 	spec = {
-		{ import = "plugins.git" },
 		-- { import = "plugins.neovim-as-platform" },
 		-- { import = "plugins.dap" },
 		{ import = "plugins.snacks" },
 		-- { import = "plugins.codecompanion" },
 		{ import = "plugins.operators" },
-		{ import = "plugins.nvim-lspconfig" },
-		{ import = "plugins.treesitter" },
 		-- {
 		-- 	"stevearc/quicker.nvim",
 		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable

@@ -3,7 +3,7 @@ if vim.g.enable_session == nil then
 end
 
 vim.pack.add({
-    { src = "https://github.com/folke/persistence.nvim", version = vim.version.range("3.0")}
+    { src = "https://github.com/folke/persistence.nvim", version = vim.version.range("3.x")}
 })
 vim.api.nvim_create_autocmd("VimEnter", {
     group = vim.api.nvim_create_augroup("Persistence", { clear = true }),

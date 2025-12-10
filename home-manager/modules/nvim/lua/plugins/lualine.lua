@@ -2,9 +2,9 @@
 local godot = require("custom.godot")
 
 vim.pack.add({
-	{ src = "https://github.com/Zeioth/heirline-components.nvim", version = "v3.3.4" },
-	{ src = "https://github.com/Bekaboo/dropbar.nvim", version = vim.version.range("14.0") },
-    { src = "https://github.com/rebelot/heirline.nvim", version = vim.version.range("1.0") }
+	{ src = "https://github.com/Zeioth/heirline-components.nvim", version = vim.version.range("3.x") },
+	{ src = "https://github.com/Bekaboo/dropbar.nvim", version = vim.version.range("14.x") },
+    { src = "https://github.com/rebelot/heirline.nvim", version = vim.version.range("1.x") }
 })
 
 local function buf_in_arglist(buf_id)
