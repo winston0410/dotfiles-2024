@@ -28,18 +28,12 @@ require("plugins.lsp")
 require("plugins.completion")
 require("plugins.diff")
 require("plugins.snacks")
-
-vim.api.nvim_create_autocmd("CursorHold", {
-  once = true,
-  callback = function()
-    require("plugins.editing-support")
-    require("plugins.conform")
-    require("plugins.test")
-    require("plugins.dap")
-    require("plugins.ai")
-    require("plugins.extra")
-  end,
-})
+require("plugins.editing-support")
+require("plugins.conform")
+require("plugins.test")
+require("plugins.dap")
+require("plugins.ai")
+require("plugins.extra")
 
 -- vim.pack.add({
 	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
@@ -61,7 +55,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- 	spec = {
 		-- { import = "plugins.neovim-as-platform" },
 		-- { import = "plugins.codecompanion" },
--- 		-- { import = "plugins.operators" },
 -- 		-- {
 -- 		-- 	"stevearc/quicker.nvim",
 -- 		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
