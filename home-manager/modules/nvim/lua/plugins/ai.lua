@@ -82,24 +82,31 @@ local get_api_key = function(key)
 	return pwd
 end
 
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	callback = function()
+		vim.pack.add({
+			{ src = "https://github.com/github/copilot.vim", version = vim.version.range("1.x") },
+		})
+		-- REF https://github.com/fang2hou/blink-copilot
+		vim.g.copilot_no_maps = true
+
+		-- Block the normal Copilot suggestions
+		vim.api.nvim_create_augroup("github_copilot", { clear = true })
+		vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
+			group = "github_copilot",
+			callback = function(args)
+				vim.fn["copilot#On" .. args.event]()
+			end,
+		})
+		vim.fn["copilot#OnFileType"]()
+	end,
+})
+
 vim.pack.add({
-	{ src = "https://github.com/github/copilot.vim", version = vim.version.range("1.x") },
 	{ src = "https://github.com/nvim-lua/plenary.nvim" },
 	{ src = "https://github.com/OXY2DEV/markview.nvim", version = vim.version.range("27.x") },
 	-- { src = "https://github.com/ravitemer/mcphub.nvim", version = vim.version.range("6.x") },
 })
--- REF https://github.com/fang2hou/blink-copilot
-vim.g.copilot_no_maps = true
-
--- Block the normal Copilot suggestions
-vim.api.nvim_create_augroup("github_copilot", { clear = true })
-vim.api.nvim_create_autocmd({ "FileType", "BufUnload" }, {
-	group = "github_copilot",
-	callback = function(args)
-		vim.fn["copilot#On" .. args.event]()
-	end,
-})
-vim.fn["copilot#OnFileType"]()
 
 local function conceal_tag(icon, hl_group)
 	return {
