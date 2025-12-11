@@ -10,7 +10,7 @@
     nur.follows = "proxy-flake/nur";
     flake-parts.follows = "proxy-flake/flake-parts";
     sops-nix.follows = "proxy-flake/sops-nix";
-    neovim-nightly-overlay.follows = "proxy-flake/neovim-nightly-overlay";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     unstable.url = "github:nixos/nixpkgs";
 

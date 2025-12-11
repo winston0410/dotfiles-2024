@@ -30,10 +30,28 @@ require("plugins.diff")
 require("plugins.snacks")
 require("plugins.editing-support")
 require("plugins.conform")
-require("plugins.test")
 require("plugins.dap")
-require("plugins.ai")
 require("plugins.extra")
+require("plugins.test")
+local completion_args = { 'ai' }
+
+vim.api.nvim_create_user_command(
+  "EnableFeature",
+  function(opts)
+    for i, arg in ipairs(opts.fargs) do
+
+        if arg == "ai" then
+            require("plugins.ai")
+        end
+    end
+  end,
+  {
+    nargs = "*",
+    complete = function (_)
+        return completion_args
+    end
+  }
+)
 
 -- vim.pack.add({
 	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },

@@ -68,6 +68,7 @@ require("oil").setup({
 	use_default_keymaps = false,
 	win_options = {
 		wrap = true,
+        number = false,
 		signcolumn = "auto:2",
 	},
 	view_options = {
@@ -134,7 +135,7 @@ return {
 					},
 					win = {
 						win_opts = {
-							number = true,
+							number = false,
 						},
 					},
 				},
