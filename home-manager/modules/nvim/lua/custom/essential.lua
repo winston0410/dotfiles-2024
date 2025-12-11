@@ -137,6 +137,7 @@ vim.opt.wildignore:append({
 	"wildcharm.vim",
 	"zaibatsu.vim",
 	"zellner.vim",
+    -- Default Neovim theme
 	"default.vim",
 	"vim.lua",
 })

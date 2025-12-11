@@ -5,14 +5,16 @@ vim.pack.add({
 	{ src = "https://github.com/folke/tokyonight.nvim" },
 	{ src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
 	{ src = "https://github.com/rose-pine/neovim" },
+    { src = "https://github.com/rebelot/kanagawa.nvim" },
+    -- These two themes are similar, as they have high saturation even for dark theme
+    { src = "https://github.com/nuvic/flexoki-nvim" },
+	{ src = "https://github.com/miikanissi/modus-themes.nvim" },
 	-- { src = "https://github.com/thesimonho/kanagawa-paper.nvim" },
 	{ src = "https://github.com/kyza0d/xeno.nvim" },
 	-- { src = "https://github.com/AlexvZyl/nordic.nvim" },
 	{ src = "https://github.com/jnz/studio98" },
 	{ src = "https://github.com/Mofiqul/vscode.nvim" },
     { src = "https://github.com/catppuccin/nvim" },
-	-- { src = "https://github.com/nuvic/flexoki-nvim" },
-	{ src = "https://github.com/miikanissi/modus-themes.nvim" },
 	-- { src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.x") },
 })
 require('vscode').setup({
@@ -22,20 +24,27 @@ vim.opt.wildignore:append({
 	"tokyonight.lua",
 	"tokyonight-night.lua",
 	"tokyonight-storm.lua",
+	"tokyonight-moon.lua",
 	"tokyonight-day.lua",
+})
+vim.opt.wildignore:append({
 	"rose-pine.lua",
 	"rose-pine-main.lua",
 	"rose-pine-dawn.lua",
 })
 vim.opt.wildignore:append({
-	"flexoki.lua",
+	"flexoki.lua", 
+	"modus.lua",
+    -- this light theme doesn't look good. The contrast is not good enough
+    "modus_operandi.lua",
 })
 vim.opt.wildignore:append({
-	"modus.lua",
+    "kanagawa.vim",
+    "kanagawa-lotus.vim",
+    "kanagawa-dragon.vim",
 })
 vim.opt.wildignore:append({
 	"catppuccin.vim",
-	"catppuccin-latte.vim",
 	"catppuccin-frappe.vim",
 	"catppuccin-macchiato.vim",
 })
@@ -61,5 +70,9 @@ xeno.new_theme("xeno-golden-hour", {
 	base = "#11100f",
 	accent = "#FFCC33",
 	contrast = 0.2,
+})
+require("modus-themes").setup({
+	line_nr_column_background = true, 
+	sign_column_background = true, 
 })
 vim.cmd.colorscheme("modus_vivendi")
