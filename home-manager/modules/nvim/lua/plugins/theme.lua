@@ -75,4 +75,4 @@ require("modus-themes").setup({
 	line_nr_column_background = true, 
 	sign_column_background = true, 
 })
-vim.cmd.colorscheme("modus_vivendi")
+vim.cmd.colorscheme("flexoki-moon")
