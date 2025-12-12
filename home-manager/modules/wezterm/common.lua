@@ -32,7 +32,7 @@ M.config = {
 		top = 0,
 		bottom = 0,
 	},
-	color_scheme = "tokyonight_night",
+	color_scheme = "rose-pine-moon",
 	color_schemes = {},
 	disable_default_key_bindings = true,
 	adjust_window_size_when_changing_font_size = true,

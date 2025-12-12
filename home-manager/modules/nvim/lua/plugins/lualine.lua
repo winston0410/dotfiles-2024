@@ -209,7 +209,47 @@ local GoDotExternalEditor = {
 }
 
 local Space = { provider = " " }
+local function generate_all_letters_list()
+    local letters = {}
+    for i = string.byte("a"), string.byte("z") do
+        table.insert(letters, string.char(i))
+    end
+    return letters
+end
 
+local named_registers = generate_all_letters_list()
+
+local function reg_exists(name)
+    local info = vim.fn.getreginfo(name)
+    if getmetatable(info) == vim._empty_dict_mt then
+	    return false
+    end
+    return info.regcontents[1] ~= ""
+end
+
+local Registers = {
+	condition = function()
+        for _, reg in ipairs(named_registers) do
+            if reg_exists(reg) then
+                return true
+            end
+        end
+        return false
+	end,
+	provider = function()
+        local used_register = {}
+        for _, reg in ipairs(named_registers) do
+            if reg_exists(reg) then
+                table.insert(used_register, reg)
+            end
+        end
+
+        return "󱓥 " .. table.concat(used_register, ",")
+	end,
+	hl = function()
+		return "DiagnosticHint"
+	end,
+}
 -- add padding right 1 to this component
 local ArglistIndex = {
 	condition = function()
@@ -284,6 +324,8 @@ require("heirline").setup({
 		ArglistIndex,
 		Space,
 		QuickfixIndex,
+		Space,
+		Registers,
 		heirline_components.component.fill(),
 		TabPages,
 	},
