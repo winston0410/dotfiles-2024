@@ -2,19 +2,20 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/nvim-mini/mini.icons" },
 	{ src = "https://github.com/onsails/lspkind.nvim" },
+    -- low contrast themes
+    { src = "https://github.com/catppuccin/nvim" },
+    -- cannot see the comment clearly with this theme
 	{ src = "https://github.com/folke/tokyonight.nvim" },
-	{ src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
 	{ src = "https://github.com/rose-pine/neovim" },
     { src = "https://github.com/rebelot/kanagawa.nvim" },
-    -- These two themes are similar, as they have high saturation even for dark theme
-    { src = "https://github.com/nuvic/flexoki-nvim" },
+    -- High contrast themes
+    { src = "https://github.com/nuvic/flexoki-nvim" }, -- it has limited plugin support
 	{ src = "https://github.com/miikanissi/modus-themes.nvim" },
-	-- { src = "https://github.com/thesimonho/kanagawa-paper.nvim" },
 	{ src = "https://github.com/kyza0d/xeno.nvim" },
-	-- { src = "https://github.com/AlexvZyl/nordic.nvim" },
+    -- for fun
 	{ src = "https://github.com/jnz/studio98" },
+	{ src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
 	{ src = "https://github.com/Mofiqul/vscode.nvim" },
-    { src = "https://github.com/catppuccin/nvim" },
 	-- { src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.x") },
 })
 require('vscode').setup({
@@ -75,4 +76,4 @@ require("modus-themes").setup({
 	line_nr_column_background = true, 
 	sign_column_background = true, 
 })
-vim.cmd.colorscheme("flexoki-moon")
+vim.cmd.colorscheme("rose-pine-moon")
