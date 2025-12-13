@@ -227,29 +227,6 @@ local function reg_exists(name)
     return info.regcontents[1] ~= ""
 end
 
-local Registers = {
-	condition = function()
-        for _, reg in ipairs(named_registers) do
-            if reg_exists(reg) then
-                return true
-            end
-        end
-        return false
-	end,
-	provider = function()
-        local used_register = {}
-        for _, reg in ipairs(named_registers) do
-            if reg_exists(reg) then
-                table.insert(used_register, reg)
-            end
-        end
-
-        return "󱓥 " .. table.concat(used_register, ",")
-	end,
-	hl = function()
-		return "DiagnosticHint"
-	end,
-}
 -- add padding right 1 to this component
 local ArglistIndex = {
 	condition = function()
@@ -276,9 +253,12 @@ local QuickfixIndex = {
 		local qf = vim.fn.getqflist()
 		return #qf > 0
 	end,
+    -- FIXME use the following autocmd to limit update is not working. It is missing some update. Use an update function instead
+    -- update = {"QuickFixCmdPre", "QuickFixCmdPost", "CursorMoved"},
 	provider = function()
-		local qf = vim.fn.getqflist()
-		return string.format("󰖷 %s", #qf)
+        -- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
+		local qf = vim.fn.getqflist({ idx = 0, items = 0 })
+		return string.format("󰖷 %s/%s", qf.idx, #qf.items)
 	end,
 	hl = function()
 		return "DiagnosticWarn"
@@ -302,8 +282,8 @@ require("heirline").setup({
 		heirline_components.component.fill(),
 		heirline_components.component.lsp({ lsp_client_names = false }),
 		heirline_components.component.diagnostics(),
-		heirline_components.component.cmd_info(),
-		heirline_components.component.nav({ percentage = false }),
+		-- heirline_components.component.cmd_info(),
+		heirline_components.component.nav({ percentage = false, ruler = false }),
 	},
 	winbar = {
 		{
@@ -324,8 +304,6 @@ require("heirline").setup({
 		ArglistIndex,
 		Space,
 		QuickfixIndex,
-		Space,
-		Registers,
 		heirline_components.component.fill(),
 		TabPages,
 	},
