@@ -228,14 +228,16 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function(ev)
         local ts_shared = require("nvim-treesitter-textobjects.shared")
         local mappings = {
-            { symbol = "r", node = "@return",      label = "return statement",    outer = true, inner = true },
-            { symbol = "p", node = "@parameter",   label = "parameter",           outer = true, inner = true },
-            { symbol = "f", node = "@function",    label = "function definition", outer = true, inner = true },
-            { symbol = "i", node = "@conditional", label = "conditional",         outer = true, inner = true },
-            { symbol = "k", node = "@call",        label = "function call",       outer = true, inner = true },
-            { symbol = "K", node = "@class",       label = "class",               outer = true, inner = true },
-            { symbol = "a", node = "@attribute",   label = "attribute",           outer = true, inner = true },
-            { symbol = "b", node = "@block",       label = "block",               outer = true, inner = true },
+            { symbol = "r", node = "@return",         label = "return statement",    outer = true, inner = true },
+            { symbol = "p", node = "@parameter",      label = "parameter",           outer = true, inner = true },
+            { symbol = "P", node = "@attribute",      label = "attribute",           outer = true, inner = true },
+            { symbol = "f", node = "@function",       label = "function definition", outer = true, inner = true },
+            { symbol = "i", node = "@conditional",    label = "conditional",         outer = true, inner = true },
+            { symbol = "k", node = "@call",           label = "function call",       outer = true, inner = true },
+            { symbol = "K", node = "@class",          label = "class",               outer = true, inner = true },
+            { symbol = "b", node = "@block",          label = "block",               outer = true, inner = true },
+            { symbol = "a", node = "@assignment.lhs", label = "Assignment LHS",      outer = true, inner = true },
+            { symbol = "A", node = "@assignment.rhs", label = "Assignment RHS",      outer = true, inner = true },
         }
         local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
         local parsername = vim.treesitter.language.get_lang(main_lang)
