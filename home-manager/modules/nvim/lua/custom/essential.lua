@@ -68,7 +68,7 @@ vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 vim.o.wrap = false
 vim.o.linebreak = true
-vim.o.number = false
+vim.o.number = true
 vim.opt.relativenumber = true
 vim.o.signcolumn = "auto"
 vim.o.scrolloff = 8
@@ -198,6 +198,9 @@ vim.keymap.del({ "n" }, "gO", {})
 -- remove keybinding for adding additional lines. They do not follow the convention of using [ and ] key for navigation
 vim.keymap.del({ "n" }, "[<space>", {})
 vim.keymap.del({ "n" }, "]<space>", {})
+
+-- Disable the use of mark completely, because 1. it is not project specific and 2. its position is static. Use arglist instead would be a better option
+vim.keymap.set({ "n" }, "m", "<Nop>", { noremap = true, silent = true })
 
 vim.keymap.set({ "n" }, "<leader>qa", function()
 	vim.ui.input({ prompt = "Quickfix description" }, function(input)
