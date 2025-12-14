@@ -89,57 +89,51 @@ vim.api.nvim_create_autocmd("User", {
 vim.keymap.set({ "n" }, "<leader>o", function()
 	require("oil").open(nil)
 end, { silent = true, noremap = true, desc = "Open Oil.nvim panel" })
-
-local enable_oil = true
-return {
-	{
-		"A7Lavinraj/fyler.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		lazy = false,
-		enabled = not enable_oil,
-		cmd = { "Fyler" },
-		version = "2.x",
-		keys = {
-			{
-				"<leader>o",
-				function()
-					vim.cmd("Fyler")
-				end,
-				mode = { "n" },
-				noremap = true,
-				silent = true,
-				desc = "Open Oil.nvim panel",
-			},
-		},
-		config = function()
-			-- FIXME https://github.com/A7Lavinraj/fyler.nvim/issues/204 this prevents fyler to work with session manager
-			require("fyler").setup({
-				close_on_select = true,
-				confirm_simple = true,
-				default_explorer = true,
-				delete_to_trash = true,
-				icon_provider = "nvim_web_devicons",
-				views = {
-					explorer = {},
-					mappings = {
-						["q"] = "CloseView",
-						["<CR>"] = "Select",
-						["-"] = "GotoParent",
-						["="] = "GotoCwd",
-						["."] = "GotoNode",
-						["zM"] = "CollapseAll",
-						["zc"] = "CollapseNode",
-					},
-					watcher = {
-						enabled = true,
-					},
-					win = {
-						win_opts = {
-							number = false,
-						},
-					},
-				},
-			})
-		end,
-	},
-}
+-- fyler.nvim is still buggy, wait for a bit longer
+-- vim.pack.add({
+--     {
+--         src = "https://github.com/A7Lavinraj/fyler.nvim",
+--         -- version = vim.version.range("2.x")
+--         version = "main"
+--     },
+-- })
+--
+-- vim.keymap.set({ "n" }, "<leader>o", function()
+--     vim.cmd("Fyler")
+-- end, { silent = true, noremap = true, desc = "Open Oil.nvim panel" })
+--
+-- require("fyler").setup({
+--     close_on_select = true,
+--     confirm_simple = true,
+--     default_explorer = true,
+--     delete_to_trash = true,
+--     integrations = {
+--         icon = "mini_icons",
+--         winpick = { provider = "nvim-window-picker" },
+--     },
+--     hooks = {
+--         on_rename = function(src_path, destination_path)
+--             Snacks.rename.on_rename_file(src_path, destination_path)
+--         end,
+--     },
+--     views = {
+--         explorer = {},
+--         mappings = {
+--             ["q"] = "CloseView",
+--             ["<CR>"] = "Select",
+--             ["-"] = "GotoParent",
+--             ["="] = "GotoCwd",
+--             ["."] = "GotoNode",
+--             ["zM"] = "CollapseAll",
+--             ["zc"] = "CollapseNode",
+--         },
+--         watcher = {
+--             enabled = true,
+--         },
+--         win = {
+--             win_opts = {
+--                 number = false,
+--             },
+--         },
+--     },
+-- })
