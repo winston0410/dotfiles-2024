@@ -25,6 +25,22 @@ vim.o.mousemoveevent = true
 vim.o.showtabline = 2
 vim.o.laststatus = 3
 
+local Space = { provider = " " }
+---@param text string
+---@param opts PaddingOpts
+---@return string
+local function handle_padding(text, opts)
+	local result = text
+	for i = 1, opts.left do
+		result = Space.provider .. result
+	end
+	for i = 1, opts.right do
+		result = result .. Space.provider
+	end
+
+	return result
+end
+
 require("heirline-components").setup({
 	icons = {
 		GitBranch = "",
@@ -162,7 +178,9 @@ heirline_components.init.subscribe_to_events()
 -- FIXME heirline-compoments would reload color after colorscheme has changed, we need to set our custom color again as well
 heirline.load_colors(heirline_components.hl.get_colors())
 
-local FileSize = {
+---@param opts CustomComponentOpts
+local FileSize = function (opts)
+    return {
 	provider = function()
 		local suffix = { "B", "kB", "MB", "GB", "TB", "PB", "EB" }
 		local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
@@ -173,9 +191,10 @@ local FileSize = {
 		end
 
 		local i = math.floor(math.log(size) / math.log(1000))
-		return string.format("%.2g%s", size / (1000 ^ i), suffix[i + 1])
+		return handle_padding(string.format("%.2g%s", size / (1000 ^ i), suffix[i + 1]), opts.padding)
 	end,
 }
+end
 
 local Tabpage = {
 	provider = function(self)
@@ -198,16 +217,16 @@ local TabPages = {
 	utils.make_tablist(Tabpage),
 }
 
-local Space = { provider = " " }
-local GoDotExternalEditor = function ()
-    return {
-	condition = function()
-		return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
-	end,
-	provider = function()
-		return Space.provider .. " Godot"
-	end,
-}
+---@param opts CustomComponentOpts
+local GoDotExternalEditor = function(opts)
+	return {
+		condition = function()
+			return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
+		end,
+		provider = function()
+			return handle_padding(" Godot", opts.padding)
+		end,
+	}
 end
 
 local function generate_all_letters_list()
@@ -229,7 +248,8 @@ local function reg_exists(name)
 end
 
 -- add padding right 1 to this component
-local ArglistIndex = function()
+---@param opts CustomComponentOpts
+local ArglistIndex = function(opts)
 	return {
 		condition = function()
 			return vim.fn.argc() > 0
@@ -241,17 +261,18 @@ local ArglistIndex = function()
 			local in_arglist = buf_in_arglist(buf_nr)
 
 			if in_arglist then
-				return Space.provider .. string.format("󰐷 %s/%s", arglist_idx, arglist_count)
+				return handle_padding(string.format("󰐷 %s/%s", arglist_idx, arglist_count), opts.padding)
 			end
 
-			return Space.provider .. string.format("󰐷 %s", arglist_count)
+			return handle_padding(string.format("󰐷 %s", arglist_count), opts.padding)
 		end,
 		hl = function()
 			return "DiagnosticHint"
 		end,
 	}
 end
-local QuickfixIndex = function()
+---@param opts CustomComponentOpts
+local QuickfixIndex = function(opts)
 	return {
 		condition = function()
 			local qf = vim.fn.getqflist()
@@ -262,14 +283,15 @@ local QuickfixIndex = function()
 		provider = function()
 			-- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
 			local qf = vim.fn.getqflist({ idx = 0, items = 0 })
-			return Space.provider .. string.format("󰖷 %s/%s", qf.idx, #qf.items)
+			return handle_padding(string.format("󰖷 %s/%s", qf.idx, #qf.items), opts.padding)
 		end,
 		hl = function()
 			return "DiagnosticWarn"
 		end,
 	}
 end
-local LocationListIndex = function()
+---@param opts CustomComponentOpts
+local LocationListIndex = function(opts)
 	return {
 		condition = function()
 			local location_list = vim.fn.getloclist(0)
@@ -278,13 +300,20 @@ local LocationListIndex = function()
 		provider = function()
 			-- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
 			local location_list = vim.fn.getloclist(0, { idx = 0, items = 0 })
-			return Space.provider .. string.format("󰖷 %s/%s", location_list.idx, #location_list.items) .. Space.provider
+			return handle_padding(string.format("󰖷 %s/%s", location_list.idx, #location_list.items), opts.padding)
 		end,
 		hl = function()
 			return "DiagnosticHint"
 		end,
 	}
 end
+
+---@class PaddingOpts
+---@field left number
+---@field right number
+
+---@class CustomComponentOpts
+---@field padding PaddingOpts
 
 require("heirline").setup({
 	statusline = {
@@ -296,15 +325,13 @@ require("heirline").setup({
 		heirline_components.component.file_encoding({
 			file_format = { padding = { left = 0, right = 0 } },
 		}),
-		Space,
-		FileSize,
-		Space,
-		heirline_components.component.nav({ percentage = false, scrollbar = false }),
+		FileSize({ padding = { left = 1, right = 0 }}),
+		heirline_components.component.nav({ percentage = false, scrollbar = false, padding = { left = 1, right = 0} }),
 		heirline_components.component.fill(),
 		heirline_components.component.lsp({ lsp_client_names = false }),
 		heirline_components.component.diagnostics(),
 		-- heirline_components.component.cmd_info(),
-		LocationListIndex(),
+		LocationListIndex({ padding = { left = 1, right = 0 }}),
 	},
 	winbar = {
 		{
@@ -321,9 +348,9 @@ require("heirline").setup({
 		},
 	},
 	tabline = {
-		GoDotExternalEditor(),
-		ArglistIndex(),
-		QuickfixIndex(),
+		GoDotExternalEditor({ padding = { left = 1, right = 0 }}),
+		ArglistIndex({ padding = { left = 1, right = 0 }}),
+		QuickfixIndex({ padding = { left = 1, right = 0 }}),
 		heirline_components.component.fill(),
 		TabPages,
 	},
