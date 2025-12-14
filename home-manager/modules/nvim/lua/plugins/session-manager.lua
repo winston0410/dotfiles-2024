@@ -52,7 +52,6 @@ vim.api.nvim_create_autocmd("User", {
 	callback = function()
 		local current_session_file = persistence.current()
 		local qf_session_dir = vim.fs.joinpath(persistence_config.options.dir, "qf")
-		vim.fn.mkdir(qf_session_dir, "p")
 		local qf_session_file =
 			vim.fs.joinpath(qf_session_dir, vim.fs.basename(current_session_file))
 		local qf_session_exists = vim.fn.filereadable(qf_session_file)
