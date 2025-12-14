@@ -1,9 +1,9 @@
 if vim.g.enable_session == nil then
-	vim.g.enable_session = true
+    vim.g.enable_session = true
 end
 
 vim.pack.add({
-    { src = "https://github.com/folke/persistence.nvim", version = vim.version.range("3.x")}
+    { src = "https://github.com/folke/persistence.nvim", version = vim.version.range("3.x") }
 })
 local group = vim.api.nvim_create_augroup("Persistence", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -20,47 +20,61 @@ require("persistence").setup({})
 local persistence_config = require("persistence.config")
 
 vim.api.nvim_create_autocmd("User", {
-	pattern = "PersistenceSavePre",
+    pattern = "PersistenceSavePre",
     group = group,
-	callback = function()
-		local qflist = vim.fn.getqflist()
-		if #qflist == 0 then
-			return
-		end
+    callback = function()
+        local qflist = vim.fn.getqflist()
+        if #qflist == 0 then
+            return
+        end
 
-		local qf_session_dir = vim.fs.joinpath(persistence_config.options.dir, "qf")
-		vim.fn.mkdir(qf_session_dir, "p")
+        local qf_session_dir = vim.fs.joinpath(persistence_config.options.dir, "qf")
+        vim.fn.mkdir(qf_session_dir, "p")
 
-		for _, entry in ipairs(qflist) do
-			-- use filename instead of bufnr so it can be reloaded
-			entry.filename = vim.api.nvim_buf_get_name(entry.bufnr)
-			entry.bufnr = nil
-		end
+        for _, entry in ipairs(qflist) do
+            -- use filename instead of bufnr so it can be reloaded
+            entry.filename = vim.api.nvim_buf_get_name(entry.bufnr)
+            entry.bufnr = nil
+        end
 
-		local serialized_entries = vim.fn.json_encode(qflist)
+        local serialized_entries = vim.fn.json_encode(qflist)
 
-		local current_session_file = persistence.current()
-		local qf_session_file =
-			vim.fs.joinpath(qf_session_dir, vim.fs.basename(current_session_file))
-		vim.fn.writefile({ serialized_entries }, qf_session_file)
-	end,
+        local current_session_file = persistence.current()
+        local qf_session_file =
+            vim.fs.joinpath(qf_session_dir, vim.fs.basename(current_session_file))
+        vim.fn.writefile({ serialized_entries }, qf_session_file)
+    end,
 })
 
 vim.api.nvim_create_autocmd("User", {
-	pattern = "PersistenceLoadPost",
+    pattern = "PersistenceLoadPost",
     group = group,
-	callback = function()
-		local current_session_file = persistence.current()
-		local qf_session_dir = vim.fs.joinpath(persistence_config.options.dir, "qf")
-		local qf_session_file =
-			vim.fs.joinpath(qf_session_dir, vim.fs.basename(current_session_file))
-		local qf_session_exists = vim.fn.filereadable(qf_session_file)
-		if qf_session_exists == 0 then
-			return
-		end
-		local qf_session_file_content = vim.fn.readfile(qf_session_file)
-		local qf_session = vim.fn.json_decode(qf_session_file_content[1])
+    callback = function()
+        local current_session_file = persistence.current()
+        local qf_session_dir = vim.fs.joinpath(persistence_config.options.dir, "qf")
+        local qf_session_file =
+            vim.fs.joinpath(qf_session_dir, vim.fs.basename(current_session_file))
+        local qf_session_exists = vim.fn.filereadable(qf_session_file)
+        if qf_session_exists == 0 then
+            return
+        end
+        local qf_session_file_content = vim.fn.readfile(qf_session_file)
+        local qf_session = vim.fn.json_decode(qf_session_file_content[1])
 
-		vim.fn.setqflist(qf_session, "a")
-	end,
+        vim.fn.setqflist(qf_session, "a")
+    end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistenceLoadPost",
+    group = group,
+    callback = function()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            local is_listed = vim.bo[buf].buflisted
+            if not is_listed then
+                vim.api.nvim_win_close(win, true)
+            end
+        end
+    end,
 })

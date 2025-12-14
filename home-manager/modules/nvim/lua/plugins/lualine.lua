@@ -4,7 +4,7 @@ local godot = require("custom.godot")
 vim.pack.add({
 	{ src = "https://github.com/Zeioth/heirline-components.nvim", version = vim.version.range("3.x") },
 	{ src = "https://github.com/Bekaboo/dropbar.nvim", version = vim.version.range("14.x") },
-    { src = "https://github.com/rebelot/heirline.nvim", version = vim.version.range("1.x") }
+	{ src = "https://github.com/rebelot/heirline.nvim", version = vim.version.range("1.x") },
 })
 
 local function buf_in_arglist(buf_id)
@@ -24,7 +24,6 @@ end
 vim.o.mousemoveevent = true
 vim.o.showtabline = 2
 vim.o.laststatus = 3
-
 
 require("heirline-components").setup({
 	icons = {
@@ -199,71 +198,93 @@ local TabPages = {
 	utils.make_tablist(Tabpage),
 }
 
-local GoDotExternalEditor = {
+local Space = { provider = " " }
+local GoDotExternalEditor = function ()
+    return {
 	condition = function()
 		return vim.tbl_contains(vim.fn.serverlist(), godot.GODOT_EXTERNAL_EDITOR_PIPE)
 	end,
 	provider = function()
-		return " Godot"
+		return Space.provider .. " Godot"
 	end,
 }
+end
 
-local Space = { provider = " " }
 local function generate_all_letters_list()
-    local letters = {}
-    for i = string.byte("a"), string.byte("z") do
-        table.insert(letters, string.char(i))
-    end
-    return letters
+	local letters = {}
+	for i = string.byte("a"), string.byte("z") do
+		table.insert(letters, string.char(i))
+	end
+	return letters
 end
 
 local named_registers = generate_all_letters_list()
 
 local function reg_exists(name)
-    local info = vim.fn.getreginfo(name)
-    if getmetatable(info) == vim._empty_dict_mt then
-	    return false
-    end
-    return info.regcontents[1] ~= ""
+	local info = vim.fn.getreginfo(name)
+	if getmetatable(info) == vim._empty_dict_mt then
+		return false
+	end
+	return info.regcontents[1] ~= ""
 end
 
 -- add padding right 1 to this component
-local ArglistIndex = {
-	condition = function()
-		return vim.fn.argc() > 0
-	end,
-	provider = function()
-		local arglist_idx = vim.fn.argidx() + 1
-		local arglist_count = vim.fn.argc()
-		local buf_nr = vim.api.nvim_get_current_buf()
-		local in_arglist = buf_in_arglist(buf_nr)
+local ArglistIndex = function()
+	return {
+		condition = function()
+			return vim.fn.argc() > 0
+		end,
+		provider = function()
+			local arglist_idx = vim.fn.argidx() + 1
+			local arglist_count = vim.fn.argc()
+			local buf_nr = vim.api.nvim_get_current_buf()
+			local in_arglist = buf_in_arglist(buf_nr)
 
-		if in_arglist then
-			return string.format("󰐷 %s/%s", arglist_idx, arglist_count)
-		end
+			if in_arglist then
+				return Space.provider .. string.format("󰐷 %s/%s", arglist_idx, arglist_count)
+			end
 
-		return string.format("󰐷 %s", arglist_count)
-	end,
-	hl = function()
-		return "DiagnosticHint"
-	end,
-}
-local QuickfixIndex = {
-	condition = function()
-		local qf = vim.fn.getqflist()
-		return #qf > 0
-	end,
-    -- FIXME use the following autocmd to limit update is not working. It is missing some update. Use an update function instead
-    -- update = {"QuickFixCmdPre", "QuickFixCmdPost", "CursorMoved"},
-	provider = function()
-        -- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
-		local qf = vim.fn.getqflist({ idx = 0, items = 0 })
-		return string.format("󰖷 %s/%s", qf.idx, #qf.items)
-	end,
-	hl = function()
-		return "DiagnosticWarn"
-	end,
-}
+			return Space.provider .. string.format("󰐷 %s", arglist_count)
+		end,
+		hl = function()
+			return "DiagnosticHint"
+		end,
+	}
+end
+local QuickfixIndex = function()
+	return {
+		condition = function()
+			local qf = vim.fn.getqflist()
+			return #qf > 0
+		end,
+		-- FIXME use the following autocmd to limit update is not working. It is missing some update. Use an update function instead
+		-- update = {"QuickFixCmdPre", "QuickFixCmdPost", "CursorMoved"},
+		provider = function()
+			-- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
+			local qf = vim.fn.getqflist({ idx = 0, items = 0 })
+			return Space.provider .. string.format("󰖷 %s/%s", qf.idx, #qf.items)
+		end,
+		hl = function()
+			return "DiagnosticWarn"
+		end,
+	}
+end
+local LocationListIndex = function()
+	return {
+		condition = function()
+			local location_list = vim.fn.getloclist(0)
+			return #location_list > 0
+		end,
+		provider = function()
+			-- NOTE it doesn't make sense, but using 0 as the value in what would be a getter to that property.
+			local location_list = vim.fn.getloclist(0, { idx = 0, items = 0 })
+			return Space.provider .. string.format("󰖷 %s/%s", location_list.idx, #location_list.items) .. Space.provider
+		end,
+		hl = function()
+			return "DiagnosticHint"
+		end,
+	}
+end
 
 require("heirline").setup({
 	statusline = {
@@ -275,15 +296,15 @@ require("heirline").setup({
 		heirline_components.component.file_encoding({
 			file_format = { padding = { left = 0, right = 0 } },
 		}),
-		{ provider = " " },
+		Space,
 		FileSize,
-		{ provider = " " },
-		GoDotExternalEditor,
+		Space,
+		heirline_components.component.nav({ percentage = false, scrollbar = false }),
 		heirline_components.component.fill(),
 		heirline_components.component.lsp({ lsp_client_names = false }),
 		heirline_components.component.diagnostics(),
 		-- heirline_components.component.cmd_info(),
-		heirline_components.component.nav({ percentage = false, ruler = false }),
+		LocationListIndex(),
 	},
 	winbar = {
 		{
@@ -300,10 +321,9 @@ require("heirline").setup({
 		},
 	},
 	tabline = {
-		Space,
-		ArglistIndex,
-		Space,
-		QuickfixIndex,
+		GoDotExternalEditor(),
+		ArglistIndex(),
+		QuickfixIndex(),
 		heirline_components.component.fill(),
 		TabPages,
 	},
