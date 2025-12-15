@@ -1,5 +1,4 @@
 vim.pack.add({
-	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/nvim-mini/mini.icons" },
 	{ src = "https://github.com/onsails/lspkind.nvim" },
     -- low contrast themes
@@ -18,6 +17,9 @@ vim.pack.add({
 	{ src = "https://github.com/Mofiqul/vscode.nvim" },
 	-- { src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.x") },
 })
+require('mini.icons').setup()
+require('mini.icons').mock_nvim_web_devicons()
+
 require('vscode').setup({
     style = "dark"
 })
