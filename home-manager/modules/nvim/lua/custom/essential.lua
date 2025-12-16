@@ -23,7 +23,7 @@ vim.o.secure = true
 
 -- the auto screen jump is annoying, but we need to keep this to true, so incsearch would work
 vim.o.incsearch = true
-vim.o.wrapscan = false
+vim.o.wrapscan = true
 
 vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
@@ -31,7 +31,7 @@ vim.o.titleold = "zsh"
 
 vim.o.spell = false
 vim.opt.spelllang = "en_gb"
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
 
 vim.o.completeopt = "menu,popup,fuzzy"
 vim.o.wildoptions = "pum,fuzzy"
