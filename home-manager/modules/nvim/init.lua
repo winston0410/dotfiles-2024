@@ -25,10 +25,12 @@ require("plugins.diff")
 require("plugins.snacks")
 require("plugins.editing-support")
 require("plugins.conform")
+require("plugins.git")
+require("plugins.task-runner")
 require("plugins.dap")
-require("plugins.extra")
 require("plugins.test")
-local completion_args = { 'ai' }
+
+local completion_args = { 'ai', 'extra' }
 
 vim.api.nvim_create_user_command(
   "EnableFeature",
@@ -37,6 +39,9 @@ vim.api.nvim_create_user_command(
 
         if arg == "ai" then
             require("plugins.ai")
+        end
+        if arg == "extra" then
+            require("plugins.extra")
         end
     end
   end,

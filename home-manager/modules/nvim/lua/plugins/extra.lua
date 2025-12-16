@@ -1,51 +1,3 @@
-vim.pack.add({
-	{ src = "https://github.com/OXY2DEV/markview.nvim", version = vim.version.range("27.x") },
-})
-
-local function conceal_tag(icon, hl_group)
-	return {
-		on_node = { hl_group = hl_group },
-		on_closing_tag = { conceal = "" },
-		on_opening_tag = {
-			conceal = "",
-			virt_text_pos = "inline",
-			virt_text = { { icon .. " ", hl_group } },
-		},
-	}
-end
-require("markview").setup({
-	html = {
-		container_elements = {
-			["^buf$"] = conceal_tag("", "CodeCompanionChatVariable"),
-			["^file$"] = conceal_tag("", "CodeCompanionChatVariable"),
-			["^help$"] = conceal_tag("󰘥", "CodeCompanionChatVariable"),
-			["^image$"] = conceal_tag("", "CodeCompanionChatVariable"),
-			["^symbols$"] = conceal_tag("", "CodeCompanionChatVariable"),
-			["^url$"] = conceal_tag("󰖟", "CodeCompanionChatVariable"),
-			["^var$"] = conceal_tag("", "CodeCompanionChatVariable"),
-			["^tool$"] = conceal_tag("", "CodeCompanionChatTool"),
-			["^user_prompt$"] = conceal_tag("", "CodeCompanionChatTool"),
-			["^group$"] = conceal_tag("", "CodeCompanionChatToolGroup"),
-		},
-	},
-	-- FIXME known issue, it is giving out an error when open CodeCompanionChat
-	preview = {
-		hybrid_modes = { "n" },
-		icon_provider = "devicons",
-		filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto", "yaml", "typst" },
-		ignore_buftypes = {},
-	},
-	markdown = {
-		headings = {
-			shift_width = 0,
-		},
-		code_blocks = {
-			style = "simple",
-			sign = false,
-		},
-	},
-})
-
 -- FIXME https://github.com/mistricky/codesnap.nvim/issues/162
 -- vim.pack.add({
 -- 	{ src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
@@ -53,131 +5,107 @@ require("markview").setup({
 -- require("codesnap").setup({
 -- 	show_line_number = true,
 -- })
+-- improve structure here
 vim.api.nvim_create_autocmd("CursorHold", {
-	once = true,
-	callback = function()
-		-- really optional plugins
-		vim.pack.add({
-			{ src = "https://github.com/vyfor/cord.nvim", version = vim.version.range("2.x") },
-			{ src = "https://github.com/michaelb/sniprun", version = "v1.3.20" },
-			{ src = "https://github.com/stevearc/overseer.nvim", version = vim.version.range("2.x") },
-			{ src = "https://github.com/nvim-lua/plenary.nvim" },
-			{ src = "https://github.com/NeogitOrg/neogit" },
-			{ src = "https://github.com/mistweaverco/kulala.nvim", version = vim.version.range("5.x") },
-		})
+    once = true,
+    callback = function()
+        -- really optional plugins
+        vim.pack.add({
+            { src = "https://github.com/vyfor/cord.nvim",                    version = vim.version.range("2.x") },
+            { src = "https://github.com/michaelb/sniprun",                   version = "v1.3.20" },
+            { src = "https://github.com/nvim-lua/plenary.nvim" },
+            { src = "https://github.com/mistweaverco/kulala.nvim",           version = vim.version.range("5.x") },
+            { src = "https://github.com/martineausimon/nvim-lilypond-suite", },
+            { src = "https://github.com/Ramilito/kubectl.nvim",              version = vim.version.range("2.x") },
+        })
 
-		require("cord").setup({
-			timestamp = {
-				enabled = true,
-				reset_on_idle = false,
-				reset_on_change = false,
-			},
-			editor = {
-				client = "neovim",
-				tooltip = "Hugo's ultimate editor",
-			},
-		})
-		require("sniprun").setup({
-			binary_path = "sniprun",
-			selected_interpreters = { "Python3_fifo" },
-			repl_enable = { "Python3_fifo" },
-			interpreter_options = {
-				CSharp_original = {
-					compiler = "csc",
-				},
-				TypeScript_original = {
-					interpreter = "node",
-				},
-			},
-			snipruncolors = {
-				SniprunVirtualTextOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
-				SniprunVirtualWinOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
-				SniprunVirtualTextErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
-				SniprunVirtualWinErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
-			},
-		})
+        require("cord").setup({
+            timestamp = {
+                enabled = true,
+                reset_on_idle = false,
+                reset_on_change = false,
+            },
+            editor = {
+                client = "neovim",
+                tooltip = "Hugo's ultimate editor",
+            },
+        })
+        require("sniprun").setup({
+            binary_path = "sniprun",
+            selected_interpreters = { "Python3_fifo" },
+            repl_enable = { "Python3_fifo" },
+            interpreter_options = {
+                CSharp_original = {
+                    compiler = "csc",
+                },
+                TypeScript_original = {
+                    interpreter = "node",
+                },
+            },
+            snipruncolors = {
+                SniprunVirtualTextOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
+                SniprunVirtualWinOk = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextInfo" }),
+                SniprunVirtualTextErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
+                SniprunVirtualWinErr = vim.api.nvim_get_hl(0, { name = "DiagnosticVirtualTextError" }),
+            },
+        })
 
-		local overseer = require("overseer")
-		overseer.setup({
-			bundles = {
-				autostart_on_load = false,
-			},
-		})
-		vim.keymap.set({ "n" }, "<leader>e", function()
-			require("overseer").toggle()
-		end, { silent = true, noremap = true, desc = "Toggle Overseer" })
-		vim.keymap.set({ "n" }, "<leader>p<leader>e", function()
-			vim.cmd("OverseerRun")
-		end, { silent = true, noremap = true, desc = "Trigger tasks" })
+        require("kulala").setup({
+            global_keymaps = false,
+            display_mode = "split",
+            split_direction = "vertical",
+            debug = false,
+            default_view = "headers_body",
+            winbar = true,
+            default_winbar_panes = { "headers_body", "verbose", "script_output", "report" },
+            vscode_rest_client_environmentvars = true,
+            disable_script_print_output = false,
+            environment_scope = "b",
+            urlencode = "always",
+            -- show_variable_info_text = "float",
+            show_variable_info_text = false,
+            ui = {
+                -- 10Mb
+                max_response_size = 1024 * 1024 * 10,
+                disable_news_popup = true,
+            },
+        })
+        vim.keymap.set({ "n" }, "<leader>ri", function()
+            -- inspect a request for result interpolation
+            require("kulala").inspect()
+        end, { remap = true, silent = true, desc = "Inspect request" })
+        vim.keymap.set({ "x" }, "<leader>r<CR>", function()
+            require("kulala").run()
+        end, { remap = true, silent = true, desc = "Execute selected requests" })
+        vim.keymap.set({ "n" }, "<leader>r<CR>", function()
+            require("kulala").run()
+        end, { remap = true, silent = true, desc = "Execute a request" })
 
-		require("neogit").setup({
-			-- FIXME range diffing is not working correctly, cannot select the target of "to"
-			disable_hint = true,
-			disable_commit_confirmation = true,
-			graph_style = "unicode",
-			kind = "tab",
-			integrations = {
-				diffview = true,
-				snacks = true,
-			},
-			mappings = {
-				status = {
-					["<enter>"] = "Toggle",
-				},
-			},
-		})
-		vim.keymap.set({ "n" }, "<leader>gg", function()
-			require("neogit").open()
-		end, { silent = true, noremap = true, desc = "Open Neogit status" })
+        vim.keymap.set({ "n" }, "<leader>ry", function()
+            require("kulala").copy()
+        end, { remap = true, silent = true, desc = "Copy a request as Curl" })
+        vim.keymap.set({ "n" }, "<leader>rp", function()
+            require("kulala").from_curl()
+        end, { remap = true, silent = true, desc = "Paste a request from Curl" })
+        vim.keymap.set({ "n" }, "<leader>r/", function()
+            require("kulala").search()
+        end, { remap = true, silent = true, desc = "Find a request" })
+        vim.keymap.set({ "n" }, "]<leader>r", function()
+            require("kulala").jump_next()
+        end, { remap = true, silent = true, desc = "Jump to next request" })
+        vim.keymap.set({ "n" }, "[<leader>r", function()
+            require("kulala").jump_prev()
+        end, { remap = true, silent = true, desc = "Jump to previous request" })
+        vim.keymap.set({ "n" }, "<leader>rg", function()
+            require("kulala").download_graphql_schema()
+        end, { remap = true, silent = true, desc = "Download GraphQL schema" })
 
-		require("kulala").setup({
-			global_keymaps = false,
-			display_mode = "split",
-			split_direction = "vertical",
-			debug = false,
-			default_view = "headers_body",
-			winbar = true,
-			default_winbar_panes = { "headers_body", "verbose", "script_output", "report" },
-			vscode_rest_client_environmentvars = true,
-			disable_script_print_output = false,
-			environment_scope = "b",
-			urlencode = "always",
-			-- show_variable_info_text = "float",
-			show_variable_info_text = false,
-			ui = {
-				-- 10Mb
-				max_response_size = 1024 * 1024 * 10,
-				disable_news_popup = true,
-			},
-		})
-		vim.keymap.set({ "n" }, "<leader>ri", function()
-			-- inspect a request for result interpolation
-			require("kulala").inspect()
-		end, { remap = true, silent = true, desc = "Inspect request" })
-		vim.keymap.set({ "x" }, "<leader>r<CR>", function()
-			require("kulala").run()
-		end, { remap = true, silent = true, desc = "Execute selected requests" })
-		vim.keymap.set({ "n" }, "<leader>r<CR>", function()
-			require("kulala").run()
-		end, { remap = true, silent = true, desc = "Execute a request" })
-
-		vim.keymap.set({ "n" }, "<leader>ry", function()
-			require("kulala").copy()
-		end, { remap = true, silent = true, desc = "Copy a request as Curl" })
-		vim.keymap.set({ "n" }, "<leader>rp", function()
-			require("kulala").from_curl()
-		end, { remap = true, silent = true, desc = "Paste a request from Curl" })
-		vim.keymap.set({ "n" }, "<leader>r/", function()
-			require("kulala").search()
-		end, { remap = true, silent = true, desc = "Find a request" })
-		vim.keymap.set({ "n" }, "]<leader>r", function()
-			require("kulala").jump_next()
-		end, { remap = true, silent = true, desc = "Jump to next request" })
-		vim.keymap.set({ "n" }, "[<leader>r", function()
-			require("kulala").jump_prev()
-		end, { remap = true, silent = true, desc = "Jump to previous request" })
-		vim.keymap.set({ "n" }, "<leader>rg", function()
-			require("kulala").download_graphql_schema()
-		end, { remap = true, silent = true, desc = "Download GraphQL schema" })
-	end,
+        require("nvls").setup({})
+        require("kubectl").setup({
+            log_level = vim.log.levels.INFO,
+            diff = {
+                bin = "kubediff",
+            },
+        })
+    end,
 })
