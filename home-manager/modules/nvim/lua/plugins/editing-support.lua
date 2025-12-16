@@ -15,10 +15,7 @@ vim.pack.add({
 	},
 	{ src = "https://github.com/chrisgrieser/nvim-various-textobjs" },
 	{ src = "https://github.com/chrisgrieser/nvim-spider" },
-	{
-		src = "https://github.com/kylechui/nvim-surround",
-		version = vim.version.range("3.x"),
-	},
+	{ src = "https://github.com/nvim-mini/mini.surround" },
 	{
 		src = "https://github.com/sphamba/smear-cursor.nvim",
 		version = vim.version.range("0.6"),
@@ -69,21 +66,18 @@ end, { silent = true, noremap = true, desc = "Around subword" })
 vim.keymap.set({ "o", "x" }, "iw", function()
 	require("various-textobjs").subword("inner")
 end, { silent = true, noremap = true, desc = "Inside subword" })
-require("nvim-surround").setup({
-	keymaps = {
-		insert = "<C-g>s",
-		insert_line = "<C-g>S",
-		normal = "s",
-		normal_cur = "ss",
-		normal_line = "S",
-		normal_cur_line = "SS",
-		visual = "s",
-		visual_line = "gS",
+require("mini.surround").setup({
+	mappings = {
+		add = "s",
 		delete = "ds",
-		change = "cs",
-		change_line = "cS",
+		find = "",
+		find_left = "",
+		highlight = "",
+		replace = "cs",
+
+		suffix_last = "",
+		suffix_next = "",
 	},
-	aliases = {},
 })
 
 vim.keymap.set({ "n", "o", "x" }, "w", function()
@@ -411,14 +405,14 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = group,
 	callback = function()
 		vim.wo.number = false
-        vim.cmd.redraw()
+		vim.cmd.redraw()
 	end,
 })
 vim.api.nvim_create_autocmd("CmdlineEnter", {
 	group = group,
 	callback = function()
 		vim.wo.number = true
-        vim.cmd.redraw()
+		vim.cmd.redraw()
 	end,
 })
 
@@ -426,27 +420,26 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 	group = group,
 	callback = function()
 		vim.wo.number = false
-        vim.cmd.redraw()
+		vim.cmd.redraw()
 	end,
 })
 
 vim.api.nvim_create_autocmd("ModeChanged", {
-	pattern ={  "*:V", "*:v", "*:\22"  },
+	pattern = { "*:V", "*:v", "*:\22" },
 	group = group,
 	callback = function(ev)
 		vim.wo.number = true
 		vim.wo.relativenumber = true
-        vim.cmd.redraw()
+		vim.cmd.redraw()
 	end,
 })
 
 vim.api.nvim_create_autocmd("ModeChanged", {
-	pattern ={  "V:*", "v:*", "\22:*"  },
+	pattern = { "V:*", "v:*", "\22:*" },
 	group = group,
 	callback = function(ev)
 		vim.wo.number = false
 		vim.wo.relativenumber = false
-        vim.cmd.redraw()
+		vim.cmd.redraw()
 	end,
 })
-
