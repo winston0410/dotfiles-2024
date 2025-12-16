@@ -144,7 +144,8 @@ require("flash").setup({
 	---@type table<string, Flash.Config>
 	modes = {
 		search = {
-			enabled = false,
+			enabled = true,
+			jump = { history = true, register = true, nohlsearch = false },
 		},
 		char = {
 			enabled = false,
@@ -154,15 +155,6 @@ require("flash").setup({
 		},
 	},
 })
-
-vim.keymap.set({ "n", "x", "o" }, "x", function()
-	require("flash").jump({
-		remote_op = {
-			restore = true,
-			motion = true,
-		},
-	})
-end, { noremap = true, silent = true, desc = "Flash" })
 
 require("window-picker").setup({
 	show_prompt = false,

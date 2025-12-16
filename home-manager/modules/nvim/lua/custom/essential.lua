@@ -21,6 +21,7 @@ vim.o.shell = "zsh"
 vim.o.exrc = true
 vim.o.secure = true
 
+-- the auto screen jump is annoying, but we need to keep this to true, so incsearch would work
 vim.o.incsearch = true
 vim.o.wrapscan = true
 

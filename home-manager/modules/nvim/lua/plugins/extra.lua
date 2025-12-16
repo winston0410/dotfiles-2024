@@ -46,8 +46,9 @@ require("markview").setup({
 	},
 })
 
+-- FIXME https://github.com/mistricky/codesnap.nvim/issues/162
 -- vim.pack.add({
-	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
+-- 	{ src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
 -- })
 -- require("codesnap").setup({
 -- 	show_line_number = true,
