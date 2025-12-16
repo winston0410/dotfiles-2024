@@ -35,7 +35,7 @@ local completion_args = { 'ai', 'extra' }
 vim.api.nvim_create_user_command(
   "EnableFeature",
   function(opts)
-    for i, arg in ipairs(opts.fargs) do
+    for _, arg in ipairs(opts.fargs) do
 
         if arg == "ai" then
             require("plugins.ai")

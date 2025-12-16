@@ -220,8 +220,8 @@ vim.api.nvim_create_autocmd("FileType", {
 			{ symbol = "k", node = "@call", label = "function call", outer = true, inner = true },
 			{ symbol = "K", node = "@class", label = "class", outer = true, inner = true },
 			{ symbol = "b", node = "@block", label = "block", outer = true, inner = true },
-			{ symbol = "a", node = "@assignment.lhs", label = "Assignment LHS", outer = true, inner = true },
-			{ symbol = "A", node = "@assignment.rhs", label = "Assignment RHS", outer = true, inner = true },
+			{ symbol = "al", node = "@assignment.lhs", label = "Assignment LHS", standalone = true },
+			{ symbol = "ar", node = "@assignment.rhs", label = "Assignment RHS", standalone = true },
 		}
 		local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
 		local parsername = vim.treesitter.language.get_lang(main_lang)
@@ -234,6 +234,57 @@ vim.api.nvim_create_autocmd("FileType", {
 		end)
 		if not ok or not parser then
 			return
+		end
+		---@class TreesitterNodeMappingSpec
+		---@field symbol string
+		---@field node string
+		---@field label string
+		---@param query_string string
+		---@param mapping TreesitterNodeMappingSpec
+		local function create_outer_mapping(query_string, mapping)
+			if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
+				vim.keymap.set({ "n", "x", "o" }, "[" .. mapping.symbol, function()
+					require("nvim-treesitter-textobjects.move").goto_previous_start(query_string, "textobjects")
+				end, {
+					noremap = true,
+					silent = true,
+					desc = string.format("Previous %s start", mapping.label),
+					buffer = ev.buf,
+				})
+				vim.keymap.set({ "n", "x", "o" }, "[" .. mapping.symbol:upper(), function()
+					require("nvim-treesitter-textobjects.move").goto_previous_end(query_string, "textobjects")
+				end, {
+					noremap = true,
+					silent = true,
+					desc = string.format("Previous %s end", mapping.label),
+					buffer = ev.buf,
+				})
+				vim.keymap.set({ "n", "x", "o" }, "]" .. mapping.symbol, function()
+					require("nvim-treesitter-textobjects.move").goto_next_start(query_string, "textobjects")
+				end, {
+					noremap = true,
+					silent = true,
+					desc = string.format("Next %s start", mapping.label),
+					buffer = ev.buf,
+				})
+				vim.keymap.set({ "n", "x", "o" }, "]" .. mapping.symbol:upper(), function()
+					require("nvim-treesitter-textobjects.move").goto_next_end(query_string, "textobjects")
+				end, {
+					noremap = true,
+					silent = true,
+					desc = string.format("Next %s end", mapping.label),
+					buffer = ev.buf,
+				})
+
+				vim.keymap.set({ "x", "o" }, "a" .. mapping.symbol, function()
+					require("nvim-treesitter-textobjects.select").select_textobject(query_string, "textobjects")
+				end, {
+					noremap = true,
+					silent = true,
+					desc = string.format("Around %s", mapping.label),
+					buffer = ev.buf,
+				})
+			end
 		end
 
 		for _, mapping in ipairs(mappings) do
@@ -250,35 +301,13 @@ vim.api.nvim_create_autocmd("FileType", {
 					})
 				end
 			end
+			if mapping.standalone then
+				local query_string = mapping.node
+				create_outer_mapping(query_string, mapping)
+			end
 			if mapping.outer then
 				local query_string = string.format("%s.outer", mapping.node)
-				if ts_shared.check_support(ev.buf, "textobjects", { query_string }) then
-					vim.keymap.set({ "n", "x", "o" }, "[" .. mapping.symbol, function()
-						require("nvim-treesitter-textobjects.move").goto_previous_start(query_string, "textobjects")
-					end, {
-						noremap = true,
-						silent = true,
-						desc = string.format("Previous %s", mapping.label),
-						buffer = ev.buf,
-					})
-					vim.keymap.set({ "n", "x", "o" }, "]" .. mapping.symbol, function()
-						require("nvim-treesitter-textobjects.move").goto_next_start(query_string, "textobjects")
-					end, {
-						noremap = true,
-						silent = true,
-						desc = string.format("Next %s", mapping.label),
-						buffer = ev.buf,
-					})
-
-					vim.keymap.set({ "x", "o" }, "a" .. mapping.symbol, function()
-						require("nvim-treesitter-textobjects.select").select_textobject(query_string, "textobjects")
-					end, {
-						noremap = true,
-						silent = true,
-						desc = string.format("Around %s", mapping.label),
-						buffer = ev.buf,
-					})
-				end
+				create_outer_mapping(query_string, mapping)
 			end
 		end
 	end,

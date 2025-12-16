@@ -23,7 +23,7 @@ vim.o.secure = true
 
 -- the auto screen jump is annoying, but we need to keep this to true, so incsearch would work
 vim.o.incsearch = true
-vim.o.wrapscan = true
+vim.o.wrapscan = false
 
 vim.o.title = true
 vim.o.titlestring = "%{fnamemodify(getcwd(), ':p:~')} - nvim"
