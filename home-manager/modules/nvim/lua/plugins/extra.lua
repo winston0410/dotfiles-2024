@@ -46,6 +46,12 @@ require("markview").setup({
 	},
 })
 
+-- vim.pack.add({
+	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
+-- })
+-- require("codesnap").setup({
+-- 	show_line_number = true,
+-- })
 vim.api.nvim_create_autocmd("CursorHold", {
 	once = true,
 	callback = function()

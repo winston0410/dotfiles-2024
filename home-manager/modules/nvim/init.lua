@@ -14,11 +14,6 @@
 require("custom.essential")
 local godot = require("custom.godot")
 
--- REF https://unix.stackexchange.com/a/637223/467987
-
--- vim.keymap.set({ "n" }, "[z", "zj", { silent = true, noremap = true, desc = "Jump to previous fold" })
--- vim.keymap.set({ "n" }, "]z", "zk", { silent = true, noremap = true, desc = "Jump to next fold" })
-
 require("plugins.lualine")
 require("plugins.theme")
 require("plugins.session-manager")
@@ -52,67 +47,6 @@ vim.api.nvim_create_user_command(
     end
   }
 )
-
--- vim.pack.add({
-	-- { src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
--- })
--- require("codesnap").setup({
--- 	show_line_number = true,
--- })
-
--- require("lazy").setup({
--- 	performance = {
--- 		reset_packpath = false,
--- 		rtp = {
--- 			reset = false,
--- 		},
--- 	},
--- 	rocks = {
--- 		hererocks = false,
--- 	},
--- 	spec = {
-		-- { import = "plugins.neovim-as-platform" },
-		-- { import = "plugins.codecompanion" },
--- 		-- {
--- 		-- 	"stevearc/quicker.nvim",
--- 		-- 	-- don't lazy load it, otherwise when triggering qf with pickers from snacks.nvim would not be editable
--- 		-- 	lazy = false,
--- 		--           enabled = true,
--- 		-- 	ft = { "qf" },
--- 		-- 	keys = {
--- 		-- 		{
--- 		-- 			"<leader>q",
--- 		-- 			function()
--- 		-- 				require("quicker").toggle()
--- 		-- 			end,
--- 		-- 			mode = { "n" },
--- 		-- 			silent = true,
--- 		-- 			noremap = true,
--- 		-- 			desc = "Open quickfix list",
--- 		-- 		},
--- 		-- 	},
--- 		-- 	config = function()
--- 		-- 		require("quicker").setup({
--- 		-- 			keys = {},
--- 		-- 			borders = {
--- 		-- 				vert = "│",
--- 		-- 			},
--- 		-- 			opts = {
--- 		-- 				buflisted = false,
--- 		-- 				number = false,
--- 		-- 				relativenumber = false,
--- 		-- 				signcolumn = "no",
--- 		-- 				winfixheight = true,
--- 		-- 				wrap = false,
--- 		-- 			},
--- 		-- 			follow = {
--- 		-- 				enabled = false,
--- 		-- 			},
--- 		-- 		})
--- 		-- 	end,
--- 		-- },
--- 	},
--- })
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
