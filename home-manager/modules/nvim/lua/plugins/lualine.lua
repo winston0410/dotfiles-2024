@@ -185,6 +185,31 @@ local is_file_buffer = function()
 end
 
 ---@param opts CustomComponentOpts
+local ReadOnlyStatus = function(opts)
+	return {
+        condition = function ()
+			local buf_nr = vim.api.nvim_get_current_buf()
+            return vim.bo[buf_nr].readonly
+        end,
+        provider = function()
+			return handle_padding("󰌾 Read-only", opts.padding)
+		end
+	}
+end
+---@param opts CustomComponentOpts
+local DiffStatus = function(opts)
+	return {
+        condition = function ()
+            local win = vim.api.nvim_get_current_win()
+            local is_diff =  vim.wo[win].diff
+            return is_diff
+        end,
+        provider = function()
+			return handle_padding(" Diff", opts.padding)
+		end
+	}
+end
+---@param opts CustomComponentOpts
 local SearchCount = function(opts)
 	return {
 		condition = heirline_components_condition.is_hlsearch,
@@ -232,7 +257,6 @@ local TabPages = function()
 		condition = function()
 			return true
 		end,
-		{ provider = "%=" },
 		utils.make_tablist(Tabpage()),
 	}
 end
@@ -350,7 +374,6 @@ end
 require("heirline").setup({
 	statusline = {
 		heirline_components.component.mode({ mode_text = {} }),
-		heirline_components.component.git_branch(),
 		-- Mode,
 		-- FIXME no idea why its position is fixed
 		-- heirline_components.component.git_diff(),
@@ -359,6 +382,8 @@ require("heirline").setup({
 		}),
 		FileSize({ padding = { left = 1, right = 0 } }),
 		Ruler({ padding = { left = 1, right = 0 } }),
+        DiffStatus({ padding = { left = 1, right = 0 } }),
+        ReadOnlyStatus({ padding = { left = 1, right = 0 } }),
 		heirline_components.component.fill(),
 		heirline_components.component.lsp({ lsp_client_names = false, padding = { left = 1, right = 0 } }),
 		SearchCount({ padding = { left = 1, right = 0 } }),
@@ -385,6 +410,7 @@ require("heirline").setup({
 		ArglistIndex({ padding = { left = 1, right = 0 } }),
 		QuickfixIndex({ padding = { left = 1, right = 0 } }),
 		heirline_components.component.fill(),
+		heirline_components.component.git_branch({ padding = { left = 0, right = 0 }}),
 		TabPages(),
 	},
 	opts = {

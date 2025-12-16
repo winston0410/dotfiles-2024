@@ -432,7 +432,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 vim.api.nvim_create_autocmd("CmdlineEnter", {
 	group = group,
 	callback = function(ev)
-		if ev.match == "/" or ev.match == "?" then
+		if ev.match == "/" or ev.match == "?" or ev.match == "=" then
 			return
 		end
 		vim.wo.number = true
@@ -443,7 +443,7 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
 vim.api.nvim_create_autocmd("CmdlineLeave", {
 	group = group,
 	callback = function(ev)
-		if ev.match == "/" or ev.match == "?" then
+		if ev.match == "/" or ev.match == "?" or ev.match == "=" then
 			return
 		end
 		vim.wo.number = false

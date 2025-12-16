@@ -387,7 +387,7 @@ vim.keymap.set({ "n" }, "<leader>xa", function()
     vim.cmd.diffthis()
 end, { silent = true, noremap = true, desc = "Add current buffers into diff" })
 vim.keymap.set({ "n" }, "<leader>xd", function()
-    vim.cmd.diffoff({ bang = true })
+    vim.cmd.diffoff()
 end, { silent = true, noremap = true, desc = "Remove current buffers from diff" })
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
