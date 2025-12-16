@@ -42,7 +42,7 @@ vim.o.encoding = "UTF-8"
 vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
 vim.opt.termguicolors = true
-vim.o.diffopt = "internal,filler,closeoff,algorithm:histogram,followwrap"
+vim.o.diffopt = "internal,filler,closeoff,inline:char,algorithm:histogram,followwrap"
 vim.o.ttimeoutlen = 0
 vim.o.timeout = true
 vim.o.timeoutlen = 300
@@ -383,26 +383,13 @@ vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
 -- 	end, { noremap = true, silent = true, desc = string.format("Jump to tab %s", i) })
 -- end
 
+vim.keymap.set({ "n" }, "<leader>xa", function()
+    vim.cmd.diffthis()
+end, { silent = true, noremap = true, desc = "Add current buffers into diff" })
 vim.keymap.set({ "n" }, "<leader>xd", function()
-	local wins = vim.api.nvim_tabpage_list_wins(0)
+    vim.cmd.diffoff({ bang = true })
+end, { silent = true, noremap = true, desc = "Remove current buffers from diff" })
 
-	local has_diff = false
-	for _, w in ipairs(wins) do
-		if vim.api.nvim_win_get_option(w, "diff") then
-			has_diff = true
-			break
-		end
-	end
-
-	for _, w in ipairs(wins) do
-		vim.api.nvim_set_current_win(w)
-		if has_diff then
-			vim.cmd("diffoff!")
-		else
-			vim.cmd.diffthis()
-		end
-	end
-end, { silent = true, noremap = true, desc = "Toggle diff for current buffers" })
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 -- NOTE remove additional wrapper around * and #
