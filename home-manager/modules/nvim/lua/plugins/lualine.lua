@@ -13,7 +13,10 @@ local function buf_in_arglist(buf_id)
         return false
     end
 
-    for _, arg in ipairs(vim.fn.argv()) do
+    local argv = vim.fn.argv()
+    assert(type(argv) == "table", "vim.fn.argv() must be a table")
+
+    for _, arg in ipairs(argv) do
         if vim.fn.fnamemodify(arg, ":p") == name then
             return true
         end
@@ -31,10 +34,10 @@ local Space = { provider = " " }
 ---@return string
 local function handle_padding(text, opts)
     local result = text
-    for i = 1, opts.left do
+    for _ = 1, opts.left do
         result = Space.provider .. result
     end
-    for i = 1, opts.right do
+    for _ = 1, opts.right do
         result = result .. Space.provider
     end
 
@@ -221,7 +224,7 @@ local SearchCount = function(opts)
 end
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Track Named Register",
-  callback = function(ev)
+  callback = function()
       -- REF https://neovim.io/doc/user/starting.html#views-sessions
       -- Only variable starts with Uppercase can be restored. It can only restore variable with string or number, not dictionary/table
       print("check type",  vim.g.YankNamedRegister, type( vim.g.YankNamedRegister) )
@@ -251,7 +254,7 @@ local YankRegisters = function(opts)
             if type(vim.g.YankNamedRegister) ~= "string" then
                 return false
             end
-            local regs = vim.split(vim.g.YankNamedRegister, ",")
+            local regs = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
             return #regs > 0
         end,
         update = { "TextYankPost" },
@@ -317,25 +320,6 @@ local GoDotExternalEditor = function(opts)
         end,
     }
 end
-
-local function generate_all_letters_list()
-    local letters = {}
-    for i = string.byte("a"), string.byte("z") do
-        table.insert(letters, string.char(i))
-    end
-    return letters
-end
-
-local named_registers = generate_all_letters_list()
-
-local function reg_exists(name)
-    local info = vim.fn.getreginfo(name)
-    if getmetatable(info) == vim._empty_dict_mt then
-        return false
-    end
-    return info.regcontents[1] ~= ""
-end
-
 -- add padding right 1 to this component
 ---@param opts CustomComponentOpts
 local ArglistIndex = function(opts)
