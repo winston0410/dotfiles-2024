@@ -222,12 +222,27 @@ local SearchCount = function(opts)
         }),
     }
 end
+vim.api.nvim_create_autocmd("RecordingLeave", {
+  desc = "Trace recorded macro",
+  callback = function()
+      if type(vim.g.MacroNamedRegister) ~= "string" then
+          vim.g.MacroNamedRegister = ""
+      end
+      local reg = vim.fn.reg_recording()
+      local reg_list = vim.split(vim.g.MacroNamedRegister, ",", { trimempty = true })
+      table.insert(reg_list, reg)
+      local dedup_list = vim.list.unique(reg_list)
+      -- REF https://github.com/neovim/neovim/blob/6525832a8c4d44a8ebabba02a5ea1ce09b389a4f/runtime/lua/vim/_options.lua#L58
+      -- We have to reassign the value for Neovim to rerender
+      local result = table.concat( dedup_list, ",")
+      vim.g.MacroNamedRegister = result
+  end,
+})
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Track Named Register",
   callback = function()
       -- REF https://neovim.io/doc/user/starting.html#views-sessions
       -- Only variable starts with Uppercase can be restored. It can only restore variable with string or number, not dictionary/table
-      print("check type",  vim.g.YankNamedRegister, type( vim.g.YankNamedRegister) )
       if type(vim.g.YankNamedRegister) ~= "string" then
           vim.g.YankNamedRegister = ""
       end
