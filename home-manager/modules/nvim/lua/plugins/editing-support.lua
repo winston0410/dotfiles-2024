@@ -193,8 +193,10 @@ require("flash").setup({
 	labels = "qwertyuiop[asdfghjkl;zxcvbnm,.",
 	-- only the first two rows on keyboard
 	label = {
-		uppercase = false,
-		style = "inline",
+        before = true,
+        after = false,
+		uppercase = true,
+		style = "overlay",
 	},
 	highlight = {
 		backdrop = false,

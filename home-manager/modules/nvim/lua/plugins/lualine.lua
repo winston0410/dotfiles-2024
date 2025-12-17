@@ -266,6 +266,24 @@ local YankRegisters = function(opts)
         end,
     }
 end
+---@param opts CustomComponentOpts
+local MacroRegisters = function(opts)
+    return {
+        condition = function()
+            if type(vim.g.MacroNamedRegister) ~= "string" then
+                return false
+            end
+            local regs = vim.split(vim.g.MacroNamedRegister, ",", { trimempty = true }, ",", { trimempty = true })
+            return #regs > 0
+        end,
+        provider = function()
+            return handle_padding(" " .. vim.g.MacroNamedRegister, opts.padding)
+        end,
+        hl = function()
+            return "DiagnosticHint"
+        end,
+    }
+end
 
 ---@param opts CustomComponentOpts
 local FileSize = function(opts)
@@ -439,6 +457,7 @@ require("heirline").setup({
         ArglistIndex({ padding = { left = 1, right = 0 } }),
         QuickfixIndex({ padding = { left = 1, right = 0 } }),
         YankRegisters({ padding = { left = 1, right = 0 } }),
+        MacroRegisters({ padding = { left = 1, right = 0 } }),
         heirline_components.component.fill(),
         heirline_components.component.git_branch({ padding = { left = 0, right = 0 } }),
         TabPages(),
