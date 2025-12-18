@@ -214,66 +214,87 @@ local DiffStatus = function(opts)
 end
 ---@param opts CustomComponentOpts
 local SearchCount = function(opts)
+    local search_func = vim.tbl_isempty(opts or {})
+        and function() return vim.fn.searchcount() end
+        or function() return vim.fn.searchcount(opts) end
     return {
         condition = heirline_components_condition.is_hlsearch,
-        provider = heirline_components_provider.search_count({
-            padding = opts.padding,
-            icon = { kind = "SearchCount", padding = { right = 1 } },
-        }),
+        provider = function()
+            local search_ok, search = pcall(search_func)
+            if search_ok and type(search) == "table" and search.total then
+                local search_reg = vim.fn.getreg("/")
+                local TRIM_THRESHOLD = 32
+                if #search_reg > TRIM_THRESHOLD then
+                    search_reg = search_reg:sub(1, TRIM_THRESHOLD) .. "..."
+                end
+
+                return handle_padding(
+                    string.format(
+                        " %s %s%d/%s%d",
+                        search_reg,
+                        search.current > search.maxcount and ">" or "",
+                        math.min(search.current, search.maxcount),
+                        search.incomplete == 2 and ">" or "",
+                        math.min(search.total, search.maxcount)
+                    ),
+                    opts.padding
+                )
+            end
+        end,
     }
 end
 vim.api.nvim_create_autocmd("RecordingLeave", {
-  desc = "Trace recorded macro",
-  callback = function()
-      if type(vim.g.MacroNamedRegister) ~= "string" then
-          vim.g.MacroNamedRegister = ""
-      end
-      local reg = vim.fn.reg_recording()
-      local reg_list = vim.split(vim.g.MacroNamedRegister, ",", { trimempty = true })
-      table.insert(reg_list, reg)
-      local dedup_list = vim.list.unique(reg_list)
-      -- REF https://github.com/neovim/neovim/blob/6525832a8c4d44a8ebabba02a5ea1ce09b389a4f/runtime/lua/vim/_options.lua#L58
-      -- We have to reassign the value for Neovim to rerender
-      local result = table.concat( dedup_list, ",")
-      vim.g.MacroNamedRegister = result
-      
-      -- clean up text yank named register list
-      local named_reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
-      local filtered_named_reg_list = vim.iter(named_reg_list):filter(function (named_reg)
-          return named_reg ~= reg
-      end)
-      vim.g.YankNamedRegister = table.concat(filtered_named_reg_list, ",")
-  end,
+    desc = "Trace recorded macro",
+    callback = function()
+        if type(vim.g.MacroNamedRegister) ~= "string" then
+            vim.g.MacroNamedRegister = ""
+        end
+        local reg = vim.fn.reg_recording()
+        local reg_list = vim.split(vim.g.MacroNamedRegister, ",", { trimempty = true })
+        table.insert(reg_list, reg)
+        local dedup_list = vim.list.unique(reg_list)
+        -- REF https://github.com/neovim/neovim/blob/6525832a8c4d44a8ebabba02a5ea1ce09b389a4f/runtime/lua/vim/_options.lua#L58
+        -- We have to reassign the value for Neovim to rerender
+        local result = table.concat(dedup_list, ",")
+        vim.g.MacroNamedRegister = result
+
+        -- clean up text yank named register list
+        local named_reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
+        local filtered_named_reg_list = vim.iter(named_reg_list):filter(function(named_reg)
+            return named_reg ~= reg
+        end)
+        vim.g.YankNamedRegister = table.concat(filtered_named_reg_list, ",")
+    end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  desc = "Track Named Register",
-  callback = function()
-      -- REF https://neovim.io/doc/user/starting.html#views-sessions
-      -- Only variable starts with Uppercase can be restored. It can only restore variable with string or number, not dictionary/table
-      if type(vim.g.YankNamedRegister) ~= "string" then
-          vim.g.YankNamedRegister = ""
-      end
-      local reg = vim.v.event.regname
-      if reg == nil then
-          return
-      end
-      if not reg:match("[a-z]") then
-          return
-      end
-      local reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
-      table.insert(reg_list, reg)
-      local dedup_list = vim.list.unique(reg_list)
-      -- REF https://github.com/neovim/neovim/blob/6525832a8c4d44a8ebabba02a5ea1ce09b389a4f/runtime/lua/vim/_options.lua#L58
-      -- We have to reassign the value for Neovim to rerender
-      local result = table.concat( dedup_list, ",")
-      vim.g.YankNamedRegister = result
-      -- clean up macro named register list
-      local macro_reg_list = vim.split(vim.g.MarcroNamedRegister, ",", { trimempty = true })
-      local filtered_macro_reg_list = vim.iter(macro_reg_list):filter(function (macro_reg)
-          return macro_reg ~= reg
-      end)
-      vim.g.MacroNamedRegister = table.concat(filtered_macro_reg_list, ",")
-  end,
+    desc = "Track Named Register",
+    callback = function()
+        -- REF https://neovim.io/doc/user/starting.html#views-sessions
+        -- Only variable starts with Uppercase can be restored. It can only restore variable with string or number, not dictionary/table
+        if type(vim.g.YankNamedRegister) ~= "string" then
+            vim.g.YankNamedRegister = ""
+        end
+        local reg = vim.v.event.regname
+        if reg == nil then
+            return
+        end
+        if not reg:match("[a-z]") then
+            return
+        end
+        local reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
+        table.insert(reg_list, reg)
+        local dedup_list = vim.list.unique(reg_list)
+        -- REF https://github.com/neovim/neovim/blob/6525832a8c4d44a8ebabba02a5ea1ce09b389a4f/runtime/lua/vim/_options.lua#L58
+        -- We have to reassign the value for Neovim to rerender
+        local result = table.concat(dedup_list, ",")
+        vim.g.YankNamedRegister = result
+        -- clean up macro named register list
+        local macro_reg_list = vim.split(vim.g.MarcroNamedRegister, ",", { trimempty = true })
+        local filtered_macro_reg_list = vim.iter(macro_reg_list):filter(function(macro_reg)
+            return macro_reg ~= reg
+        end)
+        vim.g.MacroNamedRegister = table.concat(filtered_macro_reg_list, ",")
+    end,
 })
 ---@param opts CustomComponentOpts
 local YankRegisters = function(opts)
