@@ -267,6 +267,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
       -- We have to reassign the value for Neovim to rerender
       local result = table.concat( dedup_list, ",")
       vim.g.YankNamedRegister = result
+      -- clean up macro named register list
+      local macro_reg_list = vim.split(vim.g.MarcroNamedRegister, ",", { trimempty = true })
+      local filtered_macro_reg_list = vim.iter(macro_reg_list):filter(function (macro_reg)
+          return macro_reg ~= reg
+      end)
+      vim.g.MacroNamedRegister = table.concat(filtered_macro_reg_list, ",")
   end,
 })
 ---@param opts CustomComponentOpts
