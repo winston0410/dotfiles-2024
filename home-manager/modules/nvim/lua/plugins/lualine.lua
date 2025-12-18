@@ -236,6 +236,13 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
       -- We have to reassign the value for Neovim to rerender
       local result = table.concat( dedup_list, ",")
       vim.g.MacroNamedRegister = result
+      
+      -- clean up text yank named register list
+      local named_reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
+      local filtered_named_reg_list = vim.iter(named_reg_list):filter(function (named_reg)
+          return named_reg ~= reg
+      end)
+      vim.g.YankNamedRegister = table.concat(filtered_named_reg_list, ",")
   end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -272,7 +279,7 @@ local YankRegisters = function(opts)
             local regs = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
             return #regs > 0
         end,
-        update = { "TextYankPost" },
+        update = { "TextYankPost", "RecordingLeave" },
         provider = function()
             return handle_padding("󱓥 " .. vim.g.YankNamedRegister, opts.padding)
         end,
@@ -291,6 +298,7 @@ local MacroRegisters = function(opts)
             local regs = vim.split(vim.g.MacroNamedRegister, ",", { trimempty = true }, ",", { trimempty = true })
             return #regs > 0
         end,
+        update = { "RecordingLeave" },
         provider = function()
             return handle_padding(" " .. vim.g.MacroNamedRegister, opts.padding)
         end,
