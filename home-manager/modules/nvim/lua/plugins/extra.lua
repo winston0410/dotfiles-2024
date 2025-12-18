@@ -1,10 +1,13 @@
 -- FIXME https://github.com/mistricky/codesnap.nvim/issues/162
--- vim.pack.add({
--- 	{ src = "https://github.com/mistricky/codesnap.nvim", version = vim.version.range("2.0") },
--- })
--- require("codesnap").setup({
--- 	show_line_number = true,
--- })
+vim.pack.add({
+	{ src = "https://github.com/mistweaverco/snap.nvim", version = vim.version.range("1.x") },
+})
+
+require("snap").setup({
+    additional_template_data = {
+      author = "Hugo",
+    },
+})
 -- improve structure here
 vim.api.nvim_create_autocmd("CursorHold", {
     once = true,
