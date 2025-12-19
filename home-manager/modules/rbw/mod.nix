@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, ... }: {
+{ inputs, lib, config, pkgs,  ... }: {
   programs.rbw.enable = true;
   programs.rbw.settings = {
     base_url = "https://vaultwarden.28281428.xyz";

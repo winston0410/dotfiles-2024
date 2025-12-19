@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, ... }: {
+{ inputs, lib, config, pkgs,  ... }: {
   # NOTE This only set which Nix version we are targeting, instead of installing that version for us
   nix.package = pkgs.nix;
   nix.enable = true;

@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, system, unstable, ... }: {
+{ inputs, lib, config, pkgs,  unstable, ... }: {
   programs.wezterm.enable = true;
   programs.wezterm.enableBashIntegration = true;
   programs.wezterm.enableZshIntegration = true;

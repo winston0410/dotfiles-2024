@@ -1,4 +1,4 @@
-{ inputs, lib, unstable, config, pkgs, system, ... }: {
+{ inputs, lib, unstable, config, pkgs,  ... }: {
   # home.shell.enableShellIntegration = true;
 
   programs.zsh = {

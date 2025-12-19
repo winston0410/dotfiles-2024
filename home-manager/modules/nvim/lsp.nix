@@ -34,12 +34,12 @@
     pkgs.metals
     pkgs.vscode-langservers-extracted
     pkgs.lua-language-server
-    # inputs.emmylua-analyzer-rust.packages.${system}.default
+    # inputs.emmylua-analyzer-rust.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.deno
     pkgs.jsonnet-language-server
     pkgs.nodePackages.graphql-language-service-cli
-    inputs.nixd.packages.${system}.default
-    inputs.config-lsp.packages.${system}.default
+    inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.config-lsp.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.beancount-language-server
     pkgs.texlab
     pkgs.tilt
