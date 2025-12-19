@@ -132,6 +132,14 @@ dap.configurations.javascript = {
     },
 }
 
+--NOTE not sure if we should use <leader>d<leader>q or <leader>db<leader>q
+vim.keymap.set("n", "<leader>d<leader>q", function()
+    require('dap').list_breakpoints()
+end, {
+    silent = true,
+    noremap = true,
+    desc = "Push breakpoints into Quickfix",
+})
 vim.keymap.set("n", "<leader>db", function()
     require("custom.dap").toggle_breakpoint()
 end, {
