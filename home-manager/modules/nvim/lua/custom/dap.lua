@@ -40,15 +40,11 @@ M.toggle_breakpoint = function()
     M.store_breakpoints()
 end
 
---- Create a conditional breakpoint and ensure it is persisted in the session
-M.set_conditional_breakpoint = function()
-    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-    M.store_breakpoints()
-end
-
---- Create a log point and ensure it is persisted in the session
-M.set_log_point = function()
-    dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+M.toggle_advanced_breakpoint = function()
+    local message = vim.fn.input("Log point message: ")
+    local condition = vim.fn.input("Breakpoint condition: ")
+    local hit_condition = vim.fn.input("Breakpoint hit condition: ")
+    dap.set_breakpoint(condition, hit_condition, message)
     M.store_breakpoints()
 end
 

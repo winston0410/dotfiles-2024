@@ -147,6 +147,13 @@ end, {
     noremap = true,
     desc = "Toggle breakpoint",
 })
+vim.keymap.set("n", "<leader>dB", function()
+    require("custom.dap").toggle_advanced_breakpoint()
+end, {
+    silent = true,
+    noremap = true,
+    desc = "Toggle advanced breakpoint",
+})
 
 vim.keymap.set("n", "<leader>dc", function()
     require("dap").continue()
@@ -166,6 +173,11 @@ end, {
     desc = "Step Over",
 })
 
+vim.keymap.set("n", "<leader>dk", function()
+    require("dap").step_back()
+end, {
+    desc = "Step Back",
+})
 vim.keymap.set("n", "<leader>d<C-t>", function()
     require("dap").step_out()
 end, {
