@@ -37,6 +37,7 @@
 
   home.packages = with pkgs;
     [
+      unstable.macism
       # luajit
       lua5_1
       luarocks
