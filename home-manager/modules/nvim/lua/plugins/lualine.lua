@@ -188,6 +188,18 @@ local is_file_buffer = function()
 end
 
 ---@param opts CustomComponentOpts
+local DapSessionStatus = function(opts)
+    return {
+        condition = function()
+            local session = require("dap").session()
+            return session ~= nil
+        end,
+        provider = function()
+            return handle_padding("󰂓", opts.padding)
+        end,
+    }
+end
+---@param opts CustomComponentOpts
 local SudoStatus = function(opts)
     return {
         update = {"VimEnter"},
@@ -497,6 +509,7 @@ require("heirline").setup({
         Ruler({ padding = { left = 1, right = 0 } }),
         DiffStatus({ padding = { left = 1, right = 0 } }),
         ReadOnlyStatus({ padding = { left = 1, right = 0 } }),
+        DapSessionStatus({ padding = { left = 1, right = 0 } }),
         heirline_components.component.fill(),
         heirline_components.component.lsp({ lsp_client_names = false, padding = { left = 1, right = 0 } }),
         SearchCount({ padding = { left = 1, right = 0 } }),

@@ -81,3 +81,11 @@ vim.api.nvim_create_autocmd("User", {
         end
     end,
 })
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistenceLoadPost",
+    group = group,
+    callback = function()
+        require("custom.dap").load_breakpoints()
+    end,
+})
