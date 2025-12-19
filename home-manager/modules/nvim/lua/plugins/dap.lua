@@ -37,11 +37,11 @@ local dap = require("dap")
 vim.api.nvim_set_hl(0, "DapUIStop", { link = "PreProc" })
 vim.fn.sign_define(
     "DapBreakpoint",
-    { text = "●", texthl = "DapUIStop", linehl = "", numhl = "", priority = 90 }
+    { text = "", texthl = "DapUIStop", linehl = "", numhl = "", priority = 90 }
 )
 vim.fn.sign_define(
     "DapBreakpointCondition",
-    { text = "⊜", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
+    { text = "", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
 )
 vim.api.nvim_set_hl(0, "DapUIPlayPause", { link = "Repeat" })
 vim.fn.sign_define(
@@ -49,6 +49,10 @@ vim.fn.sign_define(
     { text = "→", texthl = "", linehl = "DapUIPlayPause", numhl = "", priority = 99 }
 )
 
+vim.fn.sign_define(
+    "DapLogPoint",
+    { text = "", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
+)
 dap.adapters.dart = {
     type = "executable",
     command = "dart",
@@ -195,6 +199,22 @@ vim.keymap.set("n", "<leader>dt", function()
 end, {
     desc = "Terminate debug session",
 })
+vim.keymap.set("n", "<leader>ds<C-t>", function()
+    require("dap").up()
+end, {
+    desc = "Go up in current stacktrace",
+})
+vim.keymap.set("n", "<leader>ds<C-]>", function()
+    require("dap").down()
+end, {
+    desc = "Go down in current stacktrace",
+})
+vim.keymap.set("n", "<leader>dp", function()
+    require("dap").pause()
+end, {
+    desc = "Pause the current thread",
+})
+
 
 local dapview = require("dap-view")
 
