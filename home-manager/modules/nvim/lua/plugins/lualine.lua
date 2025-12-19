@@ -188,6 +188,22 @@ local is_file_buffer = function()
 end
 
 ---@param opts CustomComponentOpts
+local SudoStatus = function(opts)
+    return {
+        update = {"VimEnter"},
+        condition = function()
+            local uid = vim.loop.getuid()
+            return uid == 0
+        end,
+        provider = function()
+            return handle_padding("ROOT", opts.padding)
+        end,
+        hl = function ()
+            return "Error"
+        end
+    }
+end
+---@param opts CustomComponentOpts
 local ReadOnlyStatus = function(opts)
     return {
         condition = function()
@@ -503,6 +519,7 @@ require("heirline").setup({
         },
     },
     tabline = {
+        SudoStatus({ padding = { left = 1, right = 0 } }),
         GoDotExternalEditor({ padding = { left = 1, right = 0 } }),
         ArglistIndex({ padding = { left = 1, right = 0 } }),
         QuickfixIndex({ padding = { left = 1, right = 0 } }),

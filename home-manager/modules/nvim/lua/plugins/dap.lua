@@ -1,45 +1,12 @@
--- keys = {
--- 	{
--- 		"<leader>db",
--- 		function()
--- 			require("dap").toggle_breakpoint()
--- 		end,
--- 		silent = true,
--- 		noremap = true,
--- 		desc = "Toggle breakpoint",
--- 	},
--- 	{
--- 		"<leader>dc",
--- 		function()
--- 			require("dap").continue()
--- 		end,
--- 		desc = "Continue",
--- 	},
---
--- 	-- {
--- 	-- 	"<leader>dC",
--- 	-- 	function()
--- 	-- 		require("dap").run_to_cursor()
--- 	-- 	end,
--- 	-- 	desc = "Run to Cursor",
--- 	-- },
---
--- 	{
--- 		"<leader>dt",
--- 		function()
--- 			require("dap").terminate()
--- 		end,
--- 		desc = "Terminate debug session",
--- 	},
--- },
 vim.api.nvim_create_autocmd("CursorHold", {
 	once = true,
 	callback = function()
 		vim.pack.add({
-			{ src = "https://github.com/mfussenegger/nvim-dap", version = vim.version.range("0.x") },
+			{ src = "https://github.com/mfussenegger/nvim-dap", version = "master"},
 			{ src = "https://github.com/mfussenegger/nvim-dap-python" },
 			{ src = "https://github.com/suketa/nvim-dap-ruby" },
 			{ src = "https://github.com/leoluz/nvim-dap-go" },
+			{ src = "https://github.com/igorlfs/nvim-dap-view" },
 		})
 
 		require("dap-python").setup("uv")
@@ -167,5 +134,31 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				cwd = "${workspaceFolder}",
 			},
 		}
+
+        vim.keymap.set("n", "<leader>db", function()
+            require("dap").toggle_breakpoint()
+        end, {
+            silent = true,
+            noremap = true,
+            desc = "Toggle breakpoint",
+        })
+
+        vim.keymap.set("n", "<leader>dc", function()
+            require("dap").continue()
+        end, {
+            desc = "Continue",
+        })
+
+        vim.keymap.set("n", "<leader>dC", function()
+        	require("dap").run_to_cursor()
+        end, {
+        	desc = "Run to Cursor",
+        })
+
+        vim.keymap.set("n", "<leader>dt", function()
+            require("dap").terminate()
+        end, {
+            desc = "Terminate debug session",
+        })
 	end,
 })

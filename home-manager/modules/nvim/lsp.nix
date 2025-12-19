@@ -1,4 +1,4 @@
-{ inputs, unstable, lib, config, pkgs, system, ... }: {
+{ inputs, unstable, lib, config, pkgs,  ... }: {
   home.packages = let
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
