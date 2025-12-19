@@ -37,7 +37,6 @@
 
   home.packages = with pkgs;
     [
-      unstable.macism
       # luajit
       lua5_1
       luarocks
@@ -114,6 +113,7 @@
       # molten.nvim
       python313Packages.jupytext
     ] ++ lib.optionals pkgs.stdenv.isDarwin [
+      unstable.macism
       # img-clip.nvim
       pkgs.pngpaste
     ] ++ lib.optionals pkgs.stdenv.isLinux [
