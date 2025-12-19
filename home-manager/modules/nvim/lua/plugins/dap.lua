@@ -154,6 +154,24 @@ end, {
     desc = "Continue",
 })
 
+vim.keymap.set("n", "<leader>d<C-]>", function()
+    require("dap").step_into()
+end, {
+    desc = "Step Into",
+})
+-- use j to represent down
+vim.keymap.set("n", "<leader>dj", function()
+    require("dap").step_over()
+end, {
+    desc = "Step Over",
+})
+
+vim.keymap.set("n", "<leader>d<C-t>", function()
+    require("dap").step_out()
+end, {
+    desc = "Step Out",
+})
+
 vim.keymap.set("n", "<leader>dC", function()
     require("dap").run_to_cursor()
 end, {
