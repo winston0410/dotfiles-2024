@@ -3,7 +3,7 @@
 in {
   programs.git.enable = true;
 
-  programs.git.extraConfig = {
+  programs.git.settings = {
     pack = {
       threads = 0;
       sparse = true;

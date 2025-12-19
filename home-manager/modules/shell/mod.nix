@@ -3,9 +3,8 @@
 
   programs.zsh = {
     enable = true;
-    package = unstable.zsh;
-    # NOTE somehow this path is relative
-    dotDir = ".config/zsh";
+    package = pkgs.zsh;
+    dotDir = "${config.xdg.configHome}/zsh";
     history = { path = "${config.xdg.stateHome}/zsh/history"; };
     autosuggestion = {
       enable = true;
@@ -70,17 +69,17 @@
   programs.starship.enableBashIntegration = true;
   programs.starship.enableFishIntegration = true;
   programs.starship.enableZshIntegration = true;
-  programs.starship.package = unstable.starship;
+  programs.starship.package = pkgs.starship;
   programs.starship.settings =
     builtins.fromTOML (builtins.readFile ./starship.toml);
 
   home.packages = [
     # For starship git_status module
-    unstable.gitoxide
+    pkgs.gitoxide
   ];
 
   programs.oh-my-posh.enable = false;
-  programs.oh-my-posh.package = unstable.oh-my-posh;
+  programs.oh-my-posh.package = pkgs.oh-my-posh;
   programs.oh-my-posh.enableZshIntegration = true;
   programs.oh-my-posh.enableBashIntegration = true;
   programs.oh-my-posh.enableFishIntegration = true;
@@ -90,15 +89,15 @@
 
   programs.carapace.enable = config.programs.nushell.enable;
   programs.carapace.enableNushellIntegration = true;
-  programs.carapace.package = unstable.carapace;
+  programs.carapace.package = pkgs.carapace;
 
   programs.nushell.enable = true;
-  programs.nushell.package = unstable.nushell;
+  programs.nushell.package = pkgs.nushell;
   programs.nushell.configFile.source = ./config.nu;
 
   # Wait for the Nushell Integration for television. Manually add the integration line by ourselves now
   # programs.television.enable = true;
-  # programs.television.package = unstable.television;
+  # programs.television.package = pkgs.television;
   # programs.television.settings =
   #   builtins.fromTOML (builtins.readFile ./starship.toml);
 }

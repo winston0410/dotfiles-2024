@@ -1,13 +1,13 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
   home.packages = with pkgs; [
-    unstable.joker
-    unstable.dockerfmt
-    unstable.sqruff
-    unstable.prettierd
-    unstable.ormolu
+    joker
+    dockerfmt
+    sqruff
+    prettierd
+    ormolu
     perl540Packages.PerlTidy
-    unstable.mago
-    unstable.typos
+    mago
+    typos
     kcl
     gawk
     clang-tools

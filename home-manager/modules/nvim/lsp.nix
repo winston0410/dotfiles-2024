@@ -3,31 +3,31 @@
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
-    unstable.clojure-lsp
-    unstable.ts_query_ls
+    pkgs.clojure-lsp
+    pkgs.ts_query_ls
     pkgs.gdtoolkit_3
     pkgs.openscad-lsp
-    unstable.protols
+    pkgs.protols
     pkgs.docker-compose-language-service
-    unstable.docker-language-server
-    unstable.typos-lsp
+    pkgs.docker-language-server
+    pkgs.typos-lsp
     pkgs.vacuum-go
     pkgs.nginx-language-server
     pkgs.pest-ide-tools
     pkgs.rust-analyzer
     pkgs.roslyn-ls
-    unstable.gopls
+    pkgs.gopls
     pkgs.vue-language-server
     pkgs.ccls
     pkgs.haskell-language-server
-    pkgs.elixir_ls
+    pkgs.elixir-ls
     pkgs.nodePackages.purescript-language-server
     pkgs.nodePackages.bash-language-server
-    pkgs.nodePackages.dockerfile-language-server-nodejs
+    pkgs.dockerfile-language-server
     pkgs.yaml-language-server
     pkgs.nodePackages.vim-language-server
     pkgs.nodePackages.typescript-language-server
-    unstable.basedpyright
+    pkgs.basedpyright
     pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph
@@ -40,12 +40,11 @@
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${system}.default
     inputs.config-lsp.packages.${system}.default
-    pkgs.ansible-language-server
     pkgs.beancount-language-server
     pkgs.texlab
     pkgs.tilt
     pkgs.slint-lsp
-    unstable.ltex-ls-plus
+    pkgs.ltex-ls-plus
     pkgs.angular-language-server
     pkgs.shellcheck
     pkgs.lemminx
@@ -134,5 +133,5 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-  ] ++ [ unstable.nodePackages.svelte-language-server unstable.postgres-language-server ];
+  ] ++ [ pkgs.nodePackages.svelte-language-server pkgs.postgres-language-server ];
 }

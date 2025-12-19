@@ -6,7 +6,7 @@ in {
     homeDirectory = lib.mkForce "/Users/${username}";
     packages = with pkgs; [ docker_28 ];
   };
-  programs.git.extraConfig = {
+  programs.git.settings = {
     user = {
       email = lib.mkForce "hsum@trintech.com";
       name = lib.mkForce "Hugo Sum";

@@ -29,8 +29,8 @@
 
   fonts.fontconfig.enable = lib.mkForce false;
 
-  programs.git.extraConfig.user.name = lib.mkForce "Hugo Sum";
-  programs.git.extraConfig.credential.helper = lib.mkForce
+  programs.git.settings.user.name = lib.mkForce "Hugo Sum";
+  programs.git.settings.credential.helper = lib.mkForce
     [ "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe" ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
@@ -40,5 +40,5 @@
   nix.settings.use-xdg-base-directories = lib.mkForce false;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }

@@ -239,5 +239,5 @@
 
   # IMPORTANT do not define anything git related here, somehow it conflicted with the user's git config
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 }

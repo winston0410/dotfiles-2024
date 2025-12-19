@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  home.packages = with pkgs; [ unstable.kanata ];
+  home.packages = with pkgs; [ kanata ];
 
   xdg.configFile = { "kanata/config.kbd" = { source = ./config.kbd; }; };
 }

@@ -2,7 +2,7 @@
   programs.wezterm.enable = true;
   programs.wezterm.enableBashIntegration = true;
   programs.wezterm.enableZshIntegration = true;
-  home.packages = with pkgs; [ unstable.zellij ];
+  home.packages = with pkgs; [ zellij ];
 
   xdg.configFile = {
     "wezterm/wezterm.lua" = { source = ./linux.lua; };

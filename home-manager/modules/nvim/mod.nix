@@ -40,8 +40,8 @@
       # luajit
       lua5_1
       luarocks
-      unstable.ast-grep
-      unstable.codesnap
+      ast-grep
+      codesnap
       # for sniprun compiler
       mono
       usql
@@ -82,7 +82,7 @@
         npmDepsHash = "sha256-iWTuG/ExpAmz16g5wbhO7fiYH9TULTz8BRcjUwVM6r0=";
       })
       # difftastic
-      unstable.difftastic
+      difftastic
       # needed for snacks.nvim
       imagemagick
       mermaid-cli
@@ -107,7 +107,7 @@
       grpcurl
       websocat
       # presenterm
-      unstable.presenterm
+      presenterm
       # procs
       procs
       # molten.nvim
@@ -120,7 +120,7 @@
       # needed for treesitter, but only install in Linux, so we can still use MacOS's default gcc and won't conflict with it
       gcc14
       # vectorcode, cannot build on Darwin yet
-      unstable.vectorcode
+      vectorcode
     ];
 
   home.sessionVariables = {
