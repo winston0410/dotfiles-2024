@@ -50,6 +50,7 @@ vim.fn.sign_define(
 )
 
 vim.fn.sign_define(
+    -- NOTE the output of logpoint will be available in REPL
     "DapLogPoint",
     { text = "", texthl = "DapUIStop", linehl = "", numhl = "", priority = 91 }
 )

@@ -191,7 +191,12 @@ end
 local DapSessionStatus = function(opts)
     return {
         condition = function()
-            local session = require("dap").session()
+            local ok, session = pcall(function()
+                return require("dap").session()
+            end)
+            if not ok then
+                return false
+            end
             return session ~= nil
         end,
         provider = function()

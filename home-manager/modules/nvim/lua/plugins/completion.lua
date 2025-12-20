@@ -8,6 +8,8 @@ vim.pack.add({
     { src = "https://github.com/bydlw98/blink-cmp-env" },
     { src = "https://github.com/archie-judd/blink-cmp-words" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
+    { src = "https://github.com/saghen/blink.compat" },
+    { src = "https://github.com/mayromr/blink-cmp-dap" },
 })
 
 local ls = require("luasnip")
@@ -146,6 +148,7 @@ require("blink-cmp").setup({
             -- "copilot",
         },
         providers = {
+            dap = { name = "dap", module = "blink-cmp-dap" },
             bibtex = {
                 module = "blink-cmp-bibtex",
                 name = "BibTeX",
@@ -215,6 +218,9 @@ require("blink-cmp").setup({
             },
         },
         per_filetype = {
+            ["dap-repl"] = {
+                "dap"
+            },
             gitcommit = {
                 inherit_defaults = true,
                 "conventional_commits",
