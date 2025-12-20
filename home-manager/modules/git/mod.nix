@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, ... }: let 
-    use_difftastic = true;
+    
 in {
   programs.git.enable = true;
 
@@ -44,29 +44,21 @@ in {
     mergetool = {
       prompt = false;
       keepBackup = false;
-      nvimdiff = { layout = "@LOCAL, REMOTE"; };
+      # diffview.nvim is still needed for merging, as nvimdiff and its variants do not support resolve conflicts with keybindings
       # https://gist.github.com/Pagliacii/8fcb4dc64937305c19df9bb3137e4cad
-      diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
+      diffview = { cmd = ''nvim --cmd 'let g:disable_session = v:true' -n -c "DiffviewOpen" "$MERGE"''; };
     };
 
     diff = { 
       conflictStyle = "zdiff3";
-    } 
-    // lib.optionalAttrs (!use_difftastic) {
-      tool = "diffview";
-    }
-    // lib.optionalAttrs use_difftastic {
-      external = "difft";
-    };
-    pager = {
-      difftool = true;
+      tool = "nvim_difftool";
     };
     difftool = {
       prompt = false;
       keepBackup = false;
-      nvimdiff = { layout = "@LOCAL, REMOTE"; };
-      diffview = { cmd = ''nvim -n -c "DiffviewOpen" "$MERGE"''; };
-      difftastic = { cmd = ''difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"''; };
+      # NOTE nvim_difftool supports both file diff and dir diff, therefore it can replace nvimdiff completely, and no point to use latter anymore
+      # We cannot enforce dir diff here, therefore we will need git difftool -d
+      nvim_difftool = { cmd = ''nvim --cmd 'let g:disable_session = v:true' -c "packadd nvim.difftool" -c "DiffTool $LOCAL $REMOTE"''; };
     };
   };
   home.packages = with pkgs; [ git-credential-manager ];
