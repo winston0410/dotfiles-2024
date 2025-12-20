@@ -307,8 +307,6 @@ end, { noremap = true, silent = true, desc = "Delete current buffer from arglist
 
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
-vim.keymap.set({ "n", "x" }, "<leader>c", "gc", { remap = true, silent = true, desc = "Comment" })
-vim.keymap.set({ "n" }, "<leader>cc", "gcc", { remap = true, silent = true, desc = "Comment Line" })
 vim.keymap.set({ "n" }, "<leader>T", function()
 	vim.cmd.term()
 end, { remap = true, silent = true, desc = "Open terminal" })
