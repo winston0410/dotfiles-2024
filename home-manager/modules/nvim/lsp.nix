@@ -39,7 +39,6 @@
     pkgs.jsonnet-language-server
     pkgs.nodePackages.graphql-language-service-cli
     inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.config-lsp.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.beancount-language-server
     pkgs.texlab
     pkgs.tilt

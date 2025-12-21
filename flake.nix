@@ -29,9 +29,6 @@
     # unstable
     nixd.url = "github:nix-community/nixd";
 
-    config-lsp.url = "github:Myzel394/config-lsp";
-    config-lsp.inputs.nixpkgs.follows = "nixpkgs";
-
     darwin.url = "github:lnl7/nix-darwin";
 
     rust-overlay.url = "github:oxalica/rust-overlay";

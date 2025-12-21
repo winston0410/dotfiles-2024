@@ -68,24 +68,19 @@ local function setup_lspconfig()
 		cmd = { "docker-language-server", "start", "--stdio" },
 		filetypes = { "yaml.docker-compose", "dockerfile" },
 	})
-
-	vim.lsp.config("systemd_lsp", {
-		cmd = { "systemd-lsp" },
-		filetypes = { "systemd" },
-	})
-
-	vim.lsp.config("config_lsp", {
-		cmd = { "config-lsp" },
-		filetypes = {
-			"sshconfig",
-			"sshdconfig",
-			"fstab",
-			"aliases",
-			"mailaliases",
-			-- Matches wireguard configs and /etc/hosts
-			"conf",
-		},
-	})
+    -- NOTE not very useful
+	-- vim.lsp.config("config_lsp", {
+	-- 	cmd = { "config-lsp" },
+	-- 	filetypes = {
+	-- 		"sshconfig",
+	-- 		"sshdconfig",
+	-- 		"fstab",
+	-- 		"aliases",
+	-- 		"mailaliases",
+	-- 		-- Matches wireguard configs and /etc/hosts
+	-- 		"conf",
+	-- 	},
+	-- })
 
 	-- REF https://github.com/b0o/SchemaStore.nvim
 	vim.lsp.config("yamlls", {
@@ -260,7 +255,7 @@ local function setup_lspconfig()
 		"v-analyzer",
 		-- TODO check if this server is more mature now.This is fast but does not provide enough configuration
 		-- "emmylua_ls",
-		"config_lsp",
+		-- "config_lsp",
 		"systemd_lsp",
 		"openscad_lsp",
 		"ziggy_schema",
