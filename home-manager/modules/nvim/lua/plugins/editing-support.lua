@@ -3,6 +3,7 @@ vim.pack.add({
 		src = "https://github.com/folke/flash.nvim",
 		version = vim.version.range("2.x"),
 	},
+	{ src = "https://github.com/winston0410/thunder.nvim" },
 	{ src = "https://github.com/winston0410/encoding.nvim" },
 	{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
 	{ src = "https://github.com/nacro90/numb.nvim", version = "master" },
@@ -190,6 +191,7 @@ end, { noremap = true, silent = true, desc = "Show global keymaps" })
 
 require("smear_cursor").setup({})
 require("smear_cursor").enabled = false
+require("thunder").setup()
 require("flash").setup({
 	labels = "qwertyuiop[asdfghjkl;zxcvbnm,.",
 	-- only the first two rows on keyboard
