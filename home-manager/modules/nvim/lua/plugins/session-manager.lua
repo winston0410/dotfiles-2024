@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 			return
 		end
 		local qf_session = vim.fn.json_decode(qf_session_content)
-		vim.fn.setqflist(qf_session, "a")
+		vim.fn.setqflist(qf_session, "r")
 	end,
 })
 
