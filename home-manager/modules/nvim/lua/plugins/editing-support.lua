@@ -1,8 +1,4 @@
 vim.pack.add({
-	{
-		src = "https://github.com/folke/flash.nvim",
-		version = vim.version.range("2.x"),
-	},
 	{ src = "https://github.com/winston0410/thunder.nvim" },
 	{ src = "https://github.com/winston0410/encoding.nvim" },
 	{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
@@ -10,7 +6,7 @@ vim.pack.add({
 	{ src = "https://github.com/brenoprata10/nvim-highlight-colors" },
 	{ src = "https://github.com/NStefan002/screenkey.nvim", version = "main" },
 	{ src = "http://github.com/winston0410/sops.nvim", version = "main" },
-    -- move on to this in the future, but the UI is just not as good as which-key.nvim
+	-- move on to this in the future, but the UI is just not as good as which-key.nvim
 	-- { src = "https://github.com/nvim-mini/mini.clue" },
 	{
 		src = "https://github.com/folke/which-key.nvim",
@@ -191,35 +187,11 @@ end, { noremap = true, silent = true, desc = "Show global keymaps" })
 
 require("smear_cursor").setup({})
 require("smear_cursor").enabled = false
-require("thunder").setup()
-require("flash").setup({
-	labels = "qwertyuiop[asdfghjkl;zxcvbnm,.",
-	-- only the first two rows on keyboard
-	label = {
-        before = true,
-        after = false,
-		uppercase = true,
-		style = "overlay",
-	},
-	highlight = {
-		backdrop = false,
-		matches = false,
-	},
-	---@type table<string, Flash.Config>
-	modes = {
-		search = {
-			enabled = true,
-			jump = { history = true, register = true, nohlsearch = false },
-		},
-		char = {
-			enabled = false,
-			highlight = {
-				backdrop = false,
-			},
-		},
-	},
+require("thunder").setup({ 
+  label = {
+    style = 'inline',
+  },
 })
-
 require("window-picker").setup({
 	show_prompt = false,
 	hint = "floating-big-letter",
@@ -532,5 +504,19 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 		vim.wo.number = false
 		vim.wo.relativenumber = false
 		vim.cmd.redraw()
+	end,
+})
+
+local thunder_group = vim.api.nvim_create_augroup("thunder", { clear = true })
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+	group = thunder_group,
+	callback = function()
+		if vim.v.event.abort then
+			return
+		end
+		if not require("thunder.utils").is_search() then
+			return
+		end
+		require("thunder").search()
 	end,
 })

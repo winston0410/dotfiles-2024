@@ -103,6 +103,7 @@ require("snacks").setup({
 				end
 				vim.cmd.argdedupe()
 			end,
+            -- TODO wait for difftool to be able to support diffing with 2 git commit sha hashes, then replace diffview with it
 			diffview = function(picker, item)
 				picker:close()
 				if not item then
