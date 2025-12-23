@@ -27,7 +27,7 @@ vim.opt.wildignore:append({
 	"tokyonight.lua",
 	"tokyonight-night.lua",
 	"tokyonight-storm.lua",
-	"tokyonight-moon.lua",
+	-- "tokyonight-moon.lua",
 	"tokyonight-day.lua",
 })
 vim.opt.wildignore:append({
@@ -44,6 +44,7 @@ vim.opt.wildignore:append({
 vim.opt.wildignore:append({
     "kanagawa.vim",
     "kanagawa-lotus.vim",
+    "kanagawa-wave.vim",
     "kanagawa-dragon.vim",
 })
 vim.opt.wildignore:append({
