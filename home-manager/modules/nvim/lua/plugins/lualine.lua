@@ -291,6 +291,9 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
         local result = table.concat(dedup_list, ",")
         vim.g.MacroNamedRegister = result
 
+        if type( vim.g.YankNamedRegister ) ~= "string" then
+            return
+        end
         -- clean up text yank named register list
         local named_reg_list = vim.split(vim.g.YankNamedRegister, ",", { trimempty = true })
         local filtered_named_reg_list = vim.iter(named_reg_list):filter(function(named_reg)
@@ -322,6 +325,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         local result = table.concat(dedup_list, ",")
         vim.g.YankNamedRegister = result
         -- clean up macro named register list
+        if type(vim.g.MacroNamedRegister) ~= "string" then
+            return
+        end
         local macro_reg_list = vim.split(vim.g.MarcroNamedRegister, ",", { trimempty = true })
         local filtered_macro_reg_list = vim.iter(macro_reg_list):filter(function(macro_reg)
             return macro_reg ~= reg
