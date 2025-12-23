@@ -233,6 +233,25 @@ local ReadOnlyStatus = function(opts)
     }
 end
 ---@param opts CustomComponentOpts
+local CopilotStatus = function(opts)
+    return {
+        condition = function()
+            local ok, _ = pcall(function()
+                vim.fn["copilot#Enabled"]()
+            end)
+            return ok
+        end,
+        provider = function()
+            local copilot_status = vim.fn["copilot#Enabled"]()
+            local status_icon = ""
+            if copilot_status == 0 then
+                status_icon = ""
+            end
+            return handle_padding(status_icon, opts.padding)
+        end
+    }
+end
+---@param opts CustomComponentOpts
 local DiffStatus = function(opts)
     return {
         condition = function()
@@ -543,6 +562,7 @@ require("heirline").setup({
         },
     },
     tabline = {
+        CopilotStatus({ padding = { left = 1, right = 0 } }),
         SudoStatus({ padding = { left = 1, right = 0 } }),
         GoDotExternalEditor({ padding = { left = 1, right = 0 } }),
         ArglistIndex({ padding = { left = 1, right = 0 } }),
