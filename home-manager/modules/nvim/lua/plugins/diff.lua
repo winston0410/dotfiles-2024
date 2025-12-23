@@ -259,3 +259,34 @@ require("diffview").setup({
 		},
 	},
 })
+
+vim.cmd("packadd nvim.difftool")
+vim.api.nvim_create_user_command("GitDiffTool", function(opts)
+	if #opts.fargs ~= 2 then
+		vim.notify("Usage: GitDiffTool <left> <right>", vim.log.levels.ERROR)
+		return
+	end
+
+	---@param revision string git revision that can be commit hash, branch name, tag or ref
+	---@return string
+	local function convert_sha_into_temp_dir(revision)
+		local temp_dir_path = vim.fn.tempname()
+		vim.fn.mkdir(temp_dir_path, "p")
+
+		local res = vim.system({
+			vim.o.shell,
+			vim.o.shellcmdflag,
+			string.format("git archive %s | tar -x -C %s", revision, temp_dir_path),
+		}):wait()
+
+        if res.code ~= 0 then
+            vim.notify(res.stderr, vim.log.levels.ERROR)
+        end
+		return temp_dir_path
+	end
+
+	local left_dir = convert_sha_into_temp_dir(opts.fargs[1])
+	local right_dir = convert_sha_into_temp_dir(opts.fargs[2])
+
+	require("difftool").open(left_dir, right_dir)
+end, { nargs = "*" })
