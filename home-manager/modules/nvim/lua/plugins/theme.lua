@@ -2,8 +2,8 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-mini/mini.icons" },
 	{ src = "https://github.com/onsails/lspkind.nvim" },
     -- low contrast themes
-    { src = "https://github.com/catppuccin/nvim" },
-    -- cannot see the comment clearly with this theme
+    -- { src = "https://github.com/catppuccin/nvim" },
+    -- cannot see the comment clearly with this theme, otherwise it is perfect
 	{ src = "https://github.com/folke/tokyonight.nvim" },
 	{ src = "https://github.com/rose-pine/neovim" },
     { src = "https://github.com/rebelot/kanagawa.nvim" },
@@ -11,6 +11,7 @@ vim.pack.add({
     { src = "https://github.com/nuvic/flexoki-nvim" }, -- it has limited plugin support
 	{ src = "https://github.com/miikanissi/modus-themes.nvim" },
 	{ src = "https://github.com/kyza0d/xeno.nvim" },
+    { src = "https://github.com/eldritch-theme/eldritch.nvim" },
     -- for fun
 	{ src = "https://github.com/jnz/studio98" },
 	{ src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
@@ -29,6 +30,10 @@ vim.opt.wildignore:append({
 	"tokyonight-storm.lua",
 	-- "tokyonight-moon.lua",
 	"tokyonight-day.lua",
+})
+vim.opt.wildignore:append({
+	"eldritch-minimal.lua",
+	"eldritch.lua",
 })
 vim.opt.wildignore:append({
 	"rose-pine.lua",
