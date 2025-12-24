@@ -68,7 +68,7 @@ local function setup_lspconfig()
 		cmd = { "docker-language-server", "start", "--stdio" },
 		filetypes = { "yaml.docker-compose", "dockerfile" },
 	})
-    -- NOTE not very useful
+	-- NOTE not very useful
 	-- vim.lsp.config("config_lsp", {
 	-- 	cmd = { "config-lsp" },
 	-- 	filetypes = {
@@ -283,23 +283,7 @@ end
 
 local autocmd_group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true })
 
-vim.api.nvim_create_autocmd("BufReadPost", {
-	once = true,
-	group = autocmd_group,
-	callback = function()
-		setup_lspconfig()
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufNewFile", {
-	once = true,
-	group = autocmd_group,
-	callback = function()
-		setup_lspconfig()
-	end,
-})
-
-vim.api.nvim_create_autocmd("CursorMoved", {
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "CursorMoved" }, {
 	once = true,
 	group = autocmd_group,
 	callback = function()
@@ -405,6 +389,45 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+vim.pack.add({
+    { src = "https://github.com/jmbuhr/otter.nvim", version = vim.version.range("2.x") }
+})
+
+local host_languages =
+	vim.list_extend(require("syringe").get_supported_host_languages(), { "markdown", "markdown_inline" })
+local otter = require("otter")
+otter.setup({
+	lsp = {
+		diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
+	},
+})
+---@param buf_id integer ID for the buffer
+local function mount_otter(buf_id)
+	local main_lang = vim.api.nvim_get_option_value("filetype", { buf = buf_id })
+	if not vim.tbl_contains(host_languages, main_lang) then
+		return
+	end
+
+	local parsername = vim.treesitter.language.get_lang(main_lang)
+	if not parsername then
+		return
+	end
+	local ok, parser = pcall(function()
+		local parser = vim.treesitter.get_parser(ev.buf, parsername)
+		return parser
+	end)
+	if not ok or not parser then
+		return
+	end
+	otter.activate()
+end
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+	pattern = "*",
+	callback = function(ev)
+		mount_otter(ev.buf)
+	end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = autocmd_group,
 	once = true,
@@ -414,8 +437,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 			{ src = "https://github.com/rachartier/tiny-code-action.nvim" },
 			{ src = "https://github.com/AbysmalBiscuit/insert-inlay-hints.nvim" },
-			{ src = "https://github.com/jmbuhr/otter.nvim", version = vim.version.range("2.x") },
-            { src = "https://github.com/nvim-lua/plenary.nvim" },
+			{ src = "https://github.com/nvim-lua/plenary.nvim" },
 			{ src = "https://github.com/nvimtools/none-ls.nvim" },
 			{ src = "https://github.com/ThePrimeagen/refactoring.nvim" },
 		})
@@ -440,37 +462,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		require("tiny-code-action").setup({
 			backend = "vim",
 			picker = "snacks",
-		})
-
-		local host_languages =
-			vim.list_extend(require("syringe").get_supported_host_languages(), { "markdown", "markdown_inline" })
-		local otter = require("otter")
-		otter.setup({
-			lsp = {
-				diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
-			},
-		})
-		vim.api.nvim_create_autocmd("BufEnter", {
-			pattern = "*",
-			callback = function(ev)
-				local main_lang = vim.api.nvim_get_option_value("filetype", { buf = ev.buf })
-				if not vim.tbl_contains(host_languages, main_lang) then
-					return
-				end
-
-				local parsername = vim.treesitter.language.get_lang(main_lang)
-				if not parsername then
-					return
-				end
-				local ok, parser = pcall(function()
-					local parser = vim.treesitter.get_parser(ev.buf, parsername)
-					return parser
-				end)
-				if not ok or not parser then
-					return
-				end
-				otter.activate()
-			end,
 		})
 
 		vim.keymap.set("n", "<leader>si", function()

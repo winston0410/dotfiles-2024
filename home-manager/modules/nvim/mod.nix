@@ -135,7 +135,8 @@
   home.shellAliases = {
     vi = "nvim --clean";
     vim =
-      "nvim --cmd 'let g:disable_session = v:true' -u $XDG_CONFIG_HOME/nvim/minimal.lua";
+      #sh
+      ''nvim --cmd 'let g:disable_session = v:true' -u "$XDG_CONFIG_HOME/nvim/minimal.lua"'';
     vimdiff = "nvim -d --cmd 'let g:disable_session = v:true'";
     nvimdiff = "nvim -d --cmd 'let g:disable_session = v:true'";
     k8s =
@@ -145,7 +146,11 @@
   # sh
   ''
     difftool() {
-        nvim --cmd 'let g:disable_session = v:true' -c "packadd nvim.difftool" -c "DiffTool $1 $2"
+      if [ ! -e "$1" ] || [ ! -e "$2" ]; then
+        echo "Error: both arguments must be valid paths to files to directories." >&2
+        return 1
+      fi
+      nvim --cmd 'let g:disable_session = v:true' -c "packadd nvim.difftool" -c "DiffTool $1 $2"
     }
   '';
 
