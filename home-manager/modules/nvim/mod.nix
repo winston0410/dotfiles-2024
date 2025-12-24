@@ -137,8 +137,12 @@
     vim =
       #sh
       ''nvim --cmd 'let g:disable_session = v:true' -u "$XDG_CONFIG_HOME/nvim/minimal.lua"'';
-    vimdiff = "nvim -d --cmd 'let g:disable_session = v:true'";
-    nvimdiff = "nvim -d --cmd 'let g:disable_session = v:true'";
+    vimdiff =
+      #sh
+    "nvim -d --cmd 'let g:disable_session = v:true'";
+    nvimdiff = 
+      #sh
+    "nvim -d --cmd 'let g:disable_session = v:true'";
     k8s =
       "nvim --cmd  'let g:disable_session = v:true' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
   };
@@ -146,6 +150,10 @@
   # sh
   ''
     difftool() {
+      if [ "$#" -ne 2 ]; then
+        echo "Error: expected 2 arguments." >&2
+        return 1
+      fi
       if [ ! -e "$1" ] || [ ! -e "$2" ]; then
         echo "Error: both arguments must be valid paths to files to directories." >&2
         return 1
