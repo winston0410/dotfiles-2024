@@ -105,10 +105,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 vim.pack.add({
 	{ src = "https://github.com/hakonharnes/img-clip.nvim" },
 	{ src = "https://github.com/nvim-lua/plenary.nvim" },
-	{ src = "https://github.com/ravitemer/codecompanion-history.nvim" },
-	{ src = "https://github.com/olimorris/codecompanion.nvim", version = vim.version.range("17.x") },
-	{ src = "https://github.com/franco-ruggeri/codecompanion-spinner.nvim" },
-	{ src = "https://github.com/ravitemer/mcphub.nvim", version = vim.version.range("6.x") },
+	{ src = "https://github.com/ravitemer/codecompanion-history.nvim", version = "main" },
+	{ src = "https://github.com/olimorris/codecompanion.nvim", version = vim.version.range("18.x") },
+	{ src = "https://github.com/franco-ruggeri/codecompanion-spinner.nvim", version = "main" },
+	-- { src = "https://github.com/ravitemer/mcphub.nvim", version = vim.version.range("6.x") },
 })
 
 require("codecompanion").setup({
@@ -145,14 +145,14 @@ require("codecompanion").setup({
 	},
 	extensions = {
 		spinner = {},
-		mcphub = {
-			callback = "mcphub.extensions.codecompanion",
-			opts = {
-				show_result_in_chat = true,
-				make_vars = true,
-				make_slash_commands = true,
-			},
-		},
+		-- mcphub = {
+		-- 	callback = "mcphub.extensions.codecompanion",
+		-- 	opts = {
+		-- 		show_result_in_chat = true,
+		-- 		make_vars = true,
+		-- 		make_slash_commands = true,
+		-- 	},
+		-- },
 		history = {
 			enabled = true,
 			opts = {
@@ -294,9 +294,23 @@ require("codecompanion").setup({
 			provider = "snacks",
 		},
 		diff = {
-			enabled = true,
-			layout = "vertical",
-			provider = "default",
+            enabled = true,
+            provider = "split",
+			provider_opts = {
+				split = {
+					close_chat_at = 240,
+					layout = "vertical",
+					opts = {
+						"internal",
+						"filler",
+						"closeoff",
+						"algorithm:histogram",
+						"indent-heuristic",
+						"followwrap",
+						"linematch:120",
+					},
+				},
+			},
 		},
 	},
 	opts = {
@@ -314,21 +328,21 @@ require("img-clip").setup({
 		},
 	},
 })
-require("mcphub").setup({
-	auto_approve = false,
-	use_bundled_binary = true,
-	port = 3000,
-	config = vim.fn.expand("~/.config/mcphub/servers.json"),
-	global_env = {
-		["input:ado_org"] = "trintech-coe",
-	},
-	log = {
-		level = vim.log.levels.WARN,
-		to_file = false,
-		file_path = nil,
-		prefix = "MCPHub",
-	},
-})
+-- require("mcphub").setup({
+-- 	auto_approve = false,
+-- 	use_bundled_binary = true,
+-- 	port = 3000,
+-- 	config = vim.fn.expand("~/.config/mcphub/servers.json"),
+-- 	global_env = {
+-- 		["input:ado_org"] = "trintech-coe",
+-- 	},
+-- 	log = {
+-- 		level = vim.log.levels.WARN,
+-- 		to_file = false,
+-- 		file_path = nil,
+-- 		prefix = "MCPHub",
+-- 	},
+-- })
 vim.keymap.set({ "n" }, "<leader>p<leader>a", function()
 	vim.cmd("CodeCompanionActions")
 end, { noremap = true, silent = true, desc = "Pick CodeCompanion actions" })
