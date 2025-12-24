@@ -26,8 +26,8 @@
     pkgs.dockerfile-language-server
     pkgs.yaml-language-server
     pkgs.nodePackages.vim-language-server
-    pkgs.nodePackages.typescript-language-server
     pkgs.basedpyright
+    unstable.typescript-go
     pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph

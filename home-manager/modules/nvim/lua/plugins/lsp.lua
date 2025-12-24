@@ -247,7 +247,6 @@ local function setup_lspconfig()
 		"tsp_server",
 		"yamlls",
 		"kulala_ls",
-		"ts_ls",
 		"tsgo",
 		"earthlyls",
 		"elixirls",
