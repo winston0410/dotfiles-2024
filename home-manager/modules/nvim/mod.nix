@@ -140,9 +140,14 @@
     nvimdiff = "nvim -d --cmd 'let g:disable_session = v:true'";
     k8s =
       "nvim --cmd  'let g:disable_session = v:true' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
-    diffview =
-      "nvim --cmd  'let g:disable_session = v:true' --cmd 'let g:disable_autoformat = v:true' -c 'DiffviewOpen'";
   };
+  programs.zsh.initContent = 
+  # sh
+  ''
+    difftool() {
+        nvim --cmd 'let g:disable_session = v:true' -c "packadd nvim.difftool" -c "DiffTool $1 $2"
+    }
+  '';
 
   xdg.configFile = {
     "nvim/init.lua" = { source = ./init.lua; };
