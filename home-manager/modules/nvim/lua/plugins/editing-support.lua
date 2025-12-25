@@ -30,7 +30,13 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
 	{ src = "https://github.com/rlue/vim-barbaric", version = "master" },
 })
-
+vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(ev)
+        if ev.data.spec.name == "nvim-treesitter" and ev.data.kind == "update" then
+            vim.cmd("TSUpdate all")
+        end
+    end
+})
 require("numb").setup()
 require("nvim-highlight-colors").setup({
 	render = "virtual",
