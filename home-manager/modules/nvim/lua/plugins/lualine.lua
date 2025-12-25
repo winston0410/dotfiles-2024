@@ -440,6 +440,7 @@ require("heirline").setup({
 					if idx == #parts then
 						icon, hl = MiniIcons.get("file", part)
 					end
+                    -- REF https://www.reddit.com/r/neovim/comments/tz6p7i/how_can_we_set_color_for_each_part_of_statusline/
                     -- %#<string>% is to highlight a string
                     -- %* is to reset the highlight for the remaining content
 					table.insert(modified_parts,  string.format("%%#%s#%s %%*%s", hl, icon, part))
