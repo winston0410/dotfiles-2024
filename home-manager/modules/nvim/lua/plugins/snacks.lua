@@ -103,8 +103,9 @@ require("snacks").setup({
 				end
 				vim.cmd.argdedupe()
 			end,
-            -- TODO wait for difftool to be able to support diffing with 2 git commit sha hashes, then replace diffview with it
-			diffview = function(picker, item)
+			difftool = function(picker, item)
+                vim.cmd("packadd nvim.difftool")
+                local difftool_utils = require("custom.difftool-utils")
 				picker:close()
 				if not item then
 					return
@@ -115,8 +116,12 @@ require("snacks").setup({
 				if not what then
 					return
 				end
+                local current_branch = difftool_utils.get_current_branch()
 
-				vim.cmd(string.format("DiffviewOpen %s", what))
+                local left_dir = difftool_utils.convert_revision_into_temp_dir(current_branch)
+                local right_dir = difftool_utils.convert_revision_into_temp_dir(what)
+
+				require("difftool").open(left_dir, right_dir)
 			end,
 		},
 		win = {
@@ -239,7 +244,7 @@ vim.keymap.set({ "n" }, "<leader>p<leader>gl", function()
 		source = "enhanced_git_log",
 		show_empty = true,
 		preview = "git_show",
-		confirm = "diffview",
+		confirm = "difftool",
 		live = true,
 		supports_live = true,
 		sort = { fields = { "score:desc", "idx" } },
@@ -268,7 +273,7 @@ vim.keymap.set({ "x" }, "<leader>pw", function()
 end, { silent = true, noremap = true, desc = "Combined Grep in files" })
 
 vim.keymap.set({ "n" }, "<leader>p<leader>gb", function()
-	Snacks.picker.git_branches({ confirm = "diffview" })
+	Snacks.picker.git_branches({ confirm = "difftool" })
 end, { silent = true, noremap = true, desc = "Search Git branches" })
 
 vim.keymap.set({ "n", "x" }, "<leader>gx", function()
