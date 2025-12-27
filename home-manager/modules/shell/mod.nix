@@ -13,6 +13,7 @@
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
     initContent = 
+    # sh
     ''
       # Set module path, so zsh can load *.so from /nix/store correctly
       module_path="${pkgs.zsh}/lib/${pkgs.zsh.pname}/${pkgs.zsh.version}"

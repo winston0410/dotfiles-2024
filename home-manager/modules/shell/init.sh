@@ -6,9 +6,17 @@ setopt INC_APPEND_HISTORY
 bindkey '^P' up-line-or-history
 bindkey '^N' down-line-or-history
 
-# Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
-# REF https://unix.stackexchange.com/a/290403
-bindkey -v '^?' backward-delete-char
+# For editing command in zsh directly with Neovim. Make sure the widget is available
+# https://unix.stackexchange.com/questions/6620/how-to-edit-command-line-in-full-screen-editor-in-zsh
+# https://unix.stackexchange.com/a/266636
+autoload edit-command-line; 
+quick-edit-command-line () {
+  # shellcheck disable=SC2034
+  local VISUAL="nvim --cmd 'let g:disable_session = v:true' --cmd 'let g:disable_diff_support = v:true' --cmd 'let g:disable_snacks = v:true'"
+  edit-command-line
+}
+zle -N quick-edit-command-line;
+bindkey '^[' quick-edit-command-line;
 
 KEYTIMEOUT=1
 
@@ -20,25 +28,3 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit ice lucid wait
 zinit light Aloxaf/fzf-tab
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
-
-### We don't need to install completions with zinit, as nix provides those completion in packages
-# This will break completions for other ssh related utilities
-# sunlei/zsh-ssh \
-
-# zinit lucid wait for \
-#     zsh-users/zsh-completions \
-#     OMZP::bun \
-#     OMZP::docker \
-#     OMZP::docker-compose \
-#     OMZP::dotnet \
-#     OMZP::git
-#
-# bw completion --shell zsh >"$ZINIT[COMPLETIONS_DIR]/_bw"
-#
-# # no idea why chafa completion does not work
-# zinit as"completion" lucid wait for \
-#     https://github.com/hpjansson/chafa/blob/master/tools/completions/zsh-completion.zsh
-#
-# # To complete completions installation, run zicompinit
-# zinit for \
-#     lucid wait"1" atload"zicompinit; zicdreplay" OMZP::rbw

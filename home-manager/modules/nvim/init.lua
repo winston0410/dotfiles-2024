@@ -16,20 +16,26 @@ local godot = require("custom.godot")
 
 require("plugins.lualine")
 require("plugins.theme")
-require("plugins.session-manager")
-require("plugins.file-manager")
 require("plugins.highlight")
 require("plugins.lsp")
 require("plugins.completion")
-require("plugins.diff")
-require("plugins.snacks")
+if not vim.g.disable_snacks then
+    require("plugins.snacks")
+end
 require("plugins.editing-support")
-require("plugins.conform")
+if not vim.g.disable_session then
+    require("plugins.session-manager")
+    require("plugins.file-manager")
+    require("plugins.conform")
+    require("plugins.dap")
+    require("plugins.task-runner")
+    require("plugins.test")
+end
+if not vim.g.disable_diff_support then
+    require("plugins.diff")
+end
 -- Neogit is slow with big repo, and not fully customizable
 -- require("plugins.git")
-require("plugins.task-runner")
-require("plugins.dap")
-require("plugins.test")
 
 local completion_args = { 'ai', 'extra' }
 
