@@ -1,4 +1,6 @@
 vim.pack.add({
+    -- Rely on the nvim-surround for adding, changing(cst) and deleting(dst) HTML tags. No need for auto pairing plugins.
+    -- For creating HTML tag, we can also use the LSP completion hints for closing the tag. Try typing <div><, and then accept /div>
 	{ src = "https://github.com/winston0410/thunder.nvim" },
 	{ src = "https://github.com/winston0410/encoding.nvim" },
 	{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
@@ -14,7 +16,7 @@ vim.pack.add({
 	},
 	{ src = "https://github.com/chrisgrieser/nvim-various-textobjs" },
 	{ src = "https://github.com/chrisgrieser/nvim-spider" },
-	{ src = "https://github.com/nvim-mini/mini.surround" },
+    { src = "https://github.com/kylechui/nvim-surround",                     version = vim.version.range("3.x") },
 	{
 		src = "https://github.com/sphamba/smear-cursor.nvim",
 		version = vim.version.range("0.6"),
@@ -72,18 +74,22 @@ end, { silent = true, noremap = true, desc = "Around subword" })
 vim.keymap.set({ "o", "x" }, "iw", function()
 	require("various-textobjs").subword("inner")
 end, { silent = true, noremap = true, desc = "Inside subword" })
-require("mini.surround").setup({
-	mappings = {
-		add = "s",
-		delete = "ds",
-		find = "",
-		find_left = "",
-		highlight = "",
-		replace = "cs",
-
-		suffix_last = "",
-		suffix_next = "",
-	},
+-- Using this instead of mini.surround, as it can handle changing html tag correctly
+require("nvim-surround").setup({
+    keymaps = {
+        insert = "<C-g>s",
+        insert_line = "<C-g>S",
+        normal = "s",
+        normal_cur = "ss",
+        normal_line = "S",
+        normal_cur_line = "SS",
+        visual = "s",
+        visual_line = "gS",
+        delete = "ds",
+        change = "cs",
+        change_line = "cS",
+    },
+    aliases = {},
 })
 
 vim.keymap.set({ "n", "o", "x" }, "w", function()
