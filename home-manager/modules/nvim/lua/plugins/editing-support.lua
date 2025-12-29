@@ -34,8 +34,13 @@ vim.pack.add({
 })
 vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(ev)
-        if ev.data.spec.name == "nvim-treesitter" and ev.data.kind == "update" then
+        if ev.data.spec.name ~= "nvim-treesitter" then
+            return
+        end
+        if ev.data.kind == "update" then
             vim.cmd("TSUpdate all")
+        else 
+            vim.cmd("TSInstall all")
         end
     end
 })

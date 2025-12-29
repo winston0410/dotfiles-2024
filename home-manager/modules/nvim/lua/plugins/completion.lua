@@ -218,6 +218,9 @@ require("blink-cmp").setup({
             },
         },
         per_filetype = {
+            zsh = {
+                inherit_defaults = true,
+            },
             ["dap-repl"] = {
                 "dap"
             },
