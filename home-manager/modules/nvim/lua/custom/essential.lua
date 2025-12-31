@@ -111,6 +111,7 @@ vim.opt.fillchars:append({ fold = " " })
 
 -- Use space as leader key
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 vim.o.mouse = "a"
 vim.o.mousefocus = true
 

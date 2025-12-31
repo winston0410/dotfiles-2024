@@ -16,7 +16,11 @@ quick-edit-command-line () {
   edit-command-line
 }
 zle -N quick-edit-command-line;
-bindkey '^[' quick-edit-command-line;
+bindkey '^X^E' quick-edit-command-line;
+
+# Fix the default Vi behavior of Zsh, that prevents us from using backspace in Insert Mode like in Vim.
+# REF https://unix.stackexchange.com/a/290403
+bindkey -v '^?' backward-delete-char
 
 KEYTIMEOUT=1
 

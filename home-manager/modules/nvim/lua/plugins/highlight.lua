@@ -65,6 +65,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("treesitter.setup", {}),
 	callback = function(args)
 		local filetype = args.match
+        --TODO review csv treesitter highlight in the future. It is not good at the moment
+        if filetype == "csv" then
+            return
+        end
 
 		local language = vim.treesitter.language.get_lang(filetype) or filetype
 		if not vim.treesitter.language.add(language) then
@@ -116,4 +120,14 @@ require("markview").setup({
 			sign = false,
 		},
 	},
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "csv" },
+  desc = "Enable CSV View on .csv files",
+  callback = function()
+    vim.pack.add( { { src = "https://github.com/hat0uma/csvview.nvim", version = vim.version.range("1.x") } } )
+    require('csvview').setup()
+    require("csvview").enable()
+  end,
 })
