@@ -2,6 +2,7 @@ local session_manager = require("custom.session-manager")
 local group = vim.api.nvim_create_augroup("SessionManager", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
 	group = group,
+    once = true,
 	callback = function()
 		if vim.fn.argc() > 0 or vim.g.disable_session then
             return
