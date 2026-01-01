@@ -6,7 +6,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		if vim.fn.argc() > 0 or vim.g.disable_session then
             return
 		end
-        session_manager.load()
+        -- restore session after Nvim event loop has started, so the loading wouldn't block it
+        vim.schedule(function()
+            session_manager.load()
+        end)
 	end,
 	nested = true,
 })

@@ -177,6 +177,7 @@ local SearchCount = function(opts)
 end
 vim.api.nvim_create_autocmd("RecordingLeave", {
 	desc = "Trace recorded macro",
+    nested = true,
 	callback = function()
 		if type(vim.g.MacroNamedRegister) ~= "string" then
 			vim.g.MacroNamedRegister = ""
@@ -202,6 +203,7 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 	end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
+    nested = true,
 	desc = "Track Named Register",
 	callback = function()
 		-- REF https://neovim.io/doc/user/starting.html#views-sessions
