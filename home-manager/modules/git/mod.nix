@@ -37,6 +37,9 @@ in {
 
     lfs = { enable = true; };
 
+    rebase = {
+      autosquash = true;
+    };
     merge = {
       tool = "diffview";
       conflictStyle = "zdiff3";
