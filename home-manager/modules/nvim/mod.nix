@@ -92,6 +92,8 @@
       # lilypond-suite
       fluidsynth
       soundfont-fluid
+      # zk notetaking
+      unstable.zk
     ] ++ [ # mcphub.nvim
       uv
     ] ++ [
@@ -129,7 +131,7 @@
     MANPAGER = "nvim +Man!";
     # using nvim as pager would lose the color
     # PAGER = "nvim";
-    FCEDIT = "nvim --clean";
+    FCEDIT = "nvim --cmd 'let g:disable_session = v:true'";
     MANWIDTH = 999;
   };
   home.shellAliases = {
@@ -182,7 +184,5 @@
       source = ./lua;
       recursive = true;
     };
-    # Disable until we really need custom LSP config
-    # "nvim/lsp" = { source = ./lsp; };
   };
 }

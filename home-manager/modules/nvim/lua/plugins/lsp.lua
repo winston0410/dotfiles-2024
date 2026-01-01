@@ -11,30 +11,6 @@ local function setup_lspconfig()
 		capabilities = capabilities,
 	})
 
-	-- REF https://github.com/AkisArou/npm-workspaces-lsp package this with Nix
-	vim.lsp.config("npmls", {
-		cmd = { "npm-workspaces-lsp", "--stdio" },
-		filetypes = { "json" },
-		root_markers = { "package.json" },
-		workspace_required = true,
-	})
-	vim.lsp.config("elixirls", {
-		cmd = { "elixir-ls" },
-	})
-
-	vim.lsp.config("denols", {
-		workspace_required = true,
-		root_markers = { "deno.json", "deno.jsonc" },
-	})
-	vim.lsp.config("angularls", {
-		workspace_required = true,
-		root_markers = { "angular.json" },
-	})
-
-	vim.lsp.config("kulala_ls", {
-		filetypes = { "http", "rest" },
-	})
-
 	local ok, vue_language_server_path = pcall(function()
 		local res = vim.system({ "which", "vue-language-server" }, { text = true }):wait()
 		if res.code ~= 0 then
@@ -64,10 +40,6 @@ local function setup_lspconfig()
 			vim.log.levels.WARN
 		)
 	end
-	vim.lsp.config("docker_language_server", {
-		cmd = { "docker-language-server", "start", "--stdio" },
-		filetypes = { "yaml.docker-compose", "dockerfile" },
-	})
 	-- NOTE not very useful
 	-- vim.lsp.config("config_lsp", {
 	-- 	cmd = { "config-lsp" },
@@ -81,70 +53,6 @@ local function setup_lspconfig()
 	-- 		"conf",
 	-- 	},
 	-- })
-
-	-- REF https://github.com/b0o/SchemaStore.nvim
-	vim.lsp.config("yamlls", {
-		settings = {
-			yaml = {
-				schemaStore = {
-					enable = false,
-					url = "",
-				},
-				schemas = require("schemastore").yaml.schemas(),
-			},
-		},
-	})
-	vim.lsp.config("jsonls", {
-		settings = {
-			json = {
-				schemas = require("schemastore").json.schemas(),
-				validate = { enable = true },
-			},
-		},
-	})
-	vim.lsp.config("ltex_plus", {
-		settings = {
-			ltex = {
-				language = "en-GB",
-			},
-		},
-	})
-	vim.lsp.config("lua_ls", {
-		diagnostics = {
-			underline = true,
-			update_in_insert = true,
-			severity_sort = true,
-		},
-		on_init = function(client)
-			if client.workspace_folders then
-				local path = client.workspace_folders[1].name
-				if
-					path ~= vim.fn.stdpath("config")
-					and (vim.loop.fs_stat(path .. "/.luarc.json") or vim.loop.fs_stat(path .. "/.luarc.jsonc"))
-				then
-					return
-				end
-			end
-		end,
-		settings = {
-			Lua = {
-				runtime = {
-					version = "LuaJIT",
-				},
-				workspace = {
-					checkThirdParty = false,
-					library = {},
-				},
-				diagnostics = {
-					globals = {},
-				},
-				telemetry = {
-					enable = false,
-				},
-				hint = { enable = true, arrayIndex = "Disable" },
-			},
-		},
-	})
 
 	local servers = {
 		"visualforce_ls",
@@ -276,6 +184,7 @@ local function setup_lspconfig()
 		"aiken",
 		"arduino_language_server",
 		"erg_language_server",
+        "zk"
 	}
 	vim.lsp.enable(servers, true)
 end
