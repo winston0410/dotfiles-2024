@@ -1,19 +1,18 @@
 local session_manager = require("custom.session-manager")
 local group = vim.api.nvim_create_augroup("SessionManager", { clear = true })
-vim.api.nvim_create_autocmd("VimEnter", {
-	group = group,
-    once = true,
-	callback = function()
-		if vim.fn.argc() > 0 or vim.g.disable_session then
-            return
-		end
-        -- restore session after Nvim event loop has started, so the loading wouldn't block it
-        vim.schedule(function()
-            session_manager.load()
-        end)
-	end,
+vim.api.nvim_create_autocmd("User", {
+	pattern = "NvimReady",
+	once = true,
 	nested = true,
+	callback = function()
+		-- restore session after Nvim event loop has started, so the loading wouldn't block it
+		if vim.fn.argc() > 0 or vim.g.disable_session then
+			return
+		end
+		session_manager.load()
+	end,
 })
+
 session_manager.setup({})
 
 local function save_qf()
@@ -39,10 +38,10 @@ end
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	group = group,
 	callback = function()
-        if vim.g.disable_session then
-            return
-        end
-        save_qf()
+		if vim.g.disable_session then
+			return
+		end
+		save_qf()
 		session_manager.save()
 	end,
 })
