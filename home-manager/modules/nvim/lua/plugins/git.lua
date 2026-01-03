@@ -1,7 +1,7 @@
 vim.pack.add({
 	{ src = "https://github.com/nvim-lua/plenary.nvim" },
 	{ src = "https://github.com/NeogitOrg/neogit", version = "master" },
-})
+}, { confirm = false })
 require("neogit").setup({
 	-- FIXME range diffing is not working correctly, cannot select the target of "to"
 	disable_hint = true,

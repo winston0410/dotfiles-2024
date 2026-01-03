@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			{ src = "https://github.com/olimorris/neotest-rspec" },
 			{ src = "https://github.com/rcasia/neotest-bash" },
 			{ src = "https://github.com/olimorris/neotest-phpunit" },
-		})
+		}, { confirm = false })
 
 		require("neotest").setup({
 			log_level = vim.log.levels.WARN,

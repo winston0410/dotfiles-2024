@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			{ src = "https://github.com/L3MON4D3/LuaSnip" },
 			{ src = "https://github.com/saghen/blink.compat" },
 			{ src = "https://github.com/mayromr/blink-cmp-dap" },
-		})
+		}, { confirm = false })
 
 		local ls = require("luasnip")
 		local s, sn = ls.snippet, ls.snippet_node
@@ -252,6 +252,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			completion = {
 				menu = {
 					draw = {
+                        treesitter = { "lsp" },
 						components = {
 							kind_icon = {
 								text = function(ctx)

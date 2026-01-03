@@ -1,6 +1,6 @@
 vim.pack.add({
 	{ src = "https://github.com/stevearc/overseer.nvim", version = vim.version.range("2.x") },
-})
+}, { confirm = false})
 local overseer = require("overseer")
 overseer.setup({
 	bundles = {

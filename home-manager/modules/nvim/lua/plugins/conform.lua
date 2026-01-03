@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	callback = function()
 		vim.pack.add({
 			{ src = "https://github.com/stevearc/conform.nvim", version = vim.version.range("9.x") },
-		})
+		}, { confirm = false })
 
 		-- REF https://github.com/stevearc/conform.nvim/issues/781
 		-- biome might fail if biome.json does not exist

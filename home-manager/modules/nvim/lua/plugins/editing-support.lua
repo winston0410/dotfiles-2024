@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			},
 			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
 			{ src = "https://github.com/rlue/vim-barbaric", version = "master" },
-		})
+		}, { confirm = false })
 		vim.api.nvim_create_autocmd("PackChanged", {
 			nested = true,
 			callback = function(ev)

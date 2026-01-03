@@ -7,7 +7,7 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 	{ src = "https://github.com/ravsii/tree-sitter-d2" },
 	{ src = "https://github.com/OXY2DEV/markview.nvim", version = vim.version.range("27.x") },
-})
+}, { confirm = false } )
 
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)

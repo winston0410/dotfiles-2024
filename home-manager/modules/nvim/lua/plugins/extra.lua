@@ -1,7 +1,7 @@
 -- FIXME https://github.com/mistricky/codesnap.nvim/issues/162
 vim.pack.add({
 	{ src = "https://github.com/mistweaverco/snap.nvim.git", version = vim.version.range("1.x") },
-})
+}, { confirm = false })
 
 require("snap").setup({ })
 -- improve structure here
@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
             { src = "https://github.com/mistweaverco/kulala.nvim",           version = vim.version.range("5.x") },
             { src = "https://github.com/martineausimon/nvim-lilypond-suite", },
             { src = "https://github.com/Ramilito/kubectl.nvim",              version = vim.version.range("2.x") },
-        })
+        }, { confirm = false })
 
         require("cord").setup({
             timestamp = {

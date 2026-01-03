@@ -1,6 +1,6 @@
 vim.pack.add({
 	{ src = "https://github.com/folke/snacks.nvim", version = vim.version.range("2.x") },
-})
+}, { confirm = false })
 local picker_keys = {
 	["/"] = "toggle_focus",
 	["<2-LeftMouse>"] = "confirm",
