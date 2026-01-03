@@ -1,0 +1,10 @@
+[note]
+id-charset = "hex"
+id-length = 8
+id-case = "lower"
+
+# get variables from https://zk-org.github.io/zk/notes/template-creation.html
+template = "default.md"
+
+[extra]
+author = "Hugo Sum"
