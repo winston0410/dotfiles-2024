@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			{ src = "https://github.com/L3MON4D3/LuaSnip" },
 			{ src = "https://github.com/saghen/blink.compat" },
 			{ src = "https://github.com/mayromr/blink-cmp-dap" },
+			{ src = "https://github.com/xzbdmw/colorful-menu.nvim" },
 		}, { confirm = false })
 
 		local ls = require("luasnip")
@@ -252,8 +253,18 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			completion = {
 				menu = {
 					draw = {
-                        treesitter = { "lsp" },
+						treesitter = { "lsp" },
+                        -- REF https://github.com/xzbdmw/colorful-menu.nvim?tab=readme-ov-file#use-it-in-blinkcmp
+						columns = { { "kind_icon" }, { "label", gap = 1 } },
 						components = {
+							label = {
+								text = function(ctx)
+									return require("colorful-menu").blink_components_text(ctx)
+								end,
+								highlight = function(ctx)
+									return require("colorful-menu").blink_components_highlight(ctx)
+								end,
+							},
 							kind_icon = {
 								text = function(ctx)
 									if vim.tbl_contains({ "Path" }, ctx.source_name) then

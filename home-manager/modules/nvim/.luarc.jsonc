@@ -7,8 +7,8 @@
   "workspace.library": [
     "$VIMRUNTIME",
     "$XDG_DATA_HOME/nvim/site/pack/core/opt",
-    // REF https://github.com/LuaLS/lua-language-server/tree/master/meta/3rd
     "${3rd}/luv/library",
-    "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "${3rd}/luassert/library"
   ]
 }

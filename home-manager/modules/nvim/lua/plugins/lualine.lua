@@ -177,7 +177,7 @@ local SearchCount = function(opts)
 end
 vim.api.nvim_create_autocmd("RecordingLeave", {
 	desc = "Trace recorded macro",
-    nested = true,
+	nested = true,
 	callback = function()
 		if type(vim.g.MacroNamedRegister) ~= "string" then
 			vim.g.MacroNamedRegister = ""
@@ -203,7 +203,7 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 	end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
-    nested = true,
+	nested = true,
 	desc = "Track Named Register",
 	callback = function()
 		-- REF https://neovim.io/doc/user/starting.html#views-sessions
@@ -441,11 +441,14 @@ require("heirline").setup({
 					local icon, hl = MiniIcons.get("directory", part)
 					if idx == #parts then
 						icon, hl = MiniIcons.get("file", part)
+                        if vim.bo.modified then
+                            part = string.format("%s ", part)
+                        end
 					end
-                    -- REF https://www.reddit.com/r/neovim/comments/tz6p7i/how_can_we_set_color_for_each_part_of_statusline/
-                    -- %#<string>% is to highlight a string
-                    -- %* is to reset the highlight for the remaining content
-					table.insert(modified_parts,  string.format("%%#%s#%s %%*%s", hl, icon, part))
+					-- REF https://www.reddit.com/r/neovim/comments/tz6p7i/how_can_we_set_color_for_each_part_of_statusline/
+					-- %#<string>% is to highlight a string
+					-- %* is to reset the highlight for the remaining content
+					table.insert(modified_parts, string.format("%%#%s#%s %%*%s", hl, icon, part))
 				end
 
 				return table.concat(modified_parts, "  ")

@@ -21,7 +21,7 @@ Once we made changes to our setup, we need to run the `switch` command to apply 
 # nix run home-manager/release-23.05 -- --flake .#linux switch
 nix run home-manager/release-25.11 -- --flake .#linux switch
 nix run home-manager/release-25.11 -- --flake .#linux-arm switch
-# if we wnat to build for darwin platform
+# if we want to build for darwin platform
 nix run home-manager/release-25.11 -- --flake .#darwin switch
 ```
 
