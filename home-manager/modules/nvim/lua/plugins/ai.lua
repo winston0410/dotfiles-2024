@@ -4,7 +4,14 @@ vim.pack.add({
 
 vim.g.opencode_opts = {
 	provider = {
-		enabled = "wezterm",
-		wezterm = {},
+		enabled = "terminal",
+		wezterm = {
+			direction = "right",
+			percent = 33,
+		},
 	},
 }
+
+vim.keymap.set({ "n", "x" }, "<leader>p<leader>c", function()
+	require("opencode").select()
+end, { desc = "Explore Opencode action" })
