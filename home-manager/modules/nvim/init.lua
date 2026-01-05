@@ -30,6 +30,7 @@ if not vim.g.disable_session then
     require("plugins.dap")
     require("plugins.task-runner")
     require("plugins.test")
+    require("plugins.ai")
 end
 if not vim.g.disable_diff_support then
     require("plugins.diff")
@@ -37,16 +38,12 @@ end
 -- Neogit is slow with big repo, and not fully customizable
 -- require("plugins.git")
 
-local completion_args = { 'ai', 'extra' }
+local completion_args = { 'extra' }
 
 vim.api.nvim_create_user_command(
   "EnableFeature",
   function(opts)
     for _, arg in ipairs(opts.fargs) do
-
-        if arg == "ai" then
-            require("plugins.ai")
-        end
         if arg == "extra" then
             require("plugins.extra")
         end
