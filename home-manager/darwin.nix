@@ -39,6 +39,9 @@ in {
   programs.zsh.initContent = lib.mkBefore (# zsh
   ''
     export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin";
+    # needed for adding Nix's store into PATH
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
+    source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
   '');
 
   home = {

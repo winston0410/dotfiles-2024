@@ -1,9 +1,6 @@
 { inputs, lib, config, pkgs, unstable, ... }:
 let username = "hsum";
 in {
-  imports = [
-    ./modules/opencode/mod.nix
-  ];
   home = {
     username = lib.mkForce username;
     homeDirectory = lib.mkForce "/Users/${username}";
@@ -15,8 +12,4 @@ in {
       name = lib.mkForce "Hugo Sum";
     };
   };
-  programs.zsh.initContent = lib.mkBefore (# zsh
-  ''
-    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin";
-  '');
 }
