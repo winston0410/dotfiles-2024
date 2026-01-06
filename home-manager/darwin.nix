@@ -38,9 +38,7 @@ in {
   };
   programs.zsh.initContent = lib.mkBefore (# zsh
   ''
-    export PATH="$PATH:/opt/homebrew/bin";
-    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
+    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin";
   '');
 
   home = {

@@ -15,4 +15,8 @@ in {
       name = lib.mkForce "Hugo Sum";
     };
   };
+  programs.zsh.initContent = lib.mkBefore (# zsh
+  ''
+    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin";
+  '');
 }
