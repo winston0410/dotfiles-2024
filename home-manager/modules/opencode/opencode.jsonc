@@ -3,4 +3,5 @@
 	"enabled_providers": ["github-copilot"],
     "theme": "tokyonight",
     "model": "anthropic/claude-sonnet-4",
+    "default_agent": "build"
 }
