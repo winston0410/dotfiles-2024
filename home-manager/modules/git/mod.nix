@@ -56,6 +56,10 @@ in {
     diff = { 
       conflictStyle = "zdiff3";
       tool = "nvim_difftool";
+
+      sqlite3 = {
+        textconv = "sh -c 'sqlite3 $0 .dump'";
+      };
     };
     difftool = {
       prompt = false;
