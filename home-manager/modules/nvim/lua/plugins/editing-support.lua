@@ -31,12 +31,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				src = "https://github.com/s1n7ax/nvim-window-picker",
 				version = vim.version.range("2.x"),
 			},
-			-- {
-			-- 	src = "https://github.com/lewis6991/gitsigns.nvim",
-			-- 	version = vim.version.range("1.x"),
-			-- },
 			{
 				src = "https://github.com/nvim-mini/mini.diff",
+			},
+			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-context", version = vim.version.range("1.x") },
+			{
+				src = "https://github.com/f-person/git-blame.nvim",
 			},
 			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
 			{ src = "https://github.com/rlue/vim-barbaric", version = "master" },
@@ -376,18 +376,25 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				end
 			end,
 		})
+
+		require("treesitter-context").setup({
+			enable = true,
+			max_lines = 1,
+			trim_scope = "outer",
+		})
+
 		local pipe_icon = "┃"
 		require("mini.diff").setup({
 			view = {
 				style = "sign",
-				signs = { add = pipe_icon, change = pipe_icon, delete =  pipe_icon},
+				signs = { add = pipe_icon, change = pipe_icon, delete = pipe_icon },
 			},
 			mappings = {
-                -- [c]hange [s]tage
+				-- [c]hange [s]tage
 				apply = "<leader>gcs",
-                -- [c]hange [r]eset
+				-- [c]hange [r]eset
 				reset = "<leader>gcr",
-                -- [A]round [c]hange
+				-- [A]round [c]hange
 				textobject = "ac",
 				goto_first = "",
 				goto_prev = "",
@@ -396,7 +403,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			},
 		})
 		vim.keymap.set("n", "<leader>gcp", function()
-            local buf_id = vim.api.nvim_get_current_buf()
+			local buf_id = vim.api.nvim_get_current_buf()
 			MiniDiff.toggle_overlay(buf_id)
 		end, {
 			silent = true,
@@ -407,7 +414,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			if vim.wo.diff then
 				vim.cmd.normal({ "]c", bang = true })
 			else
-				MiniDiff.goto_hunk('next')
+				MiniDiff.goto_hunk("next")
 			end
 		end, {
 			silent = true,
@@ -419,7 +426,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			if vim.wo.diff then
 				vim.cmd.normal({ "[c", bang = true })
 			else
-                MiniDiff.goto_hunk('prev')
+				MiniDiff.goto_hunk("prev")
 			end
 		end, {
 			silent = true,

@@ -5,6 +5,9 @@ in {
   programs.git.lfs.enable = true;
 
   programs.git.settings = {
+    blame = {
+        ignoreRevsFile = ".git-blame-ignore-revs";
+    };
     pack = {
       threads = 0;
       sparse = true;
