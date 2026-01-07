@@ -36,6 +36,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			},
 			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-context", version = vim.version.range("1.x") },
 			{
+				-- NOTE wait for this to be resolved https://github.com/oribarilan/lensline.nvim/issues/85
 				src = "https://github.com/f-person/git-blame.nvim",
 			},
 			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
@@ -120,6 +121,9 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			require("spider").motion("b")
 		end, { silent = true, noremap = true, desc = "Jump backward to word" })
 
+		require("gitblame").setup({
+			enabled = true,
+		})
 		-- local miniclue = require("mini.clue")
 		-- miniclue.setup({
 		-- 	triggers = {
