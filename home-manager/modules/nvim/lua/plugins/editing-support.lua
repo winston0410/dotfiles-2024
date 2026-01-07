@@ -31,9 +31,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				src = "https://github.com/s1n7ax/nvim-window-picker",
 				version = vim.version.range("2.x"),
 			},
+			-- {
+			-- 	src = "https://github.com/lewis6991/gitsigns.nvim",
+			-- 	version = vim.version.range("1.x"),
+			-- },
 			{
-				src = "https://github.com/lewis6991/gitsigns.nvim",
-				version = vim.version.range("1.x"),
+				src = "https://github.com/nvim-mini/mini.diff",
 			},
 			{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
 			{ src = "https://github.com/rlue/vim-barbaric", version = "master" },
@@ -374,66 +377,37 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			end,
 		})
 		local pipe_icon = "┃"
-		local signs_icons = {
-			add = { text = pipe_icon },
-			change = { text = pipe_icon },
-			delete = { text = pipe_icon },
-			topdelete = { text = pipe_icon },
-			changedelete = { text = pipe_icon },
-			untracked = { text = pipe_icon },
-		}
-		require("gitsigns").setup({
-			signs = signs_icons,
-			signs_staged = signs_icons,
-			signcolumn = true,
-			linehl = false,
-			current_line_blame = true,
-			preview_config = {
-				border = "rounded",
-				style = "minimal",
-				relative = "cursor",
-				row = 0,
-				col = 1,
+		require("mini.diff").setup({
+			view = {
+				style = "sign",
+				signs = { add = pipe_icon, change = pipe_icon, delete =  pipe_icon},
+			},
+			mappings = {
+                -- [c]hange [s]tage
+				apply = "<leader>gcs",
+                -- [c]hange [r]eset
+				reset = "<leader>gcr",
+                -- [A]round [c]hange
+				textobject = "ac",
+				goto_first = "",
+				goto_prev = "",
+				goto_next = "",
+				goto_last = "",
 			},
 		})
-
-		vim.keymap.set({ "o", "x" }, "ac", function()
-			require("gitsigns").select_hunk()
+		vim.keymap.set("n", "<leader>gcp", function()
+            local buf_id = vim.api.nvim_get_current_buf()
+			MiniDiff.toggle_overlay(buf_id)
 		end, {
 			silent = true,
 			noremap = true,
-			desc = "Git hunk",
+			desc = "Toggle hunk overlay",
 		})
-
-		vim.keymap.set("n", "<leader>gsc", function()
-			require("gitsigns").stage_hunk()
-		end, {
-			silent = true,
-			noremap = true,
-			desc = "Stage hunk",
-		})
-
-		vim.keymap.set("n", "<leader>gpc", function()
-			require("gitsigns").preview_hunk()
-		end, {
-			silent = true,
-			noremap = true,
-			desc = "Preview hunk",
-		})
-
-		vim.keymap.set("n", "<leader>grc", function()
-			require("gitsigns").reset_hunk()
-		end, {
-			silent = true,
-			noremap = true,
-			desc = "Reset hunk",
-		})
-
 		vim.keymap.set("n", "]c", function()
 			if vim.wo.diff then
 				vim.cmd.normal({ "]c", bang = true })
 			else
-				require("gitsigns").nav_hunk("next")
+				MiniDiff.goto_hunk('next')
 			end
 		end, {
 			silent = true,
@@ -445,7 +419,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			if vim.wo.diff then
 				vim.cmd.normal({ "[c", bang = true })
 			else
-				require("gitsigns").nav_hunk("prev")
+                MiniDiff.goto_hunk('prev')
 			end
 		end, {
 			silent = true,
