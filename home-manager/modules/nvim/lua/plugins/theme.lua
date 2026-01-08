@@ -26,6 +26,7 @@ vim.api.nvim_create_autocmd("User", {
             { src = "https://github.com/folke/tokyonight.nvim" },
             { src = "https://github.com/rose-pine/neovim" },
             { src = "https://github.com/rebelot/kanagawa.nvim" },
+            { src = "https://github.com/oskarnurm/koda.nvim" },
             -- High contrast themes
             { src = "https://github.com/nuvic/flexoki-nvim" }, -- it has limited plugin support
             { src = "https://github.com/miikanissi/modus-themes.nvim" },

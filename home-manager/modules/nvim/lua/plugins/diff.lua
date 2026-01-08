@@ -1,6 +1,6 @@
 vim.pack.add({
 	{ src = "https://github.com/MunifTanjim/nui.nvim" },
-	{ src = "https://github.com/esmuellert/vscode-diff.nvim", version = vim.version.range("1.x") },
+	-- { src = "https://github.com/esmuellert/vscode-diff.nvim", version = vim.version.range("2.x") },
 	{ src = "https://github.com/sindrets/diffview.nvim" },
 })
 
