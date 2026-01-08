@@ -268,6 +268,9 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 							kind_icon = {
 								text = function(ctx)
 									if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                        if ctx.item.data.type == "link" then
+                                            ctx.item.data.type = "directory"
+                                        end
 										local mini_icon, _ = require("mini.icons").get(ctx.item.data.type, ctx.label)
 										if mini_icon then
 											return mini_icon .. ctx.icon_gap
@@ -283,6 +286,9 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 								-- keep the highlight groups in sync with the icons.
 								highlight = function(ctx)
 									if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                                        if ctx.item.data.type == "link" then
+                                            ctx.item.data.type = "directory"
+                                        end
 										local mini_icon, mini_hl =
 											require("mini.icons").get(ctx.item.data.type, ctx.label)
 										if mini_icon then
