@@ -7,13 +7,11 @@ local M = {}
 ---@field summary string The commit message summary
 
 ---Shows git blame information for the current line as virtual text
+---@param row number The line number to get blame information for
 ---@return BlameResult|nil blame_info Returns blame information table or nil if file is not tracked by git or no blame info available
-function M.blame_line()
+function M.blame_line(row)
 	local buf_id = vim.api.nvim_get_current_buf()
 	local filename = vim.api.nvim_buf_get_name(buf_id)
-	local cursor_pos = vim.api.nvim_win_get_cursor(0)
-	local pos = vim.pos(cursor_pos[1], cursor_pos[2])
-	local row = cursor_pos[1]
 	local blame_info = vim.fn.systemlist("git blame -L " .. row .. ",+1 " .. filename .. " --porcelain")
 	if blame_info[2] == nil then
 		return
