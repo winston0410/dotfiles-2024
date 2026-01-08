@@ -4,10 +4,13 @@ in {
   programs.git.enable = true;
   programs.git.lfs.enable = true;
 
+  home.shellAliases = {
+    g = "git";
+  };
   programs.git.settings = {
-    blame = {
-        ignoreRevsFile = ".git-blame-ignore-revs";
-    };
+    # blame = {
+    #     ignoreRevsFile = ":(optional).git-blame-ignore-revs";
+    # };
     pack = {
       threads = 0;
       sparse = true;

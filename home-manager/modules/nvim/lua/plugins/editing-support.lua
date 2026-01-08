@@ -528,5 +528,19 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				require("thunder").search()
 			end,
 		})
+
+		-- vim.api.nvim_create_autocmd("CursorHold", {
+		-- 	nested = true,
+		-- 	callback = function()
+		--               require("custom.git").blame_line()
+		-- 	end,
+		-- })
+		--
+		-- vim.api.nvim_create_autocmd("CursorMoved", {
+		-- 	nested = true,
+		-- 	callback = function()
+		--               require("custom.git").remove_blame()
+		-- 	end,
+		-- })
 	end,
 })

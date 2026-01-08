@@ -1,4 +1,7 @@
 { inputs, lib, config, pkgs, ... }: {
+  home.shellAliases = {
+    k = "kubectl";
+  };
   home.packages = with pkgs; [
     kubectl
     kubernetes-helm
