@@ -9,6 +9,7 @@ vim.g.opencode_opts = {
 			direction = "right",
 			percent = 33,
 		},
+        cmd = 'opencode --continue'
 	},
 }
 
