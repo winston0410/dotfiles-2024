@@ -528,5 +528,28 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				require("thunder").search()
 			end,
 		})
+
+        vim.keymap.set({ "n" }, "<leader>gb", function ()
+            local ns_id = vim.api.nvim_create_namespace("blame-me")
+            local buf_id = vim.api.nvim_get_current_buf()
+            vim.api.nvim_buf_clear_namespace(buf_id, ns_id, 0, -1)
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+            local row = cursor_pos[1]
+            if vim.g.last_cursor_row == row then
+                return
+            end
+            local result = require("custom.git").blame_line(row)
+            if result == nil then
+                return
+            end
+            local blame_content = result.hash ..
+                " - " .. result.author .. " - " .. result.date .. " - " .. result.summary
+            if result.hash == "00000000" then
+                blame_content = result.author
+            end
+            vim.api.nvim_buf_set_extmark(buf_id, ns_id, row - 1, 0, {
+                virt_text = { { blame_content, "Comment" } },
+            })
+        end, { noremap = true, silent = true, desc = "Get git blame for the current line" })
 	end,
 })
