@@ -78,33 +78,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-local function conceal_tag(icon, hl_group)
-    return {
-        on_node = { hl_group = hl_group },
-        on_closing_tag = { conceal = "" },
-        on_opening_tag = {
-            conceal = "",
-            virt_text_pos = "inline",
-            virt_text = { { icon .. " ", hl_group } },
-        },
-    }
-end
 require("markview").setup({
-    html = {
-        container_elements = {
-            ["^buf$"] = conceal_tag("", "CodeCompanionChatVariable"),
-            ["^file$"] = conceal_tag("", "CodeCompanionChatVariable"),
-            ["^help$"] = conceal_tag("󰘥", "CodeCompanionChatVariable"),
-            ["^image$"] = conceal_tag("", "CodeCompanionChatVariable"),
-            ["^symbols$"] = conceal_tag("", "CodeCompanionChatVariable"),
-            ["^url$"] = conceal_tag("󰖟", "CodeCompanionChatVariable"),
-            ["^var$"] = conceal_tag("", "CodeCompanionChatVariable"),
-            ["^tool$"] = conceal_tag("", "CodeCompanionChatTool"),
-            ["^user_prompt$"] = conceal_tag("", "CodeCompanionChatTool"),
-            ["^group$"] = conceal_tag("", "CodeCompanionChatToolGroup"),
-        },
-    },
-    -- FIXME known issue, it is giving out an error when open CodeCompanionChat
     preview = {
         hybrid_modes = { "n" },
         icon_provider = "devicons",
