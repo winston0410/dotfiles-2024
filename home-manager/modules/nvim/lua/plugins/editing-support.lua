@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			{ src = "https://github.com/brenoprata10/nvim-highlight-colors" },
 			{ src = "https://github.com/NStefan002/screenkey.nvim", version = vim.version.range("2.x") },
 			{ src = "http://github.com/winston0410/sops.nvim", version = "main" },
+			{ src = "https://github.com/nvim-mini/mini.ai", version = "main" },
 			-- move on to this in the future, but the UI is just not as good as which-key.nvim
 			-- { src = "https://github.com/nvim-mini/mini.clue" },
 			{
