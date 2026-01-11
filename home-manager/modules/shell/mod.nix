@@ -48,6 +48,8 @@
     "--ansi"
     "--layout=reverse"
     "--border=none"
+    # Using nvim's completion keybindings
+    "--bind ctrl-y:accept"
     # REF https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_storm.sh
     "--color=bg+:#2e3c64"
     "--color=bg:#1f2335"
