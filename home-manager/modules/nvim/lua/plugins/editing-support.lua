@@ -201,12 +201,12 @@ vim.api.nvim_create_autocmd("CursorHold", {
             },
         })
 
-        vim.keymap.set({ "n" }, "<leader>b?", function()
-            -- wk.show({ global = false, loop = true })
+        vim.keymap.set({ "n" }, "<LocalLeader>?", function()
+            wk.show({ global = false, loop = true })
         end, { noremap = true, silent = true, desc = "Show local keymaps" })
 
-        vim.keymap.set({ "n" }, "<leader>b?", function()
-            -- wk.show({ global = true, loop = true })
+        vim.keymap.set({ "n" }, "?", function()
+            wk.show({ global = true, loop = true })
         end, { noremap = true, silent = true, desc = "Show global keymaps" })
 
         require('mini.ai').setup({
