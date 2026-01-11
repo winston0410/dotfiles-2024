@@ -25,10 +25,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				version = vim.version.range("3.x"),
 			},
 			{
-				src = "https://github.com/sphamba/smear-cursor.nvim",
-				version = vim.version.range("0.6"),
-			},
-			{
 				src = "https://github.com/s1n7ax/nvim-window-picker",
 				version = vim.version.range("2.x"),
 			},
@@ -348,13 +344,13 @@ vim.api.nvim_create_autocmd("CursorHold", {
 						outer = true,
 						inner = true,
 					},
-					{
-						symbol = "b",
-						node = "@block",
-						label = "block",
-						outer = true,
-						inner = true,
-					},
+					-- {
+					-- 	symbol = "b",
+					-- 	node = "@block",
+					-- 	label = "block",
+					-- 	outer = true,
+					-- 	inner = true,
+					-- },
 					{ symbol = "al", node = "@assignment.lhs", label = "Assignment LHS", standalone = true },
 					{ symbol = "ar", node = "@assignment.rhs", label = "Assignment RHS", standalone = true },
 				}
