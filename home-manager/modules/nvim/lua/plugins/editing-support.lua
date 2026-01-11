@@ -231,8 +231,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			},
 		})
 
-		require("smear_cursor").setup({})
-		require("smear_cursor").enabled = false
 		require("thunder").setup({
 			label = {
 				style = "inline",
