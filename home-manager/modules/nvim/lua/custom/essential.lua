@@ -359,21 +359,14 @@ vim.api.nvim_create_autocmd("TermOpen", {
 vim.keymap.set({ "c", "n" }, "q:", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q/", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })
+-- Disable CTRL-X mode in insert mode completely, as we do not use most of the features there, such as tags, dictionary and thesaurus.
+-- REF https://neovim.io/doc/user/insert.html#ins-completion
+vim.keymap.set({ "i" }, "<C-x>", "<Nop>", { noremap = true, silent = true, desc = "Disabled CTRL-X completion mode" })
 
 -- NOTE not really sure if we need keybinding for creating tab
 -- vim.keymap.set({ "n" }, "<leader>tv", function()
 -- 	vim.cmd("tabnew")
 -- end, { silent = true, noremap = true, desc = "Create a new tab" })
--- vim.keymap.set({ "n" }, "<leader>to", "gt", {
--- 	silent = true,
--- 	noremap = true,
--- 	desc = "Go to the next tab page",
--- })
--- vim.keymap.set({ "n" }, "<leader>ti", "gT", {
--- 	silent = true,
--- 	noremap = true,
--- 	desc = "Go to the previous tab page",
--- })
 -- vim.keymap.set({ "n" }, "<leader>tq", function()
 -- 	pcall(function()
 -- 		vim.cmd("tabclose")

@@ -25,7 +25,6 @@ vim.api.nvim_create_autocmd("User", {
             -- cannot see the comment clearly with this theme, otherwise it is perfect
             { src = "https://github.com/folke/tokyonight.nvim" },
             { src = "https://github.com/rose-pine/neovim" },
-            { src = "https://github.com/rebelot/kanagawa.nvim" },
             { src = "https://github.com/oskarnurm/koda.nvim" },
             -- High contrast themes
             { src = "https://github.com/nuvic/flexoki-nvim" }, -- it has limited plugin support
@@ -36,7 +35,6 @@ vim.api.nvim_create_autocmd("User", {
             { src = "https://github.com/jnz/studio98" },
             { src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
             { src = "https://github.com/Mofiqul/vscode.nvim" },
-            -- { src = "https://github.com/projekt0n/github-nvim-theme", version = vim.version.range("1.x") },
         })
         vim.cmd.colorscheme("rose-pine-moon")
         require("vscode").setup({
@@ -75,18 +73,6 @@ vim.api.nvim_create_autocmd("User", {
             "catppuccin-frappe.vim",
             "catppuccin-macchiato.vim",
         })
-        -- vim.opt.wildignore:append({
-        -- 	"github_dark.vim",
-        -- 	"github_dark_default.vim",
-        -- 	"github_dark_tritanopia.vim",
-        -- 	"github_dark_high_contrast.vim",
-        -- 	"github_dark_dimmed.vim",
-        -- 	"github_light.vim",
-        -- 	"github_light_default.vim",
-        -- 	"github_light_tritanopia.vim",
-        -- 	"github_light_colorblind.vim",
-        -- 	"github_light_high_contrast.vim",
-        -- })
         local xeno = require("xeno")
         xeno.config({
             transparent = true,
