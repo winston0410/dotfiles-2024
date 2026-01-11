@@ -69,7 +69,7 @@ vim.o.hidden = true
 vim.o.bufhidden = "unload"
 vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
-vim.o.wrap = false
+vim.o.wrap = true
 vim.o.linebreak = true
 -- no number by default, and dynamically show those numbers based on different mode
 vim.o.number = false
