@@ -22,6 +22,9 @@ bindkey '^X^E' quick-edit-command-line;
 # REF https://unix.stackexchange.com/a/290403
 bindkey -v '^?' backward-delete-char
 
+# https://github.com/zsh-users/zsh-autosuggestions?tab=readme-ov-file#key-bindings
+bindkey '^Y' autosuggest-accept
+
 KEYTIMEOUT=1
 
 ZINIT_HOME="${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
