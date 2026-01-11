@@ -80,6 +80,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 require("markview").setup({
     preview = {
+        preview = { enable = false },
         hybrid_modes = { "n" },
         icon_provider = "devicons",
         filetypes = { "markdown", "codecompanion", "md", "rmd", "quarto", "yaml", "typst" },

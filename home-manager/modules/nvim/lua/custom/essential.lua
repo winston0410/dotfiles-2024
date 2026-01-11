@@ -339,6 +339,7 @@ vim.keymap.set(
 
 -- REF https://unix.stackexchange.com/a/637223/467987
 vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
+vim.keymap.set({ "t" }, "<C-[>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
