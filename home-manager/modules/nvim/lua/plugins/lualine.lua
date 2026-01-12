@@ -1,4 +1,5 @@
--- local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+local M = {}
+
 local godot = require("custom.godot")
 
 vim.pack.add({
@@ -434,6 +435,15 @@ require("heirline").setup({
 			provider = function()
 				local relative_path = vim.fs.normalize(vim.fn.expand("%:."), { expand_env = true })
 
+                local CODEDIFF_PROTOCOL_MATCHER = "^codediff:"
+                local is_codediff = relative_path:match(CODEDIFF_PROTOCOL_MATCHER)
+
+                if is_codediff then
+                    print("is codediff")
+                    relative_path = relative_path:gsub(CODEDIFF_PROTOCOL_MATCHER, "")
+                end
+                print("result from the transformation", relative_path)
+
 				local parts = vim.split(relative_path, "/", { trimempty = true })
 
 				local modified_parts = {}
@@ -453,6 +463,7 @@ require("heirline").setup({
 
 				return table.concat(modified_parts, "  ")
 			end,
+            update = { "BufWinEnter" },
 		},
 	},
 	statuscolumn = {
@@ -512,3 +523,5 @@ require("heirline").setup({
 		end,
 	},
 })
+
+return M

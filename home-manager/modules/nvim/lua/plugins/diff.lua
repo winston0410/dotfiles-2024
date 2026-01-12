@@ -4,8 +4,9 @@ vim.pack.add({
     { src = "https://github.com/sindrets/diffview.nvim" },
 })
 require("codediff").setup({
+    -- :1 is base, :2 is ours, :3 is theirs, :4 is merged
     diff = {
-        hide_merge_artifacts = true,
+        hide_merge_artifacts = false,
         original_position = "left",
         conflict_ours_position = "right",
     },

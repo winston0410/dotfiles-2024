@@ -4,11 +4,13 @@
     "theme": "tokyonight",
     "model": "anthropic/claude-sonnet-4",
     "default_agent": "build",
+    "lsp": {},
     "mcp": {
         "docs": {
             "type": "local",
             "command": ["npx", "-y", "@arabold/docs-mcp-server"],
             "enabled": true
         }
-    }
+    },
+    "experimental": {}
 }
