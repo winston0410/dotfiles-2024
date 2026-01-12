@@ -6,7 +6,7 @@ vim.pack.add({
 require("codediff").setup({
     -- :1 is base, :2 is ours, :3 is theirs, :4 is merged
     diff = {
-        hide_merge_artifacts = false,
+        hide_merge_artifacts = true,
         original_position = "left",
         conflict_ours_position = "right",
     },

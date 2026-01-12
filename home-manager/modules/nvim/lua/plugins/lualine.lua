@@ -439,10 +439,9 @@ require("heirline").setup({
                 local is_codediff = relative_path:match(CODEDIFF_PROTOCOL_MATCHER)
 
                 if is_codediff then
-                    print("is codediff")
                     relative_path = relative_path:gsub(CODEDIFF_PROTOCOL_MATCHER, "")
                 end
-                print("result from the transformation", relative_path)
+                -- TODO
 
 				local parts = vim.split(relative_path, "/", { trimempty = true })
 

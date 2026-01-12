@@ -30,4 +30,29 @@ function M.blame_line(row)
     }
 end
 
+function M.get_merge_metadata()
+	local git_dir = vim.fn.systemlist("git rev-parse --git-dir 2>/dev/null")[1]
+	if vim.v.shell_error ~= 0 or not git_dir then
+		error("not a git repository")
+	end
+
+	-- Check for merge state
+	if vim.fn.filereadable(git_dir .. "/MERGE_HEAD") == 1 then
+		return "merging"
+	end
+
+	-- Check for cherry-pick state
+	if vim.fn.filereadable(git_dir .. "/CHERRY_PICK_HEAD") == 1 then
+		return "cherry-picking"
+	end
+
+	-- Check for revert state
+	if vim.fn.filereadable(git_dir .. "/REVERT_HEAD") == 1 then
+		return "reverting"
+	end
+
+	-- Default to rebasing if nothing else matches
+	return "rebasing"
+end
+
 return M
