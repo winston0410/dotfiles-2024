@@ -4,6 +4,12 @@ vim.pack.add({
     { src = "https://github.com/sindrets/diffview.nvim" },
 })
 require("codediff").setup({
+    diff = {
+        hide_merge_artifacts = true,
+        original_position = "left",
+        conflict_ours_position = "right",
+    },
+
     keymaps = {
         conflict = {
             accept_incoming = "<LocalLeader>xt",
