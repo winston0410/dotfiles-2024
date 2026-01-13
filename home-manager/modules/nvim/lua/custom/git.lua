@@ -31,20 +31,25 @@ function M.blame_line(row)
 end
 
 local function read_head_and_branch(git_dir, head_file)
-	local content = nil
-	local branch = nil
-	
-	if vim.fn.filereadable(git_dir .. "/" .. head_file) == 1 then
-		content = vim.fn.readfile(git_dir .. "/" .. head_file)[1]
-		if content then
-			local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
-			if vim.v.shell_error == 0 and branch_result[1] then
-				-- Remove the "* " or "  " prefix and get the first branch
-				branch = string.gsub(branch_result[1], "^[* ] ", "")
-			end
-		end
+	if vim.fn.filereadable(git_dir .. "/" .. head_file) ~= 1 then
+		return nil, nil
 	end
 	
+	local content = vim.fn.readfile(git_dir .. "/" .. head_file)[1]
+	if not content then
+		return nil, nil
+	end
+	
+	-- Shorten the SHA to 8 characters
+	content = string.sub(content, 1, 8)
+	
+	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
+	if vim.v.shell_error ~= 0 or not branch_result[1] then
+		return content, nil
+	end
+	
+	-- Remove the "* " or "  " prefix and get the first branch
+	local branch = string.gsub(branch_result[1], "^[* ] ", "")
 	return content, branch
 end
 
@@ -70,9 +75,6 @@ function M.get_merge_metadata()
 	if vim.fn.filereadable(git_dir .. "/MERGE_HEAD") == 1 then
 		-- Read MERGE_HEAD content and branch
 		local merge_head_content, merge_head_branch = read_head_and_branch(git_dir, "MERGE_HEAD")
-
-        print("orig head", orig_head_content, orig_head_branch)
-        print("merge head", merge_head_content, merge_head_branch)
 		
 		return { 
 			action = "merge",
@@ -88,8 +90,6 @@ function M.get_merge_metadata()
 		-- Read CHERRY_PICK_HEAD content and branch
 		local cherry_pick_head_content, cherry_pick_head_branch = read_head_and_branch(git_dir, "CHERRY_PICK_HEAD")
 
-        print("orig head", orig_head_content, orig_head_branch)
-        print("cherry-pick head", cherry_pick_head_content, cherry_pick_head_branch)
 		
 		return { 
 			action = "cherry-pick",
@@ -105,8 +105,6 @@ function M.get_merge_metadata()
 		-- Read REVERT_HEAD content and branch
 		local revert_head_content, revert_head_branch = read_head_and_branch(git_dir, "REVERT_HEAD")
 
-        print("orig head", orig_head_content, orig_head_branch)
-        print("revert head", revert_head_content, revert_head_branch)
 		
 		return { 
 			action = "revert",

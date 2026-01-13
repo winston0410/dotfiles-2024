@@ -81,6 +81,16 @@ heirline_components.init.subscribe_to_events()
 -- FIXME heirline-compoments would reload color after colorscheme has changed, we need to set our custom color again as well
 heirline.load_colors(heirline_components.hl.get_colors())
 
+-- find symbol such as :2, :3
+---@return integer
+local find_git_rev = function (items)
+    for idx, item in ipairs(items) do
+        if item == ":2" or item == ":3" then
+            return idx
+        end
+    end
+end
+
 local is_file_buffer = function()
 	local buf = vim.api.nvim_get_current_buf()
 	return vim.bo[buf].buftype == ""
@@ -453,17 +463,24 @@ require("heirline").setup({
 	winbar = {
 		{
             provider = function()
+                table.unpack = table.unpack or unpack
                 local relative_path = vim.fs.normalize(vim.fn.expand("%:."), { expand_env = true })
 
                 local CODEDIFF_PROTOCOL_MATCHER = "^codediff:"
                 local is_codediff = relative_path:match(CODEDIFF_PROTOCOL_MATCHER)
 
                 local parts = vim.split(relative_path, "/", { trimempty = true })
+
+                if is_codediff then
+                    local git_ref_idx = find_git_rev(parts)
+                    parts = { table.unpack(parts, git_ref_idx + 1) }
+                end
+
                 local modified_parts = process_path_parts(parts)
 
                 if is_codediff then
-                    -- local metadata = require("custom.git").get_merge_metadata()
-                    -- table.insert(modified_parts, "%=codediff")
+                    local metadata = require("custom.git").get_merge_metadata()
+                    table.insert(modified_parts, "%=codediff")
                 end
 
                 return table.concat(modified_parts, "  ")
