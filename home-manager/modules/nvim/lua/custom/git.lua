@@ -134,18 +134,9 @@ function M.get_merge_metadata(side)
 
 	-- Check for rebase state
 	if vim.fn.filereadable(git_dir .. "/rebase-merge/head-name") == 1 or vim.fn.filereadable(git_dir .. "/rebase-apply/head-name") == 1 then
-		-- For rebase, we need to read the current HEAD being rebased
-		local current_head_content = vim.fn.systemlist("git rev-parse HEAD 2>/dev/null")[1]
-		if current_head_content then
-			current_head_content = string.sub(current_head_content, 1, 8)
-		end
+		-- For rebase, read the current HEAD from rebase-merge/onto
+		local current_head_content, current_branch = read_head_and_branch(git_dir, "rebase-merge/onto")
 		
-		local current_branch_result = vim.fn.systemlist("git branch --contains " .. (current_head_content or "") .. " 2>/dev/null")
-		local current_branch = nil
-		if vim.v.shell_error == 0 and current_branch_result[1] then
-			current_branch = string.gsub(current_branch_result[1], "^[* ] ", "")
-		end
-
 		if side == ":2" then
 			return { 
 				action = "rebase",
