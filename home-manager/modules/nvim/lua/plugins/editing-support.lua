@@ -527,25 +527,14 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			remap = true,
 			desc = "ROT13 encode or decode",
 		})
+        -- Do not use dynamic number, as using number and then textobject is the true Vim way
 		local group = vim.api.nvim_create_augroup("DynamicNumber", { clear = true })
-
-		vim.api.nvim_create_autocmd("BufWinEnter", {
-			nested = true,
-			group = group,
-			callback = function()
-				vim.wo.number = false
-				vim.cmd.redraw()
-			end,
-		})
 		vim.api.nvim_create_autocmd("CmdlineEnter", {
 			nested = true,
 			group = group,
 			callback = function(ev)
-				if ev.match == "/" or ev.match == "?" or ev.match == "=" then
-					return
-				end
-				vim.wo.number = true
-				vim.cmd.redraw()
+                vim.wo.relativenumber = false
+                vim.cmd.redraw()
 			end,
 		})
 
@@ -553,36 +542,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			nested = true,
 			group = group,
 			callback = function(ev)
-				if ev.match == "/" or ev.match == "?" or ev.match == "=" then
-					return
-				end
-				vim.wo.number = false
-				vim.cmd.redraw()
+                vim.wo.relativenumber = true
+                vim.cmd.redraw()
 			end,
 		})
-
-		vim.api.nvim_create_autocmd("ModeChanged", {
-			nested = true,
-			pattern = { "*:V", "*:v", "*:\22" },
-			group = group,
-			callback = function(ev)
-				vim.wo.number = true
-				vim.wo.relativenumber = true
-				vim.cmd.redraw()
-			end,
-		})
-
-		vim.api.nvim_create_autocmd("ModeChanged", {
-			nested = true,
-			pattern = { "V:*", "v:*", "\22:*" },
-			group = group,
-			callback = function(ev)
-				vim.wo.number = false
-				vim.wo.relativenumber = false
-				vim.cmd.redraw()
-			end,
-		})
-
 		local thunder_group = vim.api.nvim_create_augroup("thunder", { clear = true })
 		vim.api.nvim_create_autocmd("CmdlineLeave", {
 			nested = true,

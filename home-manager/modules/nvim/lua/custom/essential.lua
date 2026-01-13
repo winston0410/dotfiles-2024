@@ -71,9 +71,8 @@ vim.o.cursorline = true
 vim.o.cursorlineopt = "number"
 vim.o.wrap = true
 vim.o.linebreak = true
--- no number by default, and dynamically show those numbers based on different mode
-vim.o.number = false
-vim.opt.relativenumber = false
+vim.o.number = true
+vim.opt.relativenumber = true
 vim.o.signcolumn = "auto"
 vim.o.scrolloff = 8
 vim.opt.sidescrolloff = 16

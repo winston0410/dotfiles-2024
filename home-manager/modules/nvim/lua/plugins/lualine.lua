@@ -471,17 +471,19 @@ require("heirline").setup({
 
                 local parts = vim.split(relative_path, "/", { trimempty = true })
 
-                if is_codediff then
-                    local git_ref_idx = find_git_rev(parts)
-                    parts = { table.unpack(parts, git_ref_idx + 1) }
+                if not is_codediff then
+                    local modified_parts = process_path_parts(parts)
+                    return table.concat(modified_parts, "  ")
                 end
 
+                local git_ref_idx = find_git_rev(parts)
+                local side = parts[git_ref_idx]
+                parts = { table.unpack(parts, git_ref_idx + 1) }
+                local metadata = require("custom.git").get_merge_metadata(side)
                 local modified_parts = process_path_parts(parts)
+                local rev = string.format("%s(%s)", metadata.branch, metadata.sha)
 
-                if is_codediff then
-                    local metadata = require("custom.git").get_merge_metadata()
-                    table.insert(modified_parts, "%=codediff")
-                end
+                table.insert(modified_parts, string.format( "%%=%s", rev ))
 
                 return table.concat(modified_parts, "  ")
             end,

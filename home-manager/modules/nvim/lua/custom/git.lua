@@ -17,7 +17,7 @@ function M.blame_line(row)
 		return
 	end
 
-	local hash = string.sub(blame_info[1], 1, 8)
+	local hash = string.sub(blame_info[1], 1, 7)
 	local author_name = string.sub(blame_info[2], 8)
 	local author_date = os.date("%Y %b %d", tonumber(string.sub(blame_info[4], 12)))
 	local summary = string.sub(blame_info[10], 9)
@@ -41,7 +41,7 @@ local function read_head_and_branch(git_dir, head_file)
 	end
 	
 	-- Shorten the SHA to 8 characters
-	content = string.sub(content, 1, 8)
+	content = string.sub(content, 1, 7)
 	
 	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
 	if vim.v.shell_error ~= 0 or not branch_result[1] then
@@ -55,14 +55,15 @@ end
 
 ---@class GitMergeMetadata
 ---@field action "merge"|"cherry-pick"|"revert"|"rebase"
----@field local_sha? string The SHA of the local branch (for merge, cherry-pick, revert)
----@field local_branch? string The name of the local branch (for merge, cherry-pick, revert)
----@field remote_sha? string The SHA of the remote branch/commit (for merge, cherry-pick, revert)
----@field remote_branch? string The name of the remote branch (for merge, cherry-pick, revert)
+---@field sha? string The SHA of the selected side (local or remote)
+---@field branch? string The name of the selected branch (local or remote)
 
 ---Gets git merge/rebase metadata for the current repository
----@return GitMergeMetadata metadata Returns a table with the current git action
-function M.get_merge_metadata()
+---@param side ":2"|":3" The side to show - :2 for LOCAL, :3 for REMOTE
+---@return GitMergeMetadata metadata Returns a table with the current git action and selected side info
+function M.get_merge_metadata(side)
+	assert(side == ":2" or side == ":3", "side must be either ':2' or ':3'")
+	
 	local git_dir = vim.fn.systemlist("git rev-parse --git-dir 2>/dev/null")[1]
 	if vim.v.shell_error ~= 0 or not git_dir then
 		error("not a git repository")
@@ -76,12 +77,18 @@ function M.get_merge_metadata()
 		-- Read MERGE_HEAD content and branch
 		local merge_head_content, merge_head_branch = read_head_and_branch(git_dir, "MERGE_HEAD")
 		
+		if side == ":2" then
+			return { 
+				action = "merge",
+				sha = orig_head_content,
+				branch = orig_head_branch
+			}
+		end
+		
 		return { 
 			action = "merge",
-			local_sha = orig_head_content,
-			local_branch = orig_head_branch,
-			remote_sha = merge_head_content,
-			remote_branch = merge_head_branch
+			sha = merge_head_content,
+			branch = merge_head_branch
 		}
 	end
 
@@ -90,13 +97,18 @@ function M.get_merge_metadata()
 		-- Read CHERRY_PICK_HEAD content and branch
 		local cherry_pick_head_content, cherry_pick_head_branch = read_head_and_branch(git_dir, "CHERRY_PICK_HEAD")
 
+		if side == ":2" then
+			return { 
+				action = "cherry-pick",
+				sha = orig_head_content,
+				branch = orig_head_branch
+			}
+		end
 		
 		return { 
 			action = "cherry-pick",
-			local_sha = orig_head_content,
-			local_branch = orig_head_branch,
-			remote_sha = cherry_pick_head_content,
-			remote_branch = cherry_pick_head_branch
+			sha = cherry_pick_head_content,
+			branch = cherry_pick_head_branch
 		}
 	end
 
@@ -105,13 +117,18 @@ function M.get_merge_metadata()
 		-- Read REVERT_HEAD content and branch
 		local revert_head_content, revert_head_branch = read_head_and_branch(git_dir, "REVERT_HEAD")
 
+		if side == ":2" then
+			return { 
+				action = "revert",
+				sha = orig_head_content,
+				branch = orig_head_branch
+			}
+		end
 		
 		return { 
 			action = "revert",
-			local_sha = orig_head_content,
-			local_branch = orig_head_branch,
-			remote_sha = revert_head_content,
-			remote_branch = revert_head_branch
+			sha = revert_head_content,
+			branch = revert_head_branch
 		}
 	end
 
