@@ -142,25 +142,6 @@ local ReadOnlyStatus = function(opts)
 	}
 end
 ---@param opts CustomComponentOpts
-local CopilotStatus = function(opts)
-	return {
-		condition = function()
-			local ok, _ = pcall(function()
-				vim.fn["copilot#Enabled"]()
-			end)
-			return ok
-		end,
-		provider = function()
-			local copilot_status = vim.fn["copilot#Enabled"]()
-			local status_icon = ""
-			if copilot_status == 0 then
-				status_icon = ""
-			end
-			return handle_padding(status_icon, opts.padding)
-		end,
-	}
-end
----@param opts CustomComponentOpts
 local DiffStatus = function(opts)
 	return {
 		condition = function()
@@ -481,7 +462,8 @@ require("heirline").setup({
                 parts = { table.unpack(parts, git_ref_idx + 1) }
                 local metadata = require("custom.git").get_merge_metadata(side)
                 local modified_parts = process_path_parts(parts)
-                local rev = string.format("%s(%s)", metadata.branch, metadata.sha)
+                local git_icon, git_icon_hl = MiniIcons.get("filetype", "git")
+                local rev = string.format("%%#%s#%s%%* %s(%s)", git_icon_hl, git_icon, metadata.branch, metadata.sha)
 
                 table.insert(modified_parts, string.format( "%%=%s", rev ))
 
@@ -498,7 +480,6 @@ require("heirline").setup({
 		},
 	},
 	tabline = {
-		CopilotStatus({ padding = { left = 1, right = 0 } }),
 		SudoStatus({ padding = { left = 1, right = 0 } }),
 		GoDotExternalEditor({ padding = { left = 1, right = 0 } }),
 		ArglistIndex({ padding = { left = 1, right = 0 } }),

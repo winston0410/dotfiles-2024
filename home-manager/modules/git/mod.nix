@@ -49,7 +49,7 @@ in {
     };
     merge = {
       # diffview's diff mode is still cleaner and working better
-      tool = "diffview";
+      tool = "codediff";
       conflictStyle = "zdiff3";
     };
     mergetool = {
@@ -75,6 +75,7 @@ in {
       # NOTE nvim_difftool supports both file diff and dir diff, therefore it can replace nvimdiff completely, and no point to use latter anymore
       # We cannot enforce dir diff here, therefore we will need git difftool -d
       nvim_difftool = { cmd = ''nvim --cmd 'let g:disable_session = v:true' -c "packadd nvim.difftool" -c "DiffTool $LOCAL $REMOTE"''; };
+      codediff = { cmd = ''nvim "$LOCAL" "$REMOTE" +"CodeDiff file $LOCAL $REMOTE"'';};
     };
   };
   home.packages = with pkgs; [ git-credential-manager ];
