@@ -30,29 +30,95 @@ function M.blame_line(row)
     }
 end
 
+local function read_head_and_branch(git_dir, head_file)
+	local content = nil
+	local branch = nil
+	
+	if vim.fn.filereadable(git_dir .. "/" .. head_file) == 1 then
+		content = vim.fn.readfile(git_dir .. "/" .. head_file)[1]
+		if content then
+			local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
+			if vim.v.shell_error == 0 and branch_result[1] then
+				-- Remove the "* " or "  " prefix and get the first branch
+				branch = string.gsub(branch_result[1], "^[* ] ", "")
+			end
+		end
+	end
+	
+	return content, branch
+end
+
+---@class GitMergeMetadata
+---@field action "merge"|"cherry-pick"|"revert"|"rebase"
+---@field local_sha? string The SHA of the local branch (for merge, cherry-pick, revert)
+---@field local_branch? string The name of the local branch (for merge, cherry-pick, revert)
+---@field remote_sha? string The SHA of the remote branch/commit (for merge, cherry-pick, revert)
+---@field remote_branch? string The name of the remote branch (for merge, cherry-pick, revert)
+
+---Gets git merge/rebase metadata for the current repository
+---@return GitMergeMetadata metadata Returns a table with the current git action
 function M.get_merge_metadata()
 	local git_dir = vim.fn.systemlist("git rev-parse --git-dir 2>/dev/null")[1]
 	if vim.v.shell_error ~= 0 or not git_dir then
 		error("not a git repository")
 	end
 
+	-- Read ORIG_HEAD content and branch
+	local orig_head_content, orig_head_branch = read_head_and_branch(git_dir, "ORIG_HEAD")
+
 	-- Check for merge state
 	if vim.fn.filereadable(git_dir .. "/MERGE_HEAD") == 1 then
-		return "merging"
+		-- Read MERGE_HEAD content and branch
+		local merge_head_content, merge_head_branch = read_head_and_branch(git_dir, "MERGE_HEAD")
+
+        print("orig head", orig_head_content, orig_head_branch)
+        print("merge head", merge_head_content, merge_head_branch)
+		
+		return { 
+			action = "merge",
+			local_sha = orig_head_content,
+			local_branch = orig_head_branch,
+			remote_sha = merge_head_content,
+			remote_branch = merge_head_branch
+		}
 	end
 
 	-- Check for cherry-pick state
 	if vim.fn.filereadable(git_dir .. "/CHERRY_PICK_HEAD") == 1 then
-		return "cherry-picking"
+		-- Read CHERRY_PICK_HEAD content and branch
+		local cherry_pick_head_content, cherry_pick_head_branch = read_head_and_branch(git_dir, "CHERRY_PICK_HEAD")
+
+        print("orig head", orig_head_content, orig_head_branch)
+        print("cherry-pick head", cherry_pick_head_content, cherry_pick_head_branch)
+		
+		return { 
+			action = "cherry-pick",
+			local_sha = orig_head_content,
+			local_branch = orig_head_branch,
+			remote_sha = cherry_pick_head_content,
+			remote_branch = cherry_pick_head_branch
+		}
 	end
 
 	-- Check for revert state
 	if vim.fn.filereadable(git_dir .. "/REVERT_HEAD") == 1 then
-		return "reverting"
+		-- Read REVERT_HEAD content and branch
+		local revert_head_content, revert_head_branch = read_head_and_branch(git_dir, "REVERT_HEAD")
+
+        print("orig head", orig_head_content, orig_head_branch)
+        print("revert head", revert_head_content, revert_head_branch)
+		
+		return { 
+			action = "revert",
+			local_sha = orig_head_content,
+			local_branch = orig_head_branch,
+			remote_sha = revert_head_content,
+			remote_branch = revert_head_branch
+		}
 	end
 
 	-- Default to rebasing if nothing else matches
-	return "rebasing"
+	return { action = "rebase" }
 end
 
 return M

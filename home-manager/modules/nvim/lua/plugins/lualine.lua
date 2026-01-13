@@ -44,6 +44,26 @@ local function handle_padding(text, opts)
 	return result
 end
 
+---@param parts string[]
+---@return string[]
+local function process_path_parts(parts)
+	local modified_parts = {}
+	for idx, part in ipairs(parts) do
+		local icon, hl = MiniIcons.get("directory", part)
+		if idx == #parts then
+			icon, hl = MiniIcons.get("file", part)
+			if vim.bo.modified then
+				part = string.format("%s ", part)
+			end
+		end
+		-- REF https://www.reddit.com/r/neovim/comments/tz6p7i/how_can_we_set_color_for_each_part_of_statusline/
+		-- %#<string>% is to highlight a string
+		-- %* is to reset the highlight for the remaining content
+		table.insert(modified_parts, string.format("%%#%s#%s %%*%s", hl, icon, part))
+	end
+	return modified_parts
+end
+
 require("heirline-components").setup({
 	icons = {
 		GitBranch = "",
@@ -432,36 +452,22 @@ require("heirline").setup({
 	},
 	winbar = {
 		{
-			provider = function()
-				local relative_path = vim.fs.normalize(vim.fn.expand("%:."), { expand_env = true })
+            provider = function()
+                local relative_path = vim.fs.normalize(vim.fn.expand("%:."), { expand_env = true })
 
                 local CODEDIFF_PROTOCOL_MATCHER = "^codediff:"
                 local is_codediff = relative_path:match(CODEDIFF_PROTOCOL_MATCHER)
 
+                local parts = vim.split(relative_path, "/", { trimempty = true })
+                local modified_parts = process_path_parts(parts)
+
                 if is_codediff then
-                    relative_path = relative_path:gsub(CODEDIFF_PROTOCOL_MATCHER, "")
+                    -- local metadata = require("custom.git").get_merge_metadata()
+                    -- table.insert(modified_parts, "%=codediff")
                 end
-                -- TODO
 
-				local parts = vim.split(relative_path, "/", { trimempty = true })
-
-				local modified_parts = {}
-				for idx, part in ipairs(parts) do
-					local icon, hl = MiniIcons.get("directory", part)
-					if idx == #parts then
-						icon, hl = MiniIcons.get("file", part)
-                        if vim.bo.modified then
-                            part = string.format("%s ", part)
-                        end
-					end
-					-- REF https://www.reddit.com/r/neovim/comments/tz6p7i/how_can_we_set_color_for_each_part_of_statusline/
-					-- %#<string>% is to highlight a string
-					-- %* is to reset the highlight for the remaining content
-					table.insert(modified_parts, string.format("%%#%s#%s %%*%s", hl, icon, part))
-				end
-
-				return table.concat(modified_parts, "  ")
-			end,
+                return table.concat(modified_parts, "  ")
+            end,
             update = { "BufWinEnter" },
 		},
 	},
