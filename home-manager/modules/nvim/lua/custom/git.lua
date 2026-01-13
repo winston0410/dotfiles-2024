@@ -40,7 +40,6 @@ local function read_head_and_branch(git_dir, head_file)
 		return nil, nil
 	end
 	
-	-- Shorten the SHA to 8 characters
 	content = string.sub(content, 1, 7)
 	
 	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
