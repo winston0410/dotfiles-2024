@@ -311,13 +311,6 @@ vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Se
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 -- Use neovim native command to create terminal, :te
 
--- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
-vim.keymap.set({ "n", "x" }, "Y", "y$", {
-	silent = true,
-	noremap = true,
-	desc = "Yank to EOL",
-})
-
 -- NOTE this prevent which-key.nvim from showing hints for registers.
 vim.keymap.set(
 	"i",
