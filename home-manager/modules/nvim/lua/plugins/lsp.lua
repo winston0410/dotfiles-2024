@@ -183,7 +183,9 @@ local function setup_lspconfig()
 		"aiken",
 		"arduino_language_server",
 		"erg_language_server",
-        "zk"
+        "zk",
+        "gn_language_server",
+        "pony_language_server"
 	}
 	vim.lsp.enable(servers, true)
 end
