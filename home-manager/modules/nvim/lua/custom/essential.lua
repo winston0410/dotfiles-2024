@@ -309,9 +309,7 @@ end, { noremap = true, silent = true, desc = "Delete current buffer from arglist
 
 vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Select previously pasted region" })
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
-vim.keymap.set({ "n" }, "<leader>T", function()
-	vim.cmd.term()
-end, { remap = true, silent = true, desc = "Open terminal" })
+-- Use neovim native command to create terminal, :te
 
 -- NOTE make Y consistent with how C and D behave for changing or deleting to the end of the line.
 vim.keymap.set({ "n", "x" }, "Y", "y$", {
