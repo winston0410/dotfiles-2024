@@ -1,5 +1,6 @@
 vim.pack.add({
-	{ src = "https://github.com/NickvanDyke/opencode.nvim", version = "main" },
+    -- pin to this version for now, as it is buggy afterwards
+	{ src = "https://github.com/NickvanDyke/opencode.nvim", version = "e83a9eb1e24aad925769cc7451ba6c2fbe54b400" },
 }, { confirm = false })
 
 vim.g.opencode_opts = {
