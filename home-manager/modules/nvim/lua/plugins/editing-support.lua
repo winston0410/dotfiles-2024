@@ -533,8 +533,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			nested = true,
 			group = group,
 			callback = function(ev)
-                vim.wo.relativenumber = false
-                vim.cmd.redraw()
+                if vim.wo.number then
+                    vim.wo.relativenumber = false
+                    vim.cmd.redraw()
+                end
 			end,
 		})
 
@@ -542,8 +544,10 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			nested = true,
 			group = group,
 			callback = function(ev)
-                vim.wo.relativenumber = true
-                vim.cmd.redraw()
+                if vim.wo.number then
+                    vim.wo.relativenumber = true
+                    vim.cmd.redraw()
+                end
 			end,
 		})
 		local thunder_group = vim.api.nvim_create_augroup("thunder", { clear = true })
