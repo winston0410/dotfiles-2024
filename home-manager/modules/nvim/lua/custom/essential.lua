@@ -327,9 +327,37 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Prevent the cursor move back when returning to normal mode" }
 )
 
--- REF https://unix.stackexchange.com/a/637223/467987
-vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
-vim.keymap.set({ "t" }, "<C-[>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
+-- REF https://vi.stackexchange.com/questions/4919/exit-from-terminal-mode-in-neovim-vim-8
+-- Do not override <Esc> or <C-[>, so we can still exit TUI application with ESC. Use <C-w><direction> as a replacement
+-- vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
+-- vim.keymap.set({ "t" }, "<C-[>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
+local terminal_mappings = {
+    {
+        key = "h",
+        desc = "Go to the left window"
+    },
+    {
+        key = "j",
+        desc = "Go to the down window"
+    },
+    {
+        key = "k",
+        desc = "Go to the up window"
+    },
+    {
+        key = "l",
+        desc = "Go to the right window"
+    }
+}
+for _, mapping in ipairs(terminal_mappings) do
+	vim.keymap.set(
+		"t",
+		"<C-w>" .. mapping.key,
+		[[<C-\><C-n><C-w>]] .. mapping.key,
+		{ noremap = true, silent = true, desc = mapping.desc }
+	)
+end
+
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
@@ -346,6 +374,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 			:match("([^/]+)$")
 	end,
 })
+
 vim.keymap.set({ "c", "n" }, "q:", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q/", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "c", "n" }, "q?", "<Nop>", { noremap = true, silent = true })

@@ -6,10 +6,6 @@ vim.pack.add({
 vim.g.opencode_opts = {
 	provider = {
 		enabled = "terminal",
-        terminal = {
-            number = false,
-            relativenumber = false
-        },
 		wezterm = {
 			direction = "right",
 			percent = 33,
