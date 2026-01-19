@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, unstable, ... }:
-let
-  username = "hugosum";
+let username = "hugosum";
 in {
   imports = [
     ./modules/git/mod.nix
@@ -28,27 +27,29 @@ in {
     # ./modules/firefox/mod.nix
   ];
 
-  nix.settings = {
-    builders-use-substitutes = true;
-  };
+  nix.settings = { builders-use-substitutes = true; };
   xdg.configFile = {
     "wezterm/wezterm.lua" = {
       source = lib.mkForce ./modules/wezterm/darwin.lua;
     };
   };
-  programs.zsh.initContent = lib.mkBefore (# zsh
-  ''
-    export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin";
-    # needed for adding Nix's store into PATH
-    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh;
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.sh;
-  '');
+  programs.zsh.initContent = lib.mkBefore ( # zsh
+    ''
+      export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
+      # needed for adding Nix's store into PATH
+      source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+    '');
 
   home = {
     inherit username;
     homeDirectory = "/Users/${username}";
   };
-  home.packages = with pkgs; [ inputs.oxeylyzer.packages.${pkgs.stdenv.hostPlatform.system}.default unstable.opencode ];
+  home.packages = with pkgs; [
+    inputs.oxeylyzer.packages.${pkgs.stdenv.hostPlatform.system}.default
+    unstable.opencode
+    inputs.openspec.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
   xdg.userDirs.enable = lib.mkForce false;

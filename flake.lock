@@ -421,6 +421,22 @@
     },
     "nixpkgs_4": {
       "locked": {
+        "lastModified": 1767640445,
+        "narHash": "sha256-UWYqmD7JFBEDBHWYcqE6s6c77pWdcU/i+bwD6XxMb8A=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9f0c42f8bc7151b8e7e5840fb3bd454ad850d8c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_5": {
+      "locked": {
         "lastModified": 1765838191,
         "narHash": "sha256-m5KWt1nOm76ILk/JSCxBM4MfK3rYY7Wq9/TZIIeGnT8=",
         "owner": "nixos",
@@ -459,6 +475,24 @@
         "type": "github"
       }
     },
+    "openspec": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1768813189,
+        "narHash": "sha256-bjHu3kNsFPGOAIZrcgiExS3xOamC58adXb+qFGQevY8=",
+        "owner": "Fission-AI",
+        "repo": "OpenSpec",
+        "rev": "473093f885555dc686fc94f46b85812ab4814ca5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Fission-AI",
+        "repo": "OpenSpec",
+        "type": "github"
+      }
+    },
     "oxeylyzer": {
       "inputs": {
         "devshell": "devshell",
@@ -489,7 +523,7 @@
         "flake-parts": "flake-parts_4",
         "flake-utils": "flake-utils_3",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_5",
         "nur": "nur",
         "sops-nix": "sops-nix"
       },
@@ -528,6 +562,7 @@
           "proxy-flake",
           "nur"
         ],
+        "openspec": "openspec",
         "oxeylyzer": "oxeylyzer",
         "proxy-flake": "proxy-flake",
         "rust-overlay": "rust-overlay",

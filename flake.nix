@@ -11,6 +11,7 @@
     flake-parts.follows = "proxy-flake/flake-parts";
     sops-nix.follows = "proxy-flake/sops-nix";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    openspec.url = "github:Fission-AI/OpenSpec";
 
     unstable.url = "github:nixos/nixpkgs";
 
