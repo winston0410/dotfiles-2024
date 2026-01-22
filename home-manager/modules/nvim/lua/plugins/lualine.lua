@@ -455,9 +455,12 @@ require("heirline").setup({
                 if not is_codediff then
                     local modified_parts = process_path_parts(parts)
                     if vim.bo.modified then
-                        modified_parts[#modified_parts] = modified_parts[#modified_parts] .. "[+]"
+                        local last_item = modified_parts[#modified_parts]
+                        if last_item then
+                            modified_parts[#modified_parts] = last_item .. "[+]"
+                        end
                     end
-                    return table.concat(modified_parts, "  ")
+                    return table.concat(modified_parts, "  ")
                 end
 
                 local git_ref_idx = find_git_rev(parts)
