@@ -454,6 +454,9 @@ require("heirline").setup({
 
                 if not is_codediff then
                     local modified_parts = process_path_parts(parts)
+                    if vim.bo.modified then
+                        modified_parts[#modified_parts] = modified_parts[#modified_parts] .. "[+]"
+                    end
                     return table.concat(modified_parts, "  ")
                 end
 
@@ -469,7 +472,7 @@ require("heirline").setup({
 
                 return table.concat(modified_parts, "  ")
             end,
-            update = { "BufWinEnter" },
+            update = { "BufWinEnter", "BufModifiedSet" },
 		},
 	},
 	statuscolumn = {
