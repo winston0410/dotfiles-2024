@@ -35,13 +35,20 @@ local function save_qf()
 	vim.g.RestoreQuickFix = serialized_entries
 end
 
+---@param buf_id integer
+local function save_visual_range(buf_id)
+    local start_pos = vim.api.nvim_buf_get_mark(buf_id, "<")
+    local end_pos = vim.api.nvim_buf_get_mark(buf_id, ">")
+end
+
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	group = group,
-	callback = function()
+	callback = function(ev)
 		if vim.g.disable_session then
 			return
 		end
 		save_qf()
+        save_visual_range(ev.buf)
 		session_manager.save()
 	end,
 })
