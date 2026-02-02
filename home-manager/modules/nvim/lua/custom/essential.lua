@@ -148,6 +148,7 @@ vim.opt.wildignore:append({
 })
 vim.opt.background = "dark"
 vim.cmd("filetype on")
+-- REF for setting up helm's highlight https://github.com/ngalaiko/tree-sitter-go-template
 vim.filetype.add({
 	extension = {
 		gotmpl = "gotmpl",

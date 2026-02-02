@@ -11,6 +11,7 @@ local function setup_lspconfig()
 	})
 
 	local servers = {
+        "helm_ls",
 		"visualforce_ls",
 		"apex_ls",
 		"lwc_ls",
