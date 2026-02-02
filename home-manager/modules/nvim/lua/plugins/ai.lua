@@ -10,7 +10,8 @@ vim.g.opencode_opts = {
 			direction = "right",
 			percent = 33,
 		},
-        cmd = 'opencode --continue'
+        -- always start a new session, but optionally opt into an existing session
+        -- cmd = 'opencode --continue'
 	},
 }
 

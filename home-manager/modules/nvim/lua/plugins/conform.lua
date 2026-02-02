@@ -84,6 +84,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 				end,
 				rust = { "rustfmt", lsp_format = "fallback" },
 				go = { "goimports", "gofmt" },
+                templ = {"templ"},
 				typespec = { "typespec" },
 				ansible = { "ansible-lint" },
 				nix = { "nixfmt" },

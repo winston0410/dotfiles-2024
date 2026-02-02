@@ -12,6 +12,8 @@
     gawk
     clang-tools
     bibtex-tidy
+    go
+    templ
     gotools
     stylua
     nixfmt-classic
