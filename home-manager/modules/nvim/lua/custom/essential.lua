@@ -33,7 +33,8 @@ vim.o.titleold = "zsh"
 
 vim.o.spell = false
 vim.opt.spelllang = "en_gb"
-vim.o.sessionoptions = "blank,buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
+vim.o.sessionoptions =
+	"blank,buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
 
 vim.o.completeopt = "menu,popup,fuzzy"
 vim.o.wildoptions = "pum,fuzzy"
@@ -141,7 +142,7 @@ vim.opt.wildignore:append({
 	"wildcharm.vim",
 	"zaibatsu.vim",
 	"zellner.vim",
-    -- Default Neovim theme
+	-- Default Neovim theme
 	"default.vim",
 	"vim.lua",
 })
@@ -149,6 +150,7 @@ vim.opt.background = "dark"
 vim.cmd("filetype on")
 vim.filetype.add({
 	extension = {
+		gotmpl = "gotmpl",
 		vert = "glsl",
 		frag = "glsl",
 		http = "http",
@@ -157,6 +159,11 @@ vim.filetype.add({
 		qalc = "qalc",
 		kbd = "kbd",
 		gr = "grain",
+	},
+	pattern = {
+		[".*/templates/.*%.tpl"] = "helm",
+		[".*/templates/.*%.ya?ml"] = "helm",
+		["helmfile.*%.ya?ml"] = "helm",
 	},
 })
 -- remove tag mapping as it has been replaced by LSP
@@ -215,7 +222,7 @@ vim.keymap.set({ "n" }, "<leader>qa", function()
 		local buf_id = vim.api.nvim_get_current_buf()
 		local filename = vim.api.nvim_buf_get_name(buf_id)
 
-        local win_id = vim.api.nvim_get_current_win()
+		local win_id = vim.api.nvim_get_current_win()
 		local pos = vim.api.nvim_win_get_cursor(win_id)
 		local row = pos[1]
 		local col = pos[2] + 1
@@ -332,22 +339,22 @@ vim.keymap.set(
 -- vim.keymap.set({ "t" }, "<Esc>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 -- vim.keymap.set({ "t" }, "<C-[>", [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Back to normal mode" })
 local terminal_mappings = {
-    {
-        key = "h",
-        desc = "Go to the left window"
-    },
-    {
-        key = "j",
-        desc = "Go to the down window"
-    },
-    {
-        key = "k",
-        desc = "Go to the up window"
-    },
-    {
-        key = "l",
-        desc = "Go to the right window"
-    }
+	{
+		key = "h",
+		desc = "Go to the left window",
+	},
+	{
+		key = "j",
+		desc = "Go to the down window",
+	},
+	{
+		key = "k",
+		desc = "Go to the up window",
+	},
+	{
+		key = "l",
+		desc = "Go to the right window",
+	},
 }
 for _, mapping in ipairs(terminal_mappings) do
 	vim.keymap.set(
@@ -398,10 +405,10 @@ vim.keymap.set({ "i" }, "<C-x>", "<Nop>", { noremap = true, silent = true, desc 
 -- end
 
 vim.keymap.set({ "n" }, "<leader>xa", function()
-    vim.cmd.diffthis()
+	vim.cmd.diffthis()
 end, { silent = true, noremap = true, desc = "Add current buffers into diff" })
 vim.keymap.set({ "n" }, "<leader>xd", function()
-    vim.cmd.diffoff()
+	vim.cmd.diffoff()
 end, { silent = true, noremap = true, desc = "Remove current buffers from diff" })
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
