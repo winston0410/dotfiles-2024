@@ -118,7 +118,8 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<Up>"] = { "select_prev", "fallback" },
 				["<Down>"] = { "select_next", "fallback" },
-				["<CR>"] = { "select_and_accept", "fallback" },
+                -- Disable CR for now, use <C-y> only
+				-- ["<CR>"] = { "select_and_accept", "fallback" },
 				-- NOTE Remember, gh bring us back to select mode again. Use this after the first edit
 				["<Tab>"] = {
 					function(cmp)
