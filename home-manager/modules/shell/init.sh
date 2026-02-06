@@ -2,7 +2,8 @@
 fpath+=("$HOME/.nix-profile/share/zsh/site-functions")
 
 setopt HIST_REDUCE_BLANKS
-setopt INC_APPEND_HISTORY
+# do not share history across terminal as it is annoying
+# setopt INC_APPEND_HISTORY
 bindkey '^P' up-line-or-history
 bindkey '^N' down-line-or-history
 
