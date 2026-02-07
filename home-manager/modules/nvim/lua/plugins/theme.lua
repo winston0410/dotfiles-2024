@@ -36,7 +36,8 @@ vim.api.nvim_create_autocmd("User", {
             { src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
             { src = "https://github.com/Mofiqul/vscode.nvim" },
         })
-        vim.cmd.colorscheme("rose-pine-moon")
+        -- vim.cmd.colorscheme("rose-pine-moon")
+        vim.cmd.colorscheme("koda")
         require("vscode").setup({
             style = "dark",
         })
