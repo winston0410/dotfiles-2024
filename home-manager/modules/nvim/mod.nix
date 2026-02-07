@@ -126,9 +126,9 @@
     ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-    MANPAGER = "nvim +Man!";
+    EDITOR = "nvim --cmd 'let g:disable_session = v:true";
+    VISUAL = "nvim --cmd 'let g:disable_session = v:true";
+    MANPAGER = "nvim --cmd 'let g:disable_session = v:true +Man!";
     # using nvim as pager would lose the color
     # PAGER = "nvim";
     FCEDIT = "nvim --cmd 'let g:disable_session = v:true'";
@@ -146,6 +146,7 @@
       #sh
     "nvim -d --cmd 'let g:disable_session = v:true'";
     k8s =
+      #sh
       "nvim --cmd  'let g:disable_session = v:true' -c 'lua require(\"kubectl\").toggle({ tab = false })'";
   };
   programs.zsh.initContent = 
