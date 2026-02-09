@@ -550,20 +550,20 @@ vim.api.nvim_create_autocmd("CursorHold", {
                 end
 			end,
 		})
-		local thunder_group = vim.api.nvim_create_augroup("thunder", { clear = true })
-		vim.api.nvim_create_autocmd("CmdlineLeave", {
-			nested = true,
-			group = thunder_group,
-			callback = function()
-				if vim.v.event.abort then
-					return
-				end
-				if not require("thunder.utils").is_search() then
-					return
-				end
-				require("thunder").search()
-			end,
-		})
+		-- local thunder_group = vim.api.nvim_create_augroup("thunder", { clear = true })
+		-- vim.api.nvim_create_autocmd("CmdlineLeave", {
+		-- 	nested = true,
+		-- 	group = thunder_group,
+		-- 	callback = function()
+		-- 		if vim.v.event.abort then
+		-- 			return
+		-- 		end
+		-- 		if not require("thunder.utils").is_search() then
+		-- 			return
+		-- 		end
+		-- 		require("thunder").search()
+		-- 	end,
+		-- })
 
 		vim.keymap.set({ "n" }, "<leader>gb", function()
 			local ns_id = vim.api.nvim_create_namespace("blame-me")
