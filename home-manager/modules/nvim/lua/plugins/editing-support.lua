@@ -4,7 +4,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 		vim.pack.add({
 			-- Rely on the nvim-surround for adding, changing(cst) and deleting(dst) HTML tags. No need for auto pairing plugins.
 			-- For creating HTML tag, we can also use the LSP completion hints for closing the tag. Try typing <div><, and then accept /div>
-			{ src = "https://github.com/winston0410/thunder.nvim" },
+			-- { src = "https://github.com/winston0410/thunder.nvim" },
 			{ src = "https://github.com/winston0410/encoding.nvim" },
 			{ src = "https://github.com/winston0410/range-highlight.nvim", version = "master" },
 			{ src = "https://github.com/nacro90/numb.nvim", version = "master" },
@@ -231,11 +231,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			},
 		})
 
-		require("thunder").setup({
-			label = {
-				style = "inline",
-			},
-		})
+		-- require("thunder").setup({
+		-- 	label = {
+		-- 		style = "inline",
+		-- 	},
+		-- })
 		require("window-picker").setup({
 			show_prompt = false,
 			hint = "floating-big-letter",
