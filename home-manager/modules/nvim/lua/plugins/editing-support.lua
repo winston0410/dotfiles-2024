@@ -56,6 +56,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 			render = "virtual",
 			enable_tailwind = true,
 			exclude_filetypes = {
+                "nvim-pack",
 				"lazy",
 				"checkhealth",
 				"qf",
