@@ -126,9 +126,9 @@
     ];
 
   home.sessionVariables = {
-    EDITOR = "nvim --cmd 'let g:disable_session = v:true";
-    VISUAL = "nvim --cmd 'let g:disable_session = v:true";
-    MANPAGER = "nvim --cmd 'let g:disable_session = v:true +Man!";
+    EDITOR = "nvim --cmd 'let g:disable_session = v:true'";
+    VISUAL = "nvim --cmd 'let g:disable_session = v:true'";
+    MANPAGER = "nvim --cmd 'let g:disable_session = v:true' -c 'Man!'";
     # using nvim as pager would lose the color
     # PAGER = "nvim";
     FCEDIT = "nvim --cmd 'let g:disable_session = v:true'";
