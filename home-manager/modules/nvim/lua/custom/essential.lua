@@ -22,7 +22,6 @@ vim.g.loaded_node_provider = 0
 vim.o.shell = "zsh"
 vim.o.exrc = true
 vim.o.secure = true
-
 -- the auto screen jump is annoying, but we need to keep this to true, so incsearch would work
 vim.o.incsearch = true
 vim.o.wrapscan = true
@@ -34,11 +33,10 @@ vim.o.titleold = "zsh"
 vim.o.spell = false
 vim.opt.spelllang = "en_gb"
 vim.o.sessionoptions =
-	"blank,buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winsize,terminal,winpos,winsize"
+	"blank,buffers,curdir,folds,globals,help,resize,tabpages,winsize,terminal,winpos,winsize"
 
 vim.o.completeopt = "menu,popup,fuzzy"
 vim.o.wildoptions = "pum,fuzzy"
-
 -- NOTE add this so we can have fixed width or height split, prevent Neovim automatically resize for us
 vim.o.equalalways = false
 vim.o.encoding = "UTF-8"
@@ -46,10 +44,11 @@ vim.o.fileencoding = "UTF-8"
 vim.o.confirm = true
 vim.opt.termguicolors = true
 vim.o.diffopt = "internal,filler,closeoff,inline:char,algorithm:histogram,followwrap"
-vim.o.ttimeoutlen = 500
-vim.o.timeout = true
-vim.o.timeoutlen = 500
-vim.o.updatetime = 200
+-- FIXME not sure which setting prvented ESC from working correctly in normal mode
+-- vim.o.ttimeoutlen = 500
+-- vim.o.timeout = true
+-- vim.o.timeoutlen = 500
+-- vim.o.updatetime = 200
 vim.o.showmode = false
 vim.o.backup = false
 vim.o.writebackup = false
@@ -58,7 +57,6 @@ vim.o.showmatch = true
 vim.o.splitbelow = true
 vim.o.splitright = true
 vim.opt.splitkeep = "screen"
-vim.o.lazyredraw = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.magic = true
@@ -108,7 +106,6 @@ vim.o.foldtext = ""
 -- TODO set this to 1, once foldinner is available
 vim.opt.foldcolumn = "0"
 vim.opt.fillchars:append({ fold = " " })
-
 -- Use space as leader key
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -210,7 +207,6 @@ vim.keymap.del({ "n" }, "gO", {})
 -- remove keybinding for adding additional lines. They do not follow the convention of using [ and ] key for navigation
 vim.keymap.del({ "n" }, "[<space>", {})
 vim.keymap.del({ "n" }, "]<space>", {})
-
 -- Disable the use of mark completely, because 1. it is not project specific and 2. its position is static. Use arglist instead would be a better option
 vim.keymap.set({ "n" }, "m", "<Nop>", { noremap = true, silent = true })
 

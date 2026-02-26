@@ -68,4 +68,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
 	end,
 	desc = "Connect to godot external editor pipe",
 })
-
