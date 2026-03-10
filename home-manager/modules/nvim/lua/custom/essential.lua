@@ -1,5 +1,7 @@
 -- conform.nvim related
 vim.g.disable_autoformat = true
+-- to fix this issue https://github.com/neovim/neovim/issues/14433
+vim.g.omni_sql_default_compl_type = "syntax"
 
 vim.g.loaded_zipPlugin = 1
 vim.g.loaded_zip = 1
