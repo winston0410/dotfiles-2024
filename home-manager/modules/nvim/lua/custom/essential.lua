@@ -1,3 +1,5 @@
+-- enable difftool
+vim.cmd.packadd("nvim.difftool")
 -- conform.nvim related
 vim.g.disable_autoformat = true
 -- to fix this issue https://github.com/neovim/neovim/issues/14433
