@@ -46,7 +46,6 @@ in {
     homeDirectory = "/Users/${username}";
   };
   home.packages = with pkgs; [
-    inputs.oxeylyzer.packages.${pkgs.stdenv.hostPlatform.system}.default
     unstable.opencode
     inputs.openspec.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
