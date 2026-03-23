@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
         vim.keymap.set("n", "s", "<Plug>(nvim-surround-normal)", {
             desc = "Add a surrounding pair around a motion (normal mode)",
         })
-        vim.keymap.set("n", ss, "<Plug>(nvim-surround-normal-cur)", {
+        vim.keymap.set("n", "ss", "<Plug>(nvim-surround-normal-cur)", {
             desc = "Add a surrounding pair around the current line (normal mode)",
         })
         vim.keymap.set("n", "S", "<Plug>(nvim-surround-normal-line)", {
