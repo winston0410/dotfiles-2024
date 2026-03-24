@@ -35,8 +35,6 @@ end
 if not vim.g.disable_diff_support then
     require("plugins.diff")
 end
--- Neogit is slow with big repo, and not fully customizable
--- require("plugins.git")
 
 local completion_args = { 'extra' }
 

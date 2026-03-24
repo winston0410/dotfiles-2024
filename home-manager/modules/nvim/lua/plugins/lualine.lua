@@ -475,7 +475,6 @@ require("heirline").setup({
 
                 return table.concat(modified_parts, "  ")
             end,
-            update = { "BufWinEnter", "BufModifiedSet" },
 		},
 	},
 	statuscolumn = {
