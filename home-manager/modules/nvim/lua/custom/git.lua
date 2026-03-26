@@ -61,8 +61,6 @@ end
 ---@param side ":2"|":3" The side to show - :2 for LOCAL, :3 for REMOTE
 ---@return GitMergeMetadata metadata Returns a table with the current git action and selected side info
 function M.get_merge_metadata(side)
-	-- assert(side == ":2" or side == ":3", "side must be either ':2' or ':3'")
-	
 	local git_dir = vim.fn.systemlist("git rev-parse --git-dir 2>/dev/null")[1]
 	if vim.v.shell_error ~= 0 or not git_dir then
 		error("not a git repository")
@@ -151,8 +149,12 @@ function M.get_merge_metadata(side)
 		}
 	end
 
-	-- Default fallback - no active git operation detected
-	error("no active git merge/rebase operation detected")
+	-- Default fallback - no active git operation detected. Assume what passed is a git rev sha
+	return {
+		action = nil,
+		sha = side,
+		branch = nil
+	}
 end
 
 return M
