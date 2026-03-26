@@ -38,7 +38,7 @@ vim.o.titleold = "zsh"
 vim.o.spell = false
 vim.opt.spelllang = "en_gb"
 vim.o.sessionoptions =
-	"blank,buffers,curdir,folds,globals,help,resize,tabpages,winsize,terminal,winpos,winsize"
+	"blank,curdir,folds,globals,help,skiprtp,resize,tabpages,winsize,terminal,winpos,winsize"
 
 vim.o.completeopt = "menu,popup,fuzzy"
 vim.o.wildoptions = "pum,fuzzy"

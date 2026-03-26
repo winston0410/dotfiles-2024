@@ -81,14 +81,21 @@ heirline_components.init.subscribe_to_events()
 -- FIXME heirline-compoments would reload color after colorscheme has changed, we need to set our custom color again as well
 heirline.load_colors(heirline_components.hl.get_colors())
 
--- find symbol such as :2, :3
----@return integer
-local find_git_rev = function (items)
-    for idx, item in ipairs(items) do
-        if item == ":2" or item == ":3" then
+---@param path string Original path for the buffer
+---@return integer Index for the part containing git ref in the buffer
+local find_git_rev = function (path)
+    local cwd = vim.fn.getcwd()
+    local replaced_path = path:gsub(cwd:gsub("([^%w])", "%%%1"), "")
+    local parts = vim.split(replaced_path, "/", { trimempty = true })
+    assert(#parts > 2, "Parts of path of buffer should be greater than 2.")
+
+    for idx, item in ipairs(vim.split(path, "/", { trimempty = true })) do
+        if item == parts[2] then
             return idx
         end
     end
+
+    return -1
 end
 
 local is_file_buffer = function()
@@ -451,22 +458,26 @@ require("heirline").setup({
                 local is_codediff = relative_path:match(CODEDIFF_PROTOCOL_MATCHER)
 
                 local parts = vim.split(relative_path, "/", { trimempty = true })
+                local modified_parts = process_path_parts(parts)
+                if vim.bo.modified then
+                    local last_item = modified_parts[#modified_parts]
+                    if last_item then
+                        modified_parts[#modified_parts] = last_item .. "[+]"
+                    end
+                end
 
                 if not is_codediff then
-                    local modified_parts = process_path_parts(parts)
-                    if vim.bo.modified then
-                        local last_item = modified_parts[#modified_parts]
-                        if last_item then
-                            modified_parts[#modified_parts] = last_item .. "[+]"
-                        end
-                    end
                     return table.concat(modified_parts, "  ")
                 end
 
-                local git_ref_idx = find_git_rev(parts)
-                local side = parts[git_ref_idx]
+                local git_ref_idx = find_git_rev(relative_path)
+                if git_ref_idx == nil then
+                    return table.concat(modified_parts, "  ")
+                end
+                local git_ref = parts[git_ref_idx]
                 parts = { table.unpack(parts, git_ref_idx + 1) }
-                local metadata = require("custom.git").get_merge_metadata(side)
+
+                local metadata = require("custom.git").get_merge_metadata(git_ref)
                 local modified_parts = process_path_parts(parts)
                 local git_icon, git_icon_hl = MiniIcons.get("filetype", "git")
                 local rev = string.format("%%#%s#%s%%* %s(%s)", git_icon_hl, git_icon, metadata.branch, metadata.sha)
