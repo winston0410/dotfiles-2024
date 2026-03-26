@@ -39,8 +39,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
-setup()
-
 require("jupytext").setup({
     style = "markdown",
     output_extension = "md",
@@ -58,8 +56,6 @@ require("treesitter-modules").setup({
         },
     },
 })
-
-require("nvim-treesitter").setup({})
 
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("treesitter.setup", {}),
