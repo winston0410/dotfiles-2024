@@ -234,7 +234,7 @@ vim.keymap.set({ "n" }, "<leader>p<leader>gc", function()
 end, { silent = true, noremap = true, desc = "Search Git Hunks" })
 
 vim.keymap.set({ "n" }, "<leader>gl", function()
-	vim.cmd("DiffviewFileHistory %")
+	vim.cmd("CodeDiff history %")
 end, { silent = true, noremap = true, desc = "Git log of the current file" })
 
 vim.keymap.set({ "n" }, "<leader>p<leader>gl", function()
