@@ -48,16 +48,12 @@ in {
       autosquash = true;
     };
     merge = {
-      # diffview's diff mode is still cleaner and working better
       tool = "codediff";
       conflictStyle = "zdiff3";
     };
     mergetool = {
       prompt = false;
       keepBackup = false;
-      # diffview.nvim is still needed for merging, as nvimdiff and its variants do not support resolve conflicts with keybindings
-      # https://gist.github.com/Pagliacii/8fcb4dc64937305c19df9bb3137e4cad
-      diffview = { cmd = ''nvim --cmd 'let g:disable_session = v:true' -n -c "DiffviewOpen" "$MERGE"''; };
       codediff = { cmd = ''nvim --cmd 'let g:disable_session = v:true' "$MERGED" -c "CodeDiff merge \"$MERGED\""''; };
     };
 
