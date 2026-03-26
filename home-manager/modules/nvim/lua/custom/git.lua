@@ -42,14 +42,12 @@ local function read_head_and_branch(git_dir, head_file)
 	
 	content = string.sub(content, 1, 7)
 	
-	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " 2>/dev/null")
-	if vim.v.shell_error ~= 0 or not branch_result[1] then
+	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " --format='%(refname:short)' 2>/dev/null")
+	if vim.v.shell_error ~= 0 then
 		return content, nil
 	end
-	
-	-- Remove the "* " or "  " prefix and get the first branch
-	local branch = string.gsub(branch_result[1], "^[* ] ", "")
-	return content, branch
+
+	return content, branch_result[1]
 end
 
 ---@class GitMergeMetadata
