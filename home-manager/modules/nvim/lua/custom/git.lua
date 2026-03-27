@@ -22,36 +22,45 @@ function M.blame_line(row)
 	local author_date = os.date("%Y %b %d", tonumber(string.sub(blame_info[4], 12)))
 	local summary = string.sub(blame_info[10], 9)
 
-    return {
-        hash = hash,
-        author = author_name,
-        date = author_date,
-        summary = summary
-    }
+	return {
+		hash = hash,
+		author = author_name,
+		date = author_date,
+		summary = summary,
+	}
 end
 
 local function read_head_and_branch(git_dir, head_file)
 	if vim.fn.filereadable(git_dir .. "/" .. head_file) ~= 1 then
 		return nil, nil
 	end
-	
+
 	local content = vim.fn.readfile(git_dir .. "/" .. head_file)[1]
 	if not content then
 		return nil, nil
 	end
-	
+
 	content = string.sub(content, 1, 7)
-	
-	local branch_result = vim.fn.systemlist("git branch --contains " .. content .. " --format='%(refname:short)' 2>/dev/null")
+
+	local branches =
+		vim.fn.systemlist("git branch --contains " .. content .. " --format='%(refname:short)' 2>/dev/null")
 	if vim.v.shell_error ~= 0 then
 		return content, nil
 	end
 
-	return content, branch_result[1]
+    local branch = branches[1]
+
+	if branch:find("no branch") then
+        if #branches >= 2 then
+            branch = branches[2]
+        end
+	end
+
+	return content, branch
 end
 
 ---@class GitMergeMetadata
----@field action "merge"|"cherry-pick"|"revert"|"rebase"
+---@field action? "merge"|"cherry-pick"|"revert"|"rebase"
 ---@field sha? string The SHA of the selected side (local or remote)
 ---@field branch? string The name of the selected branch (local or remote)
 
@@ -71,19 +80,19 @@ function M.get_merge_metadata(side)
 	if vim.fn.filereadable(git_dir .. "/MERGE_HEAD") == 1 then
 		-- Read MERGE_HEAD content and branch
 		local merge_head_content, merge_head_branch = read_head_and_branch(git_dir, "MERGE_HEAD")
-		
+
 		if side == ":2" then
-			return { 
+			return {
 				action = "merge",
 				sha = orig_head_content,
-				branch = orig_head_branch
+				branch = orig_head_branch,
 			}
 		end
-		
-		return { 
+
+		return {
 			action = "merge",
 			sha = merge_head_content,
-			branch = merge_head_branch
+			branch = merge_head_branch,
 		}
 	end
 
@@ -93,17 +102,17 @@ function M.get_merge_metadata(side)
 		local cherry_pick_head_content, cherry_pick_head_branch = read_head_and_branch(git_dir, "CHERRY_PICK_HEAD")
 
 		if side == ":2" then
-			return { 
+			return {
 				action = "cherry-pick",
 				sha = orig_head_content,
-				branch = orig_head_branch
+				branch = orig_head_branch,
 			}
 		end
-		
-		return { 
+
+		return {
 			action = "cherry-pick",
 			sha = cherry_pick_head_content,
-			branch = cherry_pick_head_branch
+			branch = cherry_pick_head_branch,
 		}
 	end
 
@@ -113,45 +122,53 @@ function M.get_merge_metadata(side)
 		local revert_head_content, revert_head_branch = read_head_and_branch(git_dir, "REVERT_HEAD")
 
 		if side == ":2" then
-			return { 
+			return {
 				action = "revert",
 				sha = orig_head_content,
-				branch = orig_head_branch
+				branch = orig_head_branch,
 			}
 		end
-		
-		return { 
+
+		return {
 			action = "revert",
 			sha = revert_head_content,
-			branch = revert_head_branch
+			branch = revert_head_branch,
 		}
 	end
 
 	-- Check for rebase state
-	if vim.fn.filereadable(git_dir .. "/rebase-merge/head-name") == 1 or vim.fn.filereadable(git_dir .. "/rebase-apply/head-name") == 1 then
+	if
+		vim.fn.filereadable(git_dir .. "/rebase-merge/head-name") == 1
+		or vim.fn.filereadable(git_dir .. "/rebase-apply/head-name") == 1
+	then
 		-- For rebase, read the current HEAD from rebase-merge/onto
 		local current_head_content, current_branch = read_head_and_branch(git_dir, "rebase-merge/onto")
-		
+
 		if side == ":2" then
-			return { 
+			return {
 				action = "rebase",
 				sha = current_head_content,
-				branch = current_branch
+				branch = current_branch,
 			}
 		end
-		
-		return { 
+
+		return {
 			action = "rebase",
 			sha = orig_head_content,
-			branch = orig_head_branch
+			branch = orig_head_branch,
 		}
 	end
 
 	-- Default fallback - no active git operation detected. Assume what passed is a git rev sha
+	local parse_output = vim.fn.systemlist("git rev-parse --short " .. side)
+	if vim.v.shell_error ~= 0 then
+		return {}
+	end
+
 	return {
 		action = nil,
-		sha = side,
-		branch = nil
+		sha = parse_output[1],
+		branch = nil,
 	}
 end
 
