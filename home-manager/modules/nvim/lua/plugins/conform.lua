@@ -2,7 +2,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	once = true,
 	callback = function()
 		vim.pack.add({
-			{ src = "https://github.com/stevearc/conform.nvim", version = vim.version.range("9.x") },
+			{ src = "https://github.com/stevearc/conform.nvim", version = vim.version.range("main") },
 		}, { confirm = false })
 
 		-- REF https://github.com/stevearc/conform.nvim/issues/781

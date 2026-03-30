@@ -43,7 +43,7 @@ vim.api.nvim_create_user_command(
   function(opts)
     for _, arg in ipairs(opts.fargs) do
         if arg == "extra" then
-            require("plugins.extra")
+            -- load a module
         end
     end
   end,
