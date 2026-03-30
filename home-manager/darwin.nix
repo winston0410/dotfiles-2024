@@ -23,6 +23,7 @@ in {
     ./modules/k8s/mod.nix
     ./modules/zk/mod.nix
     ./modules/opencode/mod.nix
+    ./modules/ghostty/mod.nix
     # Firefox just won't start
     # ./modules/firefox/mod.nix
   ];

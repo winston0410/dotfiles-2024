@@ -19,10 +19,6 @@
     # mac-app-util.url = "github:hraban/mac-app-util";
     # mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
 
-    oxeylyzer.url = "github:o-x-e-y/oxeylyzer";
-    oxeylyzer.inputs.nixpkgs.follows = "nixpkgs";
-    oxeylyzer.inputs.rust-overlay.follows = "rust-overlay";
-
     emmylua-analyzer-rust.url = "github:EmmyLuaLs/emmylua-analyzer-rust";
     emmylua-analyzer-rust.inputs.nixpkgs.follows = "nixpkgs";
     emmylua-analyzer-rust.inputs.rust-overlay.follows = "rust-overlay";

@@ -23,9 +23,15 @@ M.config = {
 	enable_tab_bar = true,
 	front_end = "WebGpu",
 	webgpu_power_preference = "HighPerformance",
+    animation_fps = 250,
+    max_fps = 250,
 	window_frame = {
 		font_size = 16.0,
 	},
+    window_content_alignment = {
+          horizontal = 'Center',
+          vertical = 'Center',
+    },
 	window_padding = {
 		left = 0,
 		right = 0,
