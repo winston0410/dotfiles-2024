@@ -29,6 +29,16 @@
     rufo
     hclfmt
     elmPackages.elm-format
+    cedar
+    bicep
+    kdlfmt
+    nickel
+    opentofu
+    jsonnet
+    hurl
+    buf
+    typespec
+    codeql
   ];
 
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };

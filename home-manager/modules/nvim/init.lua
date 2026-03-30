@@ -39,30 +39,30 @@ end
 local completion_args = { 'extra' }
 
 vim.api.nvim_create_user_command(
-  "EnableFeature",
-  function(opts)
-    for _, arg in ipairs(opts.fargs) do
-        if arg == "extra" then
-            -- load a module
+    "EnableFeature",
+    function(opts)
+        for _, arg in ipairs(opts.fargs) do
+            if arg == "extra" then
+                -- load a module
+            end
         end
-    end
-  end,
-  {
-    nargs = "*",
-    complete = function (_)
-        return completion_args
-    end
-  }
+    end,
+    {
+        nargs = "*",
+        complete = function(_)
+            return completion_args
+        end
+    }
 )
 
 vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		local cwd = vim.fn.getcwd()
-		local godot_dir = cwd .. "/.godot"
+    callback = function()
+        local cwd = vim.fn.getcwd()
+        local godot_dir = cwd .. "/.godot"
 
-		if vim.fn.isdirectory(godot_dir) == 1 then
-			godot.listen_godot_external_editor_pipe()
-		end
-	end,
-	desc = "Connect to godot external editor pipe",
+        if vim.fn.isdirectory(godot_dir) == 1 then
+            godot.listen_godot_external_editor_pipe()
+        end
+    end,
+    desc = "Connect to godot external editor pipe",
 })

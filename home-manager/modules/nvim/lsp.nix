@@ -49,6 +49,7 @@
     pkgs.shellcheck
     pkgs.lemminx
     pkgs.systemd-lsp
+    pkgs.ols
     # (pkgs.stdenv.mkDerivation rec {
     #   pname = "npm-workspaces-lsp";
     #   version = "0.1.0"; # update per release
