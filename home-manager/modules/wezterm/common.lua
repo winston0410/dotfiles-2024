@@ -110,7 +110,7 @@ M.config = {
 	},
 }
 
-for i = 1, 8 do
+for i = 1, 9 do
 	table.insert(M.config.keys, {
 		key = tostring(i),
 		mods = "LEADER",
