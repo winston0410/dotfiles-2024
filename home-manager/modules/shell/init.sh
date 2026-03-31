@@ -28,6 +28,16 @@ bindkey -v '^?' backward-delete-char
 # https://github.com/zsh-users/zsh-autosuggestions?tab=readme-ov-file#key-bindings
 bindkey '^Y' autosuggest-accept
 
+search-favourite-command() {
+  local selected
+  selected=$(fzf < "${XDG_CONFIG_HOME}"/favourite/commands.sh) || return
+  LBUFFER="$selected"
+}
+
+zle -N search-favourite-command 
+# TODO find a good keybinding
+bindkey '^G' search-favourite-command 
+
 KEYTIMEOUT=1
 
 ZINIT_HOME="${XDG_DATA_HOME:-''${HOME}/.local/share}/zinit/zinit.git"
