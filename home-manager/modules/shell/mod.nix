@@ -49,7 +49,7 @@
     "--layout=reverse"
     "--border=none"
     # Using nvim's completion keybindings
-    "--bind ctrl-y:accept"
+    "--bind ctrl-y:accept,ctrl-e:abort"
     # REF https://github.com/folke/tokyonight.nvim/blob/main/extras/fzf/tokyonight_storm.sh
     "--color=bg+:#2e3c64"
     "--color=bg:#1f2335"
@@ -103,4 +103,7 @@
   # programs.television.package = pkgs.television;
   # programs.television.settings =
   #   builtins.fromTOML (builtins.readFile ./starship.toml);
+  xdg.configFile = {
+    "favourite/commands.sh" = { source = ./favourite/commands.sh; };
+  };
 }
