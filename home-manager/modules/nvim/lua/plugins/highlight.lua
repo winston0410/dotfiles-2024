@@ -3,7 +3,6 @@ vim.pack.add({
     { src = "https://github.com/mcauley-penney/visual-whitespace.nvim",        version = "main" },
     { src = "https://github.com/GCBallesteros/jupytext.nvim" },
     { src = "https://github.com/folke/ts-comments.nvim" },
-    { src = "https://github.com/MeanderingProgrammer/treesitter-modules.nvim", version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",              version = "main" },
     { src = "https://github.com/ravsii/tree-sitter-d2" },
     { src = "https://github.com/OXY2DEV/markview.nvim",                        version = vim.version.range("27.x") },
@@ -45,32 +44,27 @@ require("jupytext").setup({
     force_ft = "markdown",
 })
 
-require("treesitter-modules").setup({
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = false,
-            node_incremental = "+",
-            node_decremental = "-",
-            scope_incremental = false,
-        },
-    },
-})
-
+-- https://github.com/MeanderingProgrammer/treesitter-modules.nvim?tab=readme-ov-file#do-i-need-this-plugin
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("treesitter.setup", {}),
     callback = function(args)
+        local buf = args.buf
         local filetype = args.match
-        --TODO review csv treesitter highlight in the future. It is not good at the moment
-        if filetype == "csv" then
-            return
-        end
 
         local language = vim.treesitter.language.get_lang(filetype) or filetype
         if not vim.treesitter.language.add(language) then
             return
         end
-        vim.treesitter.start(args.buf, language)
+
+        --TODO review csv treesitter highlight in the future. It is not good at the moment so we disable its parser
+        if filetype == "csv" then
+            return
+        end
+
+        vim.treesitter.start(buf, language)
+
+        vim.keymap.set({ "x" }, "+", "an", { remap = true, silent = true })
+        vim.keymap.set({ "x" }, "-", "in", { remap = true, silent = true })
     end,
 })
 
