@@ -1,2 +1,2 @@
-az repos create pr --open
+az repos pr create --open
 echo "hello"
