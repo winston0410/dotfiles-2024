@@ -25,6 +25,7 @@ M.config = {
 	webgpu_power_preference = "HighPerformance",
     animation_fps = 250,
     max_fps = 250,
+    term = 'wezterm',
 	window_frame = {
 		font_size = 16.0,
 	},
