@@ -1,6 +1,6 @@
 vim.pack.add({
     { src = "https://github.com/nvim-mini/mini.icons" },
-    { src = "https://github.com/onsails/lspkind.nvim", version = "09c4e4dcdef7c24d99522b764fb46fe8b5535cc6" },
+    { src = "https://github.com/onsails/lspkind.nvim", version = "c7274c48137396526b59d86232eabcdc7fed8a32" },
 }, { confirm = false })
 require("mini.icons").setup()
 require("mini.icons").mock_nvim_web_devicons()

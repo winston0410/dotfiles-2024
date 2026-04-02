@@ -1,12 +1,18 @@
 vim.pack.add({
     { src = "https://github.com/winston0410/syringe.nvim" },
     { src = "https://github.com/mcauley-penney/visual-whitespace.nvim",        version = "main" },
-    { src = "https://github.com/GCBallesteros/jupytext.nvim" },
+    -- { src = "https://github.com/GCBallesteros/jupytext.nvim" },
     { src = "https://github.com/folke/ts-comments.nvim" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",              version = "main" },
     { src = "https://github.com/ravsii/tree-sitter-d2" },
     { src = "https://github.com/OXY2DEV/markview.nvim",                        version = vim.version.range("27.x") },
 }, { confirm = false })
+-- FIXME seems to be outdated. Need a newer plugin for jupytext?
+-- require("jupytext").setup({
+--     style = "markdown",
+--     output_extension = "md",
+--     force_ft = "markdown",
+-- })
 
 vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(ev)
@@ -23,25 +29,16 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end,
 })
 
-local function setup()
-    local comment_hl = vim.api.nvim_get_hl(0, { name = "@comment", link = false })
-    local visual_hl = vim.api.nvim_get_hl(0, { name = "Visual", link = false })
-    require("visual-whitespace").setup({
-        highlight = { fg = comment_hl.fg, bg = visual_hl.bg },
-    })
-end
-
 vim.api.nvim_create_autocmd("ColorScheme", {
     pattern = "*",
+    group = vim.api.nvim_create_augroup("visual-whitespace.setup", {}),
     callback = function(event)
-        setup()
+        local comment_hl = vim.api.nvim_get_hl(0, { name = "@comment", link = false })
+        local visual_hl = vim.api.nvim_get_hl(0, { name = "Visual", link = false })
+        require("visual-whitespace").setup({
+            highlight = { fg = comment_hl.fg, bg = visual_hl.bg },
+        })
     end,
-})
-
-require("jupytext").setup({
-    style = "markdown",
-    output_extension = "md",
-    force_ft = "markdown",
 })
 
 -- https://github.com/MeanderingProgrammer/treesitter-modules.nvim?tab=readme-ov-file#do-i-need-this-plugin
