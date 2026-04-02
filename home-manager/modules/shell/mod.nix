@@ -106,4 +106,9 @@
   xdg.configFile = {
     "favourite/commands.sh" = { source = ./favourite/commands.sh; };
   };
+
+  # for term=wezterm
+  home.shellAliases = {
+    ssh = "TERM=xterm-256color ssh";
+  };
 }
