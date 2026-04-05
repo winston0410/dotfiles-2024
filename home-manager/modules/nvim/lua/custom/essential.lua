@@ -356,14 +356,6 @@ vim.keymap.set({ "n" }, "gp", "`[v`]", { remap = true, silent = true, desc = "Se
 -- Native Neovim commenting. Block commenting is not available in Neovim yet
 -- Use neovim native command to create terminal, :te
 
--- NOTE this prevent which-key.nvim from showing hints for registers.
-vim.keymap.set(
-	"i",
-	"<C-r>",
-	"<C-r><C-o>",
-	{ noremap = true, desc = "Insert contents of named register. Inserts text literally, not as if you typed it." }
-)
-
 --  https://stackoverflow.com/questions/2295410/how-to-prevent-the-cursor-from-moving-back-one-character-on-leaving-insert-mode
 vim.keymap.set(
 	{ "i" },
@@ -451,7 +443,7 @@ end, { silent = true, noremap = true, desc = "Remove current buffers from diff" 
 
 vim.keymap.set({ "v" }, "p", "pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
 vim.keymap.set({ "v" }, "P", "Pgvy", { silent = true, noremap = true, desc = "Paste without copying" })
--- NOTE remove additional wrapper around * and #
+-- NOTE remove additional wrapper \< and \> around search target
 vim.keymap.set({ "n" }, "*", "g*", { silent = true, noremap = true, desc = "Search word under cursor forward" })
 vim.keymap.set({ "n" }, "#", "g#", { silent = true, noremap = true, desc = "Search word under cursor backward" })
 vim.keymap.set(
