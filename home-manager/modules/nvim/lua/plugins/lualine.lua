@@ -314,6 +314,14 @@ end
 local Tabpage = function()
 	return {
 		provider = function(self)
+            if self.is_active then
+                local cwd = vim.fn.getcwd()
+                local sep = package.config:sub(1,1)
+                local parts = vim.split(cwd, sep, { trimempty = true })
+                -- NOTE only truncate and take the last 3 parts of a path
+                local formatted_path = table.concat(vim.list_slice(parts, #parts - 2), sep)
+                return "%" .. self.tabnr .. "T " .. self.tabnr .. " " .. formatted_path .. " %T"
+            end
 			return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T"
 		end,
 		hl = function(self)
