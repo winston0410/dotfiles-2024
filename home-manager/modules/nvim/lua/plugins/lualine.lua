@@ -1,5 +1,3 @@
-local M = {}
-
 local godot = require("custom.godot")
 
 vim.pack.add({
@@ -551,5 +549,3 @@ require("heirline").setup({
 		end,
 	},
 })
-
-return M
