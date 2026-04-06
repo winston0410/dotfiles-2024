@@ -88,7 +88,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "csv" },
     desc = "Enable CSV View on .csv files",
     callback = function()
-        vim.pack.add({ { src = "https://github.com/hat0uma/csvview.nvim", version = vim.version.range("1.x") } })
+        vim.pack.add({ { src = "https://github.com/hat0uma/csvview.nvim", version = vim.version.range("1.x") } }, {confirm = false})
         require('csvview').setup()
         require("csvview").enable()
     end,

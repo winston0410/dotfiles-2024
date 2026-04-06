@@ -1,165 +1,158 @@
-local function setup_lspconfig()
-	vim.pack.add({
-		{ src = "https://github.com/neovim/nvim-lspconfig", version = vim.version.range("2.x") },
-	})
-
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
-
-	vim.lsp.config("*", {
-		capabilities = capabilities,
-	})
-
-	local servers = {
-        "helm_ls",
-		"visualforce_ls",
-		"apex_ls",
-		"lwc_ls",
-		"air",
-		"contextive",
-		"codeqlls",
-		"denols",
-		"azure_pipelines_ls",
-		"pest_ls",
-		"nxls",
-		"nushell",
-		"rust_analyzer",
-		"nginx_language_server",
-		"astro",
-		"beancount",
-		"solang",
-		"solargraph",
-		"theme_check",
-		"taplo",
-		"templ",
-		"vacuum",
-		"unocss",
-		"mint",
-		"roslyn_ls",
-		"bicep",
-		"ansiblels",
-		"vala_ls",
-		"jdtls",
-		"groovyls",
-		"lemminx",
-		"html",
-		"cssls",
-		"tailwindcss",
-		"jsonls",
-		"jsonnet_ls",
-		"leanls",
-		"dhall_lsp_server",
-		"hls",
-		"dartls",
-		"terraformls",
-		"texlab",
-		"tilt_ls",
-		"ccls",
-		"svelte",
-		"graphql",
-		"elmls",
-		"ocamlls",
-		"puppet",
-		"serve_d",
-		"gdscript",
-		"scry",
-		"biome",
-		"awk_ls",
-		"hyprls",
-		"gleam",
-		"ast_grep",
-		"gnls",
-		"eslint",
-		"angularls",
-		"bashls",
-		"hhvm",
-		"prismals",
-		"gopls",
-		-- "docker_compose_language_service",
-		-- "dockerls",
-		"docker_language_server",
-		"glsl_analyzer",
-		"gradle_ls",
-		"nimls",
-		"metals",
-		"julials",
-		"purescriptls",
-		"rescriptls",
-		"racket_langserver",
-		"pasls",
-		"postgres_lsp",
-		"vimls",
-		"nixd",
-		"r_language_server",
-		"kotlin_language_server",
-		"cmake",
-		"atopile",
-		"basedpyright",
-		-- TODO replace basedpyright with ty or zuban, once it is ready
-		-- zuban 0.23 would panic immediately after starting up
-		-- "ty",
-		-- TODO switch over from pyright to tv, once it is more stable
-		-- "tv",
-		"gdscript",
-		"ruff-lsp",
-		"taplo",
-		"cucumber_language_server",
-		"slint_lsp",
-		"regal",
-		"ballerina",
-		"bitbake_ls",
-		"ltex_plus",
-		"tsp_server",
-		"yamlls",
-		"kulala_ls",
-		"tsgo",
-		"earthlyls",
-		"elixirls",
-		"lua_ls",
-		"v-analyzer",
-		-- TODO check if this server is more mature now.This is fast but does not provide enough configuration
-		-- "emmylua_ls",
-		-- "config_lsp",
-		"systemd_lsp",
-		"openscad_lsp",
-		"ziggy_schema",
-		"ziggy",
-		"cypher_ls",
-		"npmls",
-		"typos_lsp",
-		"powershell_es",
-		"protols",
-		"ts_query_ls",
-		"clojure_lsp",
-		"teal_ls",
-		"tclsp",
-		"uiua",
-		"veryl_ls",
-		"wasm_language_tools",
-		"marko-js",
-		"cue",
-		"aiken",
-		"arduino_language_server",
-		"erg_language_server",
-        "zk",
-        "gn_language_server",
-        "pony_language_server"
-	}
-	vim.lsp.enable(servers, true)
-end
-
 local autocmd_group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true })
 
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "CursorMoved" }, {
 	once = true,
 	group = autocmd_group,
 	callback = function()
-		setup_lspconfig()
-	end,
-})
+		vim.pack.add({
+			{ src = "https://github.com/neovim/nvim-lspconfig", version = vim.version.range("2.x") },
+            { src = "https://github.com/b0o/SchemaStore.nvim" },
+		}, { confirm = false })
 
-vim.pack.add({
-	{ src = "https://github.com/b0o/SchemaStore.nvim" },
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+
+		vim.lsp.config("*", {
+			capabilities = capabilities,
+		})
+
+		local servers = {
+			"helm_ls",
+			"visualforce_ls",
+			"apex_ls",
+			"lwc_ls",
+			"air",
+			"contextive",
+			"codeqlls",
+			"denols",
+			"azure_pipelines_ls",
+			"pest_ls",
+			"nxls",
+			"nushell",
+			"rust_analyzer",
+			"nginx_language_server",
+			"astro",
+			"beancount",
+			"solang",
+			"solargraph",
+			"theme_check",
+			"taplo",
+			"templ",
+			"vacuum",
+			"unocss",
+			"mint",
+			"roslyn_ls",
+			"bicep",
+			"ansiblels",
+			"vala_ls",
+			"jdtls",
+			"groovyls",
+			"lemminx",
+			"html",
+			"cssls",
+			"tailwindcss",
+			"jsonls",
+			"jsonnet_ls",
+			"leanls",
+			"dhall_lsp_server",
+			"hls",
+			"dartls",
+			"terraformls",
+			"texlab",
+			"tilt_ls",
+			"ccls",
+			"svelte",
+			"graphql",
+			"elmls",
+			"ocamlls",
+			"puppet",
+			"serve_d",
+			"gdscript",
+			"scry",
+			"biome",
+			"awk_ls",
+			"hyprls",
+			"gleam",
+			"ast_grep",
+			"gnls",
+			"eslint",
+			"angularls",
+			"bashls",
+			"hhvm",
+			"prismals",
+			"gopls",
+			-- "docker_compose_language_service",
+			-- "dockerls",
+			"docker_language_server",
+			"glsl_analyzer",
+			"gradle_ls",
+			"nimls",
+			"metals",
+			"julials",
+			"purescriptls",
+			"rescriptls",
+			"racket_langserver",
+			"pasls",
+			"postgres_lsp",
+			"vimls",
+			"nixd",
+			"r_language_server",
+			"kotlin_language_server",
+			"cmake",
+			"atopile",
+			"basedpyright",
+			-- TODO replace basedpyright with ty or zuban, once it is ready
+			-- zuban 0.23 would panic immediately after starting up
+			-- "ty",
+			-- TODO switch over from pyright to tv, once it is more stable
+			-- "tv",
+			"gdscript",
+			"ruff-lsp",
+			"taplo",
+			"cucumber_language_server",
+			"slint_lsp",
+			"regal",
+			"ballerina",
+			"bitbake_ls",
+			"ltex_plus",
+			"tsp_server",
+			"yamlls",
+			"kulala_ls",
+			"tsgo",
+			"earthlyls",
+			"elixirls",
+			"lua_ls",
+			"v-analyzer",
+			-- TODO check if this server is more mature now.This is fast but does not provide enough configuration
+			-- "emmylua_ls",
+			-- "config_lsp",
+			"systemd_lsp",
+			"openscad_lsp",
+			"ziggy_schema",
+			"ziggy",
+			"cypher_ls",
+			"npmls",
+			"typos_lsp",
+			"powershell_es",
+			"protols",
+			"ts_query_ls",
+			"clojure_lsp",
+			"teal_ls",
+			"tclsp",
+			"uiua",
+			"veryl_ls",
+			"wasm_language_tools",
+			"marko-js",
+			"cue",
+			"aiken",
+			"arduino_language_server",
+			"erg_language_server",
+			"zk",
+			"gn_language_server",
+			"pony_language_server",
+		}
+		vim.lsp.enable(servers, true)
+	end,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -252,13 +245,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client == nil then
 			return
 		end
+
 		client.server_capabilities.semanticTokensProvider = nil
+
+        -- NOTE enable these in the future if needed
+        -- if client:supports_method "textDocument/codeLens" then
+        --     vim.lsp.codelens.enable()
+        -- end
+        -- vim.lsp.linked_editing_range
+        -- vim.lsp.inline_completion
 	end,
 })
 
 vim.pack.add({
-    { src = "https://github.com/jmbuhr/otter.nvim", version = vim.version.range("2.x") }
-})
+	{ src = "https://github.com/jmbuhr/otter.nvim", version = vim.version.range("2.x") },
+}, { confirm = false })
 
 local host_languages =
 	vim.list_extend(require("syringe").get_supported_host_languages(), { "markdown", "markdown_inline" })
@@ -307,7 +308,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ src = "https://github.com/nvim-lua/plenary.nvim" },
 			{ src = "https://github.com/nvimtools/none-ls.nvim" },
 			{ src = "https://github.com/ThePrimeagen/refactoring.nvim" },
-		})
+		}, { confirm = false })
 
 		require("ts-error-translator").setup({
 			auto_attach = true,

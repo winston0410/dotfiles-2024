@@ -21,7 +21,6 @@ vim.api.nvim_create_autocmd("User", {
     callback = function()
         vim.pack.add({
             -- low contrast themes
-            -- { src = "https://github.com/catppuccin/nvim" },
             -- cannot see the comment clearly with this theme, otherwise it is perfect
             { src = "https://github.com/folke/tokyonight.nvim" },
             { src = "https://github.com/rose-pine/neovim" },
@@ -29,14 +28,12 @@ vim.api.nvim_create_autocmd("User", {
             -- High contrast themes
             { src = "https://github.com/nuvic/flexoki-nvim" }, -- it has limited plugin support
             { src = "https://github.com/miikanissi/modus-themes.nvim" },
-            { src = "https://github.com/kyza0d/xeno.nvim" },
             { src = "https://github.com/eldritch-theme/eldritch.nvim" },
             -- for fun
             { src = "https://github.com/jnz/studio98" },
             { src = "https://github.com/e-ink-colorscheme/e-ink.nvim" },
             { src = "https://github.com/Mofiqul/vscode.nvim" },
-        })
-        -- vim.cmd.colorscheme("rose-pine-moon")
+        }, { confirm = false })
         vim.cmd.colorscheme("koda")
         require("vscode").setup({
             style = "dark",
@@ -73,17 +70,6 @@ vim.api.nvim_create_autocmd("User", {
             "catppuccin.vim",
             "catppuccin-frappe.vim",
             "catppuccin-macchiato.vim",
-        })
-        local xeno = require("xeno")
-        xeno.config({
-            transparent = true,
-            contrast = 0.1,
-        })
-
-        xeno.new_theme("xeno-golden-hour", {
-            base = "#11100f",
-            accent = "#FFCC33",
-            contrast = 0.2,
         })
         require("modus-themes").setup({
             line_nr_column_background = true,

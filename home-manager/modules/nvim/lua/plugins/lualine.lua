@@ -5,8 +5,7 @@ local godot = require("custom.godot")
 vim.pack.add({
 	{ src = "https://github.com/Zeioth/heirline-components.nvim", version = vim.version.range("3.x") },
 	{ src = "https://github.com/rebelot/heirline.nvim", version = vim.version.range("1.x") },
-})
-
+},{ confirm = false })
 local function buf_in_arglist(buf_id)
 	local name = vim.api.nvim_buf_get_name(buf_id)
 	if name == "" then

@@ -4,7 +4,7 @@ vim.pack.add({
     { src = "https://github.com/suketa/nvim-dap-ruby" },
     { src = "https://github.com/leoluz/nvim-dap-go" },
     { src = "https://github.com/igorlfs/nvim-dap-view" },
-})
+}, { confirm = false })
 
 require("dap-python").setup("uv")
 require("dap-ruby").setup()

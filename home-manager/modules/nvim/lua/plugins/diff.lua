@@ -1,7 +1,7 @@
 vim.pack.add({
     { src = "https://github.com/MunifTanjim/nui.nvim" },
     { src = "https://github.com/esmuellert/codediff.nvim", version = vim.version.range("2.x") },
-})
+}, { confirm = false })
 require("codediff").setup({
     -- :1 is base, :2 is ours, :3 is theirs, :4 is merged
     diff = {

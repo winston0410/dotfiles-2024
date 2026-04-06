@@ -1,12 +1,12 @@
 local session_manager = require("custom.session-manager")
 local group = vim.api.nvim_create_augroup("SessionManager", { clear = true })
 
+-- restore session after Nvim event loop has started, so the loading wouldn't block it
 vim.api.nvim_create_autocmd("User", {
     pattern = "NvimReady",
     once = true,
     nested = true,
     callback = function()
-        -- restore session after Nvim event loop has started, so the loading wouldn't block it
         -- disable session, when nvim is used through pipe
         if vim.fn.has('ttyin') == 0 then
             return
