@@ -1,9 +1,10 @@
 {
 	"$schema": "https://opencode.ai/config.json",
 	"enabled_providers": ["opencode", "github-copilot", "openai"],
+    "autoupdate": false,
 	"theme": "tokyonight",
 	"model": "anthropic/claude-sonnet-4",
-	"default_agent": "build",
+	"default_agent": "plan",
 	"lsp": {},
 	"mcp": {},
 	"experimental": {}
