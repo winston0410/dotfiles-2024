@@ -280,6 +280,9 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 									end
 
 									local icon = require('lspkind').symbol_map[ctx.kind]
+                                    if icon == nil then
+                                        return ""
+                                    end
 									return icon .. ctx.icon_gap
 								end,
 
