@@ -108,9 +108,24 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 
 		ls.add_snippets("all", snippets)
 
+		local function get_mini_icon(ctx)
+			if ctx.source_name == "Path" then
+				local is_unknown_type =
+					vim.tbl_contains({ "link", "socket", "fifo", "char", "block", "unknown" }, ctx.item.data.type)
+				local mini_icon, mini_hl, _ = require("mini.icons").get(
+					is_unknown_type and "os" or ctx.item.data.type,
+					is_unknown_type and "" or ctx.label
+				)
+				if mini_icon then
+					return mini_icon, mini_hl
+				end
+			end
+			local mini_icon, mini_hl, _ = require("mini.icons").get("lsp", ctx.kind)
+			return mini_icon, mini_hl
+		end
 		require("blink-cmp").setup({
 			keymap = {
-                -- Neovim native keybindings for completion
+				-- Neovim native keybindings for completion
 				["<C-e>"] = { "hide", "fallback" },
 				["<C-y>"] = { "select_and_accept", "fallback" },
 				["<C-n>"] = { "show", "select_next", "fallback" },
@@ -118,7 +133,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<Up>"] = { "select_prev", "fallback" },
 				["<Down>"] = { "select_next", "fallback" },
-                -- Disable CR for now, use <C-y> only
+				-- Disable CR for now, use <C-y> only
 				-- ["<CR>"] = { "select_and_accept", "fallback" },
 				-- NOTE Remember, gh bring us back to select mode again. Use this after the first edit
 				["<Tab>"] = {
@@ -256,7 +271,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 				menu = {
 					draw = {
 						treesitter = { "lsp" },
-                        -- REF https://github.com/xzbdmw/colorful-menu.nvim?tab=readme-ov-file#use-it-in-blinkcmp
+						-- REF https://github.com/xzbdmw/colorful-menu.nvim?tab=readme-ov-file#use-it-in-blinkcmp
 						columns = { { "kind_icon" }, { "label", gap = 1 } },
 						components = {
 							label = {
@@ -269,38 +284,18 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 							},
 							kind_icon = {
 								text = function(ctx)
-									if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                                        if ctx.item.data.type == "link" then
-                                            ctx.item.data.type = "directory"
-                                        end
-										local mini_icon, _ = require("mini.icons").get(ctx.item.data.type, ctx.label)
-										if mini_icon then
-											return mini_icon .. ctx.icon_gap
-										end
-									end
-
-									local icon = require('lspkind').symbol_map[ctx.kind]
-                                    if icon == nil then
-                                        return ""
-                                    end
-									return icon .. ctx.icon_gap
+									local kind_icon, kind_hl = get_mini_icon(ctx)
+									return kind_icon
 								end,
-
-								-- Optionally, use the highlight groups from mini.icons
-								-- You can also add the same function for `kind.highlight` if you want to
-								-- keep the highlight groups in sync with the icons.
 								highlight = function(ctx)
-									if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                                        if ctx.item.data.type == "link" then
-                                            ctx.item.data.type = "directory"
-                                        end
-										local mini_icon, mini_hl =
-											require("mini.icons").get(ctx.item.data.type, ctx.label)
-										if mini_icon then
-											return mini_hl
-										end
-									end
-									return ctx.kind_hl
+									local _, hl = get_mini_icon(ctx)
+									return hl
+								end,
+							},
+							kind = {
+								highlight = function(ctx)
+									local _, hl = get_mini_icon(ctx)
+									return hl
 								end,
 							},
 						},
