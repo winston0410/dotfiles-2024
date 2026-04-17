@@ -1,6 +1,6 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-	"enabled_providers": ["opencode", "github-copilot", "openai"],
+	"enabled_providers": ["opencode", "github-copilot", "openai", "anthropic"],
     "autoupdate": false,
 	"theme": "tokyonight",
 	"model": "anthropic/claude-sonnet-4",
