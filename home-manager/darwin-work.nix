@@ -1,6 +1,9 @@
 { inputs, lib, config, pkgs, unstable, ... }:
 let username = "hsum";
 in {
+  imports = [
+    ./modules/claude/mod.nix
+  ];
   home = {
     username = lib.mkForce username;
     homeDirectory = lib.mkForce "/Users/${username}";
