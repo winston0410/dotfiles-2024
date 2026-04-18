@@ -40,8 +40,8 @@
     nixpkgs-firefox-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, unstable, home-manager,  nixd, darwin
-    , rust-overlay, sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
+  outputs = { self, nixpkgs, unstable, home-manager, nixd, darwin, rust-overlay
+    , sops-nix, nur, nixpkgs-firefox-darwin, ... }@inputs:
 
     let
       inherit (self) outputs;
@@ -51,25 +51,39 @@
         builtins.replaceStrings [ "darwin" ] [ "linux" ] darwinArmSystem;
       linuxAmdSystem = "x86_64-linux";
 
-      overlays = [
-        nur.overlays.default
-      ];
+      overlays = [ nur.overlays.default ];
 
       darwinArmPkgs = import nixpkgs {
+        config.allowUnfree = true;
         system = darwinArmSystem;
-        overlays = overlays ++ [
-          rust-overlay.overlays.default
-          nixpkgs-firefox-darwin.overlay
-        ];
+        overlays = overlays
+          ++ [ rust-overlay.overlays.default nixpkgs-firefox-darwin.overlay ];
       };
       linuxAmdPkgs = import nixpkgs {
+        config.allowUnfree = true;
         system = linuxAmdSystem;
         overlays = overlays;
       };
 
       linuxArmPkgs = import nixpkgs {
+        config.allowUnfree = true;
         system = linuxArmSystem;
         overlays = overlays;
+      };
+
+      unstablePkgs = import unstable {
+        config.allowUnfree = true;
+        system = darwinArmSystem;
+      };
+
+      unstableLinuxAmdPkgs = import unstable {
+        config.allowUnfree = true;
+        system = linuxAmdSystem;
+      };
+
+      unstableLinuxArmPkgs = import unstable {
+        config.allowUnfree = true;
+        system = linuxArmSystem;
       };
 
       darwin-builder = nixpkgs.lib.nixosSystem {
@@ -90,7 +104,7 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             system = darwinArmSystem;
-            unstable = unstable.legacyPackages.aarch64-darwin;
+            unstable = unstablePkgs;
           };
           modules = [
             # inputs.mac-app-util.homeManagerModules.default
@@ -104,7 +118,7 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             system = darwinArmSystem;
-            unstable = unstable.legacyPackages.aarch64-darwin;
+            unstable = unstablePkgs;
           };
           modules = [
             # inputs.mac-app-util.homeManagerModules.default
@@ -117,7 +131,7 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             system = linuxAmdSystem;
-            unstable = unstable.legacyPackages.x86_64-linux;
+            unstable = unstableLinuxAmdPkgs;
           };
           modules = [
             inputs.sops-nix.homeManagerModules.sops
@@ -130,7 +144,7 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             system = linuxArmSystem;
-            unstable = unstable.legacyPackages.aarch64-linux;
+            unstable = unstableLinuxArmPkgs;
           };
           modules = [
             inputs.sops-nix.homeManagerModules.sops
@@ -143,7 +157,7 @@
           extraSpecialArgs = {
             inherit inputs outputs;
             system = linuxAmdSystem;
-            unstable = unstable.legacyPackages.x86_64-linux;
+            unstable = unstableLinuxAmdPkgs;
           };
           modules =
             [ inputs.sops-nix.homeManagerModules.sops ./home-manager/wsl.nix ];
