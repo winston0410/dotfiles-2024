@@ -5,7 +5,20 @@
     {
       "context": "Chat",
       "bindings": {
-        
+        "tab": "chat:cycleMode"
+      }
+    },
+    {
+      "context": "Autocomplete",
+      "bindings": {
+        "tab": null,
+        "ctrl+y": "autocomplete:accept",
+        "escape": null,
+        "ctrl+e": "autocomplete:dismiss",
+        "up": null,
+        "ctrl+p": "autocomplete:previous",
+        "down": null,
+        "ctrl+n": "autocomplete:next"
       }
     }
   ]
