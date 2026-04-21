@@ -1,8 +1,7 @@
-{ inputs, lib, config, pkgs, ... }: {
+{ inputs, lib, config, pkgs, unstable, ... }: {
+  home.packages = [ unstable.claude-code ];
   home.file = {
-    ".claude/keybindings.json" = {
-      source = ./keybindings.json;
-    };
+    ".claude/keybindings.json" = { source = ./keybindings.json; };
   };
   # This doesn't work, because claude dump state and everything into this config dir
   # home.sessionVariables = { CLAUDE_CONFIG_DIR = "${config.xdg.configHome}/claude"; };
