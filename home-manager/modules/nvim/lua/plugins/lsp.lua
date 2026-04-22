@@ -306,8 +306,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ src = "https://github.com/rachartier/tiny-code-action.nvim" },
 			{ src = "https://github.com/AbysmalBiscuit/insert-inlay-hints.nvim" },
 			{ src = "https://github.com/nvim-lua/plenary.nvim" },
-			{ src = "https://github.com/nvimtools/none-ls.nvim" },
-			{ src = "https://github.com/ThePrimeagen/refactoring.nvim" },
 		}, { confirm = false })
 
 		require("ts-error-translator").setup({
@@ -344,12 +342,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end,
 			{ silent = true, noremap = true, desc = "Insert all inlay hints in the current visual selection as code." }
 		)
-
-		local null_ls = require("null-ls")
-		null_ls.setup({
-			sources = {
-				null_ls.builtins.code_actions.refactoring,
-			},
-		})
 	end,
 })
