@@ -301,16 +301,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	once = true,
 	callback = function(ev)
 		vim.pack.add({
-			{ src = "https://github.com/dmmulroy/ts-error-translator.nvim", version = vim.version.range("2.x") },
 			{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 			{ src = "https://github.com/rachartier/tiny-code-action.nvim" },
 			{ src = "https://github.com/AbysmalBiscuit/insert-inlay-hints.nvim" },
 			{ src = "https://github.com/nvim-lua/plenary.nvim" },
 		}, { confirm = false })
 
-		require("ts-error-translator").setup({
-			auto_attach = true,
-		})
 		require("tiny-inline-diagnostic").setup({
 			options = {
 				show_source = {
