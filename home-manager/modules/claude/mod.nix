@@ -1,5 +1,8 @@
 { inputs, lib, config, pkgs, unstable, ... }: {
-  home.packages = [ unstable.claude-code unstable.claude-agent-acp ];
+  home.packages = [
+    unstable.claude-code
+    # unstable.claude-agent-acp 
+  ];
   home.file = {
     ".claude/keybindings.json" = { source = ./keybindings.json; };
   };
