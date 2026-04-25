@@ -1,15 +1,15 @@
 vim.pack.add({
-	-- pin to this version for now, as it is buggy afterwards
-	{ src = "https://github.com/NickvanDyke/opencode.nvim", version = "v0.6.0" },
-	{ src = "https://github.com/coder/claudecode.nvim", version = "v0.3.0" },
+	{ src = "https://github.com/carlos-algms/agentic.nvim" },
 }, { confirm = false })
 
-vim.keymap.set({ "n", "x" }, "<leader>p<leader>c", function()
-	require("opencode").select()
-end, { desc = "Explore Opencode action" })
+require("agentic").setup({
+	provider = "codex-acp",
+})
 
-vim.keymap.set({ "n", "x" }, "<leader>c", function()
-	return require("opencode").operator("@this ")
-end, { desc = "Add range to opencode", expr = true })
+vim.keymap.set({ "n", "v", "i" }, "<C-\\>", function()
+	require("agentic").toggle()
+end, { desc = "Toggle Agentic Chat" })
 
-require("claudecode").setup({})
+vim.keymap.set({ "n", "v" }, "<C-'>", function()
+	require("agentic").add_selection_or_file_to_context()
+end, { desc = "Add file or selection to context" })
