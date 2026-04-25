@@ -207,13 +207,7 @@ vim.keymap.del({ "n" }, "]Q", {})
 vim.keymap.del({ "n" }, "[<C-q>", {})
 vim.keymap.del({ "n" }, "]<C-q>", {})
 
--- remove default LSP keymap set by Neovim, as a clean Neovim wouldn't have any LSP config anyway
-vim.keymap.del({ "n" }, "gra", {})
-vim.keymap.del({ "n" }, "gri", {})
-vim.keymap.del({ "n" }, "grn", {})
-vim.keymap.del({ "n" }, "grr", {})
-vim.keymap.del({ "n" }, "grt", {})
-vim.keymap.del({ "n" }, "gO", {})
+
 -- remove keybinding for adding additional lines. They do not follow the convention of using [ and ] key for navigation
 vim.keymap.del({ "n" }, "[<space>", {})
 vim.keymap.del({ "n" }, "]<space>", {})
