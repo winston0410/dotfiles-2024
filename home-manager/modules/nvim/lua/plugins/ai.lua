@@ -4,6 +4,9 @@ vim.pack.add({
 
 require("agentic").setup({
 	provider = "codex-acp",
+    windows = {
+      width = "38.2%"
+    },
 })
 
 vim.keymap.set({ "n", "v", "i" }, "<C-\\>", function()
