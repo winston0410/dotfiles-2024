@@ -124,6 +124,9 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			return mini_icon, mini_hl
 		end
 		require("blink-cmp").setup({
+			enabled = function()
+				return not vim.tbl_contains({ "AgenticInput" }, vim.bo.filetype)
+			end,
 			keymap = {
 				-- Neovim native keybindings for completion
 				["<C-e>"] = { "hide", "fallback" },
