@@ -3,6 +3,7 @@ vim.pack.add({
 }, { confirm = false })
 
 require("agentic").setup({
+    acp_providers = {},
     diff_preview = {
       enabled = true,
       layout = "split",
@@ -42,6 +43,17 @@ vim.keymap.set("n", "<leader>cs", function()
   end)
 end, { desc = "Start Agentic session (select provider)", silent = true, noremap = true })
 
+vim.api.nvim_create_augroup("AgenticBuffers", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "AgenticBuffers",
+  pattern = { "AgenticChat", "AgenticInput" },
+  callback = function(ev)
+    vim.keymap.set("n", "<localleader>s", function()
+      require("agentic").stop_generation()
+    end, { buffer = ev.buf, desc = "Stop Agentic generation", silent = true })
+  end,
+})
+
 vim.api.nvim_create_user_command("Agent", function(opts)
   local provider = providers[opts.args] or opts.args
   require("agentic").new_session({ provider = provider })
@@ -55,4 +67,5 @@ end, {
     end, keys)
   end,
 })
+
 
