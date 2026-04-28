@@ -3,7 +3,15 @@ vim.pack.add({
 }, { confirm = false })
 
 require("agentic").setup({
-	acp_providers = {},
+	acp_providers = {
+      ["claude-agent-acp"] = {
+        default_mode = "auto",
+      },
+      ["opencode-acp"] = {
+        default_mode = "plan",
+        initial_model = "github-copilot/claude-sonnet-4/max"
+      },
+    },
 	diff_preview = {
 		enabled = true,
 		layout = "split",
