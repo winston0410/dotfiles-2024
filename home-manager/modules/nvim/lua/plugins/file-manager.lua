@@ -1,5 +1,5 @@
 vim.pack.add({
-	{ src = "https://github.com/stevearc/oil.nvim", version = "v2.15.0" },
+	{ src = "https://github.com/barrettruth/canola.nvim" },
 }, { confirm = false })
 local show_detail = false
 local default_columns = {
