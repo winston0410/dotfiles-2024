@@ -74,6 +74,9 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "<localleader>s", function()
 			require("agentic").stop_generation()
 		end, { buffer = ev.buf, desc = "Stop Agentic generation", silent = true })
+		vim.keymap.set("n", "<localleader>r", function()
+			require("agentic").restore_session()
+		end, { buffer = ev.buf, desc = "Restore Agentic session", silent = true })
 	end,
 })
 
