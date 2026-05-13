@@ -8,6 +8,7 @@ require("codediff").setup({
         hide_merge_artifacts = true,
         original_position = "left",
         conflict_ours_position = "right",
+        max_computation_time_ms = 250
     },
 
     keymaps = {
