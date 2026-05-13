@@ -11,6 +11,7 @@ require("codediff").setup({
         max_computation_time_ms = 250
     },
 
+    -- IMPORTANT current = ours, incoming = theirs. Current would be the current branch that we are in, during a rebase it would be the rebase target
     keymaps = {
         conflict = {
             accept_incoming = "<LocalLeader>xt",
