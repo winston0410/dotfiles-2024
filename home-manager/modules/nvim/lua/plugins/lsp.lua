@@ -201,6 +201,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		client.server_capabilities.semanticTokensProvider = nil
 
+		vim.keymap.set(supported_modes, "gd", function()
+			Snacks.picker.lsp_definitions()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to definition" })
+		vim.keymap.set(supported_modes, "grt", function()
+			Snacks.picker.lsp_type_definitions()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to type definition" })
+		vim.keymap.set(supported_modes, "gri", function()
+			Snacks.picker.lsp_implementations()
+		end, { silent = true, noremap = true, buffer = ev.buf, desc = "Jump to implementation" })
+		vim.keymap.set(supported_modes, "grr", function()
+			Snacks.picker.lsp_references()
+		end, {
+			silent = true,
+			noremap = true,
+			buffer = ev.buf,
+			desc = "Jump to references",
+			nowait = true,
+		})
+
         -- NOTE enable these in the future if needed
         -- if client:supports_method "textDocument/codeLens" then
         --     vim.lsp.codelens.enable()
