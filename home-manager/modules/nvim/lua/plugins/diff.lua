@@ -8,7 +8,7 @@ require("codediff").setup({
         hide_merge_artifacts = true,
         original_position = "left",
         conflict_ours_position = "right",
-        max_computation_time_ms = 250
+        max_computation_time_ms = 100
     },
 
     -- IMPORTANT current = ours, incoming = theirs. Current would be the current branch that we are in, during a rebase it would be the rebase target
