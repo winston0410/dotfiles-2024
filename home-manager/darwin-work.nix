@@ -5,6 +5,9 @@ in {
     ./modules/claude/mod.nix
     ./modules/codex/mod.nix
   ];
+
+  programs.neovim.package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+
   home = {
     username = lib.mkForce username;
     homeDirectory = lib.mkForce "/Users/${username}";
