@@ -4,6 +4,7 @@
 
   programs.neovim = {
     enable = true;
+    package = lib.mkDefault unstable.neovim-unwrapped;
     extraLuaPackages = (ps:
       with ps; [
         luafilesystem
