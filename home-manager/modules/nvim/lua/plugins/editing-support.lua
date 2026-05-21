@@ -33,7 +33,7 @@ vim.pack.add({
 		version = vim.version.range("1.x"),
 	},
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
-	{ src = "https://github.com/rlue/vim-barbaric", version = "master" },
+	-- { src = "https://github.com/rlue/vim-barbaric", version = "master" },
 }, { confirm = false })
 vim.api.nvim_create_autocmd("PackChanged", {
 	nested = true,
