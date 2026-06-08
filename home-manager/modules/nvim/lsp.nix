@@ -22,11 +22,15 @@
     pkgs.ccls
     pkgs.haskell-language-server
     pkgs.elixir-ls
-    pkgs.nodePackages.purescript-language-server
-    pkgs.nodePackages.bash-language-server
+    # NOTE removed from nixpkgs along with `nodePackages` (26.05). Not migrated
+    # to top-level. Building from npm needs a vendored package-lock.json + custom
+    # buildNpmPackage (the published server.js still requires 7 runtime deps),
+    # and from source needs spago/purs (network, unavailable in the sandbox).
+    # pkgs.nodePackages.purescript-language-server
+    pkgs.bash-language-server
     pkgs.dockerfile-language-server
     pkgs.yaml-language-server
-    pkgs.nodePackages.vim-language-server
+    pkgs.vim-language-server
     pkgs.basedpyright
     unstable.typescript-go
     pkgs.haskellPackages.dhall-lsp-server
@@ -38,7 +42,7 @@
     # inputs.emmylua-analyzer-rust.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.deno
     pkgs.jsonnet-language-server
-    pkgs.nodePackages.graphql-language-service-cli
+    pkgs.graphql-language-service-cli
     inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.beancount-language-server
     pkgs.texlab
@@ -49,7 +53,12 @@
     pkgs.shellcheck
     pkgs.lemminx
     pkgs.systemd-lsp
-    pkgs.ols
+    # odin pins llvmPackages_18, whose compiler-rt 18 fuzzer fails to build
+    # against the apple-sdk-26.4 libcxx (std::__countl_zero). Build odin (and
+    # thus ols + bundled odinfmt) against the cached llvm 20 instead.
+    (pkgs.ols.override {
+      odin = pkgs.odin.override { llvmPackages_18 = pkgs.llvmPackages_20; };
+    })
     # (pkgs.stdenv.mkDerivation rec {
     #   pname = "npm-workspaces-lsp";
     #   version = "0.1.0"; # update per release
@@ -115,5 +124,5 @@
     #
     #   npmDepsHash = "sha256-0009WrnwN6wM9S76PsGrPTmmiMBUKu4T2Al3HH3Wo+w=";
     # })
-  ] ++ [ pkgs.nodePackages.svelte-language-server pkgs.postgres-language-server ];
+  ] ++ [ pkgs.svelte-language-server pkgs.postgres-language-server ];
 }
