@@ -1,9 +1,18 @@
 vim.pack.add({
-	{ src = "https://github.com/carlos-algms/agentic.nvim" },
+	{ src = "https://github.com/carlos-algms/agentic.nvim", version="ca7700bdcf57f6079833574d924c99f0d3dbc4b9" },
 }, { confirm = false })
 
 require("agentic").setup({
+    slash_commands = {
+      auto_trigger = false,
+    },
+    file_picker = {
+      auto_trigger = false,
+    },
 	acp_providers = {
+      ["codex-acp"] = {
+        initial_model = "gpt-5.5"
+      },
       ["claude-agent-acp"] = {
         default_mode = "auto",
       },

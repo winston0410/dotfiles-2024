@@ -3,6 +3,7 @@
   in [
     # REF https://github.com/NixOS/nixpkgs/pull/385105
     # kulala-ls
+    pkgs.tailwindcss-language-server
     pkgs.helm-ls
     pkgs.clojure-lsp
     pkgs.ts_query_ls

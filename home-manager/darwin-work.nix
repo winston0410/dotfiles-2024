@@ -11,7 +11,7 @@ in {
   home = {
     username = lib.mkForce username;
     homeDirectory = lib.mkForce "/Users/${username}";
-    packages = with pkgs; [ docker_29 (azure-cli.withExtensions [ pkgs.azure-cli.extensions.azure-devops ]) ];
+    packages = with pkgs; [ docker_29 (azure-cli.withExtensions [ pkgs.azure-cli.extensions.azure-devops ]) dotnetCorePackages.sdk_9_0];
   };
   
   programs.git.settings = {
