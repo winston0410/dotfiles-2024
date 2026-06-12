@@ -124,9 +124,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			return mini_icon, mini_hl
 		end
 		require("blink-cmp").setup({
-			enabled = function()
-				return not vim.tbl_contains({ "AgenticInput" }, vim.bo.filetype)
-			end,
 			keymap = {
 				-- Neovim native keybindings for completion
 				["<C-e>"] = { "hide", "fallback" },
@@ -199,30 +196,30 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 							return items
 						end,
 					},
-					agentic_at = {
-						module = "blink.cmp.sources.complete_func",
-						-- Detect @ is before the cursor to trigger file picker completions
-						name = "AgenticAt",
-						enabled = function()
-							local col = vim.api.nvim_win_get_cursor(0)[2]
-							local before = vim.api.nvim_get_current_line():sub(1, col)
-							return (before:match("^@[^%s]*$") or before:match("[%s]@[^%s]*$")) ~= nil
-						end,
-						opts = {
-							complete_func = function()
-								return "v:lua.require'agentic.ui.file_picker'.complete_func"
-							end,
-						},
-						-- Fix output by removing @ added in label details
-						transform_items = function(_, items)
-							for _, item in ipairs(items) do
-								if item.labelDetails then
-									item.labelDetails.detail = nil
-								end
-							end
-							return items
-						end,
-					},
+					-- agentic_at = {
+					-- 	module = "blink.cmp.sources.complete_func",
+					-- 	-- Detect @ is before the cursor to trigger file picker completions
+					-- 	name = "AgenticAt",
+					-- 	enabled = function()
+					-- 		local col = vim.api.nvim_win_get_cursor(0)[2]
+					-- 		local before = vim.api.nvim_get_current_line():sub(1, col)
+					-- 		return (before:match("^@[^%s]*$") or before:match("[%s]@[^%s]*$")) ~= nil
+					-- 	end,
+					-- 	opts = {
+					-- 		complete_func = function()
+					-- 			return "v:lua.require'agentic.ui.file_picker'.complete_func"
+					-- 		end,
+					-- 	},
+					-- 	-- Fix output by removing @ added in label details
+					-- 	transform_items = function(_, items)
+					-- 		for _, item in ipairs(items) do
+					-- 			if item.labelDetails then
+					-- 				item.labelDetails.detail = nil
+					-- 			end
+					-- 		end
+					-- 		return items
+					-- 	end,
+					-- },
 					dap = { name = "dap", module = "blink-cmp-dap" },
 					bibtex = {
 						module = "blink-cmp-bibtex",
@@ -293,7 +290,10 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 					},
 				},
 				per_filetype = {
-					AgenticInput = { "agentic_slash", "agentic_at" },
+					AgenticInput = { 
+						inherit_defaults = true,
+                        "agentic_slash"
+                    },
 					zsh = {
 						inherit_defaults = true,
 					},

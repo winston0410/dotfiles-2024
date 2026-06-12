@@ -1,5 +1,5 @@
 vim.pack.add({
-	{ src = "https://github.com/carlos-algms/agentic.nvim", version="ca7700bdcf57f6079833574d924c99f0d3dbc4b9" },
+	{ src = "https://github.com/carlos-algms/agentic.nvim", version="a19fee663aa8be5f46f0af6fc0b46427b0e75cf2" },
 }, { confirm = false })
 
 require("agentic").setup({
