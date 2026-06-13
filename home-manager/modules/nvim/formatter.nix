@@ -5,7 +5,7 @@
     sqruff
     prettierd
     ormolu
-    perl540Packages.PerlTidy
+    perl5Packages.PerlTidy
     mago
     typos
     kcl

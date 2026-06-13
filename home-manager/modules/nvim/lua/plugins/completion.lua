@@ -6,7 +6,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.x") },
 			{ src = "https://github.com/krissen/blink-cmp-bibtex" },
 			{ src = "https://github.com/moyiz/blink-emoji.nvim" },
-			{ src = "https://github.com/fang2hou/blink-copilot" },
 			{ src = "https://github.com/disrupted/blink-cmp-conventional-commits" },
 			{ src = "https://github.com/bydlw98/blink-cmp-env" },
 			{ src = "https://github.com/archie-judd/blink-cmp-words" },
@@ -123,10 +122,15 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			local mini_icon, mini_hl, _ = require("mini.icons").get("lsp", ctx.kind)
 			return mini_icon, mini_hl
 		end
+		local default_sources = {
+			"lsp",
+			"path",
+			"snippets",
+			"buffer",
+			"omni",
+			"emoji",
+		}
 		require("blink-cmp").setup({
-			enabled = function()
-				return not vim.tbl_contains({ "AgenticInput" }, vim.bo.filetype)
-			end,
 			keymap = {
 				-- Neovim native keybindings for completion
 				["<C-e>"] = { "hide", "fallback" },
@@ -161,17 +165,59 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 			snippets = { preset = "luasnip" },
 
 			sources = {
-				default = {
-					"lsp",
-					"path",
-					"snippets",
-					"buffer",
-					"omni",
-					"emoji",
-					-- Too noisy, just disable it for now
-					-- "copilot",
-				},
+				default = default_sources,
 				providers = {
+					agentic_slash = {
+						module = "blink.cmp.sources.complete_func",
+						name = "AgenticSlash",
+						-- Detect / at the start of the prompt input to trigger slash command completions
+						enabled = function()
+							local cursor = vim.api.nvim_win_get_cursor(0)
+							if cursor[1] ~= 1 then
+								return false
+							end
+							local before = vim.api.nvim_get_current_line():sub(1, cursor[2])
+							return before:match("^/[^%s]*$") ~= nil
+						end,
+						opts = {
+							complete_func = function()
+								return "v:lua.require'agentic.acp.slash_commands'.complete_func"
+							end,
+						},
+						-- Fix output by removing / added in label details
+						transform_items = function(_, items)
+							for _, item in ipairs(items) do
+								if item.labelDetails then
+									item.labelDetails.detail = nil
+								end
+							end
+							return items
+						end,
+					},
+					agentic_at = {
+						module = "blink.cmp.sources.complete_func",
+						-- Detect @ is before the cursor to trigger file picker completions
+						name = "AgenticAt",
+						enabled = function()
+							local col = vim.api.nvim_win_get_cursor(0)[2]
+							local before = vim.api.nvim_get_current_line():sub(1, col)
+							return (before:match("^@[^%s]*$") or before:match("[%s]@[^%s]*$")) ~= nil
+						end,
+						opts = {
+							complete_func = function()
+								return "v:lua.require'agentic.ui.file_picker'.complete_func"
+							end,
+						},
+						-- Fix output by removing @ added in label details
+						transform_items = function(_, items)
+							for _, item in ipairs(items) do
+								if item.labelDetails then
+									item.labelDetails.detail = nil
+								end
+							end
+							return items
+						end,
+					},
 					dap = { name = "dap", module = "blink-cmp-dap" },
 					bibtex = {
 						module = "blink-cmp-bibtex",
@@ -179,22 +225,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 						min_keyword_length = 2,
 						async = true,
 						opts = {},
-					},
-					copilot = {
-						name = "copilot",
-						module = "blink-copilot",
-						score_offset = 100,
-						async = true,
-						opts = {
-							max_completions = 1,
-						},
-						transform_items = function(ctx, items)
-							for _, item in ipairs(items) do
-								item.kind_icon = ""
-								item.kind_name = "Copilot"
-							end
-							return items
-						end,
 					},
 					emoji = {
 						module = "blink-emoji",
@@ -242,6 +272,16 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 					},
 				},
 				per_filetype = {
+					AgenticInput = function()
+						-- inherit all defaults except `path`
+						local srcs = { "agentic_slash", "agentic_at" }
+						for _, name in ipairs(default_sources) do
+							if name ~= "path" then
+								table.insert(srcs, name)
+							end
+						end
+						return srcs
+					end,
 					zsh = {
 						inherit_defaults = true,
 					},
