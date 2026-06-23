@@ -2,7 +2,7 @@
 let username = "hugosum";
 in {
   imports = [
-    ./modules/gemini/mod.nix
+    # ./modules/gemini/mod.nix
     ./modules/git/mod.nix
     ./modules/nvim/mod.nix
     ./modules/bat/mod.nix
