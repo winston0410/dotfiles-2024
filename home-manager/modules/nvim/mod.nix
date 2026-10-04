@@ -4,7 +4,8 @@
 
   programs.neovim = {
     enable = true;
-    package = lib.mkDefault unstable.neovim-unwrapped;
+    # package = lib.mkDefault unstable.neovim-unwrapped;
+    package = pkgs.neovim-unwrapped;
     extraLuaPackages = (ps:
       with ps; [
         luafilesystem
@@ -87,7 +88,7 @@
       imagemagick
       mermaid-cli
       ghostscript_headless
-      tectonic
+      # tectonic
       libqalculate
       # lilypond-suite
       fluidsynth

@@ -9,22 +9,22 @@ in {
     ./modules/lsd/mod.nix
     ./modules/wezterm/mod.nix
     ./modules/ripgrep/mod.nix
-    ./modules/bottom/mod.nix
+    # ./modules/bottom/mod.nix
     ./modules/shell/mod.nix
     ./modules/du/mod.nix
     ./modules/font/mod.nix
     ./modules/k9s/mod.nix
-    ./modules/android/mod.nix
+    # ./modules/android/mod.nix
     ./modules/xdg/mod.nix
     ./modules/sops/mod.nix
-    ./modules/kanata/mod.nix
+    # ./modules/kanata/mod.nix
     # ./modules/bw/mod.nix
     ./modules/nix/mod.nix
-    ./modules/mcphub/mod.nix
+    # ./modules/mcphub/mod.nix
     ./modules/k8s/mod.nix
     ./modules/zk/mod.nix
     ./modules/opencode/mod.nix
-    ./modules/ghostty/mod.nix
+    # ./modules/ghostty/mod.nix
     # Firefox just won't start
     # ./modules/firefox/mod.nix
   ];
@@ -47,10 +47,7 @@ in {
     inherit username;
     homeDirectory = "/Users/${username}";
   };
-  home.packages = with pkgs; [
-    unstable.opencode
-    inputs.openspec.packages.${pkgs.stdenv.hostPlatform.system}.default
-  ];
+  home.packages = with pkgs; [ ];
   xdg.mime.enable = lib.mkForce false;
   xdg.mimeApps.enable = lib.mkForce false;
   xdg.userDirs.enable = lib.mkForce false;
@@ -62,5 +59,5 @@ in {
   programs.firefox.package = lib.mkForce pkgs.firefox-bin;
   programs.firefox.nativeMessagingHosts = lib.mkForce [ ];
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 }

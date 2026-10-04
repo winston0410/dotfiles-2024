@@ -37,8 +37,8 @@
     jsonnet
     hurl
     buf
-    typespec
-    codeql
+    # typespec
+    # codeql
   ];
 
   xdg.configFile = { "prettier/.prettierrc" = { source = ./.prettierrc; }; };

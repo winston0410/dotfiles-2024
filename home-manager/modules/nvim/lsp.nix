@@ -33,8 +33,8 @@
     pkgs.yaml-language-server
     pkgs.vim-language-server
     pkgs.basedpyright
-    unstable.typescript-go
-    pkgs.haskellPackages.dhall-lsp-server
+    unstable.typescript
+    # pkgs.haskellPackages.dhall-lsp-server
     pkgs.terraform-ls
     pkgs.solargraph
     pkgs.metals
